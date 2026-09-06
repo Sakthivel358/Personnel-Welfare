@@ -198,15 +198,20 @@ const startServer = async () => {
   try {
     await connectDB();
     await seedInitialData();
-    app.listen(PORT, () => {
-      console.log(`==================================================================`);
-      console.log(`SIH26186 Personnel Welfare Backend Server active on Port ${PORT}`);
-      console.log(`Web UI: http://localhost:${PORT}`);
-      console.log(`==================================================================`);
-    });
+    if (!process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log(`==================================================================`);
+        console.log(`WelfareAI Personnel Welfare Backend Server active on Port ${PORT}`);
+        console.log(`Web UI: http://localhost:${PORT}`);
+        console.log(`==================================================================`);
+      });
+    }
   } catch (err) {
     console.error('Failed to start server:', err);
   }
 };
 
 startServer();
+
+module.exports = app;
+
