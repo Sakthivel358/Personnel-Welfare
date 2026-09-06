@@ -20,13 +20,13 @@
   <div class="app-layout">
     <aside class="app-sidebar">
       <div class="sidebar-header">
-        <div class="brand-icon">🛡️</div>
+        <div class="brand-icon" id="sidebar-brand-icon">🛡️</div>
         <div>
           <div class="sidebar-brand-title">WelfareAI</div>
-          <div class="sidebar-brand-sub">Early-Warning Center</div>
+          <div class="sidebar-brand-sub" id="sidebar-brand-sub">Early-Warning Center</div>
         </div>
       </div>
-      <ul class="sidebar-menu">
+      <ul class="sidebar-menu" id="sidebar-menu-list">
         <li class="menu-category">Welfare Analytics</li>
         <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
         <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
@@ -47,7 +47,7 @@
       </ul>
       <div class="sidebar-footer">
         <div class="user-mini-card">
-          <div class="user-avatar">VK</div>
+          <div class="user-avatar" id="user-sidebar-avatar">VK</div>
           <div class="user-info-text">
             <div class="user-name" data-user="name">Personnel Member</div>
             <div class="user-role-badge" data-user="role">Personnel</div>
@@ -63,7 +63,7 @@
           <button class="mobile-toggle">☰</button>
           <div class="page-title">Welfare Early-Warning Center</div>
         </div>
-        <div class="topbar-right">
+        <div class="topbar-right" id="topbar-actions">
           <a href="/stress-checkin.html" class="btn btn-sm btn-primary">+ New Check-in</a>
           <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
           <button class="theme-toggle topbar-btn">🌙</button>
@@ -162,9 +162,57 @@
   <script src="/js/auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      await checkAuth();
+      const user = await checkAuth();
+      if (user && (user.role === 'WELFARE_OFFICER' || user.role === 'COMMANDING_OFFICER' || user.role === 'ADMIN')) {
+        renderOfficerLayout();
+      }
       loadEarlyWarning();
     });
+
+    function renderOfficerLayout() {
+      const sidebarMenu = document.getElementById('sidebar-menu-list');
+      if (sidebarMenu) {
+        sidebarMenu.innerHTML = `
+          <li class="menu-category">Triage & Supervision</li>
+          <li class="menu-item"><a href="/welfare-officer.html"><span class="menu-icon">📊</span> AI Triage & Alerts</a></li>
+          <li class="menu-item active"><a href="/early-warning.html"><span class="menu-icon">⚡</span> Early-Warning Center</a></li>
+          <li class="menu-item"><a href="/welfare-officer.html"><span class="menu-icon">👥</span> Unit Personnel Roster</a></li>
+          <li class="menu-item"><a href="/welfare-officer.html"><span class="menu-icon">🛡️</span> AI Roster Optimizer</a></li>
+          <li class="menu-item"><a href="/welfare-officer.html"><span class="menu-icon">🔄</span> Follow-up & Re-analysis</a></li>
+          <li class="menu-item"><a href="/welfare-officer.html"><span class="menu-icon">📥</span> Support Requests Queue</a></li>
+
+          <li class="menu-category">System</li>
+          <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Safeguards</a></li>
+          <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & Directory</a></li>
+        `;
+      }
+
+      const brandIcon = document.getElementById('sidebar-brand-icon');
+      if (brandIcon) {
+        brandIcon.textContent = '🩺';
+        brandIcon.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+      }
+
+      const brandSub = document.getElementById('sidebar-brand-sub');
+      if (brandSub) {
+        brandSub.textContent = 'Welfare Intelligence';
+      }
+
+      const avatar = document.getElementById('user-sidebar-avatar');
+      if (avatar) {
+        avatar.textContent = 'WO';
+        avatar.style.background = '#059669';
+      }
+
+      const topbarActions = document.getElementById('topbar-actions');
+      if (topbarActions) {
+        topbarActions.innerHTML = `
+          <a href="/welfare-officer.html" class="btn btn-sm btn-primary">Return to Officer Portal &rarr;</a>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        `;
+      }
+    }
 
     async function loadEarlyWarning() {
       try {

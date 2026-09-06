@@ -34,12 +34,12 @@
 
       <ul class="sidebar-menu">
         <li class="menu-category">Triage & Supervision</li>
-        <li class="menu-item active"><a href="#dashboard-section" onclick="showTab('dashboard')"><span class="menu-icon">📊</span> AI Triage & Alerts</a></li>
-        <li class="menu-item"><a href="/early-warning.html"><span class="menu-icon">⚡</span> Early-Warning Center</a></li>
-        <li class="menu-item"><a href="#roster-section" onclick="showTab('roster')"><span class="menu-icon">👥</span> Unit Personnel Roster</a></li>
-        <li class="menu-item"><a href="#optimizer-section" onclick="showTab('optimizer')"><span class="menu-icon">🛡️</span> AI Roster Optimizer</a></li>
-        <li class="menu-item"><a href="#followups-section" onclick="showTab('followups')"><span class="menu-icon">🔄</span> Follow-up & Re-analysis</a></li>
-        <li class="menu-item"><a href="#support-section" onclick="showTab('support')"><span class="menu-icon">📥</span> Support Requests Queue</a></li>
+        <li class="menu-item active" id="menu-tab-dashboard"><a href="#dashboard-section" onclick="showTab('dashboard')"><span class="menu-icon">📊</span> AI Triage & Alerts</a></li>
+        <li class="menu-item" id="menu-tab-earlywarning"><a href="#earlywarning-section" onclick="showTab('earlywarning')"><span class="menu-icon">⚡</span> Early-Warning Center</a></li>
+        <li class="menu-item" id="menu-tab-roster"><a href="#roster-section" onclick="showTab('roster')"><span class="menu-icon">👥</span> Unit Personnel Roster</a></li>
+        <li class="menu-item" id="menu-tab-optimizer"><a href="#optimizer-section" onclick="showTab('optimizer')"><span class="menu-icon">🛡️</span> AI Roster Optimizer</a></li>
+        <li class="menu-item" id="menu-tab-followups"><a href="#followups-section" onclick="showTab('followups')"><span class="menu-icon">🔄</span> Follow-up & Re-analysis</a></li>
+        <li class="menu-item" id="menu-tab-support"><a href="#support-section" onclick="showTab('support')"><span class="menu-icon">📥</span> Support Requests Queue</a></li>
 
         <li class="menu-category">System</li>
         <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Safeguards</a></li>
@@ -101,7 +101,7 @@
               <strong>⚡ Proactive Welfare Early-Warning Center Available</strong>
               <div class="text-muted" style="font-size:0.85rem;">Classifies signals into 4 operational quadrants: New Signals, Rising Velocity, Persistent Elevation, and Improving Recovery.</div>
             </div>
-            <a href="/early-warning.html" class="btn btn-sm btn-primary">Open Early-Warning Center &rarr;</a>
+            <button onclick="showTab('earlywarning')" class="btn btn-sm btn-primary">Open Early-Warning Center &rarr;</button>
           </div>
         </div>
 
@@ -156,6 +156,96 @@
               <div class="text-muted text-center mt-2" style="font-size:0.8rem;">
                 Ensemble classification summary of active unit personnel.
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB: Early-Warning Center -->
+        <div id="tab-earlywarning" class="officer-tab-content" style="display:none;">
+          <div class="card mb-3" style="background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff;">
+            <div class="d-flex justify-between align-center flex-wrap gap-1">
+              <div>
+                <h2>⚡ Proactive Welfare Early-Warning Center</h2>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin-top: 0.25rem;">
+                  Unit-wide proactive categorization: Tracking emerging signals, rapid strain velocity, persistent elevated stress, and positive decompression trajectories.
+                </p>
+              </div>
+              <button class="btn btn-sm btn-secondary" onclick="loadOfficerEarlyWarning()">🔄 Refresh Quadrants</button>
+            </div>
+          </div>
+
+          <!-- 4 Categories Overview Grid -->
+          <div class="grid-4 mb-3">
+            <div class="card" style="border-top: 4px solid var(--accent);">
+              <div class="d-flex justify-between align-center mb-1">
+                <span class="text-muted" style="font-size:0.8rem;">New Signals</span>
+                <span>⚡</span>
+              </div>
+              <h2 id="ew-officer-cnt-new" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
+              <div class="text-muted" style="font-size:0.75rem;">Initial check-in flags</div>
+            </div>
+
+            <div class="card" style="border-top: 4px solid var(--risk-mod);">
+              <div class="d-flex justify-between align-center mb-1">
+                <span class="text-muted" style="font-size:0.8rem;">Rising Signals</span>
+                <span>📈</span>
+              </div>
+              <h2 id="ew-officer-cnt-rising" style="font-size:1.75rem; margin-top:0.25rem; color:var(--risk-mod);">--</h2>
+              <div class="text-muted" style="font-size:0.75rem;">Risk delta &ge; +6%</div>
+            </div>
+
+            <div class="card" style="border-top: 4px solid var(--risk-high);">
+              <div class="d-flex justify-between align-center mb-1">
+                <span class="text-muted" style="font-size:0.8rem;">Persistent Signals</span>
+                <span>⚠️</span>
+              </div>
+              <h2 id="ew-officer-cnt-persistent" style="font-size:1.75rem; margin-top:0.25rem; color:var(--risk-high);">--</h2>
+              <div class="text-muted" style="font-size:0.75rem;">High across &ge; 2 cycles</div>
+            </div>
+
+            <div class="card" style="border-top: 4px solid var(--risk-low);">
+              <div class="d-flex justify-between align-center mb-1">
+                <span class="text-muted" style="font-size:0.8rem;">Improving Signals</span>
+                <span>🌱</span>
+              </div>
+              <h2 id="ew-officer-cnt-improving" style="font-size:1.75rem; margin-top:0.25rem; color:var(--risk-low);">--</h2>
+              <div class="text-muted" style="font-size:0.75rem;">Risk delta &le; -6%</div>
+            </div>
+          </div>
+
+          <!-- Dynamic Lists -->
+          <div class="grid-2 mb-3">
+            <!-- Rising & Persistent Signals -->
+            <div class="card">
+              <div class="card-header">
+                <h3>🚨 Rising & Persistent Signals</h3>
+                <span class="badge badge-high">Priority Review</span>
+              </div>
+              <div id="ew-officer-priority-list">
+                <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
+              </div>
+            </div>
+
+            <!-- Improving Trajectories -->
+            <div class="card">
+              <div class="card-header">
+                <h3>🌱 Improving Trajectories</h3>
+                <span class="badge badge-low">Positive Velocity</span>
+              </div>
+              <div id="ew-officer-improving-list">
+                <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Follow-up Due Section -->
+          <div class="card">
+            <div class="card-header">
+              <h3>📅 Follow-Up Consultations Due</h3>
+              <span class="badge badge-neutral">Scheduled Interventions</span>
+            </div>
+            <div id="ew-officer-followups-due-list">
+              <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
             </div>
           </div>
         </div>
@@ -386,8 +476,12 @@
       const target = document.getElementById(`tab-${tabName}`);
       if (target) target.style.display = 'block';
 
+      const menuItem = document.getElementById(`menu-tab-${tabName}`);
+      if (menuItem) menuItem.classList.add('active');
+
       const titles = {
         dashboard: 'Welfare Officer Triage & AI Alerts',
+        earlywarning: 'Proactive Welfare Early-Warning Center',
         roster: 'Unit Personnel Roster',
         optimizer: 'AI Shift Pacing & Rest Rotation Optimizer',
         followups: 'Follow-up & Re-Analysis Tracking Workflow',
@@ -399,10 +493,82 @@
         loadRosterOptimization();
       } else if (tabName === 'roster') {
         loadPersonnelRoster();
+      } else if (tabName === 'earlywarning') {
+        loadOfficerEarlyWarning();
       } else if (tabName === 'followups') {
         loadFollowUps();
       } else if (tabName === 'support') {
         loadSupportQueue();
+      }
+    }
+
+    async function loadOfficerEarlyWarning() {
+      try {
+        const res = await api.request('/officer/early-warning', { method: 'GET' });
+        if (res && res.success && res.data) {
+          const d = res.data;
+          document.getElementById('ew-officer-cnt-new').textContent = d.summary?.newCount || 0;
+          document.getElementById('ew-officer-cnt-rising').textContent = d.summary?.risingCount || 0;
+          document.getElementById('ew-officer-cnt-persistent').textContent = d.summary?.persistentCount || 0;
+          document.getElementById('ew-officer-cnt-improving').textContent = d.summary?.improvingCount || 0;
+
+          const priorityItems = [...(d.risingSignals || []), ...(d.persistentSignals || []), ...(d.newSignals || [])];
+          const priList = document.getElementById('ew-officer-priority-list');
+          if (priList) {
+            if (priorityItems.length > 0) {
+              priList.innerHTML = priorityItems.map(item => `
+                <div class="card mb-2" style="background:var(--bg-card-subtle); padding:0.9rem; border-left:3px solid var(--risk-high);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <strong>${item.fullName} (${item.personnelId})</strong>
+                    <span class="badge ${item.category === 'RISING_SIGNAL' ? 'badge-moderate' : 'badge-high'}">${item.category ? item.category.replace(/_/g, ' ') : 'ALERT'}</span>
+                  </div>
+                  <div class="text-muted" style="font-size:0.8rem; margin-bottom:0.35rem;">${item.reason} • Score: <strong>${Math.round(item.compositeRiskScore)}%</strong></div>
+                  <div style="font-size:0.75rem; color:var(--text-secondary);">Top drivers: ${(item.topDrivers || []).join(', ') || 'Operational strain'}</div>
+                </div>
+              `).join('');
+            } else {
+              priList.innerHTML = `<div class="text-center text-muted py-4">No rising or persistent stress signals flagged in battalion.</div>`;
+            }
+          }
+
+          const impList = document.getElementById('ew-officer-improving-list');
+          if (impList) {
+            if (d.improvingSignals && d.improvingSignals.length > 0) {
+              impList.innerHTML = d.improvingSignals.map(item => `
+                <div class="card mb-2" style="background:var(--bg-card-subtle); padding:0.9rem; border-left:3px solid var(--risk-low);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <strong>${item.fullName} (${item.personnelId})</strong>
+                    <span class="badge badge-low">${item.delta || 'Improving'}</span>
+                  </div>
+                  <div class="text-muted" style="font-size:0.8rem;">${item.reason} • Current Index: <strong>${Math.round(item.compositeRiskScore)}%</strong></div>
+                </div>
+              `).join('');
+            } else {
+              impList.innerHTML = `<div class="text-center text-muted py-4">Awaiting subsequent check-in data to calculate improvement velocity.</div>`;
+            }
+          }
+
+          const foList = document.getElementById('ew-officer-followups-due-list');
+          if (foList) {
+            if (d.followUpsDue && d.followUpsDue.length > 0) {
+              foList.innerHTML = d.followUpsDue.map(f => `
+                <div class="card mb-2" style="background:var(--bg-card-subtle); padding:0.9rem;">
+                  <div class="d-flex justify-between align-center">
+                    <div>
+                      <strong>${f.personnelName} (${f.personnelId})</strong>
+                      <div class="text-muted" style="font-size:0.8rem;">Target Date: ${Utils.formatDate(f.scheduledDate)} • Initial Score: ${f.initialRiskScore}%</div>
+                    </div>
+                    <button class="btn btn-sm btn-outline" onclick="showTab('followups')">Review in Follow-ups &rarr;</button>
+                  </div>
+                </div>
+              `).join('');
+            } else {
+              foList.innerHTML = `<div class="text-center text-muted py-4">No follow-ups currently due.</div>`;
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Error loading early warning:', err);
       }
     }
 
