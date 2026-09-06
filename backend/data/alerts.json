@@ -13,8 +13,8 @@
     ],
     "status": "NEW",
     "officerNotes": "",
-    "createdAt": "2026-09-06T14:44:11.016Z",
-    "updatedAt": "2026-09-06T14:44:11.017Z"
+    "createdAt": "2026-09-06T14:53:20.751Z",
+    "updatedAt": "2026-09-06T14:53:20.752Z"
   },
   {
     "_id": "alert_bsf_4182_02",
@@ -30,8 +30,8 @@
     ],
     "status": "NEW",
     "officerNotes": "",
-    "createdAt": "2026-09-06T11:44:11.017Z",
-    "updatedAt": "2026-09-06T11:44:11.017Z"
+    "createdAt": "2026-09-06T11:53:20.752Z",
+    "updatedAt": "2026-09-06T11:53:20.752Z"
   },
   {
     "_id": "alert_itbp_6021_03",
@@ -46,9 +46,9 @@
     ],
     "status": "FOLLOW_UP_ASSIGNED",
     "officerNotes": "Reviewed high-altitude patrol fatigue. Recommended 48h daylight pacing rotation before next dispatch.",
-    "reviewedAt": "2026-09-06T04:44:11.017Z",
-    "createdAt": "2026-09-06T02:44:11.017Z",
-    "updatedAt": "2026-09-06T04:44:11.017Z"
+    "reviewedAt": "2026-09-06T04:53:20.752Z",
+    "createdAt": "2026-09-06T02:53:20.752Z",
+    "updatedAt": "2026-09-06T04:53:20.752Z"
   },
   {
     "_id": "alert_cisf_3190_04",
@@ -63,8 +63,8 @@
     ],
     "status": "MONITORING",
     "officerNotes": "Routine rotational monitoring active. Personnel maintaining regular check-in cadence.",
-    "reviewedAt": "2026-09-05T16:44:11.017Z",
-    "createdAt": "2026-09-05T12:44:11.017Z",
-    "updatedAt": "2026-09-05T16:44:11.017Z"
+    "reviewedAt": "2026-09-05T16:53:20.752Z",
+    "createdAt": "2026-09-05T12:53:20.752Z",
+    "updatedAt": "2026-09-05T16:53:20.752Z"
   }
 ]

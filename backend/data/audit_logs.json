@@ -3646,5 +3646,135 @@
     "timestamp": "2026-09-06T16:43:52.961Z",
     "createdAt": "2026-09-06T16:43:52.961Z",
     "updatedAt": "2026-09-06T16:43:52.961Z"
+  },
+  {
+    "_id": "53559f9081638658deb75028",
+    "action": "USER_REGISTER",
+    "performedBy": "6ed4dce77cdf5cecf4fbc13c",
+    "personnelId": "CRPF-TEST-3042",
+    "targetResource": "Users",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "test.1788713593042@crpf.gov.in"
+    },
+    "timestamp": "2026-09-06T16:53:13.136Z",
+    "createdAt": "2026-09-06T16:53:13.136Z",
+    "updatedAt": "2026-09-06T16:53:13.136Z"
+  },
+  {
+    "_id": "675cc025ef59fd34afe8df3c",
+    "action": "USER_LOGIN",
+    "performedBy": "6ed4dce77cdf5cecf4fbc13c",
+    "personnelId": "CRPF-TEST-3042",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T16:53:13.240Z",
+    "createdAt": "2026-09-06T16:53:13.240Z",
+    "updatedAt": "2026-09-06T16:53:13.240Z"
+  },
+  {
+    "_id": "7e240b4566c8db3168a3728d",
+    "action": "PROFILE_UPDATE",
+    "performedBy": "6ed4dce77cdf5cecf4fbc13c",
+    "personnelId": "CRPF-TEST-3042",
+    "targetResource": "Personnel",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {},
+    "timestamp": "2026-09-06T16:53:13.260Z",
+    "createdAt": "2026-09-06T16:53:13.260Z",
+    "updatedAt": "2026-09-06T16:53:13.260Z"
+  },
+  {
+    "_id": "4eb43efc2aeba41d9c9e2db7",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "6ed4dce77cdf5cecf4fbc13c",
+    "personnelId": "CRPF-TEST-3042",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "HIGH",
+      "compositeRiskScore": 77.4,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T16:53:13.312Z",
+    "createdAt": "2026-09-06T16:53:13.312Z",
+    "updatedAt": "2026-09-06T16:53:13.312Z"
+  },
+  {
+    "_id": "6ea1316bf95fcc8994fa0ed0",
+    "action": "USER_LOGIN",
+    "performedBy": "6ed4dce77cdf5cecf4fbc13c",
+    "personnelId": "CRPF-TEST-3042",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T16:53:13.445Z",
+    "createdAt": "2026-09-06T16:53:13.445Z",
+    "updatedAt": "2026-09-06T16:53:13.445Z"
+  },
+  {
+    "_id": "98f407506799d153aa6ebc41",
+    "action": "USER_LOGIN",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "WELFARE_OFFICER"
+    },
+    "timestamp": "2026-09-06T16:53:13.553Z",
+    "createdAt": "2026-09-06T16:53:13.553Z",
+    "updatedAt": "2026-09-06T16:53:13.553Z"
+  },
+  {
+    "_id": "7b3f98834f5626153d53eab9",
+    "action": "ALERT_REVIEWED",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-TEST-3042",
+    "targetResource": "Alerts",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "newStatus": "FOLLOW_UP_ASSIGNED",
+      "followUpAssigned": true
+    },
+    "timestamp": "2026-09-06T16:53:13.565Z",
+    "createdAt": "2026-09-06T16:53:13.566Z",
+    "updatedAt": "2026-09-06T16:53:13.566Z"
+  },
+  {
+    "_id": "a18f550743706362e2681c5c",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "6ed4dce77cdf5cecf4fbc13c",
+    "personnelId": "CRPF-TEST-3042",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 5.7,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T16:53:13.609Z",
+    "createdAt": "2026-09-06T16:53:13.609Z",
+    "updatedAt": "2026-09-06T16:53:13.609Z"
+  },
+  {
+    "_id": "4d716a0008be47ffe2cf3c0a",
+    "action": "USER_LOGIN",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "ADMIN"
+    },
+    "timestamp": "2026-09-06T16:53:13.758Z",
+    "createdAt": "2026-09-06T16:53:13.758Z",
+    "updatedAt": "2026-09-06T16:53:13.758Z"
   }
 ]

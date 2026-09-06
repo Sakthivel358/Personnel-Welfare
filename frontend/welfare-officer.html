@@ -42,8 +42,8 @@
         <li class="menu-item" id="menu-tab-support"><a href="#support-section" onclick="showTab('support')"><span class="menu-icon">📥</span> Support Requests Queue</a></li>
 
         <li class="menu-category">System</li>
-        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Safeguards</a></li>
-        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & Directory</a></li>
+        <li class="menu-item" id="menu-tab-privacy"><a href="#privacy-section" onclick="showTab('privacy')"><span class="menu-icon">🔒</span> Privacy & Safeguards</a></li>
+        <li class="menu-item" id="menu-tab-help"><a href="#help-section" onclick="showTab('help')"><span class="menu-icon">❓</span> Help & Directory</a></li>
       </ul>
 
       <div class="sidebar-footer">
@@ -340,6 +340,125 @@
             </div>
           </div>
         </div>
+
+        <!-- TAB 6: Privacy & Safeguards -->
+        <div id="tab-privacy" class="officer-tab-content" style="display:none;">
+          <div class="card mb-3">
+            <h2>Ethical AI Framework, Data Privacy & Governance Charter</h2>
+            <p class="text-muted" style="margin-top: 0.25rem;">
+              Official Ethical Governance, Data Security, and Operational Privacy Safeguards for WelfareAI.
+            </p>
+
+            <div class="alert alert-danger mt-3 mb-3" style="background:var(--risk-high-bg); border-left:4px solid var(--risk-high); padding:1rem; border-radius:var(--radius-md);">
+              <strong style="color:var(--risk-high-text);">CRITICAL ETHICAL DIRECTIVE:</strong> The system is a WELFARE SUPPORT and DECISION-SUPPORT platform for uniformed forces. It is strictly NOT a medical diagnosis system and must NOT diagnose psychiatric illness. It must NOT be used for promotion, demotion, termination, disciplinary action, performance reviews, or clandestine surveillance.
+            </div>
+
+            <!-- Section 1 -->
+            <div class="card mb-3" style="background: var(--bg-card-subtle);">
+              <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">I. Non-Clinical Boundaries & Welfare Mission</h3>
+              <div class="mb-3">
+                <strong>Clause 1: Non-Clinical Decision-Support Scope</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  WelfareAI is engineered solely to compute observational stress strain indices from self-reported operational factors. It does not perform psychiatric diagnostics, prescribe pharmaceutical treatment, or substitute for formal medical evaluation by qualified military medical officers.
+                </p>
+              </div>
+              <div class="mb-3">
+                <strong>Clause 2: Absolute Non-Punitive Doctrine</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  Check-in scores and AI attribution signals are protected by an inviolable non-punitive doctrine. Data collected in this portal shall under no circumstances be entered into Annual Confidential Reports (ACR), court-martial inquiries, promotion screening, or disciplinary reviews.
+                </p>
+              </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="card mb-3" style="background: var(--bg-card-subtle);">
+              <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">II. Data Isolation, Cryptography & Access Governance</h3>
+              <div class="mb-3">
+                <strong>Clause 3: Role-Based Access Control (RBAC) Architecture</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  Access is strictly compartmentalized across three isolated roles: (a) Personnel: private access to personal records; (b) Welfare Officers: view triage flags and follow-up schedules without command authority; (c) System Admins: infrastructure health and audit oversight with zero access to private questionnaires.
+                </p>
+              </div>
+              <div class="mb-3">
+                <strong>Clause 4: Zero Clandestine Surveillance Policy</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  The platform contains zero clandestine background tracking, GPS surveillance, keystroke logging, audio snooping, or biometric surveillance.
+                </p>
+              </div>
+              <div class="mb-3">
+                <strong>Clause 5: Cryptographic Password Hashing & Audit Logging</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  All credentials use Bcrypt with 10 salt rounds. Critical transactions (alert reviews, shift allocations, follow-up scheduling) are recorded in an append-only audit ledger.
+                </p>
+              </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="card mb-3" style="background: var(--bg-card-subtle);">
+              <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">III. Explainable AI & Human-in-the-Loop Safeguards</h3>
+              <div class="mb-3">
+                <strong>Clause 6: Algorithmic Transparency & Anti-Black Box Guarantee</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  Every prediction is accompanied by a transparent mathematical feature attribution breakdown derived from Random Forest tree attributions, showing exact operational contributors.
+                </p>
+              </div>
+              <div class="mb-3">
+                <strong>Clause 7: Human-in-the-Loop Oversight (No Automated Directives)</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  The AI model cannot autonomously trigger administrative actions, duty transfers, or roster removals. All supportive interventions require human Welfare Officer assessment and mutual consultation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 7: Help & Operational Directory -->
+        <div id="tab-help" class="officer-tab-content" style="display:none;">
+          <div class="card mb-3">
+            <h2>Welfare Officer Operational Guidance & Knowledge Base</h2>
+            <p class="text-muted" style="margin-top:0.25rem;">
+              Operational guide covering AI stress modeling, explainability, welfare triage protocols, and support workflows.
+            </p>
+
+            <div class="card mb-3 mt-3" style="background: var(--bg-card-subtle);">
+              <h3 style="font-size: 1.1rem; color: var(--accent); margin-bottom: 0.5rem;">🩺 Welfare Officer Triage & Review Protocol</h3>
+              <div class="mb-3">
+                <strong>Q: What is the recommended workflow when a High Welfare Signal is flagged?</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  A: 1. Review the signal's top operational drivers (e.g. duty hours, sleep deficit).<br>
+                  2. Click <strong>Review Signal</strong> to record an officer decision (*Acknowledge, Assign Follow-up, or Monitor*).<br>
+                  3. Schedule a supportive 1-on-1 check-in or use the <strong>AI Shift Pacing Optimizer</strong> to recommend a 48h rest rotation before their next heavy deployment.
+                </p>
+              </div>
+              <div class="mb-3">
+                <strong>Q: How does the AI model evaluate operational strain?</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  A: A trained Random Forest Classifier evaluates 8 key operational features against baseline statistical distributions to compute the composite welfare risk index (0–100%) and feature attribution breakdown.
+                </p>
+              </div>
+              <div class="mb-3">
+                <strong>Q: How does follow-up re-analysis work?</strong>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                  A: When assigned personnel submit subsequent check-ins, the system compares the new risk score against their baseline, computing the welfare trajectory delta (*Improved, Stable, or Elevated*) in the Follow-up Workflow tab.
+                </p>
+              </div>
+            </div>
+
+            <div class="card" style="background: var(--bg-card-subtle);">
+              <h3 style="font-size: 1.1rem; color: var(--accent); margin-bottom: 0.5rem;">📞 24/7 Armed Forces Support Directory</h3>
+              <div class="grid-2">
+                <div>
+                  <strong>MHA / CAPF Tele-Counseling Helpline:</strong>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: var(--accent);">1800-180-4024</div>
+                </div>
+                <div>
+                  <strong>Defence Psychological Support Cell:</strong>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: var(--accent);">1800-11-0031</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -485,7 +604,9 @@
         roster: 'Unit Personnel Roster',
         optimizer: 'AI Shift Pacing & Rest Rotation Optimizer',
         followups: 'Follow-up & Re-Analysis Tracking Workflow',
-        support: 'Personnel Support Requests Queue'
+        support: 'Personnel Support Requests Queue',
+        privacy: 'Privacy, Ethics & AI Governance Safeguards',
+        help: 'Help, Operational Guidance & FAQ Directory'
       };
       document.getElementById('officer-page-title').textContent = titles[tabName] || 'Welfare Officer Portal';
 
