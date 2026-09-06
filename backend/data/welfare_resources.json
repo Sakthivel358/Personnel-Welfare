@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "798da49e3364c5d4ac7340c2",
+    "title": "CRPF 24/7 National Psychological Tele-Counseling",
+    "category": "Psychological Support",
+    "description": "Toll-free confidential telephonic counseling and stress decompression helpline staffed by qualified clinical counselors.",
+    "contactNumber": "1800-180-4024",
+    "helplineHours": "24 Hours / 7 Days a Week",
+    "isConfidential": true,
+    "isActive": true,
+    "createdAt": "2026-09-06T04:04:46.074Z",
+    "updatedAt": "2026-09-06T04:04:46.074Z"
+  },
+  {
+    "_id": "bd27cae5bcb14f60faf5daa0",
+    "title": "Battalion Peer Support & Mentorship Desk",
+    "category": "Peer Support",
+    "description": "On-base peer listening and unit buddy support network for operational stress and family balance.",
+    "contactNumber": "+91-11-2610-8800 (Ext. 304)",
+    "helplineHours": "08:00 - 20:00 Daily",
+    "isConfidential": true,
+    "isActive": true,
+    "createdAt": "2026-09-06T04:04:46.074Z",
+    "updatedAt": "2026-09-06T04:04:46.074Z"
+  },
+  {
+    "_id": "75f09a081f94a604598aaf2b",
+    "title": "Forces Family Assistance & Welfare Board",
+    "category": "Family Assistance",
+    "description": "Liaison office providing assistance for dependents, schooling queries, and emergency family leave coordination.",
+    "contactNumber": "1800-112-9900",
+    "helplineHours": "09:00 - 18:00 Mon-Sat",
+    "isConfidential": true,
+    "isActive": true,
+    "createdAt": "2026-09-06T04:04:46.074Z",
+    "updatedAt": "2026-09-06T04:04:46.074Z"
+  }
+]

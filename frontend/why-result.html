@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why This Result? — Explainability Engine | WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">EXPLAINABLE AI (XAI)</span>
+      <span>Feature attributions are computed from actual baseline deviations and Random Forest model weights.</span>
+    </div>
+    <button class="theme-toggle btn btn-sm btn-secondary">🌙</button>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Personnel Portal</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Welfare Analytics</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item active"><a href="/why-result.html"><span class="menu-icon">🔍</span> Why This Result?</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">⚖️</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> Welfare Trajectory</a></li>
+        <li class="menu-item"><a href="/early-warning.html"><span class="menu-icon">⚠️</span> Early-Warning Center</a></li>
+        <li class="menu-item"><a href="/recovery-journey.html"><span class="menu-icon">🔄</span> Recovery Journey</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Why This Result? (Feature Attribution)</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/what-changed.html" class="btn btn-sm btn-secondary">⚖️ What Changed?</a>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Header Banner -->
+        <div class="card mb-3" style="background: linear-gradient(135deg, #1e3a8a, #1e293b); color: #fff;">
+          <h2>Model-Derived Contributing Indicators</h2>
+          <p style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.25rem;">
+            Your current welfare signal reflects the combination of indicators submitted in your recent check-in compared against standard operational baseline distributions.
+          </p>
+          <div class="mt-2" style="font-size: 0.8rem; color: #94a3b8;">
+            ⚠️ <em>"Model-derived contributing indicators represent statistical variance relative to operational baselines, not clinical causation or diagnostic certainty."</em>
+          </div>
+        </div>
+
+        <!-- Visual Factor Breakdown & Radar Chart -->
+        <div class="grid-2 mb-3">
+          <!-- Radar Chart -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Multi-Factor Stress Radar</h3>
+              <span class="badge badge-neutral">Normalized Scale</span>
+            </div>
+            <div style="height: 320px; position: relative;">
+              <canvas id="factor-radar-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Feature Contribution Details -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Factor Influence Breakdown</h3>
+              <span class="badge badge-neutral">Baseline Comparison</span>
+            </div>
+            <div id="factors-detailed-list">
+              <div class="spinner spinner-primary" style="margin: 2rem auto;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Table Breakdown -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>Detailed Parameter Analysis</h3>
+            <span class="badge badge-neutral">Transparent ML Features</span>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                  <th style="padding: 0.75rem;">Factor / Variable</th>
+                  <th style="padding: 0.75rem;">Your Input</th>
+                  <th style="padding: 0.75rem;">Baseline Mean</th>
+                  <th style="padding: 0.75rem;">Healthy Range</th>
+                  <th style="padding: 0.75rem;">Model Weight</th>
+                  <th style="padding: 0.75rem;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="factors-table-body">
+                <tr><td colspan="6" class="text-center text-muted" style="padding: 2rem;">Loading parameters...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Critical Section: What This Result Does NOT Mean -->
+        <div class="card mb-3" style="border-left: 4px solid var(--risk-mod); background: var(--bg-card);">
+          <h3 class="mb-2" style="color:var(--risk-mod-text);">🛡️ What This Result Does NOT Mean</h3>
+          <ul style="margin-left: 1.5rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            <li><strong>NOT a Medical Diagnosis:</strong> This is an AI-generated decision-support signal for proactive welfare tracking, not a clinical psychiatric diagnosis of depression, anxiety, or PTSD.</li>
+            <li><strong>NOT Proof of Single-Factor Causation:</strong> Elevated indicators reflect statistical correlation in operational patterns, not proof that a single duty caused stress.</li>
+            <li><strong>NOT for Disciplinary Use:</strong> The platform is insulated from administrative command and performance appraisals. It cannot be used for demotion, termination, or punishment.</li>
+            <li><strong>Human Oversight is Mandatory:</strong> Automated AI signals never trigger administrative actions without authorized human review by qualified Welfare Officers.</li>
+          </ul>
+        </div>
+
+        <!-- Connected Next Actions -->
+        <div class="d-flex justify-between align-center">
+          <a href="/ai-analysis.html" class="btn btn-secondary">&larr; Back to AI Analysis</a>
+          <div class="d-flex gap-1">
+            <a href="/what-changed.html" class="btn btn-secondary">⚖️ Compare What Changed</a>
+            <a href="/recommendations.html" class="btn btn-primary">View Personalized Guidance &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/charts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      loadExplainability();
+    });
+
+    async function loadExplainability() {
+      try {
+        const res = await api.getExplainability();
+        if (res && res.success && res.data && res.data.contributingFactors) {
+          const factors = res.data.contributingFactors;
+          
+          ChartsManager.renderRadarChart('factor-radar-chart', factors);
+          renderDetailedList(factors);
+          renderTable(factors);
+        } else {
+          document.getElementById('factors-detailed-list').innerHTML = `
+            <div class="text-center text-muted py-4">
+              Please submit a check-in first to generate model attribution breakdown.
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Error loading explainability:', err);
+      }
+    }
+
+    function renderDetailedList(factors) {
+      const container = document.getElementById('factors-detailed-list');
+      container.innerHTML = factors.map(f => `
+        <div class="factor-bar-item">
+          <div class="factor-bar-header">
+            <strong>${f.title}</strong>
+            <span class="badge badge-${f.impact_level.toLowerCase()}">${f.status}</span>
+          </div>
+          <div class="factor-progress-track">
+            <div class="factor-progress-fill ${f.impact_level}" style="width: ${Math.min(100, Math.max(10, f.contribution_score))}%;"></div>
+          </div>
+          <div class="d-flex justify-between mt-1 text-muted" style="font-size:0.75rem;">
+            <span>Your input: <strong>${f.user_value} ${f.unit}</strong></span>
+            <span>Attribution: +${Math.round(f.contribution_score)}%</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderTable(factors) {
+      const tbody = document.getElementById('factors-table-body');
+      tbody.innerHTML = factors.map(f => `
+        <tr style="border-bottom: 1px solid var(--border-color);">
+          <td style="padding: 0.75rem;">
+            <strong>${f.title}</strong>
+            <div class="text-muted" style="font-size: 0.75rem;">${f.description}</div>
+          </td>
+          <td style="padding: 0.75rem;"><strong>${f.user_value}</strong> ${f.unit}</td>
+          <td style="padding: 0.75rem;">${f.baseline_mean} ${f.unit}</td>
+          <td style="padding: 0.75rem;">${f.healthy_range}</td>
+          <td style="padding: 0.75rem;">${Math.round((f.importance_weight || 0.1) * 100)}%</td>
+          <td style="padding: 0.75rem;"><span class="badge badge-${f.impact_level.toLowerCase()}">${f.status}</span></td>
+        </tr>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

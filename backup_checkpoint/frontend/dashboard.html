@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personnel Welfare Dashboard — SIH26186</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">DEMO / SYNTHETIC DATA</span>
+      <span>Decision-support platform for uniformed forces. Not a medical diagnosis.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">PRAHARI WELFARE</div>
+          <div class="sidebar-brand-sub">CRPF Personnel Portal</div>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item active"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> My Stress Trend</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">RK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Personnel Welfare Dashboard</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/stress-checkin.html" class="btn btn-sm btn-primary">
+            + Start Stress Check-in
+          </a>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="topbar-btn theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+          <a href="/support.html" class="topbar-btn" title="Welfare Support">🤝</a>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h2>Welcome, <span data-user="name">Personnel Member</span></h2>
+            <p>Unit: <strong data-user="unit">CRPF Battalion 104</strong> • Sector North Division</p>
+          </div>
+          <div>
+            <a href="/stress-checkin.html" class="btn btn-secondary">Submit New Check-in &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Dashboard Metrics Grid -->
+        <div class="grid-3 mb-3">
+          <!-- Card 1: Latest AI Welfare Signal -->
+          <div class="card risk-meter-card">
+            <div class="card-header">
+              <h3 style="font-size: 1.05rem;">Current Welfare Concern Signal</h3>
+              <span class="badge badge-neutral" id="model-version-tag">Random Forest v1.4</span>
+            </div>
+            
+            <div id="risk-loading" class="text-center py-4">
+              <div class="spinner spinner-primary" style="margin: 0 auto 0.5rem;"></div>
+              <div class="text-muted" style="font-size:0.85rem;">Retrieving latest ML inference...</div>
+            </div>
+
+            <div id="risk-content" style="display:none;">
+              <div class="risk-circle" id="risk-circle-indicator">
+                <div class="risk-score-big" id="risk-score-val">--%</div>
+                <div class="risk-score-label">Risk Index</div>
+              </div>
+              <div class="mb-2" id="concern-badge-container"></div>
+              <div class="text-muted" style="font-size:0.8rem;" id="last-analyzed-time">Last Check-in: --</div>
+              <div class="mt-3">
+                <a href="/ai-analysis.html" class="btn btn-sm btn-outline w-100">View Full AI Analysis &rarr;</a>
+              </div>
+            </div>
+
+            <div id="risk-empty" style="display:none;" class="text-center py-3">
+              <div style="font-size:2rem; margin-bottom:0.5rem;">📝</div>
+              <h4>No Check-in Completed Yet</h4>
+              <p class="text-muted" style="font-size:0.85rem; margin-bottom:1rem;">Complete your initial check-in to generate your Random Forest prediction.</p>
+              <a href="/stress-checkin.html" class="btn btn-sm btn-primary">Start Initial Check-in</a>
+            </div>
+          </div>
+
+          <!-- Card 2: Top Contributing Risk Drivers -->
+          <div class="card">
+            <div class="card-header">
+              <h3 style="font-size: 1.05rem;">Top Contributing Indicators</h3>
+              <a href="/why-risk-high.html" style="font-size:0.8rem;">Explainability &rarr;</a>
+            </div>
+            <div id="factors-container">
+              <div class="text-muted text-center py-4" style="font-size:0.9rem;">
+                Awaiting check-in data to calculate feature attribution.
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Actionable Welfare Guidance -->
+          <div class="card">
+            <div class="card-header">
+              <h3 style="font-size: 1.05rem;">Personalized Support Guidance</h3>
+              <a href="/recommendations.html" style="font-size:0.8rem;">View All &rarr;</a>
+            </div>
+            <div id="rec-preview-container">
+              <div class="text-muted text-center py-4" style="font-size:0.9rem;">
+                Recommendations will be generated dynamically from your model factor analysis.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Longitudinal Trend Chart Card -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <div>
+              <h3>Longitudinal Welfare Trajectory</h3>
+              <p class="text-muted" style="font-size:0.85rem;">Historical check-ins and predictive stress indices</p>
+            </div>
+            <a href="/trends.html" class="btn btn-sm btn-secondary">Detailed Analytics</a>
+          </div>
+          <div style="height: 280px; position: relative;">
+            <canvas id="dashboard-trend-chart"></canvas>
+            <div id="trend-empty" class="text-center text-muted" style="display:none; padding-top:5rem;">
+              Submit 2 or more check-ins to view continuous historical trajectory.
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Access Shortcuts -->
+        <div class="grid-3">
+          <div class="card d-flex align-center gap-1" style="cursor:pointer;" onclick="location.href='/support.html'">
+            <div class="brand-icon" style="background:#10b981;">📞</div>
+            <div>
+              <div style="font-weight:700;">24/7 Welfare Helpline</div>
+              <div class="text-muted" style="font-size:0.8rem;">Toll-Free 1800-180-4024</div>
+            </div>
+          </div>
+          <div class="card d-flex align-center gap-1" style="cursor:pointer;" onclick="location.href='/support.html'">
+            <div class="brand-icon" style="background:#2563eb;">🤝</div>
+            <div>
+              <div style="font-weight:700;">Unit Peer Support Desk</div>
+              <div class="text-muted" style="font-size:0.8rem;">Confidential Officer Consultation</div>
+            </div>
+          </div>
+          <div class="card d-flex align-center gap-1" style="cursor:pointer;" onclick="location.href='/privacy.html'">
+            <div class="brand-icon" style="background:#6366f1;">🔒</div>
+            <div>
+              <div style="font-weight:700;">Data Privacy Policy</div>
+              <div class="text-muted" style="font-size:0.8rem;">Non-disciplinary Welfare Charter</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/charts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await checkAuth('PERSONNEL');
+      if (!user) return;
+
+      loadDashboardData();
+    });
+
+    async function loadDashboardData() {
+      try {
+        const [latestRes, historyRes] = await Promise.all([
+          api.getLatestPrediction(),
+          api.getPredictionHistory()
+        ]);
+
+        document.getElementById('risk-loading').style.display = 'none';
+
+        if (latestRes && latestRes.success && latestRes.data && latestRes.data.prediction) {
+          const { prediction, recommendations } = latestRes.data;
+          renderRiskWidget(prediction);
+          renderFactors(prediction.contributingFactors);
+          renderRecPreview(recommendations);
+        } else {
+          document.getElementById('risk-empty').style.display = 'block';
+        }
+
+        if (historyRes && historyRes.success && historyRes.data && historyRes.data.length > 0) {
+          ChartsManager.renderTrendChart('dashboard-trend-chart', historyRes.data);
+        } else {
+          document.getElementById('trend-empty').style.display = 'block';
+        }
+      } catch (err) {
+        console.error('Error loading dashboard data:', err);
+        document.getElementById('risk-loading').style.display = 'none';
+        document.getElementById('risk-empty').style.display = 'block';
+      }
+    }
+
+    function renderRiskWidget(p) {
+      document.getElementById('risk-content').style.display = 'block';
+      const circle = document.getElementById('risk-circle-indicator');
+      circle.className = `risk-circle ${p.concernLevel}`;
+      
+      document.getElementById('risk-score-val').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
+      document.getElementById('concern-badge-container').innerHTML = Utils.getConcernBadge(p.concernLevel);
+      document.getElementById('last-analyzed-time').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
+      if (p.modelVersion) {
+        document.getElementById('model-version-tag').textContent = p.modelVersion;
+      }
+    }
+
+    function renderFactors(factors) {
+      const container = document.getElementById('factors-container');
+      if (!factors || factors.length === 0) {
+        container.innerHTML = `<div class="text-muted text-center py-3">No elevated strain factors detected.</div>`;
+        return;
+      }
+
+      const top3 = factors.slice(0, 3);
+      container.innerHTML = top3.map(f => `
+        <div class="factor-bar-item">
+          <div class="factor-bar-header">
+            <strong>${f.title}</strong>
+            <span class="badge badge-${f.impact_level.toLowerCase()}">${f.status}</span>
+          </div>
+          <div class="factor-progress-track">
+            <div class="factor-progress-fill ${f.impact_level}" style="width: ${Math.min(100, Math.max(15, f.contribution_score))}%;"></div>
+          </div>
+          <div class="d-flex justify-between mt-1 text-muted" style="font-size:0.75rem;">
+            <span>Current: ${f.user_value} ${f.unit}</span>
+            <span>Baseline: ${f.baseline_mean} ${f.unit}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRecPreview(rec) {
+      const container = document.getElementById('rec-preview-container');
+      if (!rec || !rec.actionItems || rec.actionItems.length === 0) {
+        container.innerHTML = `
+          <div class="alert alert-success">
+            Baseline indicators are stable. Maintain standard sleep and physical fitness routine.
+          </div>
+        `;
+        return;
+      }
+
+      const item = rec.actionItems[0];
+      container.innerHTML = `
+        <div class="alert alert-info mb-2">
+          <strong>Primary Recommendation:</strong> ${rec.primaryAction || 'Review rest and workload schedule.'}
+        </div>
+        <div class="card" style="background:var(--bg-card-subtle); padding:1rem; border-left:3px solid var(--accent);">
+          <div style="font-weight:700; font-size:0.9rem; margin-bottom:0.25rem;">${item.title}</div>
+          <div class="text-muted" style="font-size:0.8rem;">${item.description}</div>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

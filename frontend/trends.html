@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Longitudinal Trajectory & Stress Trends — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">HISTORICAL ANALYTICS</span>
+      <span>Longitudinal analysis over time. Not for punitive or disciplinary use.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">🔄</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recovery-journey.html"><span class="menu-icon">🌱</span> Recovery Journey</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item active"><a href="/trends.html"><span class="menu-icon">📈</span> Longitudinal Trajectory</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Longitudinal Welfare Trajectory</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/what-changed.html" class="btn btn-sm btn-outline">🔄 What Changed?</a>
+          <a href="/stress-checkin.html" class="btn btn-sm btn-primary">+ New Check-in</a>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Summary Stats Grid -->
+        <div class="grid-3 mb-3">
+          <div class="card">
+            <div class="text-muted" style="font-size:0.85rem;">Total Recorded Check-ins</div>
+            <h2 id="stat-total-checkins" style="font-size:2rem; margin-top:0.25rem;">0</h2>
+          </div>
+          <div class="card">
+            <div class="text-muted" style="font-size:0.85rem;">Average Risk Score</div>
+            <h2 id="stat-avg-score" style="font-size:2rem; margin-top:0.25rem;">0%</h2>
+          </div>
+          <div class="card">
+            <div class="text-muted" style="font-size:0.85rem;">Trajectory Velocity</div>
+            <h2 id="stat-trend-delta" style="font-size:2rem; margin-top:0.25rem;">Stable</h2>
+          </div>
+        </div>
+
+        <!-- Full Trend Chart -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <div>
+              <h3>Welfare Index vs. Normalized PSS Score</h3>
+              <p class="text-muted" style="font-size:0.85rem;">Continuous comparison over consecutive check-in milestones</p>
+            </div>
+            <div class="d-flex gap-1 align-center flex-wrap">
+              <button class="btn btn-sm btn-secondary filter-btn active" onclick="filterTrajectory('ALL', this)">All History</button>
+              <button class="btn btn-sm btn-secondary filter-btn" onclick="filterTrajectory('RECENT', this)">Last 5</button>
+              <button class="btn btn-sm btn-secondary filter-btn" onclick="filterTrajectory('30D', this)">30 Days</button>
+              <button class="btn btn-sm btn-secondary filter-btn" onclick="filterTrajectory('90D', this)">90 Days</button>
+              <a href="/what-changed.html" class="btn btn-sm btn-primary">Compare Details &rarr;</a>
+            </div>
+          </div>
+          <div style="height: 340px; position: relative;">
+            <canvas id="detailed-trend-chart"></canvas>
+            <div id="trend-no-data" class="text-center text-muted" style="display:none; padding-top:6rem;">
+              Complete at least 1 check-in to start graphing historical trends.
+            </div>
+          </div>
+        </div>
+
+        <!-- Historical Check-ins Log Table -->
+        <div class="card">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h3>Historical Check-in Log</h3>
+              <span class="text-muted" style="font-size: 0.8rem;">Filter and inspect individual check-in attributions</span>
+            </div>
+            <div class="d-flex gap-1 align-center flex-wrap">
+              <input type="text" id="history-search" class="form-control form-control-sm" placeholder="Search by date/score..." style="width:180px;" oninput="applyTableFilters()">
+              <select id="history-concern-filter" class="form-select form-select-sm" style="width:150px;" onchange="applyTableFilters()">
+                <option value="ALL">All Concern Levels</option>
+                <option value="HIGH">High Concern Only</option>
+                <option value="MODERATE">Moderate Strain Only</option>
+                <option value="LOW">Low / Balanced Only</option>
+              </select>
+              <button class="btn btn-sm btn-secondary" onclick="exportHistoryCSV()">📥 Export CSV</button>
+            </div>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+              <thead>
+                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                  <th style="padding: 0.75rem;">Date & Time</th>
+                  <th style="padding: 0.75rem;">Concern Level</th>
+                  <th style="padding: 0.75rem;">Risk Index</th>
+                  <th style="padding: 0.75rem;">PSS Score</th>
+                  <th style="padding: 0.75rem;">Duty Hours</th>
+                  <th style="padding: 0.75rem;">Sleep Hours</th>
+                  <th style="padding: 0.75rem; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body">
+                <tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">Loading check-in history...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/charts.js"></script>
+  <script>
+    let rawHistory = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      loadTrends();
+    });
+
+    async function loadTrends() {
+      try {
+        const res = await api.getPredictionHistory();
+        if (res && res.success && res.data && res.data.length > 0) {
+          rawHistory = res.data;
+          renderTrajectory(rawHistory);
+          renderTable(rawHistory);
+        } else {
+          document.getElementById('trend-no-data').style.display = 'block';
+          document.getElementById('history-table-body').innerHTML = `
+            <tr><td colspan="7" class="text-center py-4 text-muted">No recorded check-in history found. <a href="/stress-checkin.html" class="btn btn-sm btn-primary ml-2">Submit Initial Check-in</a></td></tr>
+          `;
+          document.getElementById('stat-total-checkins').textContent = '0';
+          document.getElementById('stat-avg-score').textContent = '0%';
+          document.getElementById('stat-trend-delta').textContent = 'Baseline';
+        }
+      } catch (err) {
+        console.error('Error loading trends:', err);
+        document.getElementById('history-table-body').innerHTML = `
+          <tr><td colspan="7" class="text-center py-4 text-danger">Failed to load trajectory data. Please refresh or complete a check-in.</td></tr>
+        `;
+      }
+    }
+
+    function renderTrajectory(series) {
+      document.getElementById('stat-total-checkins').textContent = series.length;
+
+      const avg = series.reduce((acc, cur) => acc + (cur.compositeRiskScore || 0), 0) / series.length;
+      document.getElementById('stat-avg-score').textContent = `${Math.round(avg)}%`;
+
+      if (series.length >= 2) {
+        // Sort descending to find newest and 2nd newest
+        const sortedDesc = [...series].sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));
+        const delta = Math.round((sortedDesc[0].compositeRiskScore || 0) - (sortedDesc[1].compositeRiskScore || 0));
+        const el = document.getElementById('stat-trend-delta');
+        if (delta > 3) {
+          el.textContent = `+${delta}% (Rising)`;
+          el.style.color = 'var(--risk-high)';
+        } else if (delta < -3) {
+          el.textContent = `${delta}% (Improving)`;
+          el.style.color = 'var(--risk-low)';
+        } else {
+          el.textContent = `Stable (~${delta > 0 ? '+' : ''}${delta}%)`;
+          el.style.color = 'var(--accent)';
+        }
+      } else {
+        const el = document.getElementById('stat-trend-delta');
+        el.textContent = 'Baseline (1 Check-in)';
+        el.style.color = 'var(--text-muted)';
+      }
+
+      ChartsManager.renderDetailedTrend('detailed-trend-chart', series);
+    }
+
+    function renderTable(items) {
+      const tbody = document.getElementById('history-table-body');
+      if (!items || items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No check-in records matched the selected filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = items.map((item, idx) => {
+        const itemDate = item.date || item.createdAt || item.checkInDate;
+        const pssVal = item.pss_score !== undefined ? item.pss_score : (item.pssScore !== undefined ? item.pssScore : '--');
+        const workHours = item.workload_hours !== undefined ? item.workload_hours : (item.workloadHours !== undefined ? item.workloadHours : '--');
+        const sleepHours = item.recovery_sleep_hours !== undefined ? item.recovery_sleep_hours : (item.recoverySleepHours !== undefined ? item.recoverySleepHours : '--');
+
+        return `
+          <tr style="border-bottom: 1px solid var(--border-color);">
+            <td style="padding: 0.75rem; font-weight:600;">${Utils.formatDate(itemDate)}</td>
+            <td style="padding: 0.75rem;">${Utils.getConcernBadge(item.concernLevel)}</td>
+            <td style="padding: 0.75rem; font-weight:700;">${Math.round(item.compositeRiskScore || 0)}%</td>
+            <td style="padding: 0.75rem;">${pssVal} / 40</td>
+            <td style="padding: 0.75rem;">${workHours} hrs</td>
+            <td style="padding: 0.75rem;">${sleepHours} hrs</td>
+            <td style="padding: 0.75rem; text-align: right;">
+              <button class="btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem; font-size:0.75rem;" onclick="viewItemDetails(${idx})">🔍 View Details</button>
+              <a href="/what-changed.html" class="btn btn-sm btn-outline ml-1" style="padding:0.2rem 0.5rem; font-size:0.75rem;">Compare</a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function viewItemDetails(index) {
+      const item = rawHistory[index];
+      if (item) {
+        // Ensure compatibility for Utils modal
+        const modalPayload = {
+          ...item,
+          createdAt: item.date || item.createdAt || item.checkInDate,
+          pssScore: item.pss_score !== undefined ? item.pss_score : item.pssScore,
+          workloadHours: item.workload_hours !== undefined ? item.workload_hours : item.workloadHours,
+          recoverySleepHours: item.recovery_sleep_hours !== undefined ? item.recovery_sleep_hours : item.recoverySleepHours,
+          factorAttributions: item.factorAttributions || [
+            { factorName: 'PSS-10 Stress Index', attributionScore: ((item.pss_score || 18)/40)*0.4, status: (item.pss_score || 18) > 26 ? 'ELEVATED' : 'NORMAL' },
+            { factorName: 'Workload & Duty Hours', attributionScore: ((item.workload_hours || 48)/80)*0.35, status: (item.workload_hours || 48) > 55 ? 'ELEVATED' : 'NORMAL' },
+            { factorName: 'Recovery Sleep Deficit', attributionScore: (1 - ((item.recovery_sleep_hours || 7)/9))*0.25, status: (item.recovery_sleep_hours || 7) < 6 ? 'ELEVATED' : 'NORMAL' }
+          ]
+        };
+        Utils.openCheckinDetailModal(modalPayload);
+      }
+    }
+
+    function filterTrajectory(mode, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      if (mode === 'RECENT') {
+        const subset = rawHistory.slice(0, 5);
+        ChartsManager.renderDetailedTrend('detailed-trend-chart', subset);
+      } else if (mode === '30D') {
+        const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+        const subset = rawHistory.filter(h => new Date(h.date || h.createdAt || 0).getTime() >= cutoff);
+        ChartsManager.renderDetailedTrend('detailed-trend-chart', subset.length > 0 ? subset : rawHistory);
+      } else if (mode === '90D') {
+        const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
+        const subset = rawHistory.filter(h => new Date(h.date || h.createdAt || 0).getTime() >= cutoff);
+        ChartsManager.renderDetailedTrend('detailed-trend-chart', subset.length > 0 ? subset : rawHistory);
+      } else {
+        ChartsManager.renderDetailedTrend('detailed-trend-chart', rawHistory);
+      }
+    }
+
+    function applyTableFilters() {
+      const q = (document.getElementById('history-search').value || '').toLowerCase().trim();
+      const concern = document.getElementById('history-concern-filter').value;
+
+      const filtered = rawHistory.filter(item => {
+        const matchConcern = (concern === 'ALL') || (item.concernLevel === concern);
+        const dateStr = Utils.formatDate(item.date || item.createdAt || item.checkInDate).toLowerCase();
+        const scoreStr = String(Math.round(item.compositeRiskScore || 0));
+        const matchQuery = !q || dateStr.includes(q) || scoreStr.includes(q) || (item.concernLevel || '').toLowerCase().includes(q);
+        return matchConcern && matchQuery;
+      });
+
+      renderTable(filtered);
+    }
+
+    function exportHistoryCSV() {
+      if (!rawHistory || rawHistory.length === 0) {
+        Utils.showToast('No check-in history to export.', 'warning');
+        return;
+      }
+      const rows = [
+        ['Checkin ID', 'Date & Time', 'Concern Level', 'Risk Score (%)', 'PSS-10 Score', 'Duty Hours/Day', 'Recovery Sleep Hours', 'Extended Duty Days', 'Deployment Months']
+      ];
+      rawHistory.forEach(h => {
+        rows.push([
+          h._id || h.id || '',
+          Utils.formatDate(h.createdAt),
+          h.concernLevel || 'LOW',
+          Math.round(h.compositeRiskScore || 0),
+          h.pssScore !== undefined ? h.pssScore : '',
+          h.workloadHours || '',
+          h.recoverySleepHours || '',
+          h.extendedDutyDays || '',
+          h.deploymentMonths || ''
+        ]);
+      });
+      Utils.exportToCSV('WelfareAI_Checkin_History.csv', rows);
+      Utils.showToast('Check-in trajectory exported to CSV.', 'success');
+    }
+  </script>
+</body>
+</html>

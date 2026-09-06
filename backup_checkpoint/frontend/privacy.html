@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy, Ethics & AI Governance — SIH26186</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">ETHICS & PRIVACY</span>
+      <span>Decision-support platform for uniformed forces. Not a medical diagnosis system.</span>
+    </div>
+    <button class="theme-toggle btn btn-sm btn-secondary">🌙</button>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">PRAHARI WELFARE</div>
+          <div class="sidebar-brand-sub">CRPF Personnel Portal</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> My Stress Trend</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item active"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">RK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Privacy, Ethics & AI Governance Policy</div>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container" style="max-width: 980px;">
+        <div class="card mb-3">
+          <h2>Ethical AI Framework & Non-Clinical Boundaries</h2>
+          <p class="text-muted" style="margin-top: 0.25rem;">
+            Official privacy, ethical safeguards, and governance architecture for SIH26186.
+          </p>
+
+          <div class="alert alert-danger mt-3 mb-3">
+            <strong>CRITICAL ETHICAL DIRECTIVE:</strong> The system is a WELFARE SUPPORT and DECISION-SUPPORT platform. It is NOT a medical diagnosis system and must NOT diagnose psychiatric illness. It must NOT be used for promotion, demotion, termination, disciplinary action, performance reviews, or clandestine surveillance.
+          </div>
+
+          <h3 class="mt-3 mb-2" id="ethics">1. Core Welfare Objective & Participation</h3>
+          <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+            The platform exists solely to identify early operational strain signals, provide transparent feature attribution, offer supportive rest and workload recommendations, and facilitate human-in-the-loop review by qualified Welfare Officers. Personnel participation is voluntary and oriented around care coordination.
+          </p>
+
+          <h3 class="mt-3 mb-2" id="rbac">2. Role-Based Access Control (RBAC) & Data Isolation</h3>
+          <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+            Access is enforced via cryptographically signed JWT tokens and backend middleware guards:
+          </p>
+          <ul style="margin-left: 1.5rem; margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+            <li><strong>Personnel:</strong> Can access only their own profile, check-in history, ML predictions, and support requests.</li>
+            <li><strong>Welfare Officers:</strong> Can view triage alerts, assigned follow-up schedules, and aggregated welfare indices without administrative command over personnel.</li>
+            <li><strong>System Administrators:</strong> Manage system health, API bridges, model metrics, and audit logs without viewing private personnel notes.</li>
+          </ul>
+
+          <h3 class="mt-3 mb-2">3. Data Minimization & Security Controls</h3>
+          <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+            The platform collects only operational variables relevant to welfare (e.g. duty hours, sleep hours, subjective work pressure). Plaintext passwords are never stored; all credentials use salted bcrypt (10 rounds). All sensitive actions are logged in the immutable audit trail.
+          </p>
+
+          <h3 class="mt-3 mb-2">4. Synthetic / Demo Dataset Limitation</h3>
+          <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+            Because real armed forces welfare records are classified and sensitive, this prototype utilizes a documented synthetic dataset (<code>synthetic_personnel_welfare_dataset.csv</code>) for training the Random Forest classifier. Real-world deployment would require institutional governance, clinical review, and authorized datasets.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth();
+    });
+  </script>
+</body>
+</html>

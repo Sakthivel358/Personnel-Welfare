@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personnel Stress Check-in — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">WELFARE CHECK-IN</span>
+      <span>Confidential decision-support input. Used solely for proactive personnel welfare.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item active"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">🔄</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recovery-journey.html"><span class="menu-icon">🌱</span> Recovery Journey</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> Longitudinal Trajectory</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Stress & Operational Welfare Check-in</div>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <div class="card" style="max-width: 900px; margin: 0 auto;">
+          <!-- Wizard Steps Header -->
+          <div class="d-flex justify-between align-center mb-3 pb-2" style="border-bottom: 1px solid var(--border-color); flex-wrap:wrap; gap:0.5rem;">
+            <div>
+              <h2>Standardized Welfare Check-in</h2>
+              <p class="text-muted" style="font-size: 0.85rem;">Complete the inventory below to calculate your real Random Forest ML signal.</p>
+            </div>
+            <div class="d-flex gap-1">
+              <span id="step-badge-1" class="badge badge-primary">Step 1: PSS Inventory</span>
+              <span id="step-badge-2" class="badge badge-neutral">Step 2: Duty Indicators</span>
+              <span id="step-badge-3" class="badge badge-neutral">Step 3: Review & Submit</span>
+            </div>
+          <!-- Tactical Wearable IoT Sync Banner (Always Visible on Top) -->
+          <div class="card mb-3" id="wearable-sync-card" style="background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(16,185,129,0.08)); border: 1.5px solid rgba(37,99,235,0.3); box-shadow: var(--shadow-sm);">
+            <div class="d-flex justify-between align-center flex-wrap gap-1">
+              <div class="d-flex align-center gap-1">
+                <span style="font-size: 1.8rem;">⌚</span>
+                <div>
+                  <div class="d-flex align-center gap-1">
+                    <strong style="font-size: 1rem; color:var(--text-primary);">Tactical Wearable Telemetry Sync (Garmin / Defense Smart Band)</strong>
+                    <span class="badge badge-neutral" id="wearable-mode-badge" style="font-size:0.7rem;">IoT Integration</span>
+                  </div>
+                  <div class="text-muted" style="font-size: 0.8rem;">Auto-populate resting heart rate (RHR), HRV, and sleep recovery via Live BLE or Presentation Simulation</div>
+                </div>
+              </div>
+              <div class="d-flex gap-1 align-center flex-wrap">
+                <button type="button" class="btn btn-sm btn-primary" id="btn-sync-wearable" onclick="syncTacticalWearable(false)">
+                  ⚡ Simulated Telemetry (Demo)
+                </button>
+                <button type="button" class="btn btn-sm btn-outline" id="btn-real-bluetooth" onclick="syncTacticalWearable(true)">
+                  📡 Pair Real Bluetooth Watch
+                </button>
+              </div>
+            </div>
+            <div id="wearable-sync-results" style="display: none; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--border-color);" class="grid-4">
+              <div class="text-center" style="background: var(--bg-card); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div class="text-muted" style="font-size: 0.72rem; text-transform:uppercase; letter-spacing:0.5px;">Resting Heart Rate</div>
+                <strong id="sync-rhr" style="color: var(--risk-low); font-size: 1.05rem;">58 bpm</strong>
+              </div>
+              <div class="text-center" style="background: var(--bg-card); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div class="text-muted" style="font-size: 0.72rem; text-transform:uppercase; letter-spacing:0.5px;">Heart Rate Var. (HRV)</div>
+                <strong id="sync-hrv" style="color: var(--accent); font-size: 1.05rem;">68 ms</strong>
+              </div>
+              <div class="text-center" style="background: var(--bg-card); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div class="text-muted" style="font-size: 0.72rem; text-transform:uppercase; letter-spacing:0.5px;">Sleep Restored</div>
+                <strong id="sync-sleep" style="color: var(--text-primary); font-size: 1.05rem;">7.5 hrs</strong>
+              </div>
+              <div class="text-center" style="background: var(--bg-card); padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <div class="text-muted" style="font-size: 0.72rem; text-transform:uppercase; letter-spacing:0.5px;">Body Battery Index</div>
+                <strong id="sync-battery" style="color: var(--risk-low); font-size: 1.05rem;">84 / 100</strong>
+              </div>
+            </div>
+          </div>
+
+          <form id="checkin-form">
+            <!-- Step 1: PSS Questions -->
+            <div id="wizard-step-1">
+              <div class="alert alert-info mb-3">
+                <strong>Instructions:</strong> Please indicate how often you felt or thought a certain way during the last month. Scale: 0 (Never) to 4 (Very Often).
+              </div>
+              <div id="pss-questions-container"></div>
+            </div>
+
+            <!-- Step 2: Operational Workload & Rest Indicators -->
+            <div id="wizard-step-2" style="display: none;">
+              <div class="alert alert-info mb-3">
+                <strong>Operational Variables:</strong> Rate your current duty schedule, recovery hours, and support systems over the past week. (Or click <em>Scan & Sync Wearable Telemetry</em> above).
+              </div>
+
+              <div class="grid-2">
+                <!-- Workload Hours -->
+                <div class="card mb-3" style="background: var(--bg-card-subtle);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <label class="form-label" for="workload_hours">Weekly Duty & Workload Hours</label>
+                    <span class="badge badge-neutral" style="font-size:0.9rem;"><span id="val_workload">52</span> hrs/wk</span>
+                  </div>
+                  <input type="range" id="workload_hours" min="30" max="90" step="1" value="52" class="form-control" style="cursor:pointer;">
+                  <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
+                    <span>30 hrs (Light)</span>
+                    <span>50 hrs (Standard)</span>
+                    <span>90 hrs (Intense Ops)</span>
+                  </div>
+                </div>
+
+                <!-- Work Pressure Rating -->
+                <div class="card mb-3" style="background: var(--bg-card-subtle);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <label class="form-label" for="work_pressure_rating">Operational Pressure Rating</label>
+                    <span class="badge badge-neutral" style="font-size:0.9rem;"><span id="val_pressure">6</span> / 10</span>
+                  </div>
+                  <input type="range" id="work_pressure_rating" min="1" max="10" step="1" value="6" class="form-control" style="cursor:pointer;">
+                  <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
+                    <span>1 (Relaxed)</span>
+                    <span>5 (Manageable)</span>
+                    <span>10 (Severe Pace)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <!-- Sleep / Recovery -->
+                <div class="card mb-3" style="background: var(--bg-card-subtle);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <label class="form-label" for="recovery_sleep_hours">Average Daily Sleep & Rest</label>
+                    <span class="badge badge-neutral" style="font-size:0.9rem;"><span id="val_sleep">6.0</span> hrs/day</span>
+                  </div>
+                  <input type="range" id="recovery_sleep_hours" min="3.0" max="10.0" step="0.5" value="6.0" class="form-control" style="cursor:pointer;">
+                  <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
+                    <span>3.0 hrs (Critical Deficit)</span>
+                    <span>7.0 hrs (Optimal)</span>
+                    <span>10.0 hrs</span>
+                  </div>
+                </div>
+
+                <!-- Social Support -->
+                <div class="card mb-3" style="background: var(--bg-card-subtle);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <label class="form-label" for="social_support_rating">Peer & Family Support Perception</label>
+                    <span class="badge badge-neutral" style="font-size:0.9rem;"><span id="val_support">6</span> / 10</span>
+                  </div>
+                  <input type="range" id="social_support_rating" min="1" max="10" step="1" value="6" class="form-control" style="cursor:pointer;">
+                  <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
+                    <span>1 (Isolated)</span>
+                    <span>5 (Moderate)</span>
+                    <span>10 (Strong Connection)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <!-- Work Life Balance -->
+                <div class="card mb-3" style="background: var(--bg-card-subtle);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <label class="form-label" for="work_life_balance_rating">Work-Life Equilibrium</label>
+                    <span class="badge badge-neutral" style="font-size:0.9rem;"><span id="val_wlb">5</span> / 10</span>
+                  </div>
+                  <input type="range" id="work_life_balance_rating" min="1" max="10" step="1" value="5" class="form-control" style="cursor:pointer;">
+                  <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
+                    <span>1 (Poor)</span>
+                    <span>5 (Average)</span>
+                    <span>10 (Excellent)</span>
+                  </div>
+                </div>
+
+                <!-- Continuous Shift Days -->
+                <div class="card mb-3" style="background: var(--bg-card-subtle);">
+                  <div class="d-flex justify-between align-center mb-1">
+                    <label class="form-label" for="shift_continuity_days">Consecutive Duty Days Without 24h Rest</label>
+                    <span class="badge badge-neutral" style="font-size:0.9rem;"><span id="val_shifts">4</span> days</span>
+                  </div>
+                  <input type="range" id="shift_continuity_days" min="0" max="21" step="1" value="4" class="form-control" style="cursor:pointer;">
+                  <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
+                    <span>0 days (Rested)</span>
+                    <span>7 days (1 Week)</span>
+                    <span>21 days (Extended)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="checkin_notes">Confidential Notes / Environmental Observations (Optional)</label>
+                <textarea id="checkin_notes" class="form-control" rows="2" placeholder="e.g. Extreme weather conditions during night patrols or family concern."></textarea>
+              </div>
+            </div>
+
+            <!-- Step 3: Review & Submit -->
+            <div id="wizard-step-3" style="display: none;">
+              <div id="review-summary-container"></div>
+              
+              <div class="card mb-3" style="border: 2px dashed var(--accent); background: var(--primary-light);">
+                <h4>Ready to Run Real ML Inference</h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                  Upon clicking submit, your inputs will be processed by the backend Node.js microservice and sent to the FastAPI Random Forest engine for real-time risk classification, explainability decomposition, and supportive guidance routing.
+                </p>
+              </div>
+            </div>
+
+            <!-- Wizard Navigation Buttons -->
+            <div class="d-flex justify-between align-center mt-3 pt-2" style="border-top: 1px solid var(--border-color);">
+              <button type="button" id="wizard-prev-btn" class="btn btn-secondary" style="display:none;">&larr; Previous Step</button>
+              <div></div>
+              <button type="button" id="wizard-next-btn" class="btn btn-primary">Proceed to Next Step &rarr;</button>
+              <button type="submit" id="wizard-submit-btn" class="btn btn-primary" style="display:none;">Complete & Generate AI Prediction &rarr;</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/checkin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      initCheckInWizard();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welfare Support & Officer Connect — SIH26186</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">WELFARE SUPPORT</span>
+      <span>All support interactions are strictly confidential and protected from operational chain-of-command.</span>
+    </div>
+    <button class="theme-toggle btn btn-sm btn-secondary">🌙</button>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">PRAHARI WELFARE</div>
+          <div class="sidebar-brand-sub">CRPF Personnel Portal</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> My Stress Trend</a></li>
+        <li class="menu-item active"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">RK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Welfare Support & Resource Directory</div>
+        </div>
+        <div class="topbar-right">
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Direct Helpline Cards -->
+        <div class="grid-3 mb-3">
+          <div class="card" style="border-top: 4px solid var(--risk-low);">
+            <div class="d-flex justify-between align-center mb-1">
+              <span class="badge badge-low">24/7 Available</span>
+              <span style="font-size:1.5rem;">📞</span>
+            </div>
+            <h4>CRPF Tele-Counseling</h4>
+            <p class="text-muted" style="font-size:0.85rem; margin:0.5rem 0;">Toll-free professional psychological counseling and crisis decompression.</p>
+            <div style="font-size:1.1rem; font-weight:700; color:var(--accent);">1800-180-4024</div>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--accent);">
+            <div class="d-flex justify-between align-center mb-1">
+              <span class="badge badge-neutral">On-Base Support</span>
+              <span style="font-size:1.5rem;">🏢</span>
+            </div>
+            <h4>Unit Welfare Officer Desk</h4>
+            <p class="text-muted" style="font-size:0.85rem; margin:0.5rem 0;">Confidential in-person welfare consultation and rest rotation coordination.</p>
+            <div style="font-size:1.1rem; font-weight:700; color:var(--accent);">Extension #304</div>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--risk-mod);">
+            <div class="d-flex justify-between align-center mb-1">
+              <span class="badge badge-neutral">Family Support</span>
+              <span style="font-size:1.5rem;">🏡</span>
+            </div>
+            <h4>Forces Family Board</h4>
+            <p class="text-muted" style="font-size:0.85rem; margin:0.5rem 0;">Dependent welfare, child schooling assistance, and emergency leave desk.</p>
+            <div style="font-size:1.1rem; font-weight:700; color:var(--accent);">1800-112-9900</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Request Form -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Submit Confidential Support Request</h3>
+              <span class="badge badge-low">Confidential</span>
+            </div>
+            
+            <form id="support-request-form">
+              <div class="form-group">
+                <label class="form-label" for="req_type">Request Category *</label>
+                <select id="req_type" class="form-select" required>
+                  <option value="CONFIDENTIAL_COUNSELING">Confidential Psychological Counseling</option>
+                  <option value="WORKLOAD_REVIEW">Duty Schedule & Rest Rotation Review</option>
+                  <option value="PEER_SUPPORT">Peer Buddy & Mentorship Connection</option>
+                  <option value="MEDICAL_LIAISON">Medical Liaison & Physical Recovery</option>
+                  <option value="GENERAL_INQUIRY">General Welfare Consultation</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="req_urgency">Urgency Level</label>
+                <select id="req_urgency" class="form-select">
+                  <option value="ROUTINE">Routine (Response within 48h)</option>
+                  <option value="PRIORITY">Priority (Response within 24h)</option>
+                  <option value="URGENT">Urgent Assistance Needed (Immediate Routing)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="req_notes">Details & Context (Optional)</label>
+                <textarea id="req_notes" class="form-control" rows="4" placeholder="Describe how the welfare team can best assist you. You do not need to share sensitive personal details."></textarea>
+              </div>
+
+              <button type="submit" id="submit-support-btn" class="btn btn-primary w-100">
+                Submit Confidential Request
+              </button>
+            </form>
+          </div>
+
+          <!-- My Requests History -->
+          <div class="card">
+            <div class="card-header">
+              <h3>My Support Requests</h3>
+              <span class="badge badge-neutral">Track Status</span>
+            </div>
+            
+            <div id="my-requests-container" style="max-height: 420px; overflow-y: auto;">
+              <div class="spinner spinner-primary" style="margin: 2rem auto;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      loadMyRequests();
+
+      document.getElementById('support-request-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-support-btn');
+        btn.disabled = true;
+        btn.innerHTML = `<div class="spinner"></div> Submitting...`;
+
+        try {
+          const payload = {
+            requestType: document.getElementById('req_type').value,
+            urgency: document.getElementById('req_urgency').value,
+            notes: document.getElementById('req_notes').value.trim()
+          };
+
+          const res = await api.submitSupportRequest(payload);
+          if (res && res.success) {
+            Utils.showToast('Your confidential support request has been submitted.', 'success');
+            document.getElementById('req_notes').value = '';
+            loadMyRequests();
+          }
+        } catch (err) {
+          Utils.showToast(`Error submitting request: ${err.message}`, 'danger');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = `Submit Confidential Request`;
+        }
+      });
+    });
+
+    async function loadMyRequests() {
+      try {
+        const res = await api.getMySupportRequests();
+        const container = document.getElementById('my-requests-container');
+        if (res && res.success && res.data && res.data.length > 0) {
+          container.innerHTML = res.data.map(r => `
+            <div class="card mb-2" style="background:var(--bg-card-subtle); padding:1rem;">
+              <div class="d-flex justify-between align-center mb-1">
+                <strong>${r.requestType.replace(/_/g, ' ')}</strong>
+                ${Utils.getStatusBadge(r.status)}
+              </div>
+              <div class="d-flex justify-between text-muted" style="font-size:0.75rem; margin-bottom:0.5rem;">
+                <span>Priority: ${Utils.getPriorityBadge(r.urgency)}</span>
+                <span>Submitted: ${Utils.formatDate(r.createdAt)}</span>
+              </div>
+              ${r.notes ? `<div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;"><em>"${r.notes}"</em></div>` : ''}
+              ${r.resolutionNotes ? `
+                <div class="alert alert-success" style="margin-bottom:0; padding:0.5rem 0.75rem; font-size:0.8rem;">
+                  <strong>Officer Resolution:</strong> ${r.resolutionNotes}
+                </div>
+              ` : ''}
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = `
+            <div class="text-center text-muted py-4">
+              No support requests submitted yet. Use the form on the left if you require assistance.
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Error loading support requests:', err);
+      }
+    }
+  </script>
+</body>
+</html>

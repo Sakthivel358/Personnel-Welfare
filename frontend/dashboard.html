@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personnel Welfare Dashboard — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">DEMO / SYNTHETIC DATA</span>
+      <span>Decision-support platform for uniformed forces. Not a medical diagnosis.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item active"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">🔄</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recovery-journey.html"><span class="menu-icon">🌱</span> Recovery Journey</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> Longitudinal Trajectory</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1.1rem;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Personnel Welfare Dashboard</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/stress-checkin.html" class="btn btn-sm btn-primary">
+            + Start Stress Check-in
+          </a>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="topbar-btn theme-toggle" title="Toggle Dark/Light Mode">🌙</button>
+          <a href="/support.html" class="topbar-btn" title="Welfare Support">🤝</a>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h2>Welcome, <span data-user="name">Personnel Member</span></h2>
+            <p>Unit: <strong data-user="unit">CRPF Battalion 104</strong> • Voluntary Welfare Decision-Support</p>
+          </div>
+          <div class="d-flex gap-1 flex-wrap">
+            <a href="/what-changed.html" class="btn btn-secondary">🔄 What Changed?</a>
+            <a href="/stress-checkin.html" class="btn btn-primary">Submit Check-in &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Connected Workflow Flow Bar -->
+        <div class="card mb-3" style="background: var(--bg-card-subtle); padding: 0.85rem 1.25rem;">
+          <div class="d-flex justify-between align-center flex-wrap gap-1">
+            <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">
+              WORKFLOW PIPELINE:
+            </div>
+            <div class="d-flex align-center gap-1 flex-wrap" style="font-size:0.85rem;">
+              <a href="/stress-checkin.html" class="badge badge-neutral" style="text-decoration:none; padding:0.4rem 0.75rem;">1. Check-in 📝</a>
+              <span>&rarr;</span>
+              <a href="/ai-analysis.html" class="badge badge-neutral" style="text-decoration:none; padding:0.4rem 0.75rem;">2. AI Inference 🌲</a>
+              <span>&rarr;</span>
+              <a href="/why-risk-high.html" class="badge badge-neutral" style="text-decoration:none; padding:0.4rem 0.75rem;">3. Explainability 🔍</a>
+              <span>&rarr;</span>
+              <a href="/recommendations.html" class="badge badge-neutral" style="text-decoration:none; padding:0.4rem 0.75rem;">4. Support Guidance 💡</a>
+              <span>&rarr;</span>
+              <a href="/recovery-journey.html" class="badge badge-neutral" style="text-decoration:none; padding:0.4rem 0.75rem;">5. Recovery 🔄</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Metrics Grid -->
+        <div class="grid-3 mb-3">
+          <!-- Card 1: Latest AI Welfare Signal -->
+          <div class="card risk-meter-card">
+            <div class="card-header">
+              <h3 style="font-size: 1.05rem;">Welfare Concern Signal</h3>
+              <span class="badge badge-neutral" id="model-version-tag">Random Forest Classifier</span>
+            </div>
+            
+            <div id="risk-loading" class="text-center py-4">
+              <div class="spinner spinner-primary" style="margin: 0 auto 0.5rem;"></div>
+              <div class="text-muted" style="font-size:0.85rem;">Retrieving latest ML inference...</div>
+            </div>
+
+            <div id="risk-content" style="display:none;">
+              <div class="risk-circle" id="risk-circle-indicator">
+                <div class="risk-score-big" id="risk-score-val">--%</div>
+                <div class="risk-score-label">Risk Index</div>
+              </div>
+              <div class="mb-2" id="concern-badge-container"></div>
+              <div class="text-muted" style="font-size:0.8rem;" id="last-analyzed-time">Last Check-in: --</div>
+              <div class="mt-3 grid-2" style="gap:0.5rem;">
+                <a href="/ai-analysis.html" class="btn btn-sm btn-outline">Full AI Analysis</a>
+                <a href="/why-risk-high.html" class="btn btn-sm btn-primary">Why This Result?</a>
+              </div>
+            </div>
+
+            <div id="risk-empty" style="display:none;" class="text-center py-3">
+              <div style="font-size:2rem; margin-bottom:0.5rem;">📝</div>
+              <h4>No Check-in Completed Yet</h4>
+              <p class="text-muted" style="font-size:0.85rem; margin-bottom:1rem;">Complete your initial check-in to generate your Random Forest prediction.</p>
+              <a href="/stress-checkin.html" class="btn btn-sm btn-primary">Start Initial Check-in</a>
+            </div>
+          </div>
+
+          <!-- Card 2: Top Contributing Risk Drivers -->
+          <div class="card">
+            <div class="card-header">
+              <h3 style="font-size: 1.05rem;">Top Contributing Drivers</h3>
+              <a href="/why-risk-high.html" style="font-size:0.8rem;">Full Breakdown &rarr;</a>
+            </div>
+            <div id="factors-container">
+              <div class="text-muted text-center py-4" style="font-size:0.9rem;">
+                Awaiting check-in data to calculate feature attribution.
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Actionable Welfare Guidance -->
+          <div class="card">
+            <div class="card-header">
+              <h3 style="font-size: 1.05rem;">Support Guidance</h3>
+              <a href="/recommendations.html" style="font-size:0.8rem;">View All &rarr;</a>
+            </div>
+            <div id="rec-preview-container">
+              <div class="text-muted text-center py-4" style="font-size:0.9rem;">
+                Recommendations will be generated dynamically from your model factor analysis.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Longitudinal Trend Chart Card -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <div>
+              <h3>Longitudinal Welfare Trajectory</h3>
+              <p class="text-muted" style="font-size:0.85rem;">Historical check-ins and predictive stress indices over time</p>
+            </div>
+            <div class="d-flex gap-1">
+              <a href="/what-changed.html" class="btn btn-sm btn-outline">🔄 Compare Check-ins</a>
+              <a href="/trends.html" class="btn btn-sm btn-secondary">Detailed Analytics &rarr;</a>
+            </div>
+          </div>
+          <div style="height: 280px; position: relative;">
+            <canvas id="dashboard-trend-chart"></canvas>
+            <div id="trend-empty" class="text-center text-muted" style="display:none; padding-top:5rem;">
+              Submit 2 or more check-ins to view continuous historical trajectory.
+            </div>
+          </div>
+        </div>
+
+        <!-- Tactical 4-4-4-4 Box-Breathing Decompression Widget -->
+        <div class="card mb-3" style="background: linear-gradient(135deg, rgba(30,58,138,0.06), rgba(16,185,129,0.06)); border: 1px solid rgba(37,99,235,0.25);">
+          <div class="card-header d-flex justify-between align-center">
+            <div>
+              <h3 style="font-size: 1.05rem;">🧘 Tactical Box-Breathing Decompression (4-4-4-4 Cadence)</h3>
+              <p class="text-muted" style="font-size:0.8rem;">Military standard physiological reset: Inhale 4s &bull; Hold 4s &bull; Exhale 4s &bull; Hold 4s</p>
+            </div>
+            <span class="badge badge-low" id="breath-status-badge">Ready</span>
+          </div>
+          <div class="d-flex align-center justify-between flex-wrap gap-2" style="padding: 0.5rem 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem;" class="flex-wrap">
+              <div id="breath-circle-wrapper" style="width: 100px; height: 100px; position: relative; display: flex; align-items: center; justify-content: center;">
+                <div id="breath-circle" style="width: 65px; height: 65px; border-radius: 50%; background: radial-gradient(circle, #2563eb 0%, #1e3a8a 100%); transition: all 4s ease-in-out; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(37,99,235,0.4); text-align: center; font-size: 0.78rem;">
+                  Ready
+                </div>
+              </div>
+              <div>
+                <div id="breath-phase-text" style="font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-bottom: 0.2rem;">Tactical Parasympathetic Reset</div>
+                <div id="breath-instruction" class="text-muted" style="font-size: 0.85rem; max-width: 440px;">
+                  Reduces active operational heart rate, balances blood pressure, and accelerates neurological recovery.
+                </div>
+                <div class="d-flex gap-2 align-center mt-1" style="font-size: 0.8rem;">
+                  <span>Cycles Completed: <strong id="breath-cycle-count" style="color:var(--risk-low);">0</strong></span>
+                  <span>Session Time: <strong id="breath-timer">0:00</strong></span>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-1">
+              <button id="btn-start-breathing" class="btn btn-primary btn-sm" onclick="toggleBreathingGuide()">
+                ▶ Start 4-4-4-4 Cadence
+              </button>
+              <button id="btn-reset-breathing" class="btn btn-secondary btn-sm" onclick="resetBreathingGuide()">
+                ↺ Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Access Shortcuts -->
+        <div class="grid-3">
+          <div class="card d-flex align-center gap-1" style="cursor:pointer;" onclick="location.href='/support.html'">
+            <div class="brand-icon" style="background:#10b981;">📞</div>
+            <div>
+              <div style="font-weight:700;">24/7 Welfare Helpline</div>
+              <div class="text-muted" style="font-size:0.8rem;">Toll-Free 1800-180-4024</div>
+            </div>
+          </div>
+          <div class="card d-flex align-center gap-1" style="cursor:pointer;" onclick="location.href='/recovery-journey.html'">
+            <div class="brand-icon" style="background:#2563eb;">🌱</div>
+            <div>
+              <div style="font-weight:700;">Recovery Journey</div>
+              <div class="text-muted" style="font-size:0.8rem;">6-Stage Recovery & De-escalation</div>
+            </div>
+          </div>
+          <div class="card d-flex align-center gap-1" style="cursor:pointer;" onclick="location.href='/why-risk-high.html'">
+            <div class="brand-icon" style="background:#6366f1;">🔍</div>
+            <div>
+              <div style="font-weight:700;">Why Is My Risk High?</div>
+              <div class="text-muted" style="font-size:0.8rem;">Feature Attribution Breakdown</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/charts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await checkAuth('PERSONNEL');
+      if (!user) return;
+
+      loadDashboardData();
+    });
+
+    async function loadDashboardData() {
+      try {
+        const [latestRes, historyRes] = await Promise.all([
+          api.getLatestPrediction(),
+          api.getPredictionHistory()
+        ]);
+
+        document.getElementById('risk-loading').style.display = 'none';
+
+        if (latestRes && latestRes.success && latestRes.data && latestRes.data.prediction) {
+          const { prediction, recommendations } = latestRes.data;
+          renderRiskWidget(prediction);
+          renderFactors(prediction.contributingFactors);
+          renderRecPreview(recommendations);
+        } else {
+          document.getElementById('risk-empty').style.display = 'block';
+        }
+
+        if (historyRes && historyRes.success && historyRes.data && historyRes.data.length > 0) {
+          ChartsManager.renderTrendChart('dashboard-trend-chart', historyRes.data);
+        } else {
+          document.getElementById('trend-empty').style.display = 'block';
+        }
+      } catch (err) {
+        console.error('Error loading dashboard data:', err);
+        document.getElementById('risk-loading').style.display = 'none';
+        document.getElementById('risk-empty').style.display = 'block';
+      }
+    }
+
+    function renderRiskWidget(p) {
+      document.getElementById('risk-content').style.display = 'block';
+      const circle = document.getElementById('risk-circle-indicator');
+      circle.className = `risk-circle ${p.concernLevel}`;
+      
+      document.getElementById('risk-score-val').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
+      document.getElementById('concern-badge-container').innerHTML = Utils.getConcernBadge(p.concernLevel);
+      document.getElementById('last-analyzed-time').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
+      if (p.modelVersion) {
+        document.getElementById('model-version-tag').textContent = p.modelVersion;
+      }
+    }
+
+    function renderFactors(factors) {
+      const container = document.getElementById('factors-container');
+      if (!factors || factors.length === 0) {
+        container.innerHTML = `<div class="text-muted text-center py-3">No elevated strain factors detected.</div>`;
+        return;
+      }
+
+      const top3 = factors.slice(0, 3);
+      container.innerHTML = top3.map(f => `
+        <div class="factor-bar-item">
+          <div class="factor-bar-header">
+            <strong>${f.title}</strong>
+            <span class="badge badge-${f.impact_level.toLowerCase()}">${f.status}</span>
+          </div>
+          <div class="factor-progress-track">
+            <div class="factor-progress-fill ${f.impact_level}" style="width: ${Math.min(100, Math.max(15, f.contribution_score))}%;"></div>
+          </div>
+          <div class="d-flex justify-between mt-1 text-muted" style="font-size:0.75rem;">
+            <span>Current: ${f.user_value} ${f.unit}</span>
+            <span>Baseline: ${f.baseline_mean} ${f.unit}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRecPreview(rec) {
+      const container = document.getElementById('rec-preview-container');
+      if (!rec || !rec.actionItems || rec.actionItems.length === 0) {
+        container.innerHTML = `
+          <div class="alert alert-success">
+            Baseline indicators are stable. Maintain standard sleep and physical fitness routine.
+          </div>
+        `;
+        return;
+      }
+
+      const item = rec.actionItems[0];
+      container.innerHTML = `
+        <div class="alert alert-info mb-2">
+          <strong>Primary Recommendation:</strong> ${rec.primaryAction || 'Review rest and workload schedule.'}
+        </div>
+        <div class="card" style="background:var(--bg-card-subtle); padding:1rem; border-left:3px solid var(--accent);">
+          <div style="font-weight:700; font-size:0.9rem; margin-bottom:0.25rem;">${item.title}</div>
+          <div class="text-muted" style="font-size:0.8rem;">${item.description}</div>
+        </div>
+      `;
+    }
+
+    let breathInterval = null;
+    let breathTimerInterval = null;
+    let isBreathingActive = false;
+    let breathPhase = 0; // 0: Inhale, 1: Hold, 2: Exhale, 3: Hold
+    let breathCycles = 0;
+    let breathElapsedSeconds = 0;
+
+    const BREATH_PHASES = [
+      { text: 'Inhale Slowly (4s)', instruction: 'Fill lungs with oxygen deeply through your nose.', size: '90px', color: '#10b981', label: 'Inhale' },
+      { text: 'Hold Breath (4s)', instruction: 'Retain oxygen steadily without tension in shoulders.', size: '90px', color: '#3b82f6', label: 'Hold' },
+      { text: 'Exhale Steadily (4s)', instruction: 'Smoothly release air fully through your mouth.', size: '55px', color: '#f59e0b', label: 'Exhale' },
+      { text: 'Hold Empty (4s)', instruction: 'Rest in stillness before the next oxygenation cycle.', size: '55px', color: '#6366f1', label: 'Hold' }
+    ];
+
+    function toggleBreathingGuide() {
+      const btn = document.getElementById('btn-start-breathing');
+      if (isBreathingActive) {
+        pauseBreathingGuide();
+      } else {
+        startBreathingGuide();
+      }
+    }
+
+    function startBreathingGuide() {
+      isBreathingActive = true;
+      document.getElementById('btn-start-breathing').textContent = '⏸ Pause Session';
+      document.getElementById('breath-status-badge').textContent = 'Active Session';
+      document.getElementById('breath-status-badge').className = 'badge badge-low';
+
+      advanceBreathPhase();
+      breathInterval = setInterval(advanceBreathPhase, 4000);
+
+      breathTimerInterval = setInterval(() => {
+        breathElapsedSeconds++;
+        const mins = Math.floor(breathElapsedSeconds / 60);
+        const secs = String(breathElapsedSeconds % 60).padStart(2, '0');
+        document.getElementById('breath-timer').textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function advanceBreathPhase() {
+      const p = BREATH_PHASES[breathPhase];
+      const circle = document.getElementById('breath-circle');
+      circle.style.width = p.size;
+      circle.style.height = p.size;
+      circle.style.background = p.color;
+      circle.textContent = p.label;
+
+      document.getElementById('breath-phase-text').textContent = p.text;
+      document.getElementById('breath-phase-text').style.color = p.color;
+      document.getElementById('breath-instruction').textContent = p.instruction;
+
+      breathPhase = (breathPhase + 1) % 4;
+      if (breathPhase === 0) {
+        breathCycles++;
+        document.getElementById('breath-cycle-count').textContent = breathCycles;
+        if (breathCycles % 3 === 0 && typeof Utils !== 'undefined') {
+          Utils.showToast(`Tactical decompression: ${breathCycles} cycles complete. Parasympathetic nervous system resetting.`, 'info', 3000);
+        }
+      }
+    }
+
+    function pauseBreathingGuide() {
+      isBreathingActive = false;
+      clearInterval(breathInterval);
+      clearInterval(breathTimerInterval);
+      document.getElementById('btn-start-breathing').textContent = '▶ Resume Session';
+      document.getElementById('breath-status-badge').textContent = 'Paused';
+      document.getElementById('breath-status-badge').className = 'badge badge-moderate';
+    }
+
+    function resetBreathingGuide() {
+      pauseBreathingGuide();
+      breathPhase = 0;
+      breathCycles = 0;
+      breathElapsedSeconds = 0;
+      document.getElementById('btn-start-breathing').textContent = '▶ Start 4-4-4-4 Cadence';
+      document.getElementById('breath-status-badge').textContent = 'Ready';
+      document.getElementById('breath-status-badge').className = 'badge badge-low';
+      document.getElementById('breath-cycle-count').textContent = '0';
+      document.getElementById('breath-timer').textContent = '0:00';
+      document.getElementById('breath-phase-text').textContent = 'Tactical Parasympathetic Reset';
+      document.getElementById('breath-phase-text').style.color = 'var(--accent)';
+      document.getElementById('breath-instruction').textContent = 'Reduces active operational heart rate, balances blood pressure, and accelerates neurological recovery.';
+      const circle = document.getElementById('breath-circle');
+      circle.style.width = '65px';
+      circle.style.height = '65px';
+      circle.style.background = 'radial-gradient(circle, #2563eb 0%, #1e3a8a 100%)';
+      circle.textContent = 'Ready';
+    }
+  </script>
+</body>
+</html>

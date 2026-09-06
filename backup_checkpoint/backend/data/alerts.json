@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "d8c146818fc2854a370b5f10",
+    "personnelId": "CRPF-TEST-3547",
+    "userId": "eec2bcdebfe0cf16207021c6",
+    "predictionId": "ac497ccb95f0f8df37c935e9",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 77.4,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-06T04:05:24.059Z",
+    "updatedAt": "2026-09-06T04:05:24.408Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-06T04:05:24.407Z"
+  },
+  {
+    "_id": "d7ce1a868496ee92062eddf3",
+    "personnelId": "CRPF-TEST-9796",
+    "userId": "45de7cc3c5ea58e1950a47a1",
+    "predictionId": "09162eae9672fc4161ca9be5",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 77.4,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-06T04:06:20.011Z",
+    "updatedAt": "2026-09-06T04:06:20.219Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-06T04:06:20.219Z"
+  },
+  {
+    "_id": "8b8eaffed786e1b1df77ab79",
+    "personnelId": "CRPF-TEST-2888",
+    "userId": "855b4dd94d2ff2667aff7b12",
+    "predictionId": "ed0c199037d208bf1fad76d7",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 77.4,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-06T04:11:03.041Z",
+    "updatedAt": "2026-09-06T04:11:03.189Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-06T04:11:03.189Z"
+  }
+]

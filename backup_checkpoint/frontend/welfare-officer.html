@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welfare Officer Portal & AI Triage — SIH26186</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">WELFARE OFFICER PORTAL</span>
+      <span>Human-in-the-loop review and follow-up tracking center for authorized personnel officers.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- Officer Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon" style="background: linear-gradient(135deg, #059669, #10b981);">🩺</div>
+        <div>
+          <div class="sidebar-brand-title">OFFICER PORTAL</div>
+          <div class="sidebar-brand-sub">Welfare Directorate</div>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Triage & Supervision</li>
+        <li class="menu-item active"><a href="#dashboard-section" onclick="showTab('dashboard')"><span class="menu-icon">📊</span> AI Triage & Alerts</a></li>
+        <li class="menu-item"><a href="#roster-section" onclick="showTab('roster')"><span class="menu-icon">👥</span> Personnel Roster</a></li>
+        <li class="menu-item"><a href="#followups-section" onclick="showTab('followups')"><span class="menu-icon">🔄</span> Follow-up & Re-analysis</a></li>
+        <li class="menu-item"><a href="#support-section" onclick="showTab('support')"><span class="menu-icon">📥</span> Support Requests</a></li>
+
+        <li class="menu-category">System</li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Safeguards</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & Directory</a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar" style="background:#059669;">WO</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Welfare Officer</div>
+            <div class="user-role-badge" data-user="role">Welfare Officer</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title" id="officer-page-title">Welfare Officer Triage & AI Alerts</div>
+        </div>
+        <div class="topbar-right">
+          <button class="btn btn-sm btn-secondary" onclick="exportOfficerReport()">📥 Export Report (CSV)</button>
+          <button class="btn btn-sm btn-secondary" onclick="loadOfficerDashboard()">🔄 Refresh Triage</button>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Overview Stats Grid -->
+        <div class="grid-4 mb-3">
+          <div class="card">
+            <div class="text-muted" style="font-size:0.8rem;">Monitored Personnel</div>
+            <h2 id="stat-total-monitored" style="font-size:2rem; margin-top:0.25rem;">--</h2>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--risk-high);">
+            <div class="text-muted" style="font-size:0.8rem;">High Welfare Signals</div>
+            <h2 id="stat-high-risk" style="font-size:2rem; margin-top:0.25rem; color:var(--risk-high);">--</h2>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--risk-mod);">
+            <div class="text-muted" style="font-size:0.8rem;">Pending AI Alerts</div>
+            <h2 id="stat-pending-alerts" style="font-size:2rem; margin-top:0.25rem; color:var(--risk-mod);">--</h2>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--accent);">
+            <div class="text-muted" style="font-size:0.8rem;">Active Follow-ups</div>
+            <h2 id="stat-active-followups" style="font-size:2rem; margin-top:0.25rem; color:var(--accent);">--</h2>
+          </div>
+        </div>
+
+        <!-- TAB 1: AI Triage & Alerts -->
+        <div id="tab-dashboard" class="officer-tab-content">
+          <div class="grid-3 mb-3">
+            <!-- Left 2 cols: Alerts Table -->
+            <div class="card" style="grid-column: span 2;">
+              <div class="card-header">
+                <div>
+                  <h3>Real-time AI Welfare Alerts</h3>
+                  <p class="text-muted" style="font-size:0.85rem;">Signals requiring human-in-the-loop review</p>
+                </div>
+                <div class="d-flex gap-1">
+                  <select id="filter-alert-status" class="form-select" style="padding:0.35rem 0.6rem; font-size:0.8rem;" onchange="applyAlertFilter()">
+                    <option value="">All Statuses</option>
+                    <option value="PENDING_REVIEW" selected>Pending Review</option>
+                    <option value="ACKNOWLEDGED">Acknowledged</option>
+                    <option value="FOLLOW_UP_ASSIGNED">Follow-up Assigned</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="overflow-x: auto;">
+                <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+                  <thead>
+                    <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                      <th style="padding: 0.75rem;">Personnel ID</th>
+                      <th style="padding: 0.75rem;">Name & Unit</th>
+                      <th style="padding: 0.75rem;">Priority</th>
+                      <th style="padding: 0.75rem;">Welfare Signal</th>
+                      <th style="padding: 0.75rem;">Review Status</th>
+                      <th style="padding: 0.75rem;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="alerts-table-body">
+                    <tr><td colspan="6" class="text-center text-muted" style="padding: 2rem;">Loading triage queue...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Right 1 col: Distribution Donut -->
+            <div class="card">
+              <div class="card-header">
+                <h3>Risk Distribution</h3>
+                <span class="badge badge-neutral">Aggregated</span>
+              </div>
+              <div style="height: 260px; position: relative;">
+                <canvas id="risk-distribution-chart"></canvas>
+              </div>
+              <div class="text-muted text-center mt-2" style="font-size:0.8rem;">
+                Ensemble classification summary of active unit personnel.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: Personnel Roster -->
+        <div id="tab-roster" class="officer-tab-content" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <h3>Authorized Unit Personnel Roster</h3>
+              <span class="badge badge-neutral">Roster View</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+                <thead>
+                  <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                    <th style="padding: 0.75rem;">Personnel ID</th>
+                    <th style="padding: 0.75rem;">Full Name</th>
+                    <th style="padding: 0.75rem;">Rank</th>
+                    <th style="padding: 0.75rem;">Unit</th>
+                    <th style="padding: 0.75rem;">Latest Signal</th>
+                    <th style="padding: 0.75rem;">Last Check-in</th>
+                  </tr>
+                </thead>
+                <tbody id="roster-table-body">
+                  <tr><td colspan="6" class="text-center text-muted" style="padding: 2rem;">Loading roster...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: Follow-ups & Re-analysis -->
+        <div id="tab-followups" class="officer-tab-content" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3>Follow-up & Re-Analysis Tracking Workflow</h3>
+                <p class="text-muted" style="font-size:0.85rem;">Tracking personnel recovery velocity across check-in cycles</p>
+              </div>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+                <thead>
+                  <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                    <th style="padding: 0.75rem;">Personnel</th>
+                    <th style="padding: 0.75rem;">Scheduled Date</th>
+                    <th style="padding: 0.75rem;">Initial Risk Index</th>
+                    <th style="padding: 0.75rem;">Re-analyzed Index</th>
+                    <th style="padding: 0.75rem;">Welfare Trajectory</th>
+                    <th style="padding: 0.75rem;">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="followups-table-body">
+                  <tr><td colspan="6" class="text-center text-muted" style="padding: 2rem;">Loading follow-up tracking...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: Support Requests -->
+        <div id="tab-support" class="officer-tab-content" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <h3>Personnel Support Requests Queue</h3>
+              <span class="badge badge-low">Confidential</span>
+            </div>
+            <div id="officer-support-requests-list">
+              <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Human-in-the-Loop Review Modal -->
+  <div id="review-alert-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; padding:1.5rem;">
+    <div class="card" style="max-width: 600px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow-xl);">
+      <div class="d-flex justify-between align-center mb-3 pb-2" style="border-bottom:1px solid var(--border-color);">
+        <h3>🩺 Human-in-the-Loop Welfare Review</h3>
+        <button onclick="closeReviewModal()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;color:var(--text-muted);">✕</button>
+      </div>
+
+      <div id="modal-alert-details"></div>
+
+      <form onsubmit="event.preventDefault(); submitAlertReview();">
+        <div class="form-group">
+          <label class="form-label" for="modal_officer_status">Officer Review Decision *</label>
+          <select id="modal_officer_status" class="form-select" required>
+            <option value="ACKNOWLEDGED">Acknowledge & Mark Under Supervision</option>
+            <option value="FOLLOW_UP_ASSIGNED">Assign Structured Follow-Up Session</option>
+            <option value="MONITORING">Continue Observational Monitoring</option>
+            <option value="RESOLVED">Resolve / No Action Needed</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="modal_officer_notes">Officer Clinical / Supportive Notes</label>
+          <textarea id="modal_officer_notes" class="form-control" rows="3" placeholder="e.g. Discussed duty schedule with personnel. Advised 48h rest rotation before next convoy assignment."></textarea>
+        </div>
+
+        <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1rem;">
+          <label class="d-flex align-center gap-1" style="cursor:pointer; font-weight:600;">
+            <input type="checkbox" id="modal_assign_followup" onchange="toggleFollowUpSchedule(this.checked)">
+            <span>Create & Schedule Automated Follow-up Tracking</span>
+          </label>
+          <div id="followup-schedule-container" style="display:none; margin-top:0.75rem;">
+            <label class="form-label" for="modal_scheduled_date">Follow-up Target Date</label>
+            <input type="date" id="modal_scheduled_date" class="form-control">
+          </div>
+        </div>
+
+        <div class="d-flex justify-between align-center">
+          <button type="button" class="btn btn-secondary" onclick="closeReviewModal()">Cancel</button>
+          <button type="submit" id="modal-submit-review-btn" class="btn btn-primary">Confirm Officer Action</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/charts.js"></script>
+  <script src="/js/officer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await checkAuth('WELFARE_OFFICER');
+      if (!user) return;
+
+      loadOfficerDashboard();
+      loadPersonnelRoster();
+      loadFollowUps();
+      loadSupportQueue();
+    });
+
+    function showTab(tabName) {
+      document.querySelectorAll('.officer-tab-content').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.sidebar-menu .menu-item').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(`tab-${tabName}`);
+      if (target) target.style.display = 'block';
+
+      const titles = {
+        dashboard: 'Welfare Officer Triage & AI Alerts',
+        roster: 'Unit Personnel Roster',
+        followups: 'Follow-up & Re-Analysis Tracking Workflow',
+        support: 'Personnel Support Requests Queue'
+      };
+      document.getElementById('officer-page-title').textContent = titles[tabName] || 'Welfare Officer Portal';
+    }
+
+    function toggleFollowUpSchedule(checked) {
+      document.getElementById('followup-schedule-container').style.display = checked ? 'block' : 'none';
+      if (checked) {
+        const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        document.getElementById('modal_scheduled_date').value = nextWeek;
+      }
+    }
+
+    async function applyAlertFilter() {
+      const status = document.getElementById('filter-alert-status').value;
+      const res = await api.getOfficerAlerts(status ? { status } : {});
+      if (res && res.success) {
+        renderAlertsTable(res.data);
+      }
+    }
+
+    async function loadFollowUps() {
+      const tbody = document.getElementById('followups-table-body');
+      try {
+        const res = await api.getFollowUps();
+        if (res && res.success) {
+          const list = res.data;
+          if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:2rem;">No follow-up sessions currently scheduled.</td></tr>`;
+            return;
+          }
+          tbody.innerHTML = list.map(f => `
+            <tr style="border-bottom: 1px solid var(--border-color);">
+              <td style="padding:0.75rem;">
+                <strong>${f.personnelName}</strong>
+                <div class="text-muted" style="font-size:0.75rem;">${f.personnelId} • ${f.personnelRank}</div>
+              </td>
+              <td style="padding:0.75rem;">${Utils.formatDate(f.scheduledDate)}</td>
+              <td style="padding:0.75rem;"><strong>${f.initialRiskScore || 70}%</strong></td>
+              <td style="padding:0.75rem;">${f.reAnalyzedRiskScore ? `<strong>${f.reAnalyzedRiskScore}%</strong>` : '<span class="text-muted">Awaiting New Check-in</span>'}</td>
+              <td style="padding:0.75rem;">
+                ${f.welfareDelta === 'IMPROVED' ? `<span class="badge badge-low">Improved (-${(f.initialRiskScore - f.reAnalyzedRiskScore)}%)</span>` :
+                  f.welfareDelta === 'INCREASED' ? `<span class="badge badge-high">Elevated</span>` :
+                  f.welfareDelta === 'STABLE' ? `<span class="badge badge-moderate">Stable</span>` :
+                  `<span class="badge badge-neutral">Pending Check-in</span>`}
+              </td>
+              <td style="padding:0.75rem;">${Utils.getStatusBadge(f.status)}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (err) {
+        console.error('Error loading follow-ups:', err);
+      }
+    }
+
+    async function loadSupportQueue() {
+      const container = document.getElementById('officer-support-requests-list');
+      try {
+        const res = await api.getAllSupportRequests();
+        if (res && res.success) {
+          const list = res.data;
+          if (list.length === 0) {
+            container.innerHTML = `<div class="text-center text-muted py-4">No pending personnel support requests.</div>`;
+            return;
+          }
+          container.innerHTML = list.map(r => `
+            <div class="card mb-2" style="background:var(--bg-card-subtle); padding:1.25rem;">
+              <div class="d-flex justify-between align-center mb-1">
+                <div>
+                  <strong>${r.personnelName} (${r.personnelId})</strong> • <span class="text-muted">${r.rank} • ${r.unit}</span>
+                </div>
+                ${Utils.getStatusBadge(r.status)}
+              </div>
+              <div class="mb-2" style="font-size:0.9rem;"><strong>Category:</strong> ${r.requestType.replace(/_/g, ' ')} | <strong>Urgency:</strong> ${Utils.getPriorityBadge(r.urgency)}</div>
+              ${r.notes ? `<div class="alert alert-info mb-2" style="font-size:0.85rem;">"${r.notes}"</div>` : ''}
+              <div class="d-flex justify-between align-center">
+                <span class="text-muted" style="font-size:0.75rem;">Submitted: ${Utils.formatDate(r.createdAt)}</span>
+                <button class="btn btn-sm btn-primary" onclick="resolveSupportModal('${r._id}')">Update / Respond</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        console.error('Error loading support queue:', err);
+      }
+    }
+
+    async function resolveSupportModal(id) {
+      const resolution = prompt('Enter officer resolution or response notes to personnel:');
+      if (resolution) {
+        try {
+          await api.updateSupportRequest(id, { status: 'RESOLVED', resolutionNotes: resolution });
+          Utils.showToast('Support request resolved and notification sent to personnel.', 'success');
+          loadSupportQueue();
+        } catch (err) {
+          Utils.showToast('Error updating support request: ' + err.message, 'danger');
+        }
+      }
+    }
+
+    async function exportOfficerReport() {
+      try {
+        const res = await api.getPersonnelRoster();
+        if (res && res.success && res.data) {
+          const rows = [
+            ['Personnel ID', 'Full Name', 'Rank', 'Unit', 'Deployment Zone', 'Years Service', 'Welfare Signal', 'Risk Score %', 'Last Check-in']
+          ];
+          res.data.forEach(p => {
+            rows.push([
+              p.personnelId,
+              p.fullName,
+              p.rank,
+              p.unit,
+              p.deploymentZone || 'Sector North',
+              p.yearsOfService || 6,
+              p.latestConcernLevel || 'UNASSESSED',
+              p.latestRiskScore || 0,
+              p.lastAnalyzedAt ? Utils.formatDate(p.lastAnalyzedAt) : 'None'
+            ]);
+          });
+          Utils.exportToCSV(`CRPF_Welfare_Roster_Report_${new Date().toISOString().split('T')[0]}.csv`, rows);
+        }
+      } catch (err) {
+        Utils.showToast('Failed to export report: ' + err.message, 'danger');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalized Recommendations — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <style>
+    .action-card {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .action-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+    }
+    .status-pill {
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .status-pill.status-new {
+      background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;
+    }
+    .status-pill.status-in-progress {
+      background: #fffbeb; color: #b45309; border-color: #fde68a;
+    }
+    .status-pill.status-completed {
+      background: #ecfdf5; color: #047857; border-color: #a7f3d0;
+    }
+    [data-theme="dark"] .status-pill.status-new {
+      background: rgba(29, 78, 216, 0.25); color: #93c5fd; border-color: #1e40af;
+    }
+    [data-theme="dark"] .status-pill.status-in-progress {
+      background: rgba(180, 83, 9, 0.25); color: #fde047; border-color: #92400e;
+    }
+    [data-theme="dark"] .status-pill.status-completed {
+      background: rgba(4, 120, 87, 0.25); color: #6ee7b7; border-color: #065f46;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">ACTIONABLE GUIDANCE</span>
+      <span>Support recommendations formulated directly from your Random Forest risk factors.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">🔄</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recovery-journey.html"><span class="menu-icon">🌱</span> Recovery Journey</a></li>
+        <li class="menu-item active"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> Longitudinal Trajectory</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Personalized Welfare Guidance</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/support.html" class="btn btn-sm btn-primary">Connect with Welfare Officer</a>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Primary Action Banner & Progress -->
+        <div class="grid-3 mb-3">
+          <div class="card" style="grid-column: span 2; border-left: 4px solid var(--accent); background: var(--bg-card);" id="primary-action-card">
+            <div class="d-flex justify-between align-center mb-1">
+              <h3 style="font-size:1.15rem;">Core Operational Recommendation</h3>
+              <span id="rec-concern-badge"></span>
+            </div>
+            <p id="primary-action-text" style="font-size:0.95rem; color:var(--text-secondary); line-height: 1.6;">
+              Loading latest recommendations...
+            </p>
+          </div>
+
+          <div class="card" style="display:flex; flex-direction:column; justify-content:center; text-align:center;">
+            <div class="text-muted" style="font-size:0.8rem;">Action Items Progress</div>
+            <div id="progress-percentage" style="font-size: 2.2rem; font-weight: 800; color: var(--accent); margin: 0.25rem 0;">0%</div>
+            <div class="progress-bar-bg" style="height: 8px; margin: 0.25rem 0;">
+              <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%; background: var(--accent);"></div>
+            </div>
+            <div class="text-muted" id="progress-summary-text" style="font-size:0.75rem;">0 of 0 Completed</div>
+          </div>
+        </div>
+
+        <!-- 1. Recommended Now & Factor-Tailored Action Items -->
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-between align-center">
+            <div>
+              <h3>Targeted Welfare Action Items</h3>
+              <p class="text-muted" style="font-size:0.8rem;">Click the status badge on each card to toggle your progress</p>
+            </div>
+            <span class="badge badge-neutral">Factor-Tailored</span>
+          </div>
+          <div id="action-items-container" class="grid-2">
+            <div class="spinner spinner-primary" style="margin:2rem auto; grid-column: span 2;"></div>
+          </div>
+        </div>
+
+        <!-- 2. Recovery & Operational Guidance Protocol -->
+        <div class="grid-2 mb-3">
+          <div class="card">
+            <div class="card-header">
+              <h3>🛌 Recovery & Sleep Protocols</h3>
+              <span class="badge badge-low">Evidence-Based</span>
+            </div>
+            <ul style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">
+              <li><strong>Dark Room Wind-Down:</strong> Avoid blue-light devices 30 minutes before bed post-shift.</li>
+              <li><strong>Target Sleep Threshold:</strong> Aim for unbroken 7.0–8.0 hours of restorative rest.</li>
+              <li><strong>Micro-Decompression:</strong> Utilize 10-minute box breathing between shift handover.</li>
+              <li><strong>Hydration Discipline:</strong> Maintain regular fluid balance during high-tempo field watches.</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>⏱️ Workload & Operational Pacing</h3>
+              <span class="badge badge-moderate">Duty Liaison</span>
+            </div>
+            <ul style="margin-left: 1.25rem; font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">
+              <li><strong>Consecutive Standby Limits:</strong> Request split-shift relief if extended duty exceeds 4 consecutive days.</li>
+              <li><strong>Task Pacing:</strong> Rotate demanding operational vigilance with structured maintenance duties.</li>
+              <li><strong>Peer Mutual Support:</strong> Establish daily check-in with your designated unit buddy.</li>
+              <li><strong>Welfare Liaison:</strong> Inform Welfare Officer if cumulative fatigue impedes situational focus.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 3. Follow-up & Re-Assessment Timeline -->
+        <div class="card mb-3" style="background: var(--bg-card-subtle);">
+          <div class="d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h4 style="margin-bottom:0.25rem;">📅 Recommended Re-Assessment Milestone</h4>
+              <p class="text-muted" style="font-size:0.85rem; margin-bottom:0;">
+                We recommend completing your next check-in in <strong>7 days</strong> to track strain recovery velocity.
+              </p>
+            </div>
+            <div class="d-flex gap-1">
+              <a href="/stress-checkin.html" class="btn btn-sm btn-primary">Start New Check-in</a>
+              <a href="/trends.html" class="btn btn-sm btn-outline">View Trajectory &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3.5 Tactical 4-4-4-4 Box-Breathing Decompression Widget -->
+        <div class="card mb-3" style="background: linear-gradient(135deg, rgba(30,58,138,0.06), rgba(16,185,129,0.06)); border: 1px solid rgba(37,99,235,0.25);">
+          <div class="card-header d-flex justify-between align-center">
+            <div>
+              <h3 style="font-size: 1.05rem;">🧘 Tactical Box-Breathing Decompression (4-4-4-4 Cadence)</h3>
+              <p class="text-muted" style="font-size:0.8rem;">Military standard physiological reset: Inhale 4s &bull; Hold 4s &bull; Exhale 4s &bull; Hold 4s</p>
+            </div>
+            <span class="badge badge-low" id="breath-status-badge">Ready</span>
+          </div>
+          <div class="d-flex align-center justify-between flex-wrap gap-2" style="padding: 0.5rem 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 1.5rem;" class="flex-wrap">
+              <div id="breath-circle-wrapper" style="width: 100px; height: 100px; position: relative; display: flex; align-items: center; justify-content: center;">
+                <div id="breath-circle" style="width: 65px; height: 65px; border-radius: 50%; background: radial-gradient(circle, #2563eb 0%, #1e3a8a 100%); transition: all 4s ease-in-out; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(37,99,235,0.4); text-align: center; font-size: 0.78rem;">
+                  READY
+                </div>
+              </div>
+              <div>
+                <div id="breath-instruction" style="font-size: 1.15rem; font-weight: 800; color: #1e3a8a;">Click Start to begin 3-Min Reset</div>
+                <div id="breath-subtext" class="text-muted" style="font-size: 0.82rem; margin-top: 2px;">Lowers heart rate, stabilizes autonomic nervous system & cortisol.</div>
+                <div style="font-size:0.75rem; margin-top:4px;" class="text-muted">Completed Cycles: <strong id="breath-cycles" style="color:var(--accent);">0 / 4</strong></div>
+              </div>
+            </div>
+            <div class="d-flex gap-1 align-center">
+              <button class="btn btn-sm btn-primary" id="breath-btn" onclick="toggleBreathingGuide()">▶ Start Box Breathing</button>
+              <button class="btn btn-sm btn-secondary" onclick="resetBreathingGuide()">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Designated Welfare Channels -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Designated Welfare Helplines & Units</h3>
+            <span class="badge badge-low">Confidential & Voluntary</span>
+          </div>
+          <div id="welfare-resources-container" class="grid-2">
+            <div class="card" style="background: var(--bg-card-subtle);">
+              <div class="d-flex justify-between align-center mb-1">
+                <h4 style="color:var(--accent);">Forces 24/7 Psychological Support</h4>
+                <span class="badge badge-low">24/7 Helpline</span>
+              </div>
+              <p class="text-muted" style="font-size:0.85rem; margin:0.5rem 0;">Toll-Free Tele-counseling staffed by professional clinical listeners.</p>
+              <div style="font-weight:bold;">📞 1800-180-4024</div>
+            </div>
+            <div class="card" style="background: var(--bg-card-subtle);">
+              <div class="d-flex justify-between align-center mb-1">
+                <h4 style="color:var(--accent);">Battalion Peer Support Desk</h4>
+                <span class="badge badge-low">Unit Desk</span>
+              </div>
+              <p class="text-muted" style="font-size:0.85rem; margin:0.5rem 0;">On-base confidential peer counseling and shift rotation liaison.</p>
+              <div style="font-weight:bold;">🏢 Battalion HQ - Ext. #304</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    let currentActions = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      loadRecommendations();
+    });
+
+    async function loadRecommendations() {
+      try {
+        const res = await api.getLatestPrediction();
+        if (res && res.success && res.data && res.data.recommendations) {
+          const r = res.data.recommendations;
+          const p = res.data.prediction;
+
+          document.getElementById('primary-action-text').textContent = r.primaryAction || 'Maintain regular rest cycles and keep up regular check-ins.';
+          document.getElementById('rec-concern-badge').innerHTML = Utils.getConcernBadge(r.concernLevel || p.concernLevel);
+
+          currentActions = (r.actionItems || []).map((item, idx) => {
+            const savedStatus = localStorage.getItem(`welfare_act_status_${idx}`) || 'NEW';
+            return { ...item, id: idx, status: savedStatus };
+          });
+
+          renderActionCards();
+          updateProgress();
+        } else {
+          document.getElementById('primary-action-text').textContent = 'Please complete an initial check-in to generate tailored recommendations.';
+          document.getElementById('action-items-container').innerHTML = `
+            <div class="text-center py-4" style="grid-column: span 2;">
+              <a href="/stress-checkin.html" class="btn btn-primary">Start Initial Check-in</a>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Error loading recommendations:', err);
+      }
+    }
+
+    function renderActionCards() {
+      const container = document.getElementById('action-items-container');
+      if (currentActions.length === 0) {
+        container.innerHTML = `<div class="text-muted py-3">All indicators optimal. Continue regular wellness habits.</div>`;
+        return;
+      }
+
+      container.innerHTML = currentActions.map((item) => {
+        const statusClass = item.status === 'COMPLETED' ? 'status-completed' : (item.status === 'IN_PROGRESS' ? 'status-in-progress' : 'status-new');
+        const statusLabel = item.status === 'COMPLETED' ? '✓ Completed' : (item.status === 'IN_PROGRESS' ? '⏳ In Progress' : '● New');
+
+        return `
+          <div class="action-card" style="border-top: 3px solid ${item.priority === 'HIGH' ? 'var(--risk-high)' : 'var(--accent)'};">
+            <div>
+              <div class="d-flex justify-between align-center mb-2">
+                <span class="badge badge-neutral">${item.category || 'Welfare'}</span>
+                <button class="status-pill ${statusClass}" onclick="cycleActionStatus(${item.id})">
+                  ${statusLabel}
+                </button>
+              </div>
+              <h4 style="margin: 0.25rem 0 0.5rem; font-size:1.05rem;">${item.title || item.action}</h4>
+              <p class="text-muted" style="font-size:0.88rem; line-height:1.5; margin-bottom:1rem;">${item.description || item.details || ''}</p>
+            </div>
+            <div class="d-flex justify-between align-center pt-2" style="border-top: 1px solid var(--border-color); font-size:0.75rem;">
+              <span class="badge badge-${(item.priority || 'medium').toLowerCase()}">${item.priority || 'Medium'} Priority</span>
+              <a href="/why-risk-high.html" style="color:var(--accent); font-weight:600;">Why recommended? &rarr;</a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function cycleActionStatus(id) {
+      const act = currentActions.find(a => a.id === id);
+      if (!act) return;
+
+      if (act.status === 'NEW') act.status = 'IN_PROGRESS';
+      else if (act.status === 'IN_PROGRESS') act.status = 'COMPLETED';
+      else act.status = 'NEW';
+
+      localStorage.setItem(`welfare_act_status_${id}`, act.status);
+      renderActionCards();
+      updateProgress();
+      Utils.showToast(`Action status updated: ${act.status.replace('_', ' ')}`, 'info', 2000);
+    }
+
+    function updateProgress() {
+      if (currentActions.length === 0) return;
+      const completed = currentActions.filter(a => a.status === 'COMPLETED').length;
+      const pct = Math.round((completed / currentActions.length) * 100);
+
+      document.getElementById('progress-percentage').textContent = `${pct}%`;
+      document.getElementById('progress-bar-fill').style.width = `${pct}%`;
+      document.getElementById('progress-summary-text').textContent = `${completed} of ${currentActions.length} Completed`;
+    }
+
+    // --- Box-Breathing Decompression Engine ---
+    let breathInterval = null;
+    let breathStep = 0;
+    let breathCycles = 0;
+    const maxCycles = 4;
+    const breathPhases = [
+      { text: 'INHALE', sub: 'Inhale deeply through nose (4s)', scale: '1.45', bg: 'radial-gradient(circle, #3b82f6 0%, #1d4ed8 100%)', badge: 'Inhaling' },
+      { text: 'HOLD', sub: 'Retain lungs full (4s)', scale: '1.45', bg: 'radial-gradient(circle, #0ea5e9 0%, #0284c7 100%)', badge: 'Holding Full' },
+      { text: 'EXHALE', sub: 'Exhale smoothly through mouth (4s)', scale: '1.0', bg: 'radial-gradient(circle, #10b981 0%, #047857 100%)', badge: 'Exhaling' },
+      { text: 'HOLD', sub: 'Rest lungs empty before next cycle (4s)', scale: '1.0', bg: 'radial-gradient(circle, #6366f1 0%, #4338ca 100%)', badge: 'Holding Empty' }
+    ];
+
+    function toggleBreathingGuide() {
+      const btn = document.getElementById('breath-btn');
+      if (breathInterval) {
+        clearInterval(breathInterval);
+        breathInterval = null;
+        btn.textContent = '▶ Resume Breathing';
+        btn.classList.remove('btn-danger');
+        btn.classList.add('btn-primary');
+        document.getElementById('breath-status-badge').textContent = 'Paused';
+        return;
+      }
+
+      btn.textContent = '⏸ Pause';
+      btn.classList.remove('btn-primary');
+      btn.classList.add('btn-danger');
+      document.getElementById('breath-status-badge').textContent = 'Active (4s Cadence)';
+
+      runBreathStep();
+      breathInterval = setInterval(runBreathStep, 4000);
+    }
+
+    function runBreathStep() {
+      const circle = document.getElementById('breath-circle');
+      const instruction = document.getElementById('breath-instruction');
+      const subtext = document.getElementById('breath-subtext');
+      const phase = breathPhases[breathStep];
+
+      circle.textContent = phase.text;
+      circle.style.transform = `scale(${phase.scale})`;
+      circle.style.background = phase.bg;
+      instruction.textContent = phase.text + ' (4s)';
+      subtext.textContent = phase.sub;
+      document.getElementById('breath-status-badge').textContent = phase.badge;
+
+      breathStep++;
+      if (breathStep >= breathPhases.length) {
+        breathStep = 0;
+        breathCycles++;
+        document.getElementById('breath-cycles').textContent = `${breathCycles} / ${maxCycles}`;
+
+        if (breathCycles >= maxCycles) {
+          clearInterval(breathInterval);
+          breathInterval = null;
+          circle.textContent = 'RESTED';
+          circle.style.transform = 'scale(1.1)';
+          circle.style.background = 'radial-gradient(circle, #10b981 0%, #059669 100%)';
+          instruction.textContent = 'Session Complete — Vagal Tone Restored!';
+          subtext.textContent = 'Heart rate deceleration & stress relief achieved.';
+          document.getElementById('breath-status-badge').textContent = '✓ Completed';
+          const btn = document.getElementById('breath-btn');
+          btn.textContent = '▶ Restart Session';
+          btn.classList.remove('btn-danger');
+          btn.classList.add('btn-primary');
+          Utils.showToast('Tactical Box-Breathing session completed! Stress biomarker relaxed.', 'success');
+        }
+      }
+    }
+
+    function resetBreathingGuide() {
+      if (breathInterval) {
+        clearInterval(breathInterval);
+        breathInterval = null;
+      }
+      breathStep = 0;
+      breathCycles = 0;
+      const circle = document.getElementById('breath-circle');
+      circle.textContent = 'READY';
+      circle.style.transform = 'scale(1.0)';
+      circle.style.background = 'radial-gradient(circle, #2563eb 0%, #1e3a8a 100%)';
+      document.getElementById('breath-instruction').textContent = 'Click Start to begin 3-Min Reset';
+      document.getElementById('breath-subtext').textContent = 'Lowers heart rate, stabilizes autonomic nervous system & cortisol.';
+      document.getElementById('breath-cycles').textContent = '0 / 4';
+      document.getElementById('breath-status-badge').textContent = 'Ready';
+      const btn = document.getElementById('breath-btn');
+      btn.textContent = '▶ Start Box Breathing';
+      btn.classList.remove('btn-danger');
+      btn.classList.add('btn-primary');
+    }
+  </script>
+</body>
+</html>

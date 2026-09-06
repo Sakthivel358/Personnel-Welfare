@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Welfare Analysis & Risk Signal — SIH26186</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">REAL ML PREDICTION</span>
+      <span>Output generated directly from trained Scikit-Learn Random Forest model via FastAPI microservice.</span>
+    </div>
+    <button class="theme-toggle btn btn-sm btn-secondary">🌙</button>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">PRAHARI WELFARE</div>
+          <div class="sidebar-brand-sub">CRPF Personnel Portal</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item active"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> My Stress Trend</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">RK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">AI Predictive Welfare Analysis</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/stress-checkin.html" class="btn btn-sm btn-primary">+ New Check-in</a>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Main Analysis Card -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <div>
+              <h2>Latest ML Inference Result</h2>
+              <p class="text-muted" style="font-size:0.85rem;" id="analysis-timestamp">Analyzed: --</p>
+            </div>
+            <div class="d-flex gap-1 align-center">
+              <span class="badge badge-neutral" id="model-badge">Random Forest v1.4</span>
+              <span id="concern-badge-top"></span>
+            </div>
+          </div>
+
+          <div class="grid-2 align-center">
+            <!-- Left: Circle meter and probability bar -->
+            <div class="text-center py-2" style="border-right: 1px solid var(--border-color);">
+              <div class="risk-circle" id="main-risk-circle" style="margin: 0 auto 1.25rem;">
+                <div class="risk-score-big" id="main-risk-score">--%</div>
+                <div class="risk-score-label">Composite Risk</div>
+              </div>
+              <h3 id="concern-heading" class="mb-1">-- Concern Level</h3>
+              <p class="text-muted" style="font-size:0.85rem; max-width:340px; margin:0 auto;" id="concern-desc">
+                AI decision-support classification derived from statistical multi-variable ensemble.
+              </p>
+            </div>
+
+            <!-- Right: Probabilities & Top Drivers -->
+            <div style="padding-left: 1rem;">
+              <h4 class="mb-2">Random Forest Class Probability Breakdown</h4>
+              <div class="mb-2">
+                <div class="d-flex justify-between" style="font-size:0.85rem; margin-bottom:0.25rem;">
+                  <span>Low / Baseline Concern</span>
+                  <strong id="prob-low">0%</strong>
+                </div>
+                <div class="factor-progress-track">
+                  <div class="factor-progress-fill LOW" id="bar-prob-low" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div class="mb-2">
+                <div class="d-flex justify-between" style="font-size:0.85rem; margin-bottom:0.25rem;">
+                  <span>Moderate Strain Signal</span>
+                  <strong id="prob-mod">0%</strong>
+                </div>
+                <div class="factor-progress-track">
+                  <div class="factor-progress-fill MODERATE" id="bar-prob-mod" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="d-flex justify-between" style="font-size:0.85rem; margin-bottom:0.25rem;">
+                  <span>High Welfare Concern</span>
+                  <strong id="prob-high">0%</strong>
+                </div>
+                <div class="factor-progress-track">
+                  <div class="factor-progress-fill HIGH" id="bar-prob-high" style="width:0%;"></div>
+                </div>
+              </div>
+
+              <div class="card" style="background:var(--bg-card-subtle); padding:1rem;">
+                <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.35rem;">Primary Risk Contributors:</div>
+                <div id="top-drivers-list" style="font-size:0.85rem; color:var(--text-secondary);">
+                  Calculating...
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Actions Navigation Grid -->
+        <div class="grid-2">
+          <div class="card" style="border-left: 4px solid var(--accent);">
+            <h3 class="mb-1">🔍 Why Is My Risk High?</h3>
+            <p class="text-muted mb-3" style="font-size:0.85rem;">
+              Inspect the exact feature attribution breakdown to understand how individual variables (sleep, shifts, workload) contributed to your score.
+            </p>
+            <a href="/why-risk-high.html" class="btn btn-sm btn-primary">Open Explainability View &rarr;</a>
+          </div>
+
+          <div class="card" style="border-left: 4px solid var(--risk-low);">
+            <h3 class="mb-1">💡 Personalized Recommendations</h3>
+            <p class="text-muted mb-3" style="font-size:0.85rem;">
+              Explore actionable rest optimization, operational balance adjustments, and confidential support options formulated from your indicators.
+            </p>
+            <a href="/recommendations.html" class="btn btn-sm btn-secondary">View Guidance &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      loadAIAnalysis();
+    });
+
+    async function loadAIAnalysis() {
+      try {
+        const res = await api.getLatestPrediction();
+        if (res && res.success && res.data && res.data.prediction) {
+          const p = res.data.prediction;
+          
+          document.getElementById('main-risk-circle').className = `risk-circle ${p.concernLevel}`;
+          document.getElementById('main-risk-score').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
+          document.getElementById('concern-heading').textContent = `${p.concernLevel} Welfare Concern`;
+          document.getElementById('concern-badge-top').innerHTML = Utils.getConcernBadge(p.concernLevel);
+          document.getElementById('analysis-timestamp').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
+
+          if (p.modelVersion) {
+            document.getElementById('model-badge').textContent = p.modelVersion;
+          }
+
+          if (p.probabilities) {
+            const pLow = Math.round((p.probabilities.LOW || 0) * 100);
+            const pMod = Math.round((p.probabilities.MODERATE || 0) * 100);
+            const pHigh = Math.round((p.probabilities.HIGH || 0) * 100);
+
+            document.getElementById('prob-low').textContent = `${pLow}%`;
+            document.getElementById('bar-prob-low').style.width = `${pLow}%`;
+
+            document.getElementById('prob-mod').textContent = `${pMod}%`;
+            document.getElementById('bar-prob-mod').style.width = `${pMod}%`;
+
+            document.getElementById('prob-high').textContent = `${pHigh}%`;
+            document.getElementById('bar-prob-high').style.width = `${pHigh}%`;
+          }
+
+          if (p.topDrivers && p.topDrivers.length > 0) {
+            document.getElementById('top-drivers-list').innerHTML = p.topDrivers.map(d => `• <strong>${d}</strong>`).join('<br>');
+          } else {
+            document.getElementById('top-drivers-list').textContent = 'All operational variables are within standard healthy thresholds.';
+          }
+        } else {
+          Utils.showToast('No check-in predictions found. Please complete a check-in first.', 'warning');
+          setTimeout(() => { location.href = '/stress-checkin.html'; }, 1000);
+        }
+      } catch (err) {
+        console.error('Error loading AI analysis:', err);
+      }
+    }
+  </script>
+</body>
+</html>

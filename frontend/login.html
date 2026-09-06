@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <!-- Gov & SIH Banner -->
+  <div class="gov-top-bar">
+    <div><strong>Ministry of Home Affairs</strong> • Unified Armed Forces Welfare & Resilience System</div>
+    <div><span>WelfareAI Platform</span></div>
+  </div>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">DEMO / SYNTHETIC DATA</span>
+      <span>Click any 1-click role button below for instant evaluator login.</span>
+    </div>
+  </div>
+
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2.5rem 1.5rem;">
+    <div class="card" style="max-width: 480px; width: 100%; box-shadow: var(--shadow-xl);">
+      <div class="text-center mb-3">
+        <a href="/" class="brand-logo" style="justify-content: center; margin-bottom: 0.75rem;">
+          <div class="brand-icon">🛡️</div>
+          <div>WelfareAI</div>
+        </a>
+        <h2>Sign In to WelfareAI</h2>
+        <p class="text-muted" style="font-size: 0.85rem;">Uniformed Personnel & Welfare Officers Portal</p>
+      </div>
+
+      <!-- Quick 1-Click Demo Buttons at top for instant evaluation -->
+      <div class="card mb-3" style="background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(16,185,129,0.06)); border: 1px solid var(--accent); padding: 0.9rem;">
+        <div style="font-size: 0.75rem; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 0.5rem; text-align: center;">
+          ⚡ 1-Click Instant Login for Evaluators
+        </div>
+        <div class="d-flex flex-wrap gap-1 justify-between">
+          <button type="button" class="btn btn-sm btn-primary" style="flex: 1; font-size: 0.75rem; padding:0.4rem 0.5rem;" onclick="quickLogin('CRPF-9042', 'Password@123')">
+            👤 Personnel
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" style="flex: 1; font-size: 0.75rem; padding:0.4rem 0.5rem;" onclick="quickLogin('WO-101', 'Password@123')">
+            🩺 Officer
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" style="flex: 1; font-size: 0.75rem; padding:0.4rem 0.5rem;" onclick="quickLogin('ADM-001', 'Password@123')">
+            ⚙️ Admin
+          </button>
+        </div>
+      </div>
+
+      <div id="login-alert-container"></div>
+
+      <form id="login-form" autocomplete="off">
+        <div class="form-group">
+          <label class="form-label" for="identifier">Personnel ID or Official Email</label>
+          <input type="text" id="identifier" class="form-control" placeholder="e.g. CRPF-9042 or personnel.demo@crpf.gov.in" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <div class="d-flex justify-between align-center mb-1">
+            <label class="form-label" for="password" style="margin-bottom: 0;">Password</label>
+            <a href="/help.html" style="font-size: 0.8rem; color: var(--text-muted);">Need Help?</a>
+          </div>
+          <input type="password" id="password" class="form-control" placeholder="Enter password (Default: Password@123)" required autocomplete="new-password">
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="btn btn-primary w-100 mb-3" style="padding: 0.75rem;">
+          Sign In to Portal &rarr;
+        </button>
+      </form>
+
+      <div class="text-center mt-2" style="font-size: 0.85rem; color: var(--text-secondary);">
+        New personnel? <a href="/register.html" style="font-weight: 600;">Register New Account</a>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 1rem; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color);">
+    &copy; 2026 WelfareAI • Predictive Personnel Stress & Welfare Monitoring System
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    async function quickLogin(id, pass) {
+      document.getElementById('identifier').value = id;
+      document.getElementById('password').value = pass;
+      await performLogin(id, pass);
+    }
+
+    async function performLogin(identifier, password) {
+      const submitBtn = document.getElementById('login-submit-btn');
+      const alertContainer = document.getElementById('login-alert-container');
+      alertContainer.innerHTML = '';
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<div class="spinner"></div> Authenticating ${identifier}...`;
+
+      try {
+        const res = await api.login(identifier, password);
+        if (res && res.success) {
+          Utils.showToast(`Welcome ${res.user?.fullName || identifier}! Redirecting...`, 'success');
+          const role = res.user?.role || 'PERSONNEL';
+          setTimeout(() => {
+            if (role === 'WELFARE_OFFICER') {
+              window.location.href = '/welfare-officer.html';
+            } else if (role === 'ADMIN') {
+              window.location.href = '/admin.html';
+            } else {
+              window.location.href = '/dashboard.html';
+            }
+          }, 400);
+        }
+      } catch (err) {
+        alertContainer.innerHTML = `
+          <div class="alert alert-danger">
+            ${err.message || 'Invalid Personnel ID / Email or password. Please use the 1-click demo buttons above.'}
+          </div>
+        `;
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `Sign In to Portal &rarr;`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      if (urlParams.get('expired')) {
+        const alertBox = document.getElementById('login-alert-container');
+        alertBox.innerHTML = `
+          <div class="alert alert-warning">
+            Your session has expired. Please sign in again.
+          </div>
+        `;
+      }
+
+      // Support auto-login query params e.g. /login.html?demo=personnel or ?demo=officer or ?demo=admin
+      const demoParam = urlParams.get('demo');
+      if (demoParam === 'personnel') {
+        quickLogin('CRPF-9042', 'Password@123');
+      } else if (demoParam === 'officer') {
+        quickLogin('WO-101', 'Password@123');
+      } else if (demoParam === 'admin') {
+        quickLogin('ADM-001', 'Password@123');
+      }
+
+      const form = document.getElementById('login-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const identifier = document.getElementById('identifier').value.trim();
+        const password = document.getElementById('password').value;
+        await performLogin(identifier, password);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+[
+  {
+    "_id": "4ceb1e9407ced48782a1e404",
+    "alertId": "d8c146818fc2854a370b5f10",
+    "userId": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "status": "CHECKIN_COMPLETED",
+    "scheduledDate": "2026-09-13T04:05:24.409Z",
+    "initialRiskScore": 77.4,
+    "reAnalyzedRiskScore": 5.7,
+    "welfareDelta": "IMPROVED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-06T04:05:24.409Z",
+    "updatedAt": "2026-09-06T04:05:24.465Z",
+    "completedAt": "2026-09-06T04:05:24.464Z"
+  },
+  {
+    "_id": "3ab231f1b4ef517b966ef175",
+    "alertId": "d7ce1a868496ee92062eddf3",
+    "userId": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "status": "CHECKIN_COMPLETED",
+    "scheduledDate": "2026-09-13T04:06:20.220Z",
+    "initialRiskScore": 77.4,
+    "reAnalyzedRiskScore": 5.7,
+    "welfareDelta": "IMPROVED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-06T04:06:20.221Z",
+    "updatedAt": "2026-09-06T04:06:20.248Z",
+    "completedAt": "2026-09-06T04:06:20.248Z"
+  },
+  {
+    "_id": "c675ccb868d3040115f415b8",
+    "alertId": "8b8eaffed786e1b1df77ab79",
+    "userId": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "status": "CHECKIN_COMPLETED",
+    "scheduledDate": "2026-09-13T04:11:03.189Z",
+    "initialRiskScore": 77.4,
+    "reAnalyzedRiskScore": 5.7,
+    "welfareDelta": "IMPROVED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-06T04:11:03.189Z",
+    "updatedAt": "2026-09-06T04:11:03.208Z",
+    "completedAt": "2026-09-06T04:11:03.208Z"
+  }
+]

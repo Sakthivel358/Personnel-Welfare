@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personalized Recommendations — SIH26186</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">ACTIONABLE GUIDANCE</span>
+      <span>Support recommendations formulated directly from your Random Forest risk factors.</span>
+    </div>
+    <button class="theme-toggle btn btn-sm btn-secondary">🌙</button>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">PRAHARI WELFARE</div>
+          <div class="sidebar-brand-sub">CRPF Personnel Portal</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item active"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> My Stress Trend</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">RK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Personalized Welfare Guidance</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/support.html" class="btn btn-sm btn-primary">Connect with Welfare Officer</a>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Primary Action Banner -->
+        <div class="card mb-3" id="primary-action-card" style="border-left: 4px solid var(--accent); background: var(--bg-card);">
+          <div class="d-flex justify-between align-center mb-1">
+            <h3 style="font-size:1.15rem;">Core Operational Recommendation</h3>
+            <span id="rec-concern-badge"></span>
+          </div>
+          <p id="primary-action-text" style="font-size:0.95rem; color:var(--text-secondary);">
+            Loading latest recommendations...
+          </p>
+        </div>
+
+        <!-- Action Items List -->
+        <div class="card mb-3">
+          <div class="card-header">
+            <h3>Targeted Welfare Action Items</h3>
+            <span class="badge badge-neutral">Factor-Tailored</span>
+          </div>
+          <div id="action-items-container" class="grid-2">
+            <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
+          </div>
+        </div>
+
+        <!-- Designated Welfare Channels -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Designated Welfare Helplines & Units</h3>
+            <span class="badge badge-low">Confidential</span>
+          </div>
+          <div id="welfare-resources-container" class="grid-2">
+            <div class="card" style="background: var(--bg-card-subtle);">
+              <h4 style="color:var(--accent);">CRPF 24/7 Psychological Support</h4>
+              <p class="text-muted" style="font-size:0.85rem; margin:0.5rem 0;">Toll-Free Tele-counseling staffed by professional clinical listeners.</p>
+              <div style="font-weight:bold;">📞 1800-180-4024</div>
+            </div>
+            <div class="card" style="background: var(--bg-card-subtle);">
+              <h4 style="color:var(--accent);">Battalion Peer Support Desk</h4>
+              <p class="text-muted" style="font-size:0.85rem; margin:0.5rem 0;">On-base confidential peer counseling and shift rotation liaison.</p>
+              <div style="font-weight:bold;">🏢 Battalion HQ - Ext. #304</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      loadRecommendations();
+    });
+
+    async function loadRecommendations() {
+      try {
+        const res = await api.getLatestPrediction();
+        if (res && res.success && res.data && res.data.recommendations) {
+          const r = res.data.recommendations;
+          const p = res.data.prediction;
+
+          document.getElementById('primary-action-text').textContent = r.primaryAction || 'Maintain regular rest cycles and keep up regular check-ins.';
+          document.getElementById('rec-concern-badge').innerHTML = Utils.getConcernBadge(r.concernLevel || p.concernLevel);
+
+          const container = document.getElementById('action-items-container');
+          if (r.actionItems && r.actionItems.length > 0) {
+            container.innerHTML = r.actionItems.map(item => `
+              <div class="card" style="background:var(--bg-card-subtle); border-top: 3px solid ${item.priority === 'HIGH' ? 'var(--risk-high)' : 'var(--accent)'};">
+                <div class="d-flex justify-between align-center mb-1">
+                  <span class="badge badge-neutral">${item.category}</span>
+                  <span class="badge badge-${item.priority.toLowerCase()}">${item.priority} Priority</span>
+                </div>
+                <h4 style="margin: 0.5rem 0 0.25rem;">${item.title}</h4>
+                <p class="text-muted" style="font-size:0.85rem; line-height:1.5;">${item.description}</p>
+              </div>
+            `).join('');
+          } else {
+            container.innerHTML = `<div class="text-muted py-3">All indicators optimal. Continue regular wellness habits.</div>`;
+          }
+        } else {
+          document.getElementById('primary-action-text').textContent = 'Please complete an initial check-in to generate tailored recommendations.';
+          document.getElementById('action-items-container').innerHTML = `
+            <div class="text-center py-4">
+              <a href="/stress-checkin.html" class="btn btn-primary">Start Initial Check-in &rarr;</a>
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Error loading recommendations:', err);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personnel Registration — SIH26186 Welfare Platform</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <div class="gov-top-bar">
+    <div><strong>Ministry of Home Affairs</strong> • Police II Division / CRPF Welfare Directorate</div>
+    <div><span>SIH26186 Welfare Platform</span></div>
+  </div>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">DEMO REGISTRATION</span>
+      <span>Registered accounts are stored permanently in the database and remain valid across restarts and logouts.</span>
+    </div>
+  </div>
+
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2.5rem 1.5rem;">
+    <div class="card" style="max-width: 540px; width: 100%; box-shadow: var(--shadow-xl);">
+      <div class="text-center mb-3">
+        <a href="/" class="brand-logo" style="justify-content: center; margin-bottom: 0.75rem;">
+          <div class="brand-icon">🛡️</div>
+          <div>PRAHARI WELFARE</div>
+        </a>
+        <h2>Create Personnel Account</h2>
+        <p class="text-muted" style="font-size: 0.85rem;">Uniformed Personnel Welfare Enrollment</p>
+      </div>
+
+      <div id="signup-alert-container"></div>
+
+      <form id="signup-form">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="personnelId">Personnel ID / Service No. *</label>
+            <input type="text" id="personnelId" class="form-control" placeholder="e.g. CRPF-9088" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fullName">Full Name *</label>
+            <input type="text" id="fullName" class="form-control" placeholder="e.g. Vikram Sharma" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Official Email Address *</label>
+          <input type="email" id="email" class="form-control" placeholder="e.g. vikram.sharma@crpf.gov.in" required>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="rank">Rank / Designation</label>
+            <select id="rank" class="form-select">
+              <option value="Constable">Constable</option>
+              <option value="Head Constable" selected>Head Constable</option>
+              <option value="Assistant Sub-Inspector">Assistant Sub-Inspector (ASI)</option>
+              <option value="Sub-Inspector">Sub-Inspector (SI)</option>
+              <option value="Inspector">Inspector</option>
+              <option value="Assistant Commandant">Assistant Commandant</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="unit">Battalion / Unit</label>
+            <input type="text" id="unit" class="form-control" value="CRPF Battalion 104" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="password">Account Password *</label>
+            <input type="password" id="password" class="form-control" placeholder="Min. 6 characters" required minlength="6">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirm Password *</label>
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Re-enter password" required minlength="6">
+          </div>
+        </div>
+
+        <div class="form-group" style="font-size: 0.8rem; color: var(--text-muted);">
+          By registering, you confirm that your check-in submissions will be used for welfare support only and not for disciplinary action.
+        </div>
+
+        <button type="submit" id="signup-submit-btn" class="btn btn-primary w-100 mb-3" style="padding: 0.75rem;">
+          Complete Registration
+        </button>
+      </form>
+
+      <div class="text-center mt-2" style="font-size: 0.85rem; color: var(--text-secondary);">
+        Already registered? <a href="/login.html" style="font-weight: 600;">Sign In here</a>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 1rem; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color);">
+    &copy; 2026 Ministry of Home Affairs • CRPF Welfare Decision-Support System
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('signup-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('signup-submit-btn');
+        const alertContainer = document.getElementById('signup-alert-container');
+        alertContainer.innerHTML = '';
+
+        const personnelId = document.getElementById('personnelId').value.trim();
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const rank = document.getElementById('rank').value;
+        const unit = document.getElementById('unit').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+          alertContainer.innerHTML = `
+            <div class="alert alert-danger">
+              Passwords do not match. Please re-enter carefully.
+            </div>
+          `;
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<div class="spinner"></div> Registering Account...`;
+
+        try {
+          const res = await api.register({
+            personnelId,
+            fullName,
+            email,
+            rank,
+            unit,
+            password,
+            role: 'PERSONNEL'
+          });
+
+          if (res && res.success) {
+            Utils.showToast('Account registered permanently! Entering dashboard...', 'success');
+            setTimeout(() => {
+              window.location.href = '/dashboard.html';
+            }, 700);
+          }
+        } catch (err) {
+          alertContainer.innerHTML = `
+            <div class="alert alert-danger">
+              ${err.message || 'Registration failed. Please check your inputs.'}
+            </div>
+          `;
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `Complete Registration`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

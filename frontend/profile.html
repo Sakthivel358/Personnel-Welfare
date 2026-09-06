@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personnel Welfare Profile — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <style>
+    .profile-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .profile-tab-btn {
+      padding: 0.6rem 1.1rem;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    .profile-tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-card-subtle);
+    }
+    .profile-tab-btn.active {
+      color: var(--accent);
+      background: var(--bg-card-subtle);
+      border-bottom: 3px solid var(--accent);
+    }
+    .profile-section-pane {
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+    .profile-section-pane.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">DEMO / SYNTHETIC DATA</span>
+      <span>Decision-support platform for uniformed forces. Not a medical diagnosis.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item active"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">🔄</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recovery-journey.html"><span class="menu-icon">🌱</span> Recovery Journey</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> Longitudinal Trajectory</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar" id="sidebar-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name" id="sidebar-user-name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role" id="sidebar-user-role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Personnel Welfare Profile</div>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Profile Completion Card -->
+        <div class="card mb-3" style="max-width: 960px; margin: 0 auto 1.5rem;">
+          <div class="d-flex justify-between align-center mb-2 flex-wrap gap-1">
+            <div>
+              <h3 style="margin-bottom:0.2rem;">Personnel Information Registry</h3>
+              <p class="text-muted" style="font-size:0.85rem; margin-bottom:0;">
+                Official service baseline context. Current duty/workload telemetry is strictly captured during <strong>Stress Check-in</strong>.
+              </p>
+            </div>
+            <div class="d-flex align-center gap-1">
+              <span class="text-muted" style="font-size:0.85rem;">Profile Completion:</span>
+              <span id="profile-pct-badge" class="badge badge-low" style="font-size:0.9rem;">100%</span>
+            </div>
+          </div>
+          <div class="progress-bar-bg" style="height: 6px;">
+            <div id="profile-progress-bar" class="progress-bar-fill" style="width: 100%; background: var(--accent);"></div>
+          </div>
+        </div>
+
+        <div class="card" style="max-width: 960px; margin: 0 auto;">
+          <!-- 4 Clean Tabs -->
+          <div class="profile-tabs">
+            <button class="profile-tab-btn active" onclick="switchProfileTab('personal', this)">
+              <span>👤</span> 1. Personal Information
+            </button>
+            <button class="profile-tab-btn" onclick="switchProfileTab('service', this)">
+              <span>🎖️</span> 2. Service Information
+            </button>
+            <button class="profile-tab-btn" onclick="switchProfileTab('professional', this)">
+              <span>🛠️</span> 3. Professional Information
+            </button>
+            <button class="profile-tab-btn" onclick="switchProfileTab('welfare', this)">
+              <span>🌱</span> 4. Welfare & Communication
+            </button>
+          </div>
+
+          <form id="profile-form">
+            <!-- 1. PERSONAL TAB -->
+            <div id="tab-personal" class="profile-section-pane active">
+              <h3 class="mb-3" style="font-size: 1.05rem;">Personal & Emergency Contact Details</h3>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="prof_personnelId">Personnel Service ID (Immutable)</label>
+                  <input type="text" id="prof_personnelId" class="form-control" disabled style="background:var(--bg-card-subtle);">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_email">Official Service Email (Immutable)</label>
+                  <input type="email" id="prof_email" class="form-control" disabled style="background:var(--bg-card-subtle);">
+                </div>
+              </div>
+
+              <div class="grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="prof_fullName">Full Legal Name *</label>
+                  <input type="text" id="prof_fullName" class="form-control" required oninput="calculateProfileCompletion()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_phone">Official Contact Number *</label>
+                  <input type="tel" id="prof_phone" class="form-control" placeholder="+91-9876543210" oninput="calculateProfileCompletion()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_dob">Date of Birth</label>
+                  <input type="date" id="prof_dob" class="form-control" oninput="calculateProfileCompletion()">
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="prof_gender">Gender</label>
+                  <select id="prof_gender" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other / Prefer not to specify</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_lang">Preferred Support Language</label>
+                  <select id="prof_lang" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="English">English</option>
+                    <option value="Hindi">Hindi (हिन्दी)</option>
+                    <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                    <option value="Bengali">Bengali (বাংলা)</option>
+                    <option value="Tamil">Tamil (தமிழ்)</option>
+                    <option value="Telugu">Telugu (తెలుగు)</option>
+                    <option value="Marathi">Marathi (मराठी)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Emergency Contact Subcard -->
+              <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1rem; border:1px solid var(--border-color);">
+                <h4 style="font-size:0.95rem; margin-bottom:0.75rem;">🚨 Designated Emergency / Family Contact</h4>
+                <div class="grid-3">
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="prof_em_name">Contact Name</label>
+                    <input type="text" id="prof_em_name" class="form-control" value="Sunita Kumar" oninput="calculateProfileCompletion()">
+                  </div>
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="prof_em_rel">Relationship</label>
+                    <input type="text" id="prof_em_rel" class="form-control" value="Spouse" oninput="calculateProfileCompletion()">
+                  </div>
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="prof_em_phone">Emergency Phone Number</label>
+                    <input type="text" id="prof_em_phone" class="form-control" value="+91-9876543210" oninput="calculateProfileCompletion()">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. SERVICE TAB -->
+            <div id="tab-service" class="profile-section-pane">
+              <h3 class="mb-3" style="font-size: 1.05rem;">Service & Posting Information</h3>
+              <div class="grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="prof_rank">Rank / Designation *</label>
+                  <input type="text" id="prof_rank" class="form-control" required oninput="calculateProfileCompletion()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_force">Force / Organization</label>
+                  <select id="prof_force" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="CRPF">Central Reserve Police Force (CRPF)</option>
+                    <option value="BSF">Border Security Force (BSF)</option>
+                    <option value="CISF">Central Industrial Security Force (CISF)</option>
+                    <option value="ITBP">Indo-Tibetan Border Police (ITBP)</option>
+                    <option value="SSB">Sashastra Seema Bal (SSB)</option>
+                    <option value="Assam Rifles">Assam Rifles (AR)</option>
+                    <option value="State Police">State Police / Armed Constabulary</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_unit">Battalion / Unit Assignment *</label>
+                  <input type="text" id="prof_unit" class="form-control" required oninput="calculateProfileCompletion()">
+                </div>
+              </div>
+
+              <div class="grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="prof_joiningDate">Service Joining Date</label>
+                  <input type="date" id="prof_joiningDate" class="form-control" oninput="calculateProfileCompletion()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_service">Total Active Service (Years)</label>
+                  <input type="number" id="prof_service" class="form-control" min="0" max="45" value="5" oninput="calculateProfileCompletion()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_serviceCategory">Service Category</label>
+                  <select id="prof_serviceCategory" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="Combatant">Combatant / Executive Cadre</option>
+                    <option value="Technical">Technical & Signals</option>
+                    <option value="Logistics">Logistics & Supply</option>
+                    <option value="Medical">Medical Staff & Paramedic</option>
+                    <option value="Ministerial">Ministerial & Clerical</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="prof_postingType">Posting Type</label>
+                  <select id="prof_postingType" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="Field Posting">Field Operational Posting</option>
+                    <option value="Static Station">Static Station / Guard</option>
+                    <option value="Peace Station">Peace Station / Training Depot</option>
+                    <option value="Deputation">Inter-Agency Deputation</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_zone">Current Deployment Sector</label>
+                  <select id="prof_zone" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="Northern Sector (High Altitude)">Northern Sector (High Altitude)</option>
+                    <option value="Eastern Sector (Remote/Dense Terrain)">Eastern Sector (Remote/Dense Terrain)</option>
+                    <option value="Western Sector (Border Surveillance)">Western Sector (Border Surveillance)</option>
+                    <option value="Southern Sector (Peace/Urban)">Southern Sector (Peace/Urban)</option>
+                    <option value="Central Reserve / HQ">Central Reserve / HQ</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_currentLocation">Base Location / City</label>
+                  <input type="text" id="prof_currentLocation" class="form-control" value="Srinagar Sector" oninput="calculateProfileCompletion()">
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. PROFESSIONAL TAB -->
+            <div id="tab-professional" class="profile-section-pane">
+              <h3 class="mb-3" style="font-size: 1.05rem;">Professional Role, Qualifications & Certifications</h3>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="prof_primaryDuty">Primary Duty Type</label>
+                  <select id="prof_primaryDuty" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="Patrol & Active Security">Patrol & Active Security Duty</option>
+                    <option value="Quick Reaction Team (QRT)">Quick Reaction Team (QRT)</option>
+                    <option value="Convoy Escort & Guard">Convoy Escort & Guard</option>
+                    <option value="Signals & Telecommunications">Signals & Telecommunications</option>
+                    <option value="Headquarters Administration">Headquarters Administration</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_secondaryDuty">Secondary Operational Responsibility</label>
+                  <input type="text" id="prof_secondaryDuty" class="form-control" value="Armory Inventory & Vehicle Inspection" oninput="calculateProfileCompletion()">
+                </div>
+              </div>
+
+              <div class="grid-3">
+                <div class="form-group">
+                  <label class="form-label" for="prof_qualification">Educational Qualification</label>
+                  <select id="prof_qualification" class="form-select" onchange="calculateProfileCompletion()">
+                    <option value="Higher Secondary (10+2)">Higher Secondary (10+2)</option>
+                    <option value="Graduate (Bachelor's Degree)">Graduate (Bachelor's Degree)</option>
+                    <option value="Post Graduate">Post Graduate</option>
+                    <option value="Technical Diploma">Technical Diploma</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_trainingCompleted">Specialized Training Completed</label>
+                  <input type="text" id="prof_trainingCompleted" class="form-control" value="Counter-Insurgency & Jungle Warfare" oninput="calculateProfileCompletion()">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_certifications">Certifications Held</label>
+                  <input type="text" id="prof_certifications" class="form-control" value="High Altitude Survival, Tactical First Aid" oninput="calculateProfileCompletion()">
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. WELFARE & COMMUNICATION TAB -->
+            <div id="tab-welfare" class="profile-section-pane">
+              <h3 class="mb-3" style="font-size: 1.05rem;">Welfare Communication & Privacy Preferences</h3>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="prof_preferredSupportChannel">Preferred Support Channel</label>
+                  <select id="prof_preferredSupportChannel" class="form-select">
+                    <option value="In-App Notification">In-App Notification & Bell Only</option>
+                    <option value="Officer In-Person Consultation">Unit Welfare Officer In-Person</option>
+                    <option value="Confidential Tele-Counseling">Confidential Tele-Counseling Desk</option>
+                    <option value="Secure Intranet Email">Secure Intranet Email</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="prof_preferredContactTime">Preferred Contact Time Window</label>
+                  <select id="prof_preferredContactTime" class="form-select">
+                    <option value="Evening (Post-Duty Decompression)">Evening (Post-Duty Decompression)</option>
+                    <option value="Morning (Pre-Shift Briefing)">Morning (Pre-Shift Briefing)</option>
+                    <option value="Rest Days Only">Rest Days / Off-Duty Hours Only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1.25rem; border:1px solid var(--border-color);">
+                <div class="d-flex align-center gap-1 mb-3">
+                  <input type="checkbox" id="pref_officerShare" checked style="transform: scale(1.2);">
+                  <div>
+                    <strong>Share Aggregate Welfare Index with Battalion Welfare Desk</strong>
+                    <div class="text-muted" style="font-size:0.8rem;">Enables Unit Welfare Officers to extend voluntary peer and counseling resources.</div>
+                  </div>
+                </div>
+
+                <div class="d-flex align-center gap-1">
+                  <input type="checkbox" id="pref_anonStats" checked style="transform: scale(1.2);">
+                  <div>
+                    <strong>Contribute Anonymized Statistics to Force-Level Research</strong>
+                    <div class="text-muted" style="font-size:0.8rem;">Fully de-identified telemetry used only to improve model calibration and force welfare policy.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-between align-center mt-3 pt-3" style="border-top: 1px solid var(--border-color);">
+              <button type="button" class="btn btn-secondary" onclick="loadProfileData()">Cancel / Reset</button>
+              <button type="submit" id="save-profile-btn" class="btn btn-primary">Save Profile Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    function switchProfileTab(tabName, btn) {
+      document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.profile-section-pane').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      const targetPane = document.getElementById(`tab-${tabName}`);
+      if (targetPane) targetPane.classList.add('active');
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await checkAuth('PERSONNEL');
+      if (!user) return;
+      loadProfileData();
+
+      document.getElementById('profile-form').addEventListener('submit', handleSaveProfile);
+    });
+
+    async function loadProfileData() {
+      try {
+        const res = await api.getProfile();
+        if (res && res.success && res.data) {
+          const p = res.data;
+          document.getElementById('prof_personnelId').value = p.personnelId || '';
+          document.getElementById('prof_email').value = p.email || '';
+          document.getElementById('prof_fullName').value = p.fullName || '';
+          document.getElementById('prof_phone').value = p.phone || '+91-9876543210';
+          if (p.dob) document.getElementById('prof_dob').value = p.dob;
+          if (p.gender) document.getElementById('prof_gender').value = p.gender;
+          if (p.preferredSupportLanguage) document.getElementById('prof_lang').value = p.preferredSupportLanguage;
+
+          // Emergency Contact
+          if (p.emergencyContact) {
+            if (p.emergencyContact.name) document.getElementById('prof_em_name').value = p.emergencyContact.name;
+            if (p.emergencyContact.relationship) document.getElementById('prof_em_rel').value = p.emergencyContact.relationship;
+            if (p.emergencyContact.phone) document.getElementById('prof_em_phone').value = p.emergencyContact.phone;
+          }
+
+          // Service Info
+          document.getElementById('prof_rank').value = p.rank || 'Havildar';
+          if (p.force) document.getElementById('prof_force').value = p.force;
+          document.getElementById('prof_unit').value = p.unit || 'CRPF Battalion 104';
+          if (p.joiningDate) document.getElementById('prof_joiningDate').value = p.joiningDate;
+          document.getElementById('prof_service').value = p.yearsOfService !== undefined ? p.yearsOfService : 5;
+          if (p.serviceCategory) document.getElementById('prof_serviceCategory').value = p.serviceCategory;
+          if (p.postingType) document.getElementById('prof_postingType').value = p.postingType;
+          if (p.deploymentZone) document.getElementById('prof_zone').value = p.deploymentZone;
+          if (p.currentLocation) document.getElementById('prof_currentLocation').value = p.currentLocation;
+
+          // Professional Info
+          if (p.primaryDuty) document.getElementById('prof_primaryDuty').value = p.primaryDuty;
+          if (p.secondaryDuty) document.getElementById('prof_secondaryDuty').value = p.secondaryDuty;
+          if (p.qualification) document.getElementById('prof_qualification').value = p.qualification;
+          if (p.trainingCompleted) document.getElementById('prof_trainingCompleted').value = p.trainingCompleted;
+          if (p.certifications) document.getElementById('prof_certifications').value = p.certifications;
+
+          // Welfare Info
+          if (p.preferredSupportChannel) document.getElementById('prof_preferredSupportChannel').value = p.preferredSupportChannel;
+          if (p.preferredContactTime) document.getElementById('prof_preferredContactTime').value = p.preferredContactTime;
+
+          // Privacy Preferences
+          if (p.privacyPreferences) {
+            document.getElementById('pref_officerShare').checked = p.privacyPreferences.shareWithWelfareOfficer !== false;
+            document.getElementById('pref_anonStats').checked = p.privacyPreferences.anonymousAggregatedStats !== false;
+          }
+
+          calculateProfileCompletion();
+        }
+      } catch (err) {
+        console.error('Failed to load profile:', err);
+        Utils.showToast('Failed to load profile details.', 'error');
+      }
+    }
+
+    function calculateProfileCompletion() {
+      const fields = [
+        'prof_fullName', 'prof_phone', 'prof_rank', 'prof_unit', 'prof_em_name',
+        'prof_em_phone', 'prof_currentLocation', 'prof_trainingCompleted'
+      ];
+      let filled = 0;
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value.trim() !== '') filled++;
+      });
+      const pct = Math.round((filled / fields.length) * 100);
+      const badge = document.getElementById('profile-pct-badge');
+      const bar = document.getElementById('profile-progress-bar');
+      if (badge) badge.textContent = `${pct}%`;
+      if (bar) bar.style.width = `${pct}%`;
+    }
+
+    async function handleSaveProfile(e) {
+      e.preventDefault();
+      const btn = document.getElementById('save-profile-btn');
+      btn.disabled = true;
+      btn.textContent = 'Saving Changes...';
+
+      const payload = {
+        fullName: document.getElementById('prof_fullName').value.trim(),
+        phone: document.getElementById('prof_phone').value.trim(),
+        dob: document.getElementById('prof_dob').value,
+        gender: document.getElementById('prof_gender').value,
+        preferredSupportLanguage: document.getElementById('prof_lang').value,
+        rank: document.getElementById('prof_rank').value.trim(),
+        force: document.getElementById('prof_force').value,
+        unit: document.getElementById('prof_unit').value.trim(),
+        joiningDate: document.getElementById('prof_joiningDate').value,
+        yearsOfService: Number(document.getElementById('prof_service').value),
+        serviceCategory: document.getElementById('prof_serviceCategory').value,
+        postingType: document.getElementById('prof_postingType').value,
+        deploymentZone: document.getElementById('prof_zone').value,
+        currentLocation: document.getElementById('prof_currentLocation').value.trim(),
+        primaryDuty: document.getElementById('prof_primaryDuty').value,
+        secondaryDuty: document.getElementById('prof_secondaryDuty').value.trim(),
+        qualification: document.getElementById('prof_qualification').value,
+        trainingCompleted: document.getElementById('prof_trainingCompleted').value.trim(),
+        certifications: document.getElementById('prof_certifications').value.trim(),
+        preferredSupportChannel: document.getElementById('prof_preferredSupportChannel').value,
+        preferredContactTime: document.getElementById('prof_preferredContactTime').value,
+        emergencyContact: {
+          name: document.getElementById('prof_em_name').value.trim(),
+          relationship: document.getElementById('prof_em_rel').value.trim(),
+          phone: document.getElementById('prof_em_phone').value.trim()
+        },
+        privacyPreferences: {
+          shareWithWelfareOfficer: document.getElementById('pref_officerShare').checked,
+          anonymousAggregatedStats: document.getElementById('pref_anonStats').checked,
+          notificationChannel: 'IN_APP'
+        }
+      };
+
+      try {
+        const res = await api.updateProfile(payload);
+        if (res && res.success) {
+          Utils.showToast('Profile updated and saved successfully!', 'success');
+          // Immediately update sidebar user info
+          if (currentUser) {
+            currentUser.fullName = payload.fullName;
+            currentUser.rank = payload.rank;
+            currentUser.unit = payload.unit;
+            updateUserUI(currentUser);
+          }
+          calculateProfileCompletion();
+        } else {
+          Utils.showToast(res.message || 'Failed to save profile.', 'error');
+        }
+      } catch (err) {
+        console.error('Profile update error:', err);
+        Utils.showToast(err.message || 'Failed to save profile.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Profile Changes';
+      }
+    }
+  </script>
+</body>
+</html>

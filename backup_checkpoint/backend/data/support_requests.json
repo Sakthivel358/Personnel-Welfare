@@ -1,0 +1,13 @@
+[
+  {
+    "_id": "8f1b4b05f03bfd434e6f84ff",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "CONFIDENTIAL_COUNSELING",
+    "urgency": "ROUTINE",
+    "notes": "",
+    "status": "OPEN",
+    "createdAt": "2026-09-06T04:18:51.566Z",
+    "updatedAt": "2026-09-06T04:18:51.566Z"
+  }
+]

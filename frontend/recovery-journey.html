@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recovery Journey Lifecycle — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">RECOVERY JOURNEY</span>
+      <span>Continuous welfare progression: Detection &rarr; Guidance &rarr; Human Review &rarr; Follow-up &rarr; Re-Analysis.</span>
+    </div>
+    <button class="theme-toggle btn btn-sm btn-secondary">🌙</button>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Recovery Lifecycle</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Welfare Analytics</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-result.html"><span class="menu-icon">🔍</span> Why This Result?</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">⚖️</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> Welfare Trajectory</a></li>
+        <li class="menu-item"><a href="/early-warning.html"><span class="menu-icon">⚠️</span> Early-Warning Center</a></li>
+        <li class="menu-item active"><a href="/recovery-journey.html"><span class="menu-icon">🔄</span> Recovery Journey</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Personal Welfare Recovery Journey</div>
+        </div>
+        <div class="topbar-right">
+          <a href="/stress-checkin.html" class="btn btn-sm btn-primary">+ Subsequent Check-in</a>
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container">
+        <!-- Overview Banner -->
+        <div class="card mb-3" style="background: linear-gradient(135deg, #1e3a8a, #0f172a); color: #fff;">
+          <div class="d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h2>End-to-End Welfare Support & Recovery Lifecycle</h2>
+              <p style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.25rem;">
+                Tracks your complete journey from early stress identification through supportive guidance, human officer consultation, and subsequent check-in trajectory updates.
+              </p>
+              <div class="d-flex gap-1 align-center mt-2">
+                <span class="badge badge-low" id="journey-progress-badge">Stage -- of 6 Completed</span>
+                <span class="text-muted" style="font-size:0.8rem; color:#94a3b8;">Strictly non-punitive welfare tracking</span>
+              </div>
+            </div>
+            <div class="d-flex gap-1 flex-wrap">
+              <button id="btn-sim-officer" class="btn btn-sm btn-outline" style="background:rgba(255,255,255,0.15); color:#fff; border-color:rgba(255,255,255,0.3);" onclick="simulateOfficerReview()">
+                ⚡ Simulate Officer Review & Follow-Up
+              </button>
+              <a href="/stress-checkin.html" class="btn btn-sm btn-primary">
+                + Submit Subsequent Check-in
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Explanatory Callout: Why is Stage 4/5 Pending? -->
+        <div class="card mb-3" style="border-left: 4px solid var(--accent); background: var(--bg-card-subtle);">
+          <div class="d-flex justify-between align-center mb-1">
+            <h4 style="font-size: 0.95rem;">ℹ️ Understanding the 6-Stage Welfare Lifecycle</h4>
+            <span class="badge badge-neutral">Operational Protocol</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.5rem;">
+            In operational armed forces deployment, when a stress signal is flagged (Stages 1 & 2), the <strong>Human-in-the-Loop Officer Review</strong> (Stage 4) requires the Unit Welfare Officer to confidentially acknowledge the report before assigning a follow-up consultation (Stage 5). This prevents automated disciplinary conclusions.
+          </p>
+          <div style="font-size: 0.85rem; color: var(--accent); font-weight: 600;">
+            👉 To test or demonstrate this progression without logging into the Welfare Officer portal, click the <strong>"⚡ Simulate Officer Review & Follow-Up"</strong> button above.
+          </div>
+        </div>
+
+        <!-- 6-Stage Interactive Vertical Timeline -->
+        <div class="card mb-3">
+          <div id="journey-stages-container" style="display:flex; flex-direction:column; gap:1.25rem;">
+            <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
+          </div>
+        </div>
+
+        <!-- Next Actions Navigation -->
+        <div class="d-flex justify-between align-center">
+          <a href="/dashboard.html" class="btn btn-secondary">&larr; Return to Dashboard</a>
+          <div class="d-flex gap-1">
+            <a href="/support.html" class="btn btn-secondary">🤝 Request Support</a>
+            <a href="/trends.html" class="btn btn-primary">View Longitudinal Trajectory &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth('PERSONNEL');
+      loadRecoveryJourney();
+    });
+
+    async function loadRecoveryJourney() {
+      try {
+        const res = await api.request('/followups/journey', { method: 'GET' });
+        if (res && res.success && res.data) {
+          const { stages, currentStageIndex } = res.data;
+          document.getElementById('journey-progress-badge').textContent = `Stage ${currentStageIndex} of 6 Completed`;
+
+          const container = document.getElementById('journey-stages-container');
+          container.innerHTML = stages.map(s => {
+            const isDone = s.status === 'COMPLETED';
+            const isCurrent = s.status === 'IN_PROGRESS';
+            const isPending = s.status === 'PENDING' || s.status === 'NOT_STARTED';
+            const badgeClass = isDone ? 'badge-low' : isCurrent ? 'badge-moderate' : 'badge-neutral';
+            const borderColor = isDone ? 'var(--risk-low)' : isCurrent ? 'var(--risk-mod)' : 'var(--border-color)';
+
+            return `
+              <div class="card" style="border-left: 4px solid ${borderColor}; background: ${isDone ? 'var(--bg-card)' : 'var(--bg-card-subtle)'}; padding: 1.25rem;">
+                <div class="d-flex justify-between align-center mb-1">
+                  <div class="d-flex align-center gap-1">
+                    <span style="font-size:1.2rem;">${isDone ? '✅' : (isCurrent ? '⏳' : '⚪')}</span>
+                    <h4 style="color: ${isDone ? 'var(--text-primary)' : 'var(--text-secondary)'}; font-size:1rem;">${s.title}</h4>
+                  </div>
+                  <span class="badge ${badgeClass}">${s.status.replace(/_/g, ' ')}</span>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; line-height:1.5;">${s.description}</p>
+                ${s.date ? `<div class="text-muted" style="font-size:0.75rem;">Recorded Milestone: ${Utils.formatDate(s.date)}</div>` : ''}
+                ${isPending && (s.key === 'HUMAN_REVIEW' || s.key === 'FOLLOW_UP_SCHEDULED') ? `
+                  <div class="mt-2 pt-2" style="border-top:1px dashed var(--border-color); font-size:0.8rem; color:var(--text-muted);">
+                    <em>Status is pending confidential review by Unit Welfare Officer. Click "Simulate Officer Review" at top to advance this stage.</em>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        console.error('Error loading recovery journey:', err);
+      }
+    }
+
+    async function simulateOfficerReview() {
+      const btn = document.getElementById('btn-sim-officer');
+      btn.disabled = true;
+      btn.textContent = 'Simulating Officer Triage...';
+
+      try {
+        const res = await api.request('/followups/simulate-review', { method: 'POST' });
+        if (res && res.success) {
+          Utils.showToast('Unit Welfare Officer review & follow-up consultation scheduled!', 'success');
+          await loadRecoveryJourney();
+        } else {
+          Utils.showToast(res.message || 'Failed to simulate officer review.', 'error');
+        }
+      } catch (err) {
+        console.error('Simulation error:', err);
+        Utils.showToast(err.message || 'Simulation error.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '⚡ Simulate Officer Review & Follow-Up';
+      }
+    }
+  </script>
+</body>
+</html>

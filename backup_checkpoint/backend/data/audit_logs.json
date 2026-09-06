@@ -1,0 +1,477 @@
+[
+  {
+    "_id": "34905ee410f8370e7dee25ae",
+    "action": "USER_REGISTER",
+    "performedBy": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "targetResource": "Users",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "test.1788667523547@crpf.gov.in"
+    },
+    "timestamp": "2026-09-06T04:05:23.660Z",
+    "createdAt": "2026-09-06T04:05:23.661Z",
+    "updatedAt": "2026-09-06T04:05:23.661Z"
+  },
+  {
+    "_id": "34c27bb96f490ce67f1159b0",
+    "action": "USER_LOGIN",
+    "performedBy": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:05:23.811Z",
+    "createdAt": "2026-09-06T04:05:23.812Z",
+    "updatedAt": "2026-09-06T04:05:23.812Z"
+  },
+  {
+    "_id": "56f5699da7fec57e771cefc0",
+    "action": "PROFILE_UPDATE",
+    "performedBy": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "targetResource": "Personnel",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {},
+    "timestamp": "2026-09-06T04:05:23.847Z",
+    "createdAt": "2026-09-06T04:05:23.848Z",
+    "updatedAt": "2026-09-06T04:05:23.848Z"
+  },
+  {
+    "_id": "9db1626b9e4c3769885de7e5",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "HIGH",
+      "compositeRiskScore": 77.4,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T04:05:24.061Z",
+    "createdAt": "2026-09-06T04:05:24.061Z",
+    "updatedAt": "2026-09-06T04:05:24.061Z"
+  },
+  {
+    "_id": "de647457b67af796bf4f51c7",
+    "action": "USER_LOGIN",
+    "performedBy": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:05:24.247Z",
+    "createdAt": "2026-09-06T04:05:24.248Z",
+    "updatedAt": "2026-09-06T04:05:24.248Z"
+  },
+  {
+    "_id": "23d467d8bb45f84b184243dc",
+    "action": "USER_LOGIN",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "WELFARE_OFFICER"
+    },
+    "timestamp": "2026-09-06T04:05:24.391Z",
+    "createdAt": "2026-09-06T04:05:24.391Z",
+    "updatedAt": "2026-09-06T04:05:24.391Z"
+  },
+  {
+    "_id": "61163a01c4bcc82817f84bfa",
+    "action": "ALERT_REVIEWED",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-TEST-3547",
+    "targetResource": "Alerts",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "newStatus": "FOLLOW_UP_ASSIGNED",
+      "followUpAssigned": true
+    },
+    "timestamp": "2026-09-06T04:05:24.411Z",
+    "createdAt": "2026-09-06T04:05:24.412Z",
+    "updatedAt": "2026-09-06T04:05:24.412Z"
+  },
+  {
+    "_id": "c08060b362f0ddfe8f0b4451",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 5.7,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T04:05:24.465Z",
+    "createdAt": "2026-09-06T04:05:24.465Z",
+    "updatedAt": "2026-09-06T04:05:24.465Z"
+  },
+  {
+    "_id": "f31f3d6fe3d88df4147a8c6b",
+    "action": "USER_LOGIN",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "ADMIN"
+    },
+    "timestamp": "2026-09-06T04:05:24.599Z",
+    "createdAt": "2026-09-06T04:05:24.599Z",
+    "updatedAt": "2026-09-06T04:05:24.599Z"
+  },
+  {
+    "_id": "d6dae78a2d02167ff24f1f32",
+    "action": "USER_LOGIN",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:06:01.649Z",
+    "createdAt": "2026-09-06T04:06:01.649Z",
+    "updatedAt": "2026-09-06T04:06:01.649Z"
+  },
+  {
+    "_id": "f789b1643210de71b4c892ed",
+    "action": "USER_REGISTER",
+    "performedBy": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "targetResource": "Users",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "test.1788667579796@crpf.gov.in"
+    },
+    "timestamp": "2026-09-06T04:06:19.876Z",
+    "createdAt": "2026-09-06T04:06:19.876Z",
+    "updatedAt": "2026-09-06T04:06:19.876Z"
+  },
+  {
+    "_id": "542f81bc2dbccb960618f62a",
+    "action": "USER_LOGIN",
+    "performedBy": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:06:19.967Z",
+    "createdAt": "2026-09-06T04:06:19.967Z",
+    "updatedAt": "2026-09-06T04:06:19.967Z"
+  },
+  {
+    "_id": "440335b7cdb8de8426e74000",
+    "action": "PROFILE_UPDATE",
+    "performedBy": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "targetResource": "Personnel",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {},
+    "timestamp": "2026-09-06T04:06:19.982Z",
+    "createdAt": "2026-09-06T04:06:19.982Z",
+    "updatedAt": "2026-09-06T04:06:19.982Z"
+  },
+  {
+    "_id": "787a2fface11d6d43f5a5768",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "HIGH",
+      "compositeRiskScore": 77.4,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T04:06:20.012Z",
+    "createdAt": "2026-09-06T04:06:20.012Z",
+    "updatedAt": "2026-09-06T04:06:20.012Z"
+  },
+  {
+    "_id": "a5f92b22cebd7616c4474c52",
+    "action": "USER_LOGIN",
+    "performedBy": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:06:20.115Z",
+    "createdAt": "2026-09-06T04:06:20.115Z",
+    "updatedAt": "2026-09-06T04:06:20.115Z"
+  },
+  {
+    "_id": "71a93b10d96039f0831640e1",
+    "action": "USER_LOGIN",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "WELFARE_OFFICER"
+    },
+    "timestamp": "2026-09-06T04:06:20.205Z",
+    "createdAt": "2026-09-06T04:06:20.206Z",
+    "updatedAt": "2026-09-06T04:06:20.206Z"
+  },
+  {
+    "_id": "4b77546292a75259bbdeac54",
+    "action": "ALERT_REVIEWED",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-TEST-9796",
+    "targetResource": "Alerts",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "newStatus": "FOLLOW_UP_ASSIGNED",
+      "followUpAssigned": true
+    },
+    "timestamp": "2026-09-06T04:06:20.222Z",
+    "createdAt": "2026-09-06T04:06:20.222Z",
+    "updatedAt": "2026-09-06T04:06:20.222Z"
+  },
+  {
+    "_id": "3305bb1068f710f69e582772",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 5.7,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T04:06:20.248Z",
+    "createdAt": "2026-09-06T04:06:20.248Z",
+    "updatedAt": "2026-09-06T04:06:20.248Z"
+  },
+  {
+    "_id": "c129ab0f6fe5444464bf069e",
+    "action": "USER_LOGIN",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "ADMIN"
+    },
+    "timestamp": "2026-09-06T04:06:20.347Z",
+    "createdAt": "2026-09-06T04:06:20.347Z",
+    "updatedAt": "2026-09-06T04:06:20.347Z"
+  },
+  {
+    "_id": "1dd8c2b61413412a957c69b2",
+    "action": "USER_REGISTER",
+    "performedBy": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "targetResource": "Users",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "test.1788667862888@crpf.gov.in"
+    },
+    "timestamp": "2026-09-06T04:11:02.951Z",
+    "createdAt": "2026-09-06T04:11:02.952Z",
+    "updatedAt": "2026-09-06T04:11:02.952Z"
+  },
+  {
+    "_id": "0454006810010607b539b119",
+    "action": "USER_LOGIN",
+    "performedBy": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:11:03.013Z",
+    "createdAt": "2026-09-06T04:11:03.013Z",
+    "updatedAt": "2026-09-06T04:11:03.013Z"
+  },
+  {
+    "_id": "89a19df987c23bc9a8c6beeb",
+    "action": "PROFILE_UPDATE",
+    "performedBy": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "targetResource": "Personnel",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {},
+    "timestamp": "2026-09-06T04:11:03.021Z",
+    "createdAt": "2026-09-06T04:11:03.021Z",
+    "updatedAt": "2026-09-06T04:11:03.021Z"
+  },
+  {
+    "_id": "66b9de8fb41e39e19a0ebfd7",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "HIGH",
+      "compositeRiskScore": 77.4,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T04:11:03.042Z",
+    "createdAt": "2026-09-06T04:11:03.042Z",
+    "updatedAt": "2026-09-06T04:11:03.042Z"
+  },
+  {
+    "_id": "e64ed123be62d0ce5fef375e",
+    "action": "USER_LOGIN",
+    "performedBy": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:11:03.117Z",
+    "createdAt": "2026-09-06T04:11:03.117Z",
+    "updatedAt": "2026-09-06T04:11:03.117Z"
+  },
+  {
+    "_id": "69e912a223829477a33df580",
+    "action": "USER_LOGIN",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "WELFARE_OFFICER"
+    },
+    "timestamp": "2026-09-06T04:11:03.181Z",
+    "createdAt": "2026-09-06T04:11:03.182Z",
+    "updatedAt": "2026-09-06T04:11:03.182Z"
+  },
+  {
+    "_id": "61ea4a673dbca317c513eec8",
+    "action": "ALERT_REVIEWED",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-TEST-2888",
+    "targetResource": "Alerts",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "newStatus": "FOLLOW_UP_ASSIGNED",
+      "followUpAssigned": true
+    },
+    "timestamp": "2026-09-06T04:11:03.190Z",
+    "createdAt": "2026-09-06T04:11:03.190Z",
+    "updatedAt": "2026-09-06T04:11:03.190Z"
+  },
+  {
+    "_id": "0f7a2f0ae6d4cfc21feaf760",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 5.7,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T04:11:03.208Z",
+    "createdAt": "2026-09-06T04:11:03.209Z",
+    "updatedAt": "2026-09-06T04:11:03.209Z"
+  },
+  {
+    "_id": "6fdc575ab8e8af5d5cb62c0b",
+    "action": "USER_LOGIN",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "ADMIN"
+    },
+    "timestamp": "2026-09-06T04:11:03.279Z",
+    "createdAt": "2026-09-06T04:11:03.279Z",
+    "updatedAt": "2026-09-06T04:11:03.279Z"
+  },
+  {
+    "_id": "dab5a611f8cbac7b59c61881",
+    "action": "USER_LOGIN",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "Auth",
+    "ipAddress": "::1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:15:30.918Z",
+    "createdAt": "2026-09-06T04:15:30.920Z",
+    "updatedAt": "2026-09-06T04:15:30.920Z"
+  },
+  {
+    "_id": "f0be3a73ad93906d0573ddfc",
+    "action": "PROFILE_UPDATE",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "Personnel",
+    "ipAddress": "::1",
+    "details": {},
+    "timestamp": "2026-09-06T04:16:19.507Z",
+    "createdAt": "2026-09-06T04:16:19.507Z",
+    "updatedAt": "2026-09-06T04:16:19.507Z"
+  },
+  {
+    "_id": "3685c3aa3ace4a643466e5ff",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "CheckIns",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 16.2,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-06T04:17:59.701Z",
+    "createdAt": "2026-09-06T04:17:59.701Z",
+    "updatedAt": "2026-09-06T04:17:59.701Z"
+  },
+  {
+    "_id": "23b7af5529b65ebe67a4164e",
+    "action": "SUPPORT_REQUEST_CREATED",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "SupportRequests",
+    "ipAddress": "::1",
+    "details": {
+      "requestType": "CONFIDENTIAL_COUNSELING",
+      "urgency": "ROUTINE"
+    },
+    "timestamp": "2026-09-06T04:18:51.568Z",
+    "createdAt": "2026-09-06T04:18:51.568Z",
+    "updatedAt": "2026-09-06T04:18:51.568Z"
+  },
+  {
+    "_id": "fd4ee965bde84c0484ab1367",
+    "action": "USER_LOGIN",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "Auth",
+    "ipAddress": "::1",
+    "details": {
+      "role": "PERSONNEL"
+    },
+    "timestamp": "2026-09-06T04:27:06.808Z",
+    "createdAt": "2026-09-06T04:27:06.808Z",
+    "updatedAt": "2026-09-06T04:27:06.808Z"
+  }
+]

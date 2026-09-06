@@ -1,0 +1,70 @@
+[
+  {
+    "_id": "2224cb74bdc88b7b9e861ea3",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "fullName": "Havildar Rajesh Kumar",
+    "rank": "Havildar",
+    "unit": "CRPF Battalion 104",
+    "deploymentZone": "Sector North - High Altitude Deployment",
+    "yearsOfService": 8,
+    "dutyType": "Field Operations",
+    "preferredSupportLanguage": "English",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "Sunita Kumar",
+      "relation": "Spouse",
+      "phone": "+91-98765-43210"
+    },
+    "createdAt": "2026-09-06T04:04:46.073Z",
+    "updatedAt": "2026-09-06T04:16:19.506Z"
+  },
+  {
+    "_id": "320e4b9d0b09e027eaede471",
+    "userId": "eec2bcdebfe0cf16207021c6",
+    "personnelId": "CRPF-TEST-3547",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Sub-Inspector",
+    "unit": "CRPF Battalion 104",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "preferredSupportLanguage": "English",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "createdAt": "2026-09-06T04:05:23.659Z",
+    "updatedAt": "2026-09-06T04:05:23.845Z"
+  },
+  {
+    "_id": "09d990b9770e692e4924d419",
+    "userId": "45de7cc3c5ea58e1950a47a1",
+    "personnelId": "CRPF-TEST-9796",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Sub-Inspector",
+    "unit": "CRPF Battalion 104",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "preferredSupportLanguage": "English",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "createdAt": "2026-09-06T04:06:19.875Z",
+    "updatedAt": "2026-09-06T04:06:19.982Z"
+  },
+  {
+    "_id": "69a31cd9423d7cb968e47da9",
+    "userId": "855b4dd94d2ff2667aff7b12",
+    "personnelId": "CRPF-TEST-2888",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Sub-Inspector",
+    "unit": "CRPF Battalion 104",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "preferredSupportLanguage": "English",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "createdAt": "2026-09-06T04:11:02.951Z",
+    "updatedAt": "2026-09-06T04:11:03.021Z"
+  }
+]

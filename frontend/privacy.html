@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy, Ethics & AI Governance — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">ETHICS & PRIVACY</span>
+      <span>Decision-support platform for uniformed forces. Not a medical diagnosis system.</span>
+    </div>
+    <div class="d-flex align-center gap-1">
+      <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
+      <a href="/login.html" class="logout-btn" style="color:#f87171; font-size:0.8rem; font-weight:bold;">Sign Out</a>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-icon">🛡️</div>
+        <div>
+          <div class="sidebar-brand-title">WelfareAI</div>
+          <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li class="menu-category">Main Menu</li>
+        <li class="menu-item"><a href="/dashboard.html"><span class="menu-icon">📊</span> Dashboard</a></li>
+        <li class="menu-item"><a href="/profile.html"><span class="menu-icon">👤</span> My Profile</a></li>
+        <li class="menu-item"><a href="/stress-checkin.html"><span class="menu-icon">📝</span> Stress Check-in</a></li>
+        <li class="menu-item"><a href="/what-changed.html"><span class="menu-icon">🔄</span> What Changed?</a></li>
+        <li class="menu-item"><a href="/ai-analysis.html"><span class="menu-icon">🌲</span> AI Stress Analysis</a></li>
+        <li class="menu-item"><a href="/why-risk-high.html"><span class="menu-icon">🔍</span> Why Is My Risk High?</a></li>
+        <li class="menu-item"><a href="/recovery-journey.html"><span class="menu-icon">🌱</span> Recovery Journey</a></li>
+        <li class="menu-item"><a href="/recommendations.html"><span class="menu-icon">💡</span> Recommendations</a></li>
+        <li class="menu-item"><a href="/trends.html"><span class="menu-icon">📈</span> Longitudinal Trajectory</a></li>
+        <li class="menu-item"><a href="/support.html"><span class="menu-icon">🤝</span> Welfare Support</a></li>
+
+        <li class="menu-category">System & Account</li>
+        <li class="menu-item"><a href="/settings.html"><span class="menu-icon">⚙️</span> Settings</a></li>
+        <li class="menu-item active"><a href="/privacy.html"><span class="menu-icon">🔒</span> Privacy & Security</a></li>
+        <li class="menu-item"><a href="/help.html"><span class="menu-icon">❓</span> Help & FAQ</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar">VK</div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Privacy, Ethics & AI Governance Policy</div>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container" style="max-width: 1000px;">
+        <div class="card mb-3">
+          <h2>Ethical AI Framework, Data Privacy & Governance Charter</h2>
+          <p class="text-muted" style="margin-top: 0.25rem;">
+            Official 26-Clause Ethical Governance, Data Security, and Operational Privacy Charter for WelfareAI.
+          </p>
+
+          <div class="alert alert-danger mt-3 mb-3" style="background:var(--risk-high-bg); border-left:4px solid var(--risk-high); padding:1rem; border-radius:var(--radius-md);">
+            <strong style="color:var(--risk-high-text);">CRITICAL ETHICAL DIRECTIVE:</strong> The system is a WELFARE SUPPORT and DECISION-SUPPORT platform for uniformed forces. It is strictly NOT a medical diagnosis system and must NOT diagnose psychiatric illness. It must NOT be used for promotion, demotion, termination, disciplinary action, performance reviews, or clandestine surveillance.
+          </div>
+
+          <!-- Section 1: Non-Clinical Boundaries & Ethical Mission -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle);">
+            <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">I. Non-Clinical Boundaries & Welfare Mission</h3>
+            
+            <div class="mb-3">
+              <strong>Clause 1: Non-Clinical Decision-Support Scope</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                WelfareAI is engineered solely to compute observational stress strain indices from self-reported operational factors. It does not perform psychiatric diagnostics, prescribe pharmaceutical treatment, or substitute for formal medical evaluation by qualified military medical officers.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 2: Absolute Non-Punitive Doctrine</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Check-in scores and AI attribution signals are protected by an inviolable non-punitive doctrine. Data collected in this portal shall under no circumstances be entered into Annual Confidential Reports (ACR), court-martial inquiries, promotion screening, or disciplinary reviews.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 3: Voluntary Participation & Self-Determination</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Personnel engagement with self-checkins is voluntary, respectful of personal autonomy, and focused on self-awareness and proactive recovery.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 2: Data Protection, Cryptography & Access Control -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle);">
+            <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">II. Data Isolation, Cryptography & Access Governance</h3>
+
+            <div class="mb-3">
+              <strong>Clause 4: Role-Based Access Control (RBAC) Architecture</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Access is strictly compartmentalized across three isolated roles: (a) <em>Personnel</em>: private access to personal records; (b) <em>Welfare Officers</em>: view triage flags and follow-up schedules without command authority; (c) <em>System Admins</em>: infrastructure health and audit oversight with zero access to private questionnaires.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 5: Zero Clandestine Surveillance Policy</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                The platform contains zero clandestine background tracking, GPS surveillance, keystroke logging, audio snooping, or biometric surveillance. Only explicitly submitted form entries are processed.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 6: Data Minimization & Protected Fields</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Only variables directly correlated with operational strain (duty hours, recovery sleep, work pressure rating, PSS score) are collected. No irrelevant personal or commercial telemetry is gathered.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 7: Cryptographic Password Hashing</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                All credentials are hashed using <strong>Bcrypt with 10 salt rounds</strong> before database insertion. Plaintext passwords are never stored or logged in any format.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 8: Secure Signed Session Tokens</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                User sessions are authenticated via cryptographically signed JWT tokens transmitted through secure, HttpOnly cookies with Strict SameSite enforcement to prevent CSRF and XSS token theft.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 9: Immutable Audit Logging</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                All security-sensitive operations (logins, password modifications, officer alert reviews, follow-up completions) are written to an append-only, tamper-evident audit ledger with IP and timestamp metadata.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 3: AI Explainability & Human Oversight -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle);">
+            <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">III. Explainable AI, Fairness & Human-in-the-Loop</h3>
+
+            <div class="mb-3">
+              <strong>Clause 10: Algorithmic Transparency & Anti-Black Box Guarantee</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Every prediction is accompanied by a transparent mathematical feature attribution breakdown derived from Random Forest tree attributions, showing exact operational contributors.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 11: Human-in-the-Loop Safeguard (No Automated Actions)</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                The AI model cannot autonomously trigger administrative actions, duty transfers, or roster removals. All interventions require human Welfare Officer assessment and mutual consultation.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 12: Model Fairness & Bias Auditing</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                The Random Forest architecture uses balanced class weights and regularized hyperparameter bounds to prevent demographic or rank-based statistical bias.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 13: Personnel Right to Challenge or Clarify Scores</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Personnel have the unqualified right to submit contextual notes with check-ins or request direct in-person review with the Welfare Officer to clarify operational anomalies.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 4: Operational Integrity & Deployment Standards -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle);">
+            <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">IV. Operational Pacing, Edge Security & Compliance</h3>
+
+            <div class="mb-3">
+              <strong>Clause 14: Rest Rotation & Pacing Recommendations</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Guidance generated by the system is supportive and non-coercive, offering sleep hygiene strategies, sensory reset pacing, and peer buddy connection.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 15: Family & Dependent Data Safeguards</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Family assistance requests are routed exclusively to the dedicated Dependent Support Cell and are strictly isolated from operational duty rosters.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 16: Welfare Officer Confidentiality Oath</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Designated Unit Welfare Officers operate under a strict code of ethical confidentiality similar to ombudsman privileges within armed forces frameworks.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 17: Right to Profile Correction</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Personnel may update their non-operational profile preferences (contact information, emergency details, sleep baseline preferences) at any time in the Profile portal.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 18: Data Retention & Anonymization</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Longitudinal check-ins are retained during active deployment and automatically de-identified upon personnel transfer to prevent cross-battalion profiling.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 19: Air-Gapped / Edge Readiness</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                The platform is designed to run entirely on sovereign, air-gapped local intranet servers without dependency on public cloud APIs or external telemetry servers.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 20: Ministry of Home Affairs Cyber Compliance</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                System architecture adheres to Indian Government Cyber Security Guidelines (CERT-In) and defence data sovereignty mandates.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 21: Anti-Reidentification Protections</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Aggregated battalion metrics shown in officer dashboards employ minimum cohort thresholds ($k \ge 5$) to prevent re-identifying individual personnel.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 22: Secure Inter-Service Communication</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Communication between the Node.js web portal and the FastAPI Python ML service is strictly bound to localhost loopback with input schema validation.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 23: Absolute Prohibition on Third-Party Data Sharing</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                No personnel welfare data is ever shared with, sold to, or processed by external third parties, commercial advertisers, or unaccredited entities.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 24: Immediate Emergency Escalation Protocols</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                In scenarios of imminent severe crisis, the system provides prominent direct links to toll-free 24/7 human crisis lines (`1800-180-4024`) bypassing automated processing.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 25: Security Vulnerability Disclosure & Patching</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                Continuous vulnerability assessments, automated test suites (`test_e2e.js`), and dependency reviews are maintained to ensure rapid threat remediation.
+              </p>
+            </div>
+
+            <div class="mb-3">
+              <strong>Clause 26: Independent Welfare Ethics Oversight</strong>
+              <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-top: 0.25rem;">
+                The platform is governed under the oversight of an independent Armed Forces Welfare & Ethics Board tasked with periodic algorithmic reviews and personnel advocacy.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth();
+    });
+  </script>
+</body>
+</html>

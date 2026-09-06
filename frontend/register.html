@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Registration — WelfareAI</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <div class="gov-top-bar">
+    <div><strong>Ministry of Home Affairs</strong> • Unified Armed Forces Welfare & Resilience System</div>
+    <div><span>WelfareAI Registration</span></div>
+  </div>
+
+  <div class="demo-banner">
+    <div class="d-flex align-center gap-1">
+      <span class="demo-tag">SIMPLIFIED REGISTRATION</span>
+      <span>Registered accounts are saved permanently in MongoDB and remain valid across restarts and logouts.</span>
+    </div>
+  </div>
+
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 2.5rem 1.5rem;">
+    <div class="card" style="max-width: 480px; width: 100%; box-shadow: var(--shadow-xl);">
+      <div class="text-center mb-3">
+        <a href="/" class="brand-logo" style="justify-content: center; margin-bottom: 0.75rem;">
+          <div class="brand-icon">🛡️</div>
+          <div>WelfareAI</div>
+        </a>
+        <h2>Create Account</h2>
+        <p class="text-muted" style="font-size: 0.85rem;">Uniformed Personnel Welfare Enrollment</p>
+      </div>
+
+      <div id="signup-alert-container"></div>
+
+      <!-- Simplified Registration: ONLY 5 Essential Fields -->
+      <form id="signup-form">
+        <div class="form-group">
+          <label class="form-label" for="fullName">Full Name *</label>
+          <input type="text" id="fullName" class="form-control" placeholder="e.g. Vikram Sharma" required autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="personnelId">Personnel Service ID *</label>
+          <input type="text" id="personnelId" class="form-control" placeholder="e.g. CRPF-9088" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Official Email Address *</label>
+          <input type="email" id="email" class="form-control" placeholder="e.g. vikram.sharma@gov.in" required autocomplete="email">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="password">Password *</label>
+            <input type="password" id="password" class="form-control" placeholder="Min. 6 characters" required minlength="6" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="confirmPassword">Confirm Password *</label>
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Re-enter password" required minlength="6" autocomplete="new-password">
+          </div>
+        </div>
+
+        <div class="form-group" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
+          🔒 Your information is confidential and protected by Role-Based Access Control. Check-in submissions will be used solely for welfare support and never for disciplinary action.
+        </div>
+
+        <button type="submit" id="signup-submit-btn" class="btn btn-primary w-100 mb-3" style="padding: 0.75rem;">
+          Complete Registration &rarr;
+        </button>
+      </form>
+
+      <div class="text-center mt-2" style="font-size: 0.85rem; color: var(--text-secondary);">
+        Already registered? <a href="/login.html" style="font-weight: 600;">Sign In here</a>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 1rem; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color);">
+    &copy; 2026 WelfareAI • Predictive Personnel Stress & Welfare Monitoring System
+  </footer>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('signup-form');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('signup-submit-btn');
+        const alertContainer = document.getElementById('signup-alert-container');
+        alertContainer.innerHTML = '';
+
+        const fullName = document.getElementById('fullName').value.trim();
+        const personnelId = document.getElementById('personnelId').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+          alertContainer.innerHTML = `
+            <div class="alert alert-danger">
+              Passwords do not match. Please re-enter carefully.
+            </div>
+          `;
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<div class="spinner"></div> Registering Account...`;
+
+        try {
+          const res = await api.register({
+            fullName,
+            personnelId,
+            email,
+            password,
+            confirmPassword,
+            role: 'PERSONNEL'
+          });
+
+          if (res && res.success) {
+            Utils.showToast('Account registered permanently! Entering dashboard...', 'success');
+            setTimeout(() => {
+              window.location.href = '/dashboard.html';
+            }, 700);
+          }
+        } catch (err) {
+          alertContainer.innerHTML = `
+            <div class="alert alert-danger">
+              ${err.message || 'Registration failed. Please check your inputs.'}
+            </div>
+          `;
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = `Complete Registration &rarr;`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
