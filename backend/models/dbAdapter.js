@@ -5,42 +5,90 @@
  */
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const crypto = require('crypto');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+// Detect if local directory is writable or if running in serverless (e.g. Vercel / AWS Lambda)
+let DATA_DIR = path.join(__dirname, '..', 'data');
+const SEED_DIR = DATA_DIR;
+
+try {
+  if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    DATA_DIR = path.join(os.tmpdir(), 'welfare_data');
+  }
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+  // Test write
+  const testFile = path.join(DATA_DIR, '.write_test');
+  fs.writeFileSync(testFile, 'ok');
+  fs.unlinkSync(testFile);
+} catch (e) {
+  DATA_DIR = path.join(os.tmpdir(), 'welfare_data');
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
 }
 
 class Collection {
   constructor(name) {
     this.name = name;
     this.filePath = path.join(DATA_DIR, `${name}.json`);
+    this.seedPath = path.join(SEED_DIR, `${name}.json`);
+    this._cache = null;
     this.init();
   }
 
   init() {
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, JSON.stringify([], null, 2), 'utf-8');
+    try {
+      if (!fs.existsSync(this.filePath)) {
+        if (fs.existsSync(this.seedPath)) {
+          const seedData = fs.readFileSync(this.seedPath, 'utf-8');
+          fs.writeFileSync(this.filePath, seedData, 'utf-8');
+          this._cache = JSON.parse(seedData || '[]');
+        } else {
+          fs.writeFileSync(this.filePath, JSON.stringify([], null, 2), 'utf-8');
+          this._cache = [];
+        }
+      } else {
+        const raw = fs.readFileSync(this.filePath, 'utf-8');
+        this._cache = JSON.parse(raw || '[]');
+      }
+    } catch (err) {
+      if (fs.existsSync(this.seedPath)) {
+        try {
+          const seedData = fs.readFileSync(this.seedPath, 'utf-8');
+          this._cache = JSON.parse(seedData || '[]');
+        } catch (_) {
+          this._cache = [];
+        }
+      } else {
+        this._cache = [];
+      }
     }
   }
 
   _read() {
+    if (this._cache !== null) {
+      return this._cache;
+    }
     try {
       this.init();
       const raw = fs.readFileSync(this.filePath, 'utf-8');
-      return JSON.parse(raw || '[]');
+      this._cache = JSON.parse(raw || '[]');
+      return this._cache;
     } catch (err) {
-      console.error(`[DB Error] Reading ${this.name}:`, err.message);
-      return [];
+      return this._cache || [];
     }
   }
 
   _write(data) {
+    this._cache = data;
     try {
       fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2), 'utf-8');
     } catch (err) {
-      console.error(`[DB Error] Writing ${this.name}:`, err.message);
+      // In-memory cache is still preserved even if disk write fails
+      console.warn(`[DB Storage Warn] Disk write to ${this.name}:`, err.message);
     }
   }
 
