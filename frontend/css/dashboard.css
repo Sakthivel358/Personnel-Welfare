@@ -124,9 +124,9 @@
 }
 
 .user-mini-card:hover {
-  background: linear-gradient(135deg, #273549, #1e293b);
-  border-color: rgba(59, 130, 246, 0.4);
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #334155, #1e293b);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 

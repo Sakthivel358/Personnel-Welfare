@@ -137,7 +137,7 @@ h4 { font-size: 1.05rem; }
 .btn-primary:hover:not(:disabled) {
   background: linear-gradient(135deg, #1d4ed8, #3b82f6);
   box-shadow: 0 4px 14px var(--accent-glow);
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .btn-secondary {
