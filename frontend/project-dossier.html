@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WelfareAI — Complete Prototype Technical & Functional Dossier</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff !important; color: #0f172a !important; font-size: 11pt; }
+      .page-break { page-break-before: always; }
+      .card { border: 1px solid #cbd5e1 !important; box-shadow: none !important; margin-bottom: 1.5rem !important; }
+    }
+    .dossier-header {
+      border-bottom: 3px solid #1e3a8a;
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .module-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+    .module-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .module-title {
+      font-size: 1.25rem;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .feature-list {
+      margin-left: 1.25rem;
+      line-height: 1.6;
+      color: #334155;
+    }
+    .feature-list li {
+      margin-bottom: 0.4rem;
+    }
+  </style>
+</head>
+<body style="background: #f8fafc; color: #1e293b; padding: 2rem 1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+
+  <div style="max-width: 900px; margin: 0 auto;">
+    
+    <!-- Top Action Bar -->
+    <div class="no-print d-flex justify-between align-center mb-3" style="background:#1e3a8a; color:#fff; padding:1rem 1.5rem; border-radius:8px;">
+      <div>
+        <strong style="font-size:1.1rem;">📄 WelfareAI Complete System Documentation & Walkthrough</strong>
+        <div style="font-size:0.8rem; opacity:0.9;">Ready for printing or saving as PDF for competition judges</div>
+      </div>
+      <div class="d-flex gap-1 align-center">
+        <a href="/index.html" class="btn btn-sm btn-secondary" style="color:#0f172a; text-decoration:none; background:#fff; padding:0.4rem 0.8rem; border-radius:4px; font-weight:600;">&larr; Back to App</a>
+        <button onclick="window.print()" class="btn btn-sm" style="background:#10b981; color:#fff; border:none; padding:0.4rem 0.9rem; border-radius:4px; font-weight:700; cursor:pointer;">🖨️ Print / Save as PDF</button>
+      </div>
+    </div>
+
+    <!-- Official Header -->
+    <div class="dossier-header d-flex justify-between align-center">
+      <div>
+        <div style="font-size: 0.85rem; font-weight: 800; color: #2563eb; letter-spacing: 1px;">MINISTRY OF HOME AFFAIRS / CENTRAL ARMED POLICE FORCES</div>
+        <h1 style="margin: 0.25rem 0; font-size: 1.8rem; color: #0f172a;">WelfareAI: Predictive Personnel Stress & Welfare Monitoring Platform</h1>
+        <div style="font-size: 0.9rem; color: #64748b;">Comprehensive Prototype Architecture & Module-by-Module Functional Specification</div>
+      </div>
+      <div style="font-size: 2.5rem;">🇮🇳</div>
+    </div>
+
+    <!-- Executive Summary Card -->
+    <div class="module-card" style="border-left: 5px solid #2563eb;">
+      <h3 style="color:#1e3a8a; margin-bottom:0.5rem;">🎯 Executive Overview</h3>
+      <p style="line-height:1.6; color:#334155; font-size:0.95rem;">
+        <strong>WelfareAI</strong> is an end-to-end, privacy-preserving AI decision-support platform designed specifically for uniformed armed forces (CRPF, BSF, CISF, ITBP, SSB, and Armed Forces). The system predicts cumulative stress velocity, decomposes operational risk drivers with 8-factor explainable machine learning, and recommends tactical relief pacing before acute burnout occurs.
+      </p>
+      <div class="grid-3 mt-3" style="display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem;">
+        <div style="background:#eff6ff; padding:0.75rem; border-radius:6px; text-align:center;">
+          <div style="font-size:0.75rem; color:#1e40af;">ML Architecture</div>
+          <strong style="color:#1e3a8a;">Ensemble Random Forest</strong>
+        </div>
+        <div style="background:#ecfdf5; padding:0.75rem; border-radius:6px; text-align:center;">
+          <div style="font-size:0.75rem; color:#065f46;">Verified Accuracy</div>
+          <strong style="color:#065f46;">81.5% F1-Validated</strong>
+        </div>
+        <div style="background:#fef3c7; padding:0.75rem; border-radius:6px; text-align:center;">
+          <div style="font-size:0.75rem; color:#92400e;">Governance Charter</div>
+          <strong style="color:#92400e;">26-Clause Anti-Stigma</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 1: PUBLIC ACCESS & AUTHENTICATION -->
+    <h2 style="color:#0f172a; margin-top:2rem; margin-bottom:1rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.5rem;">1. Entry & Authentication Modules</h2>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>🌐 Landing Page (index.html)</span>
+        <span class="module-badge">Public</span>
+      </div>
+      <p><strong>What it is:</strong> The public mission portal explaining the platform's purpose, national defense compliance, and core capabilities.</p>
+      <ul class="feature-list">
+        <li><strong>Role Portals:</strong> Direct 1-click access routes for Personnel (Soldiers), Welfare Officers (Adjutants), and System Admins.</li>
+        <li><strong>Interactive Architecture Carousel:</strong> Explains the 3-tier pipeline (Data Ingestion &rarr; Random Forest Inference &rarr; Officer Decision Support).</li>
+        <li><strong>Ethical Highlights:</strong> Explains zero-penalty governance to eliminate reporting stigma among Jawans.</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>🔐 Authentication & Registration (login.html & register.html)</span>
+        <span class="module-badge">Security Core</span>
+      </div>
+      <p><strong>What it is:</strong> Secure entry gateways enforcing Role-Based Access Control (RBAC) and bcrypt password hashing.</p>
+      <ul class="feature-list">
+        <li><strong>Registration:</strong> Allows any new personnel to register with Service ID, Rank, Unit, and encrypted credentials.</li>
+        <li><strong>1-Click Demo Switcher:</strong> Built-in instant login buttons for Judges (<code>Personnel</code>, <code>Welfare Officer</code>, <code>Admin</code>) for rapid evaluation without typing.</li>
+        <li><strong>Session Persistence:</strong> Signs 7-day cryptographically verified JWT tokens stored in secure local state.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 2: SOLDIER / PERSONNEL PORTAL -->
+    <h2 style="color:#0f172a; margin-top:2rem; margin-bottom:1rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.5rem;" class="page-break">2. Personnel Portal (Soldier View)</h2>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>📊 Personnel Dashboard (dashboard.html)</span>
+        <span class="module-badge">Personnel Core</span>
+      </div>
+      <p><strong>What it is:</strong> The personal mission control center for the individual soldier.</p>
+      <ul class="feature-list">
+        <li><strong>Active Stress Index Card:</strong> Displays real-time risk classification (<code>LOW</code>, <code>MODERATE</code>, <code>HIGH</code>) and composite risk percentage.</li>
+        <li><strong>Top Contributing Drivers:</strong> Highlights top operational stressors (e.g. 54h watch duty, sleep deficit).</li>
+        <li><strong>Longitudinal Trend Canvas:</strong> Visualizes historical risk trajectory over consecutive check-in cycles.</li>
+        <li><strong>Tactical 4-4-4-4 Box-Breathing Decompression Widget:</strong> Interactive animated military relaxation tool with 4-second Inhale-Hold-Exhale-Hold cadence to lower heart rate.</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>📝 Stress Check-in & Wearable Sync (stress-checkin.html)</span>
+        <span class="module-badge">Data Ingestion</span>
+      </div>
+      <p><strong>What it is:</strong> A 3-step structured inventory combining clinical psychometrics with field operational metrics.</p>
+      <ul class="feature-list">
+        <li><strong>Tactical Wearable Telemetry Sync:</strong> Dual-mode IoT integration (Web Bluetooth BLE scanner + simulated Defense Smart Band telemetry) auto-filling Resting Heart Rate (58 bpm), HRV (68 ms), and Sleep (7.5h).</li>
+        <li><strong>Standardized PSS-10 Inventory:</strong> 10 psychometric stress assessment questions.</li>
+        <li><strong>Duty Indicators:</strong> Sliders for weekly duty hours, operational pressure, continuous shift days, and social support.</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>🌲 AI Stress Analysis & Explainability (ai-analysis.html & why-risk-high.html)</span>
+        <span class="module-badge">Explainable ML</span>
+      </div>
+      <p><strong>What it is:</strong> Transparent glass-box explanation decomposing exactly why the AI model predicted the soldier's score.</p>
+      <ul class="feature-list">
+        <li><strong>8-Factor Attribution Decomposition:</strong> Interactive bar charts showing individual percentage weights for Watch Hours, Sleep, Work Pressure, Social Support, etc.</li>
+        <li><strong>Plain-Language Insights:</strong> Contextual natural language explanations explaining how each factor impacted the prediction.</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>💡 Personalized Recommendations (recommendations.html)</span>
+        <span class="module-badge">Actionable Relief</span>
+      </div>
+      <p><strong>What it is:</strong> Tailored welfare action items and evidence-based recovery protocols.</p>
+      <ul class="feature-list">
+        <li><strong>Factor-Tailored Action Items:</strong> Dynamic checklist items generated based on the soldier's highest stress drivers.</li>
+        <li><strong>Interactive Status Cycling:</strong> Soldiers can click action cards to toggle between <code>● New</code>, <code>⏳ In Progress</code>, and <code>✓ Completed</code> with live percentage completion bars.</li>
+        <li><strong>Confidential Helplines:</strong> 24/7 tele-counseling (1800-180-4024) and Battalion Peer Support desk.</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>📈 Longitudinal Trajectory & Recovery Journey (trends.html & recovery-journey.html)</span>
+        <span class="module-badge">Trajectory Analytics</span>
+      </div>
+      <p><strong>What it is:</strong> Time-series tracking comparing historical strain levels across weeks and operational deployments.</p>
+      <ul class="feature-list">
+        <li><strong>Trajectory Curve:</strong> Interactive Chart.js trend line charting resilience progress.</li>
+        <li><strong>What Changed? Comparison:</strong> Side-by-side delta table comparing the latest check-in against the previous submission.</li>
+        <li><strong>Recovery Velocity:</strong> Measures statistical improvement after rest rotations and supportive interventions.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 3: WELFARE OFFICER & COMMAND PORTAL -->
+    <h2 style="color:#0f172a; margin-top:2rem; margin-bottom:1rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.5rem;" class="page-break">3. Welfare Officer Portal (Command & Adjutant View)</h2>
+
+    <div class="module-card" style="border-left: 5px solid #10b981;">
+      <div class="module-title">
+        <span>🩺 Welfare Officer Command Hub (welfare-officer.html)</span>
+        <span class="module-badge">Adjutant Portal</span>
+      </div>
+      <p><strong>What it is:</strong> Comprehensive triage, decision-support, and shift reallocation workspace for unit commanders and doctors.</p>
+      <ul class="feature-list">
+        <li><strong>Human-in-the-Loop Triage Queue:</strong> Prioritized alert cards generated whenever a soldier's strain exceeds 70%. Officers enter supportive notes and assign follow-up sessions.</li>
+        <li><strong>⚡ AI Shift & Roster Pacing Optimizer:</strong> Analyzes rising fatigue patterns and automatically suggests optimal duty swaps (e.g. rotating night watch standers to daylight base logistics) with 1-click approval (<code>⚡ Approve Pacing Reallocation</code>).</li>
+        <li><strong>🌱 Follow-up Tracking Workflow:</strong> Schedules and tracks 7-day re-analysis milestones to evaluate recovery velocity.</li>
+        <li><strong>🇮🇳 1-Click Executive PDF Battalion Dossier:</strong> Generates a formal printable MHA/CAPF executive readiness report complete with readiness distribution, factor decompositions, and command directives.</li>
+        <li><strong>🤝 Support Requests Queue:</strong> Confidential inbox to respond directly to personnel support tickets.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 4: SYSTEM ADMIN & ETHICS -->
+    <h2 style="color:#0f172a; margin-top:2rem; margin-bottom:1rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.5rem;">4. System Admin, Governance & Security</h2>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>⚙️ Admin & Model Transparency (admin.html)</span>
+        <span class="module-badge">AI Governance</span>
+      </div>
+      <p><strong>What it is:</strong> Technical monitoring dashboard verifying AI accuracy, model transparency, and audit logging.</p>
+      <ul class="feature-list">
+        <li><strong>Real Evaluation Metrics:</strong> Live metrics showing 81.5% model accuracy, precision/recall, and the real Confusion Matrix.</li>
+        <li><strong>Immutable Security Audit Trail:</strong> Cryptographic audit logs recording every triage action and system event to prevent data misuse.</li>
+        <li><strong>User & Role Governance:</strong> Active personnel account management and permission enforcement.</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-title">
+        <span>🔒 Privacy, Settings & Help (privacy.html, settings.html, help.html)</span>
+        <span class="module-badge">Ethical Compliance</span>
+      </div>
+      <p><strong>What it is:</strong> Transparent governance charters and user account preference management.</p>
+      <ul class="feature-list">
+        <li><strong>26-Clause Ethical Charter:</strong> Legally binding data protection rules guaranteeing zero disciplinary or career penalty for welfare reporting.</li>
+        <li><strong>Settings & Security:</strong> Password changes, dark theme preference, and data export tools.</li>
+        <li><strong>Help & FAQ:</strong> Comprehensive answers addressing operational questions, privacy protections, and helpline contacts.</li>
+      </ul>
+    </div>
+
+    <div class="d-flex justify-between align-center pt-3 mt-4" style="border-top:2px solid #1e3a8a; font-size:0.8rem; color:#64748b;">
+      <span>WelfareAI Decision-Support System • Ministry of Home Affairs</span>
+      <span>Confidential Defense Documentation</span>
+    </div>
+
+  </div>
+
+</body>
+</html>
