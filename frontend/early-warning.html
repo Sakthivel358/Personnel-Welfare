@@ -163,10 +163,14 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       const user = await checkAuth();
-      if (user && (user.role === 'WELFARE_OFFICER' || user.role === 'COMMANDING_OFFICER' || user.role === 'ADMIN')) {
+      if (!user) return;
+      if (user.role === 'WELFARE_OFFICER' || user.role === 'COMMANDING_OFFICER' || user.role === 'ADMIN') {
         renderOfficerLayout();
+        loadEarlyWarning();
+      } else {
+        // Personnel members monitor personal trajectory rather than unit-wide early-warning triage
+        window.location.replace('/trends.html');
       }
-      loadEarlyWarning();
     });
 
     function renderOfficerLayout() {

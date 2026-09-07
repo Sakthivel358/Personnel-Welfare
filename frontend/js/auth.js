@@ -141,6 +141,20 @@ function updateUserUI(user) {
       window.location.href = '/profile.html';
     };
   });
+
+  // Prevent page reload / scroll-to-top jump when clicking current page link
+  document.querySelectorAll('.sidebar-menu a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!href) return;
+    const currentPath = window.location.pathname;
+    if (href === currentPath || href === currentPath.substring(1) || (currentPath === '/' && href === '/dashboard.html')) {
+      a.addEventListener('click', (e) => {
+        if (!a.getAttribute('onclick')) {
+          e.preventDefault();
+        }
+      });
+    }
+  });
 }
 
 async function handleDirectLogout() {
