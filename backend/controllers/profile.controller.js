@@ -3,16 +3,26 @@ const auditService = require('../services/audit.service');
 
 const getProfile = async (req, res, next) => {
   try {
-    const personnel = await db.Personnel.findOne({ userId: req.user._id });
     const user = await db.Users.findById(req.user._id);
+    const personnel = await db.Personnel.findOne({
+      $or: [
+        { userId: req.user._id },
+        { personnelId: (user && user.personnelId) || req.user.personnelId }
+      ]
+    });
 
     return res.status(200).json({
       success: true,
       data: {
-        ...personnel,
+        ...(personnel || {}),
+        personnelId: (personnel && personnel.personnelId) || (user && user.personnelId) || req.user.personnelId || '',
+        email: (user && user.email) || req.user.email || '',
+        fullName: (personnel && personnel.fullName) || (user && user.fullName) || req.user.fullName || '',
+        rank: (personnel && personnel.rank) || (user && user.rank) || req.user.rank || 'Havildar',
+        unit: (personnel && personnel.unit) || (user && user.unit) || req.user.unit || 'CRPF Battalion 104',
+        phone: (personnel && personnel.phone) || (user && user.phone) || '',
         profileImage: (personnel && personnel.profileImage) || (user && user.profileImage) || '',
-        email: user ? user.email : '',
-        role: user ? user.role : 'PERSONNEL',
+        role: user ? user.role : (req.user.role || 'PERSONNEL'),
         lastLogin: user ? user.lastLogin : null
       }
     });

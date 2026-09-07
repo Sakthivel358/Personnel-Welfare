@@ -102,6 +102,26 @@
   font-size: 1.15rem;
   width: 20px;
   text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.menu-icon .svg-icon {
+  width: 18px;
+  height: 18px;
 }
 
 .sidebar-footer {
