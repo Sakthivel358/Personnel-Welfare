@@ -43,6 +43,7 @@ async function checkAuth(requiredRole = null) {
                      window.location.pathname.endsWith('landing.html') || 
                      window.location.pathname.endsWith('login.html') || 
                      window.location.pathname.endsWith('signup.html') ||
+                     window.location.pathname.endsWith('demo.html') ||
                      window.location.pathname === '/';
     if (!isPublic) {
       window.location.href = '/login.html';

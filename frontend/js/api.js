@@ -33,6 +33,7 @@ class APIClient {
                                window.location.pathname.endsWith('landing.html') || 
                                window.location.pathname.endsWith('login.html') || 
                                window.location.pathname.endsWith('signup.html') ||
+                               window.location.pathname.endsWith('demo.html') ||
                                window.location.pathname === '/';
           if (!isPublicPage) {
             window.location.href = '/login.html?expired=1';

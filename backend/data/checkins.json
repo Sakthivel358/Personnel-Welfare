@@ -306,5 +306,43 @@
     "createdAt": "2026-09-07T17:31:37.103Z",
     "updatedAt": "2026-09-07T17:31:37.106Z",
     "predictionId": "faea3327a7e2447d9209aa71"
+  },
+  {
+    "_id": "915238392924581384fee8df",
+    "userId": "35ffff28925b02364f6a484e",
+    "personnelId": "CRPF-TEST-6495",
+    "pss_score": 28,
+    "pss_responses": [],
+    "workload_hours": 66,
+    "work_pressure_rating": 9,
+    "recovery_sleep_hours": 4,
+    "social_support_rating": 3,
+    "work_life_balance_rating": 2,
+    "shift_continuity_days": 12,
+    "recent_trend_indicator": 0,
+    "notes": "Consecutive night convoy duties in cold weather",
+    "checkInDate": "2026-09-07T17:46:46.784Z",
+    "createdAt": "2026-09-07T17:46:46.784Z",
+    "updatedAt": "2026-09-07T17:46:46.789Z",
+    "predictionId": "9b7849a5c31baf9623060ec6"
+  },
+  {
+    "_id": "7bf402c6fc44db09bbe4beaf",
+    "userId": "35ffff28925b02364f6a484e",
+    "personnelId": "CRPF-TEST-6495",
+    "pss_score": 12,
+    "pss_responses": [],
+    "workload_hours": 44,
+    "work_pressure_rating": 4,
+    "recovery_sleep_hours": 7.5,
+    "social_support_rating": 8,
+    "work_life_balance_rating": 7,
+    "shift_continuity_days": 1,
+    "recent_trend_indicator": -5,
+    "notes": "Completed 48h rest period. Feeling significantly restored.",
+    "checkInDate": "2026-09-07T17:46:47.164Z",
+    "createdAt": "2026-09-07T17:46:47.164Z",
+    "updatedAt": "2026-09-07T17:46:47.170Z",
+    "predictionId": "4f59e63dc5aeb640a237ae61"
   }
 ]
