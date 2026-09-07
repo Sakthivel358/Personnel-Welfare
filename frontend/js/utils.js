@@ -310,18 +310,6 @@ const Utils = {
     if (isProd) {
       document.body.classList.add('production-mode');
     }
-
-    // Attach dismiss button to demo banners
-    document.querySelectorAll('.demo-banner').forEach(banner => {
-      if (!banner.querySelector('.banner-dismiss-btn')) {
-        const btn = document.createElement('button');
-        btn.className = 'banner-dismiss-btn';
-        btn.title = 'Switch to clean production view (hides hackathon evaluation headers)';
-        btn.innerHTML = '👁️ Hide Evaluation Header';
-        btn.onclick = () => Utils.toggleProductionMode();
-        banner.appendChild(btn);
-      }
-    });
   },
 
   toggleProductionMode() {
