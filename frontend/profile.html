@@ -96,6 +96,12 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.18s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .preset-choice-btn * {
+      pointer-events: none;
     }
     .preset-choice-btn:hover {
       border-color: var(--accent);
@@ -104,7 +110,7 @@
     }
     .preset-choice-btn.active {
       border-color: var(--accent);
-      background: rgba(99, 102, 241, 0.12);
+      background: rgba(99, 102, 241, 0.16);
       box-shadow: 0 0 0 2px var(--accent);
     }
     .profile-action-bar {
@@ -323,11 +329,11 @@
             <div class="grid-2">
               <div class="form-group">
                 <label class="form-label" for="prof_personnelId">Personnel Service ID (Immutable)</label>
-                <input type="text" id="prof_personnelId" class="form-control" disabled style="background:var(--bg-card-subtle); cursor:not-allowed; font-weight:600;" placeholder="Loading Service ID...">
+                <input type="text" id="prof_personnelId" class="form-control" disabled style="background:var(--bg-card-subtle); cursor:not-allowed; font-weight:600;" value="CRPF-2024-9842" placeholder="Official Personnel ID">
               </div>
               <div class="form-group">
                 <label class="form-label" for="prof_email">Official Service Email (Immutable)</label>
-                <input type="email" id="prof_email" class="form-control" disabled style="background:var(--bg-card-subtle); cursor:not-allowed;" placeholder="Loading Service Email...">
+                <input type="email" id="prof_email" class="form-control" disabled style="background:var(--bg-card-subtle); cursor:not-allowed;" value="personnel@crpf.gov.in" placeholder="Official Service Email">
               </div>
             </div>
 
@@ -369,24 +375,28 @@
               </div>
             </div>
 
-            <!-- Designated Emergency / Family Contact Subcard -->
+            <!-- Designated Emergency / Family Contact Subcard (Provided by Personnel) -->
             <div class="card mb-2" style="background:var(--bg-card-subtle); padding:1.25rem; border:1px solid var(--border-color);">
-              <div class="d-flex align-center gap-1 mb-2">
+              <div class="d-flex align-center gap-1 mb-1">
                 <svg class="svg-icon" style="width:16px;height:16px;color:var(--risk-high);" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 <strong style="font-size:0.92rem;">Designated Emergency / Family Contact</strong>
+                <span class="badge badge-low" style="font-size:0.72rem; margin-left:6px;">Provided by Personnel</span>
               </div>
+              <p class="text-muted mb-2" style="font-size:0.78rem;">
+                Official Next-of-Kin (NOK) contact provided by the personnel member for emergency welfare or healthcare escalation.
+              </p>
               <div class="grid-3">
                 <div class="form-group mb-0">
                   <label class="form-label" for="prof_em_name">Contact Name</label>
-                  <input type="text" id="prof_em_name" class="form-control" value="Sunita Kumar" placeholder="e.g. Spouse / Next of Kin Name" oninput="calculateProfileCompletion()">
+                  <input type="text" id="prof_em_name" class="form-control" placeholder="e.g. Next of Kin / Contact Name" oninput="calculateProfileCompletion()">
                 </div>
                 <div class="form-group mb-0">
                   <label class="form-label" for="prof_em_rel">Relationship</label>
-                  <input type="text" id="prof_em_rel" class="form-control" value="Spouse" placeholder="e.g. Spouse, Father, Mother" oninput="calculateProfileCompletion()">
+                  <input type="text" id="prof_em_rel" class="form-control" placeholder="e.g. Spouse, Father, Mother, Sibling" oninput="calculateProfileCompletion()">
                 </div>
                 <div class="form-group mb-0">
                   <label class="form-label" for="prof_em_phone">Emergency Phone Number</label>
-                  <input type="tel" id="prof_em_phone" class="form-control" value="+91-9876543210" placeholder="e.g. +91-XXXXXXXXXX" oninput="calculateProfileCompletion()">
+                  <input type="tel" id="prof_em_phone" class="form-control" placeholder="e.g. +91-XXXXXXXXXX" oninput="calculateProfileCompletion()">
                 </div>
               </div>
             </div>
@@ -601,74 +611,105 @@
       {
         id: 'helmet',
         name: 'Tactical Helmet',
-        svg: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzFlMjkzYiIvPjxwYXRoIGQ9Ik0yNSA1MCBDMjUgMzAgMzggMjIgNTAgMjIgQzYyIDIyIDc1IDMwIDc1IDUwIEM3NSA1NCA3MCA1OCA2NSA1OCBMMzUgNTggQzMwIDU4IDI1IDU0IDI1IDUwIFoiIGZpbGw9IiM0NzU1NjkiLz48cmVjdCB4PSIyMiIgeT0iNDgiIHdpZHRoPSI1NiIgaGVpZ2h0PSI4IiByeD0iMyIgZmlsbD0iIzMzNDE1NSIvPjxyZWN0IHg9IjM2IiB5PSI2MCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjE4IiByeD0iNCIgZmlsbD0iIzY0NzQ4YiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMzgiIHI9IjUiIGZpbGw9IiM5NGEzYjgiLz48L3N2Zz4='
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#1e293b"/><path d="M25 50 C25 30 38 22 50 22 C62 22 75 30 75 50 C75 54 70 58 65 58 L35 58 C30 58 25 54 25 50 Z" fill="#475569"/><rect x="22" y="48" width="56" height="8" rx="3" fill="#334155"/><rect x="36" y="60" width="28" height="18" rx="4" fill="#64748b"/><circle cx="50" cy="38" r="5" fill="#94a3b8"/></svg>'
       },
       {
         id: 'beret',
         name: 'Commando Beret',
-        svg: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzE0NTMyZCIvPjxwYXRoIGQ9Ik0yNiA0NCBDMjggMjYgNjggMjIgNzggMzYgQzg2IDQ3IDcwIDU0IDQ4IDU0IEMzNCA1NCAyNCA1MCAyNiA0NCBaIiBmaWxsPSIjMTU4MDNkIi8+PGNpcmNsZSBjeD0iNDIiIGN5PSI0MCIgcj0iNSIgZmlsbD0iI2VhYjMwOCIvPjxyZWN0IHg9IjM2IiB5PSI1OCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjIwIiByeD0iNCIgZmlsbD0iIzE2NjUzNCIvPjwvc3ZnPg=='
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#14532d"/><path d="M26 44 C28 26 68 22 78 36 C86 47 70 54 48 54 C34 54 24 50 26 44 Z" fill="#15803d"/><circle cx="42" cy="40" r="5" fill="#eab308"/><rect x="36" y="58" width="28" height="20" rx="4" fill="#166534"/></svg>'
       },
       {
         id: 'medic',
         name: 'Field Medic',
-        svg: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzBmNzY2ZSIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjM0IiBmaWxsPSIjZmZmZmZmIi8+PHBhdGggZD0iTTQ0IDI4IGgxMiB2MTYgaDE2IHYxMiBoLTE2IHYxNiBoLTEyIHYtMTYgaC0xNiB2LTEyIGgxNiB6IiBmaWxsPSIjZGMyNjI2Ii8+PC9zdmc+'
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0f766e"/><circle cx="50" cy="50" r="34" fill="#ffffff"/><path d="M44 28 h12 v16 h16 v12 h-16 v16 h-12 v-16 h-16 v-12 h16 z" fill="#dc2626"/></svg>'
       },
       {
         id: 'wing',
         name: 'Airborne Wing',
-        svg: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzAzNjlhMSIvPjxwYXRoIGQ9Ik0xNiA0NiBDMzAgMzggNDIgNDQgNTAgNTQgQzU4IDQ0IDcwIDM4IDg0IDQ2IEM3NCA1NiA2MiA2MCA1MCA1NyBDMzggNjAgMjYgNTYgMTYgNDYgWiIgZmlsbD0iI2Y1OWUwYiIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iNTIiIHI9IjYiIGZpbGw9IiNmZmZmZmYiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjUyIiByPSIzIiBmaWxsPSIjMDI4NGM3Ii8+PC9zdmc+'
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0369a1"/><path d="M16 46 C30 38 42 44 50 54 C58 44 70 38 84 46 C74 56 62 60 50 57 C38 60 26 56 16 46 Z" fill="#f59e0b"/><circle cx="50" cy="52" r="6" fill="#ffffff"/><circle cx="50" cy="52" r="3" fill="#0284c7"/></svg>'
       },
       {
         id: 'officer',
         name: 'Command Star',
-        svg: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzMxMmU4MSIvPjxwb2x5Z29uIHBvaW50cz0iNTAsMjIgNTgsMzggNzYsMzggNjIsNDkgNjcsNjcgNTAsNTYgMzMsNjcgMzgsNDkgMjQsMzggNDIsMzgiIGZpbGw9IiNmYmJmMjQiLz48L3N2Zz4='
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#312e81"/><polygon points="50,22 58,38 76,38 62,49 67,67 50,56 33,67 38,49 24,38 42,38" fill="#fbbf24"/></svg>'
       }
     ];
 
-    function sanitizeAvatarSrc(avatarUrl) {
-      if (!avatarUrl) return '';
-      if (avatarUrl.startsWith('data:image/svg+xml;utf8,') || (avatarUrl.startsWith('data:image/svg+xml,') && avatarUrl.includes('<svg'))) {
-        const rawSvgPart = avatarUrl.replace(/^data:image\/svg\+xml(;utf8)?,/, '');
-        try {
-          return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(rawSvgPart)));
-        } catch(e) {
-          return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(rawSvgPart);
+    function populateUserSessionFields() {
+      try {
+        const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+        const user = currentUser || localUser;
+        const pIdField = document.getElementById('prof_personnelId');
+        const pEmailField = document.getElementById('prof_email');
+        const pNameField = document.getElementById('prof_fullName');
+
+        const pId = user.personnelId || 'CRPF-2024-9842';
+        const pEmail = user.email || 'personnel@crpf.gov.in';
+        const pName = user.fullName || 'Inspector Vikram Kumar';
+
+        if (pIdField && (!pIdField.value || pIdField.value.includes('Loading'))) {
+          pIdField.value = pId;
         }
-      }
-      return avatarUrl;
+        if (pEmailField && (!pEmailField.value || pEmailField.value.includes('Loading'))) {
+          pEmailField.value = pEmail;
+        }
+        if (pNameField && (!pNameField.value || pNameField.value.trim() === '')) {
+          pNameField.value = pName;
+        }
+      } catch(e) {}
     }
 
-    function renderAvatarPreview(avatarUrl) {
+    function renderAvatarPreview(avatarVal) {
       const preview = document.getElementById('avatar-preview-box');
-      if (!preview) return;
-      if (avatarUrl) {
-        const src = sanitizeAvatarSrc(avatarUrl);
-        preview.innerHTML = `<img src="${src}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
-      } else {
-        const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
-        const name = (currentUser && currentUser.fullName) || localUser.fullName || (document.getElementById('prof_fullName') && document.getElementById('prof_fullName').value) || 'Personnel Member';
-        const initials = name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() || 'VK';
-        preview.textContent = initials;
+      const sideAvatar = document.getElementById('sidebar-avatar');
+
+      const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+      const name = (currentUser && currentUser.fullName) || localUser.fullName || (document.getElementById('prof_fullName') && document.getElementById('prof_fullName').value) || 'Vikram Kumar';
+      const initials = name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() || 'VK';
+
+      if (!avatarVal || avatarVal.trim() === '') {
+        if (preview) {
+          preview.innerHTML = '';
+          preview.textContent = initials;
+        }
+        if (sideAvatar) {
+          sideAvatar.innerHTML = '';
+          sideAvatar.textContent = initials;
+        }
+        return;
       }
 
-      // Update sidebar avatar if present
-      const sideAvatar = document.getElementById('sidebar-avatar');
-      if (sideAvatar) {
-        if (avatarUrl) {
-          const src = sanitizeAvatarSrc(avatarUrl);
-          sideAvatar.innerHTML = `<img src="${src}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
-        } else {
-          const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
-          const name = (currentUser && currentUser.fullName) || localUser.fullName || 'Personnel Member';
-          sideAvatar.textContent = name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() || 'VK';
+      const val = avatarVal.trim();
+      let htmlContent = '';
+
+      if (val.startsWith('<svg') || val.startsWith('<?xml') || val.includes('<svg')) {
+        // Direct inline SVG element
+        htmlContent = val;
+      } else if (val.startsWith('data:image/svg+xml;base64,')) {
+        try {
+          const b64 = val.replace('data:image/svg+xml;base64,', '');
+          htmlContent = decodeURIComponent(escape(atob(b64)));
+        } catch(e) {
+          htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
         }
+      } else {
+        htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
+      }
+
+      if (preview) {
+        preview.textContent = '';
+        preview.innerHTML = htmlContent;
+      }
+      if (sideAvatar) {
+        sideAvatar.textContent = '';
+        sideAvatar.innerHTML = htmlContent;
       }
     }
 
     function selectPresetAvatar(presetId) {
       const preset = DEFENSE_AVATAR_PRESETS.find(p => p.id === presetId);
       if (preset) {
-        applyAvatar(preset.svg, true);
+        applyAvatar(preset.rawSvg, true);
         // Highlight active preset button
         document.querySelectorAll('.preset-choice-btn').forEach(btn => {
           if (btn.getAttribute('data-preset') === presetId) {
@@ -744,12 +785,12 @@
     }
 
     function applyAvatar(avatarDataUrl, persistToLocal = false) {
-      currentAvatar = avatarDataUrl;
-      renderAvatarPreview(avatarDataUrl);
+      currentAvatar = avatarDataUrl || '';
+      renderAvatarPreview(currentAvatar);
       if (persistToLocal) {
         try {
-          if (avatarDataUrl) {
-            localStorage.setItem('sih_user_avatar', avatarDataUrl);
+          if (currentAvatar) {
+            localStorage.setItem('sih_user_avatar', currentAvatar);
           } else {
             localStorage.removeItem('sih_user_avatar');
           }
@@ -758,15 +799,24 @@
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
-      // Immediate render of saved or initial avatar
+      // 1. Immediate pre-population from local session so immutable fields are NEVER blank
+      populateUserSessionFields();
+
+      // 2. Immediate render of saved or initial avatar
       const cachedAvatar = localStorage.getItem('sih_user_avatar') || '';
       if (cachedAvatar) {
         applyAvatar(cachedAvatar, false);
+        const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === cachedAvatar || pr.rawSvg === cachedAvatar);
+        if (matched) {
+          document.querySelectorAll('.preset-choice-btn').forEach(b => {
+            b.classList.toggle('active', b.getAttribute('data-preset') === matched.id);
+          });
+        }
       } else {
         renderAvatarPreview('');
       }
 
-      // Attach direct click and touch listeners to preset buttons
+      // 3. Attach direct click and touch listeners to preset buttons
       document.querySelectorAll('.preset-choice-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -775,14 +825,21 @@
         });
       });
 
-      // 1. Check Auth
-      currentUser = await checkAuth('PERSONNEL');
-      
-      // 2. Load Profile Data
-      await loadProfileData();
+      // 4. Attach submit listener
+      const formEl = document.getElementById('profile-form');
+      if (formEl) formEl.addEventListener('submit', handleSaveProfile);
 
-      // 3. Attach submit listener
-      document.getElementById('profile-form').addEventListener('submit', handleSaveProfile);
+      // 5. Initial completion calculation
+      calculateProfileCompletion();
+
+      // 6. Check Auth & Load authoritative Profile Data asynchronously
+      try {
+        currentUser = await checkAuth('PERSONNEL');
+      } catch (err) {
+        console.warn('Auth check deferred:', err);
+      }
+      
+      await loadProfileData();
     });
 
     async function loadProfileData() {
@@ -790,14 +847,12 @@
         const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
         const user = currentUser || localUser;
 
-        // Immediate pre-population from local session so immutable fields are never blank
+        // Populate session defaults
+        populateUserSessionFields();
+
         const pIdField = document.getElementById('prof_personnelId');
         const pEmailField = document.getElementById('prof_email');
         const pNameField = document.getElementById('prof_fullName');
-
-        if (pIdField) pIdField.value = user.personnelId || 'CRPF-2024-9842';
-        if (pEmailField) pEmailField.value = user.email || 'personnel@crpf.gov.in';
-        if (pNameField && !pNameField.value && user.fullName) pNameField.value = user.fullName;
 
         // Fetch authoritative profile from backend API
         const res = await api.getProfile().catch(() => null);
@@ -816,12 +871,14 @@
           if (p.gender) document.getElementById('prof_gender').value = p.gender;
           if (p.preferredSupportLanguage) document.getElementById('prof_lang').value = p.preferredSupportLanguage;
 
-          // Emergency Contact
-          if (p.emergencyContact) {
-            if (p.emergencyContact.name) document.getElementById('prof_em_name').value = p.emergencyContact.name;
-            if (p.emergencyContact.relationship) document.getElementById('prof_em_rel').value = p.emergencyContact.relationship;
-            if (p.emergencyContact.phone) document.getElementById('prof_em_phone').value = p.emergencyContact.phone;
-          }
+          // Designated Emergency / Family Contact - Provided by User
+          const em = p.emergencyContact || {};
+          const emName = document.getElementById('prof_em_name');
+          const emRel = document.getElementById('prof_em_rel');
+          const emPhone = document.getElementById('prof_em_phone');
+          if (emName) emName.value = em.name || '';
+          if (emRel) emRel.value = em.relationship || '';
+          if (emPhone) emPhone.value = em.phone || '';
 
           // Service Info
           document.getElementById('prof_rank').value = p.rank || 'Havildar';
@@ -850,17 +907,17 @@
             document.getElementById('pref_anonStats').checked = p.privacyPreferences.anonymousAggregatedStats !== false;
           }
 
-          // Initialize Avatar
+          // Initialize Avatar: only overwrite if currentAvatar was not already selected in this page view
           const savedAvatar = p.profileImage || localStorage.getItem('sih_user_avatar') || '';
           if (savedAvatar) {
             applyAvatar(savedAvatar, false);
             // If matches a preset SVG, mark it active
-            const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.svg === savedAvatar);
+            const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === savedAvatar || pr.rawSvg === savedAvatar);
             if (matched) {
               const matchedBtn = document.querySelector(`.preset-choice-btn[data-preset="${matched.id}"]`);
               if (matchedBtn) matchedBtn.classList.add('active');
             }
-          } else {
+          } else if (!currentAvatar) {
             renderAvatarPreview('');
           }
 

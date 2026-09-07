@@ -8,8 +8,10 @@ const API_BASE = '/api/v1';
 class APIClient {
   async request(endpoint, options = {}) {
     const url = `${API_BASE}${endpoint}`;
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sih_token') : null;
     const defaultHeaders = {
       'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
     };
 
     const config = {
@@ -28,6 +30,9 @@ class APIClient {
       if (!response.ok) {
         if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/register')) {
           console.warn('[Auth] Session expired or unauthorized.');
+          if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('sih_token');
+          }
           // Only redirect if on protected page
           const isPublicPage = window.location.pathname.endsWith('index.html') || 
                                window.location.pathname.endsWith('landing.html') || 
@@ -39,6 +44,16 @@ class APIClient {
           }
         }
         throw new Error(data.message || `Request failed with status ${response.status}`);
+      }
+
+      // Auto-save auth token and user
+      if (endpoint.includes('/auth/login') || endpoint.includes('/auth/register')) {
+        if (data && data.token && typeof localStorage !== 'undefined') {
+          localStorage.setItem('sih_token', data.token);
+        }
+        if (data && data.user && typeof localStorage !== 'undefined') {
+          localStorage.setItem('sih_user', JSON.stringify(data.user));
+        }
       }
 
       return data;
@@ -58,6 +73,12 @@ class APIClient {
   }
 
   async logout() {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('sih_token');
+        localStorage.removeItem('sih_user');
+      }
+    } catch(e) {}
     return this.request('/auth/logout', { method: 'POST' });
   }
 
