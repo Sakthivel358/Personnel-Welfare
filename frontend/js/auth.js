@@ -61,7 +61,16 @@ function updateUserUI(user) {
   roleEls.forEach(el => el.textContent = `${user.rank || ''} • ${user.role.replace('_', ' ')}`);
   unitEls.forEach(el => el.textContent = user.unit || 'CRPF Battalion 104');
   
-  if (user.fullName) {
+  const avatarVal = user.profileImage || (typeof localStorage !== 'undefined' && localStorage.getItem('sih_user_avatar'));
+  if (avatarVal) {
+    avatarEls.forEach(el => {
+      if (avatarVal.startsWith('<svg') || avatarVal.includes('<svg')) {
+        el.innerHTML = avatarVal;
+      } else {
+        el.innerHTML = `<img src="${avatarVal}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />`;
+      }
+    });
+  } else if (user.fullName) {
     const initials = user.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     avatarEls.forEach(el => el.textContent = initials);
   }
