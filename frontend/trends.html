@@ -233,6 +233,8 @@
         const workHours = item.workload_hours !== undefined ? item.workload_hours : (item.workloadHours !== undefined ? item.workloadHours : '--');
         const sleepHours = item.recovery_sleep_hours !== undefined ? item.recovery_sleep_hours : (item.recoverySleepHours !== undefined ? item.recoverySleepHours : '--');
 
+        const compareTargetId = item.checkInId || item._id || item.id || (idx + 1);
+
         return `
           <tr style="border-bottom: 1px solid var(--border-color);">
             <td style="padding: 0.75rem; font-weight:600;">${Utils.formatDate(itemDate)}</td>
@@ -241,9 +243,9 @@
             <td style="padding: 0.75rem;">${pssVal} / 40</td>
             <td style="padding: 0.75rem;">${workHours} hrs</td>
             <td style="padding: 0.75rem;">${sleepHours} hrs</td>
-            <td style="padding: 0.75rem; text-align: right;">
+            <td style="padding: 0.75rem; text-align: right; white-space: nowrap;">
               <button class="btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem; font-size:0.75rem;" onclick="viewItemDetails(${idx})">🔍 View Details</button>
-              <a href="/what-changed.html" class="btn btn-sm btn-outline ml-1" style="padding:0.2rem 0.5rem; font-size:0.75rem;">Compare</a>
+              <a href="/what-changed.html?id=${encodeURIComponent(compareTargetId)}" class="btn btn-sm btn-outline ml-1" style="padding:0.2rem 0.5rem; font-size:0.75rem;" title="Compare this check-in against current status">Compare</a>
             </td>
           </tr>
         `;

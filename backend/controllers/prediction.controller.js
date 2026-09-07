@@ -42,8 +42,10 @@ const getPredictionHistory = async (req, res, next) => {
     const series = predictions.map((p, index) => {
       const relatedCheckIn = checkInMap[String(p.checkInId)] || {};
       return {
+        _id: p._id,
+        checkInId: p.checkInId || relatedCheckIn._id,
         checkInIndex: index + 1,
-        date: p.analyzedAt || p.createdAt,
+        date: p.analyzedAt || p.createdAt || relatedCheckIn.createdAt || relatedCheckIn.checkInDate,
         concernLevel: p.concernLevel,
         compositeRiskScore: p.compositeRiskScore,
         confidence: p.confidence,
@@ -94,7 +96,7 @@ const getExplainability = async (req, res, next) => {
   }
 };
 
-// "What Changed?" Comparison between current and immediately preceding check-in
+// "What Changed?" Comparison between current and selected (or immediately preceding) check-in
 const getWhatChanged = async (req, res, next) => {
   try {
     const checkIns = await db.CheckIns.find({ userId: req.user._id });
@@ -109,11 +111,40 @@ const getWhatChanged = async (req, res, next) => {
       });
     }
 
-    const currentCheckIn = checkIns[checkIns.length - 1];
-    const previousCheckIn = checkIns[checkIns.length - 2];
+    // Sort chronologically ascending
+    checkIns.sort((a, b) => new Date(a.checkInDate || a.createdAt || 0) - new Date(b.checkInDate || b.createdAt || 0));
 
-    const currentPred = predictions[predictions.length - 1] || {};
-    const previousPred = predictions[predictions.length - 2] || {};
+    const currentCheckIn = checkIns[checkIns.length - 1];
+    const currentPred = predictions.find(p => String(p.checkInId) === String(currentCheckIn._id)) || predictions[predictions.length - 1] || {};
+
+    const targetId = req.query.id || req.query.compareId || req.query.targetId;
+    let previousCheckIn = null;
+    let previousPred = null;
+
+    if (targetId) {
+      const foundIdx = checkIns.findIndex((c, idx) => 
+        String(c._id) === String(targetId) ||
+        String(c.predictionId) === String(targetId) ||
+        String(idx + 1) === String(targetId) ||
+        (predictions[idx] && String(predictions[idx]._id) === String(targetId)) ||
+        (c.checkInDate && c.checkInDate.startsWith(String(targetId)))
+      );
+
+      if (foundIdx !== -1) {
+        if (foundIdx === checkIns.length - 1 && checkIns.length > 1) {
+          // If the latest check-in itself was targeted, compare against the immediately preceding
+          previousCheckIn = checkIns[checkIns.length - 2];
+        } else {
+          previousCheckIn = checkIns[foundIdx];
+        }
+        previousPred = predictions.find(p => String(p.checkInId) === String(previousCheckIn._id)) || predictions[foundIdx] || {};
+      }
+    }
+
+    if (!previousCheckIn) {
+      previousCheckIn = checkIns[checkIns.length - 2];
+      previousPred = predictions.find(p => String(p.checkInId) === String(previousCheckIn._id)) || predictions[predictions.length - 2] || {};
+    }
 
     const calcDelta = (currentVal, prevVal, isHigherRisk = true) => {
       const c = Number(currentVal) || 0;
@@ -205,15 +236,34 @@ const getWhatChanged = async (req, res, next) => {
       summaryText = `Recent changes show ${notableChanges.join(', ')}. These directional shifts contributed to your updated model prediction.`;
     }
 
+    const availableCheckIns = checkIns.map((c, idx) => {
+      const pred = predictions.find(p => String(p.checkInId) === String(c._id)) || {};
+      const isCurrent = idx === checkIns.length - 1;
+      return {
+        id: c._id,
+        checkInIndex: idx + 1,
+        date: c.checkInDate || c.createdAt,
+        riskScore: Math.round(pred.compositeRiskScore || 0),
+        concernLevel: pred.concernLevel || 'LOW',
+        isCurrent,
+        isSelected: String(c._id) === String(previousCheckIn._id)
+      };
+    });
+
     return res.status(200).json({
       success: true,
       hasComparison: true,
+      selectedCompareId: previousCheckIn._id,
       previousDate: previousCheckIn.checkInDate || previousCheckIn.createdAt,
       currentDate: currentCheckIn.checkInDate || currentCheckIn.createdAt,
       previousConcernLevel: previousPred.concernLevel || 'UNASSESSED',
       currentConcernLevel: currentPred.concernLevel || 'UNASSESSED',
+      previousRiskScore: Math.round(previousPred.compositeRiskScore || 0),
+      currentRiskScore: Math.round(currentPred.compositeRiskScore || 0),
+      isCustomComparison: Boolean(targetId && String(previousCheckIn._id) !== String(checkIns[checkIns.length - 2]._id)),
       summary: summaryText,
       metrics,
+      availableCheckIns,
       disclaimer: 'Observed differences represent factual variation between check-in inputs, not proof of individual causation.'
     });
   } catch (err) {

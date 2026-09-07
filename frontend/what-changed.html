@@ -85,12 +85,18 @@
 
         <!-- Comparative Breakdown Table -->
         <div class="card mb-3">
-          <div class="card-header">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
             <div>
               <h3>Parameter-by-Parameter Comparison</h3>
-              <p class="text-muted" style="font-size:0.85rem;" id="comparison-dates-header">Comparing Previous vs Current Check-in</p>
+              <p class="text-muted" style="font-size:0.85rem;" id="comparison-dates-header">Comparing Selected vs Current Check-in</p>
             </div>
-            <a href="/why-result.html" class="btn btn-sm btn-secondary">View Feature Attribution &rarr;</a>
+            <div class="d-flex align-center gap-1 flex-wrap">
+              <label for="compare-select" style="font-size:0.85rem; font-weight:600; color:var(--text-secondary);">Compare with:</label>
+              <select id="compare-select" class="form-control" style="font-size:0.85rem; padding:0.3rem 0.6rem; width:auto; max-width:280px;">
+                <option value="">Loading check-ins...</option>
+              </select>
+              <a href="/why-result.html" class="btn btn-sm btn-secondary">Feature Attribution &rarr;</a>
+            </div>
           </div>
 
           <div style="overflow-x: auto;">
@@ -98,8 +104,8 @@
               <thead>
                 <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
                   <th style="padding: 0.75rem;">Observed Indicator</th>
-                  <th style="padding: 0.75rem;">Previous Check-in</th>
-                  <th style="padding: 0.75rem;">Current Check-in</th>
+                  <th style="padding: 0.75rem;" id="col-prev-title">Selected Check-in</th>
+                  <th style="padding: 0.75rem;" id="col-curr-title">Current Check-in (Latest)</th>
                   <th style="padding: 0.75rem;">Observed Delta</th>
                   <th style="padding: 0.75rem;">Trend Direction</th>
                   <th style="padding: 0.75rem;">Welfare Context</th>
@@ -145,7 +151,12 @@
 
     async function loadWhatChanged() {
       try {
-        const res = await api.request('/prediction/what-changed', { method: 'GET' });
+        const urlParams = new URLSearchParams(window.location.search);
+        const targetId = urlParams.get('id') || urlParams.get('compareId') || urlParams.get('targetId');
+
+        const endpoint = targetId ? `/prediction/what-changed?id=${encodeURIComponent(targetId)}` : '/prediction/what-changed';
+        const res = await api.request(endpoint, { method: 'GET' });
+
         if (res && res.success) {
           if (!res.hasComparison) {
             document.getElementById('what-changed-summary').textContent = res.message || 'At least 2 check-ins are required to calculate observed changes.';
@@ -158,11 +169,42 @@
                 </td>
               </tr>
             `;
+            const compareSelect = document.getElementById('compare-select');
+            if (compareSelect) compareSelect.style.display = 'none';
             return;
           }
 
           document.getElementById('what-changed-summary').textContent = res.summary;
-          document.getElementById('comparison-dates-header').textContent = `Previous (${Utils.formatDate(res.previousDate)}) vs Current (${Utils.formatDate(res.currentDate)})`;
+
+          const prevLabel = res.isCustomComparison 
+            ? `Selected Check-in (${Utils.formatDate(res.previousDate)})` 
+            : `Previous Check-in (${Utils.formatDate(res.previousDate)})`;
+          const currLabel = `Current Check-in (${Utils.formatDate(res.currentDate)})`;
+
+          document.getElementById('comparison-dates-header').innerHTML = `
+            <strong>${prevLabel}</strong> <span style="color:var(--text-muted);">&bull;</span> <strong style="color:var(--accent);">${currLabel}</strong>
+          `;
+
+          const colPrev = document.getElementById('col-prev-title');
+          if (colPrev) colPrev.textContent = prevLabel;
+
+          // Populate the comparison selector dropdown
+          const compareSelect = document.getElementById('compare-select');
+          if (compareSelect && res.availableCheckIns && res.availableCheckIns.length > 0) {
+            compareSelect.innerHTML = res.availableCheckIns.map(c => {
+              const label = c.isCurrent 
+                ? `Check-in #${c.checkInIndex} (${Utils.formatDate(c.date)}) [Current - Latest]`
+                : `Check-in #${c.checkInIndex} (${Utils.formatDate(c.date)}) - ${c.riskScore}% Risk`;
+              return `<option value="${c.id}" ${c.isSelected ? 'selected' : ''} ${c.isCurrent ? 'disabled style="color:var(--text-muted);"' : ''}>${label}</option>`;
+            }).join('');
+
+            compareSelect.onchange = (e) => {
+              const selectedVal = e.target.value;
+              if (selectedVal) {
+                window.location.href = `/what-changed.html?id=${encodeURIComponent(selectedVal)}`;
+              }
+            };
+          }
 
           const metrics = res.metrics;
           const tbody = document.getElementById('comparison-table-body');
