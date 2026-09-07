@@ -66,5 +66,25 @@
     "reviewedAt": "2026-09-06T05:54:47.575Z",
     "createdAt": "2026-09-06T01:54:47.575Z",
     "updatedAt": "2026-09-06T05:54:47.575Z"
+  },
+  {
+    "_id": "001bbcc723bac4057fb617ed",
+    "personnelId": "CRPF-TEST-6413",
+    "userId": "b2d05ee1807be6b8fad3038a",
+    "predictionId": "2172c0d2ebe0b9f1393066eb",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 77.4,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-07T17:31:36.818Z",
+    "updatedAt": "2026-09-07T17:31:37.068Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-07T17:31:37.068Z"
   }
 ]
