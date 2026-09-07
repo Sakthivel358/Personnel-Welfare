@@ -171,22 +171,14 @@ async function handleDirectLogout() {
   }
 }
 
-// Theme handling
+// Theme handling (delegates to Utils.initTheme to prevent duplicate listener collisions)
 function initTheme() {
+  if (window.Utils && typeof Utils.initTheme === 'function') {
+    Utils.initTheme();
+    return;
+  }
   const savedTheme = localStorage.getItem('sih_welfare_theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
-
-  const themeToggles = document.querySelectorAll('.theme-toggle');
-  themeToggles.forEach(btn => {
-    btn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
-    btn.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme') || 'light';
-      const nextTheme = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', nextTheme);
-      localStorage.setItem('sih_welfare_theme', nextTheme);
-      themeToggles.forEach(b => b.innerHTML = nextTheme === 'dark' ? '☀️' : '🌙');
-    });
-  });
 }
 
 // Mobile sidebar toggle

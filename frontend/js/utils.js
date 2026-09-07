@@ -304,6 +304,48 @@ const Utils = {
     modal.style.display = 'flex';
   },
 
+  icons: {
+    sun: `<svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+    moon: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>`,
+    shield: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    check: `<svg class="svg-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
+    pulse: `<svg class="svg-icon" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`
+  },
+
+  // Single Source-of-Truth Theme Manager
+  toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('sih_welfare_theme', next);
+    this.updateThemeIcons(next);
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
+    return next;
+  },
+
+  updateThemeIcons(theme) {
+    document.querySelectorAll('.theme-toggle').forEach(btn => {
+      btn.innerHTML = theme === 'dark' ? this.icons.sun : this.icons.moon;
+      btn.title = theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+    });
+  },
+
+  initTheme() {
+    const savedTheme = localStorage.getItem('sih_welfare_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    this.updateThemeIcons(savedTheme);
+
+    document.querySelectorAll('.theme-toggle').forEach(btn => {
+      if (btn.dataset.themeBound === 'true') return;
+      btn.dataset.themeBound = 'true';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        Utils.toggleTheme();
+      });
+    });
+  },
+
   // Production View Mode Toggle
   initProductionMode() {
     const isProd = localStorage.getItem('welfareai_production_mode') === 'true';
@@ -315,11 +357,13 @@ const Utils = {
   toggleProductionMode() {
     const isProd = document.body.classList.toggle('production-mode');
     localStorage.setItem('welfareai_production_mode', isProd ? 'true' : 'false');
+    window.dispatchEvent(new CustomEvent('productionmodechange', { detail: { isProduction: isProd } }));
     if (isProd) {
-      Utils.showToast('Production View enabled: Hackathon evaluation banners hidden.', 'info');
+      Utils.showToast('Production View enabled: Hackathon evaluation markers hidden.', 'info');
     } else {
-      Utils.showToast('Hackathon Evaluation View enabled.', 'info');
+      Utils.showToast('Evaluation View enabled: Judge highlights and demo guides active.', 'info');
     }
+    return isProd;
   }
 };
 
