@@ -69,25 +69,38 @@ class Collection {
   }
 
   _read() {
-    if (this._cache !== null) {
-      return this._cache;
-    }
     try {
-      this.init();
-      const raw = fs.readFileSync(this.filePath, 'utf-8');
-      this._cache = JSON.parse(raw || '[]');
-      return this._cache;
+      if (fs.existsSync(this.filePath)) {
+        const stat = fs.statSync(this.filePath);
+        if (this._cache === null || !this._lastMtime || stat.mtimeMs > this._lastMtime) {
+          const raw = fs.readFileSync(this.filePath, 'utf-8');
+          this._cache = JSON.parse(raw || '[]');
+          this._lastMtime = stat.mtimeMs;
+        }
+        return this._cache;
+      }
     } catch (err) {
-      return this._cache || [];
+      // fallback
     }
+    return this._cache || [];
   }
 
   _write(data) {
     this._cache = data;
     try {
       fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2), 'utf-8');
+      try {
+        const stat = fs.statSync(this.filePath);
+        this._lastMtime = stat.mtimeMs;
+      } catch (_) {}
+
+      // If running with separate data & seed paths (e.g. serverless /tmp), write-through to seed if possible
+      if (this.seedPath && this.seedPath !== this.filePath) {
+        try {
+          fs.writeFileSync(this.seedPath, JSON.stringify(data, null, 2), 'utf-8');
+        } catch (_) {}
+      }
     } catch (err) {
-      // In-memory cache is still preserved even if disk write fails
       console.warn(`[DB Storage Warn] Disk write to ${this.name}:`, err.message);
     }
   }
@@ -139,7 +152,21 @@ class Collection {
   async findOneAndUpdate(query, update, options = { new: true }) {
     const items = this._read();
     const index = items.findIndex(item => this._matches(item, query));
-    if (index === -1) return null;
+    if (index === -1) {
+      if (options && options.upsert) {
+        const newDoc = {
+          _id: 'db_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          ...query,
+          ...(update.$set ? update.$set : update),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+        items.push(newDoc);
+        this._write(items);
+        return newDoc;
+      }
+      return null;
+    }
 
     const current = items[index];
     const updated = {
@@ -187,19 +214,36 @@ class Collection {
   }
 
   _matches(item, query) {
+    if (!item || !query) return false;
+
+    // Support MongoDB-style $or: [ { cond1 }, { cond2 } ]
+    if (query.$or && Array.isArray(query.$or)) {
+      const orMatches = query.$or.some(subQuery => this._matches(item, subQuery));
+      if (!orMatches) return false;
+    }
+
     for (const key of Object.keys(query)) {
+      if (key === '$or') continue;
       const qVal = query[key];
+
+      // Support ID matching on _id or id
+      if (key === '_id' || key === 'id') {
+        const itemId = String(item._id || item.id || '');
+        if (itemId !== String(qVal)) return false;
+        continue;
+      }
+
       if (qVal && typeof qVal === 'object' && !Array.isArray(qVal)) {
         if ('$in' in qVal && Array.isArray(qVal.$in)) {
-          if (!qVal.$in.includes(item[key])) return false;
+          if (!qVal.$in.some(v => String(v).toLowerCase() === String(item[key]).toLowerCase())) return false;
         } else if ('$gte' in qVal) {
           if (item[key] < qVal.$gte) return false;
         } else if ('$lte' in qVal) {
           if (item[key] > qVal.$lte) return false;
         } else if ('$ne' in qVal) {
-          if (item[key] === qVal.$ne) return false;
+          if (String(item[key]).toLowerCase() === String(qVal.$ne).toLowerCase()) return false;
         }
-      } else if (String(item[key]).toLowerCase() !== String(qVal).toLowerCase()) {
+      } else if (String(item[key] || '').toLowerCase() !== String(qVal || '').toLowerCase()) {
         return false;
       }
     }

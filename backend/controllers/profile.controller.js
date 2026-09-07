@@ -10,6 +10,7 @@ const getProfile = async (req, res, next) => {
       success: true,
       data: {
         ...personnel,
+        profileImage: (personnel && personnel.profileImage) || (user && user.profileImage) || '',
         email: user ? user.email : '',
         role: user ? user.role : 'PERSONNEL',
         lastLogin: user ? user.lastLogin : null
@@ -24,6 +25,7 @@ const updateProfile = async (req, res, next) => {
   try {
     const {
       fullName,
+      profileImage,
       phone,
       dob,
       gender,
@@ -52,27 +54,29 @@ const updateProfile = async (req, res, next) => {
     } = req.body;
 
     // Update User core info
-    await db.Users.findByIdAndUpdate(req.user._id, {
+    const userUpdate = {
       fullName: fullName || req.user.fullName,
       unit: unit || req.user.unit,
       rank: rank || req.user.rank
-    });
+    };
+    if (profileImage !== undefined) {
+      userUpdate.profileImage = profileImage;
+    }
+    await db.Users.findByIdAndUpdate(req.user._id, userUpdate);
 
     // Update Personnel structured details
-    const updatedPersonnel = await db.Personnel.findOneAndUpdate(
-      { userId: req.user._id },
-      {
-        fullName: fullName || req.user.fullName,
-        phone: phone || '',
-        dob: dob || '',
-        gender: gender || 'Not Specified',
-        rank: rank || req.user.rank,
-        force: force || 'CRPF',
-        unit: unit || req.user.unit,
-        joiningDate: joiningDate || '',
-        yearsOfService: yearsOfService !== undefined ? Number(yearsOfService) : 5,
-        serviceCategory: serviceCategory || 'Combatant',
-        postingType: postingType || 'Field Operations',
+    const personnelUpdate = {
+      fullName: fullName || req.user.fullName,
+      phone: phone || '',
+      dob: dob || '',
+      gender: gender || 'Not Specified',
+      rank: rank || req.user.rank,
+      force: force || 'CRPF',
+      unit: unit || req.user.unit,
+      joiningDate: joiningDate || '',
+      yearsOfService: yearsOfService !== undefined ? Number(yearsOfService) : 5,
+      serviceCategory: serviceCategory || 'Combatant',
+      postingType: postingType || 'Field Operations',
         deploymentZone: deploymentZone || 'Standard Field Deployment',
         currentLocation: currentLocation || 'Battalion HQ',
         preferredSupportLanguage: preferredSupportLanguage || 'English / Hindi',
@@ -92,8 +96,16 @@ const updateProfile = async (req, res, next) => {
           anonymousAggregatedStats: true,
           notificationChannel: 'IN_APP'
         }
+      };
+      if (profileImage !== undefined) {
+        personnelUpdate.profileImage = profileImage;
       }
-    );
+
+      const updatedPersonnel = await db.Personnel.findOneAndUpdate(
+        { userId: req.user._id },
+        personnelUpdate,
+        { new: true, upsert: true }
+      );
 
     await auditService.log({
       action: 'PROFILE_UPDATE',
@@ -106,7 +118,11 @@ const updateProfile = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: 'Profile information saved successfully.',
-      data: updatedPersonnel
+      data: updatedPersonnel || {
+        ...req.user,
+        ...userUpdate,
+        profileImage: userUpdate.profileImage || ''
+      }
     });
   } catch (err) {
     next(err);

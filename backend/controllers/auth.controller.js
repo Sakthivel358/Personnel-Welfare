@@ -4,7 +4,7 @@ const db = require('../models/dbAdapter');
 const { JWT_SECRET } = require('../middleware/auth.middleware');
 const auditService = require('../services/audit.service');
 
-const generateToken = (user) => {
+const generateToken = (user, rememberMe = false) => {
   return jwt.sign(
     {
       id: user._id,
@@ -13,16 +13,16 @@ const generateToken = (user) => {
       role: user.role
     },
     JWT_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: rememberMe ? '30d' : '3h' }
   );
 };
 
-const setAuthCookie = (res, token) => {
+const setAuthCookie = (res, token, rememberMe = false) => {
   res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 3 * 60 * 60 * 1000 // 30 days or 3 hours default
   });
 };
 
@@ -149,7 +149,7 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { identifier, password } = req.body;
+    const { identifier, password, rememberMe } = req.body;
 
     if (!identifier || !password) {
       return res.status(400).json({
@@ -204,11 +204,11 @@ const login = async (req, res, next) => {
       personnelId: user.personnelId,
       targetResource: 'Auth',
       ipAddress: req.ip,
-      details: { role: user.role }
+      details: { role: user.role, rememberMe: Boolean(rememberMe) }
     });
 
-    const token = generateToken(user);
-    setAuthCookie(res, token);
+    const token = generateToken(user, Boolean(rememberMe));
+    setAuthCookie(res, token, Boolean(rememberMe));
 
     const { password: _, ...safeUser } = user;
 
@@ -216,6 +216,7 @@ const login = async (req, res, next) => {
       success: true,
       message: 'Signed in successfully.',
       token,
+      expiresIn: rememberMe ? '30d' : '3h',
       user: safeUser
     });
   } catch (err) {

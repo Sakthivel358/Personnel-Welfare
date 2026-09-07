@@ -67,6 +67,13 @@
           <input type="password" id="password" class="form-control" placeholder="Enter password (Default: Password@123)" required autocomplete="new-password">
         </div>
 
+        <div class="form-group mb-3">
+          <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.85rem; color:var(--text-secondary); margin-bottom:0;">
+            <input type="checkbox" id="remember-me" style="width:16px; height:16px; accent-color:var(--accent);">
+            <span>Remember me on this terminal (30 days persistence)</span>
+          </label>
+        </div>
+
         <button type="submit" id="login-submit-btn" class="btn btn-primary w-100 mb-3" style="padding: 0.75rem;">
           Sign In to Portal &rarr;
         </button>
@@ -92,7 +99,7 @@
       await performLogin(id, pass);
     }
 
-    async function performLogin(identifier, password) {
+    async function performLogin(identifier, password, rememberMe = false) {
       const submitBtn = document.getElementById('login-submit-btn');
       const alertContainer = document.getElementById('login-alert-container');
       alertContainer.innerHTML = '';
@@ -101,7 +108,7 @@
       submitBtn.innerHTML = `<div class="spinner"></div> Authenticating ${identifier}...`;
 
       try {
-        const res = await api.login(identifier, password);
+        const res = await api.login(identifier, password, rememberMe);
         if (res && res.success) {
           Utils.showToast(`Welcome ${res.user?.fullName || identifier}! Redirecting...`, 'success');
           const role = res.user?.role || 'PERSONNEL';
@@ -153,7 +160,8 @@
         e.preventDefault();
         const identifier = document.getElementById('identifier').value.trim();
         const password = document.getElementById('password').value;
-        await performLogin(identifier, password);
+        const rememberMe = document.getElementById('remember-me')?.checked || false;
+        await performLogin(identifier, password, rememberMe);
       });
     });
   </script>

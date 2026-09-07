@@ -53,8 +53,8 @@ class APIClient {
     return this.request('/auth/register', { method: 'POST', body: JSON.stringify(userData) });
   }
 
-  async login(identifier, password) {
-    return this.request('/auth/login', { method: 'POST', body: JSON.stringify({ identifier, password }) });
+  async login(identifier, password, rememberMe = false) {
+    return this.request('/auth/login', { method: 'POST', body: JSON.stringify({ identifier, password, rememberMe }) });
   }
 
   async logout() {
