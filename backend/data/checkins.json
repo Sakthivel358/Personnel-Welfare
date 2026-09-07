@@ -60,36 +60,6 @@
     "predictionId": "d8e21463edace5aa6775dff2"
   },
   {
-    "_id": "8f5bcd9d369c785ba3f454b1",
-    "userId": "b89451b0525f73ec0e2338ef",
-    "personnelId": "CRPF-9042",
-    "pss_score": 16,
-    "pss_responses": [
-      2,
-      1,
-      2,
-      1,
-      3,
-      0,
-      3,
-      1,
-      2,
-      1
-    ],
-    "workload_hours": 52,
-    "work_pressure_rating": 6,
-    "recovery_sleep_hours": 6,
-    "social_support_rating": 6,
-    "work_life_balance_rating": 5,
-    "shift_continuity_days": 4,
-    "recent_trend_indicator": -0.8,
-    "notes": "",
-    "checkInDate": "2026-09-06T06:11:43.475Z",
-    "createdAt": "2026-09-06T06:11:43.476Z",
-    "updatedAt": "2026-09-06T06:11:43.481Z",
-    "predictionId": "ac540fd226b5e2da219e7f28"
-  },
-  {
     "_id": "731c8b242abb0ca052eb6d08",
     "userId": "b89451b0525f73ec0e2338ef",
     "personnelId": "CRPF-9042",
@@ -118,36 +88,6 @@
     "createdAt": "2026-09-06T07:02:03.896Z",
     "updatedAt": "2026-09-06T07:02:03.901Z",
     "predictionId": "2ebe6189fac365fe3c2cd51d"
-  },
-  {
-    "_id": "97f73e7e114a3e81ec005fcd",
-    "userId": "b89451b0525f73ec0e2338ef",
-    "personnelId": "CRPF-9042",
-    "pss_score": 16,
-    "pss_responses": [
-      1,
-      2,
-      3,
-      3,
-      4,
-      4,
-      4,
-      4,
-      3,
-      2
-    ],
-    "workload_hours": 52,
-    "work_pressure_rating": 6,
-    "recovery_sleep_hours": 6,
-    "social_support_rating": 6,
-    "work_life_balance_rating": 5,
-    "shift_continuity_days": 4,
-    "recent_trend_indicator": 0,
-    "notes": "",
-    "checkInDate": "2026-09-06T07:02:03.944Z",
-    "createdAt": "2026-09-06T07:02:03.945Z",
-    "updatedAt": "2026-09-06T07:02:03.951Z",
-    "predictionId": "f561af6fba12c8e669bffef9"
   },
   {
     "_id": "645b29792330f640e89e1fc7",
@@ -180,36 +120,6 @@
     "predictionId": "b4d3792dbb4ff5f3256ae47c"
   },
   {
-    "_id": "cd81d37bd8bbd2eaa507486f",
-    "userId": "b89451b0525f73ec0e2338ef",
-    "personnelId": "CRPF-9042",
-    "pss_score": 20,
-    "pss_responses": [
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2
-    ],
-    "workload_hours": 78,
-    "work_pressure_rating": 8,
-    "recovery_sleep_hours": 9,
-    "social_support_rating": 9,
-    "work_life_balance_rating": 8,
-    "shift_continuity_days": 17,
-    "recent_trend_indicator": 2,
-    "notes": "",
-    "checkInDate": "2026-09-06T07:07:40.297Z",
-    "createdAt": "2026-09-06T07:07:40.297Z",
-    "updatedAt": "2026-09-06T07:07:40.302Z",
-    "predictionId": "85ba25b970ad00a118cd1c26"
-  },
-  {
     "_id": "ad7c1fbff22f5787d223c18d",
     "userId": "b89451b0525f73ec0e2338ef",
     "personnelId": "CRPF-9042",
@@ -238,35 +148,5 @@
     "createdAt": "2026-09-06T07:41:36.668Z",
     "updatedAt": "2026-09-06T07:41:36.671Z",
     "predictionId": "3b6e30c52ee05f228de13df6"
-  },
-  {
-    "_id": "2121c8a6e7178a6e823943a2",
-    "userId": "b89451b0525f73ec0e2338ef",
-    "personnelId": "CRPF-9042",
-    "pss_score": 22,
-    "pss_responses": [
-      2,
-      3,
-      3,
-      3,
-      3,
-      2,
-      2,
-      3,
-      3,
-      4
-    ],
-    "workload_hours": 52,
-    "work_pressure_rating": 6,
-    "recovery_sleep_hours": 6,
-    "social_support_rating": 6,
-    "work_life_balance_rating": 5,
-    "shift_continuity_days": 4,
-    "recent_trend_indicator": -0.5,
-    "notes": "",
-    "checkInDate": "2026-09-06T07:41:36.691Z",
-    "createdAt": "2026-09-06T07:41:36.692Z",
-    "updatedAt": "2026-09-06T07:41:36.695Z",
-    "predictionId": "ff769bd5d1aca4d175f105c7"
   }
 ]

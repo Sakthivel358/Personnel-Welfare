@@ -9,9 +9,9 @@
     "unit": "CRPF Battalion 104",
     "rank": "Havildar",
     "isActive": true,
-    "lastLogin": "2026-09-06T07:52:43.765Z",
+    "lastLogin": "2026-09-07T19:05:57.611Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-06T07:52:43.766Z"
+    "updatedAt": "2026-09-07T19:05:57.612Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-07T05:52:58.211Z",
+    "lastLogin": "2026-09-07T19:05:09.830Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-07T05:52:58.211Z"
+    "updatedAt": "2026-09-07T19:05:09.830Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,8 +37,8 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-07T05:53:01.328Z",
+    "lastLogin": "2026-09-07T19:05:09.935Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-07T05:53:01.328Z"
+    "updatedAt": "2026-09-07T19:05:09.935Z"
   }
 ]

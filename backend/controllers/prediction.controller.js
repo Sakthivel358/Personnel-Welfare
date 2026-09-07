@@ -142,8 +142,19 @@ const getWhatChanged = async (req, res, next) => {
     }
 
     if (!previousCheckIn) {
-      previousCheckIn = checkIns[checkIns.length - 2];
-      previousPred = predictions.find(p => String(p.checkInId) === String(previousCheckIn._id)) || predictions[predictions.length - 2] || {};
+      // Find the most recent check-in before current that has distinct values or timestamp
+      for (let i = checkIns.length - 2; i >= 0; i--) {
+        const candidate = checkIns[i];
+        const isIdentical = candidate.workload_hours === currentCheckIn.workload_hours &&
+                            candidate.recovery_sleep_hours === currentCheckIn.recovery_sleep_hours &&
+                            candidate.pss_score === currentCheckIn.pss_score &&
+                            Math.abs(new Date(candidate.checkInDate || candidate.createdAt) - new Date(currentCheckIn.checkInDate || currentCheckIn.createdAt)) < 60000;
+        if (!isIdentical || i === 0) {
+          previousCheckIn = candidate;
+          previousPred = predictions.find(p => String(p.checkInId) === String(candidate._id)) || predictions[i] || {};
+          break;
+        }
+      }
     }
 
     const calcDelta = (currentVal, prevVal, isHigherRisk = true) => {
