@@ -8,7 +8,7 @@ const generateReferenceId = () => {
 
 const createSupportRequest = async (req, res, next) => {
   try {
-    const { requestType, urgency, preferredContactMethod, preferredTime, notes } = req.body;
+    const { requestType, urgency, preferredContactMethod, preferredTime, notes, description } = req.body;
 
     if (!requestType) {
       return res.status(400).json({ success: false, message: 'Support request type is required.' });
@@ -24,7 +24,7 @@ const createSupportRequest = async (req, res, next) => {
       urgency: urgency || 'ROUTINE',
       preferredContactMethod: preferredContactMethod || 'CONFIDENTIAL_IN_PERSON',
       preferredTime: preferredTime || 'ANYTIME',
-      notes: notes || '',
+      notes: notes || description || '',
       status: 'SUBMITTED',
       statusHistory: [
         {

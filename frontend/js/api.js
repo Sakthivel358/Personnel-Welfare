@@ -139,6 +139,10 @@ class APIClient {
     return this.request('/support', { method: 'POST', body: JSON.stringify(data) });
   }
 
+  async createSupportRequest(data) {
+    return this.submitSupportRequest(data);
+  }
+
   async getMySupportRequests() {
     return this.request('/support/my', { method: 'GET' });
   }

@@ -358,11 +358,12 @@
       const payload = {
         requestType: document.getElementById('req_type').value,
         urgency: document.getElementById('req_urgency').value,
+        notes: document.getElementById('req_notes').value.trim(),
         description: document.getElementById('req_notes').value.trim()
       };
 
       try {
-        const res = await api.createSupportRequest(payload);
+        const res = api.submitSupportRequest ? await api.submitSupportRequest(payload) : await api.createSupportRequest(payload);
         if (res && res.success) {
           Utils.showToast(`Support request ${res.data && res.data.referenceId ? res.data.referenceId : ''} submitted successfully!`, 'success');
           document.getElementById('req_notes').value = '';
