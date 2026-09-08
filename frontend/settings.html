@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Account Settings & Security — WelfareAI</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/dashboard.css">
@@ -41,6 +44,36 @@
     }
     .settings-pane.active {
       display: block;
+    }
+    .preset-choice-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .preset-choice-btn * {
+      pointer-events: none;
+    }
+    .preset-choice-btn:hover {
+      border-color: var(--accent);
+      background: var(--bg-card-subtle);
+      transform: translateY(-1px);
+    }
+    .preset-choice-btn.active {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.16);
+      box-shadow: 0 0 0 2px var(--accent);
     }
   </style>
 </head>
@@ -111,6 +144,7 @@
         <!-- Settings Tabs -->
         <div class="settings-tabs">
           <button class="settings-tab-btn active" onclick="switchSettingsTab('security', this)">🔐 Security & Password</button>
+          <button class="settings-tab-btn" onclick="switchSettingsTab('avatar', this)">🎖️ Avatar & Service Insignia</button>
           <button class="settings-tab-btn" onclick="switchSettingsTab('appearance', this)">🎨 Appearance & Theme</button>
           <button class="settings-tab-btn" onclick="switchSettingsTab('notifications', this)">🔔 Notifications</button>
           <button class="settings-tab-btn" onclick="switchSettingsTab('data', this)">💾 Data & Export</button>
@@ -249,14 +283,130 @@
             </div>
           </div>
         </div>
+
+        <!-- 5. Avatar & Service Insignia Pane -->
+        <div id="set-pane-avatar" class="settings-pane">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 style="margin:0;">Avatar Photo & 5 Defense Insignia Presets</h3>
+                <p class="text-muted" style="font-size:0.8rem; margin:4px 0 0;">Upload an official duty photo or select one of the 5 defense service insignia presets.</p>
+              </div>
+              <span class="badge badge-low">Live Synchronization</span>
+            </div>
+
+            <div class="d-flex align-center gap-2 flex-wrap mb-3 p-3" style="background:var(--bg-card-subtle); border-radius:var(--radius-md); border:1px solid var(--border-color);">
+              <div id="settings-avatar-preview-box" style="width:88px; height:88px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:var(--bg-surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:1.7rem; color:var(--text-primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);">
+                VK
+              </div>
+              <div style="flex:1; min-width:260px;">
+                <div class="d-flex align-center gap-1 mb-1">
+                  <strong style="font-size:0.95rem;">Service Avatar & Profile Photo</strong>
+                  <span class="badge badge-low" style="font-size:0.72rem;">Defense Baseline</span>
+                </div>
+                <p class="text-muted" style="font-size:0.8rem; margin-bottom:0.75rem;">
+                  Upload a custom photo (PNG, JPG, WebP with client-side HTML5 canvas compression to max 256×256 px at 0.85 quality) or select a defense insignia preset below.
+                </p>
+                <div class="d-flex align-center gap-1 flex-wrap">
+                  <input type="file" id="settings-avatar-file-input" accept="image/png,image/jpeg,image/webp" style="display:none;" onchange="handleSettingsAvatarFileSelect(this)">
+                  <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('settings-avatar-file-input').click()">
+                    <svg class="svg-icon" style="width:14px;height:14px;margin-right:4px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload Custom Photo
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline" onclick="resetSettingsAvatarToInitials()">
+                    Reset to Initials
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5 Defense Insignia Presets -->
+            <div class="mb-3">
+              <div class="text-muted mb-2" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">
+                5 Defense Service Insignia Presets:
+              </div>
+              <div class="d-flex align-center gap-2 flex-wrap" id="settings-avatar-presets">
+                <button type="button" class="preset-choice-btn" data-preset="helmet" onclick="selectSettingsPresetAvatar('helmet')">
+                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#1e293b"/><path d="M25 50 C25 30 38 22 50 22 C62 22 75 30 75 50 C75 54 70 58 65 58 L35 58 C30 58 25 54 25 50 Z" fill="#475569"/><rect x="22" y="48" width="56" height="8" rx="3" fill="#334155"/><rect x="36" y="60" width="28" height="18" rx="4" fill="#64748b"/><circle cx="50" cy="38" r="5" fill="#94a3b8"/></svg>
+                  </span>
+                  <span>Tactical Helmet</span>
+                </button>
+
+                <button type="button" class="preset-choice-btn" data-preset="beret" onclick="selectSettingsPresetAvatar('beret')">
+                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#14532d"/><path d="M26 44 C28 26 68 22 78 36 C86 47 70 54 48 54 C34 54 24 50 26 44 Z" fill="#15803d"/><circle cx="42" cy="40" r="5" fill="#eab308"/><rect x="36" y="58" width="28" height="20" rx="4" fill="#166534"/></svg>
+                  </span>
+                  <span>Commando Beret</span>
+                </button>
+
+                <button type="button" class="preset-choice-btn" data-preset="medic" onclick="selectSettingsPresetAvatar('medic')">
+                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0f766e"/><circle cx="50" cy="50" r="34" fill="#ffffff"/><path d="M44 28 h12 v16 h16 v12 h-16 v16 h-12 v-16 h-16 v-12 h16 z" fill="#dc2626"/></svg>
+                  </span>
+                  <span>Field Medic</span>
+                </button>
+
+                <button type="button" class="preset-choice-btn" data-preset="wing" onclick="selectSettingsPresetAvatar('wing')">
+                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0369a1"/><path d="M16 46 C30 38 42 44 50 54 C58 44 70 38 84 46 C74 56 62 60 50 57 C38 60 26 56 16 46 Z" fill="#f59e0b"/><circle cx="50" cy="52" r="6" fill="#ffffff"/><circle cx="50" cy="52" r="3" fill="#0284c7"/></svg>
+                  </span>
+                  <span>Airborne Wing</span>
+                </button>
+
+                <button type="button" class="preset-choice-btn" data-preset="officer" onclick="selectSettingsPresetAvatar('officer')">
+                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#312e81"/><polygon points="50,22 58,38 76,38 62,49 67,67 50,56 33,67 38,49 24,38 42,38" fill="#fbbf24"/></svg>
+                  </span>
+                  <span>Command Star</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="d-flex justify-between align-center pt-2" style="border-top:1px solid var(--border-color);">
+              <span class="text-muted" style="font-size:0.8rem;">Synchronized across all displays & database</span>
+              <button type="button" id="save-settings-avatar-btn" class="btn btn-primary" onclick="saveSettingsAvatar()">Save Avatar Selection</button>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
-  <script src="/js/api.js"></script>
-  <script src="/js/utils.js"></script>
-  <script src="/js/auth.js"></script>
+  <script src="/js/api.js?v=20260908c"></script>
+  <script src="/js/utils.js?v=20260908c"></script>
+  <script src="/js/auth.js?v=20260908c"></script>
   <script>
+    let currentSettingsAvatar = '';
+
+    const DEFENSE_AVATAR_PRESETS = [
+      {
+        id: 'helmet',
+        name: 'Tactical Helmet',
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#1e293b"/><path d="M25 50 C25 30 38 22 50 22 C62 22 75 30 75 50 C75 54 70 58 65 58 L35 58 C30 58 25 54 25 50 Z" fill="#475569"/><rect x="22" y="48" width="56" height="8" rx="3" fill="#334155"/><rect x="36" y="60" width="28" height="18" rx="4" fill="#64748b"/><circle cx="50" cy="38" r="5" fill="#94a3b8"/></svg>'
+      },
+      {
+        id: 'beret',
+        name: 'Commando Beret',
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#14532d"/><path d="M26 44 C28 26 68 22 78 36 C86 47 70 54 48 54 C34 54 24 50 26 44 Z" fill="#15803d"/><circle cx="42" cy="40" r="5" fill="#eab308"/><rect x="36" y="58" width="28" height="20" rx="4" fill="#166534"/></svg>'
+      },
+      {
+        id: 'medic',
+        name: 'Field Medic',
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0f766e"/><circle cx="50" cy="50" r="34" fill="#ffffff"/><path d="M44 28 h12 v16 h16 v12 h-16 v16 h-12 v-16 h-16 v-12 h16 z" fill="#dc2626"/></svg>'
+      },
+      {
+        id: 'wing',
+        name: 'Airborne Wing',
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0369a1"/><path d="M16 46 C30 38 42 44 50 54 C58 44 70 38 84 46 C74 56 62 60 50 57 C38 60 26 56 16 46 Z" fill="#f59e0b"/><circle cx="50" cy="52" r="6" fill="#ffffff"/><circle cx="50" cy="52" r="3" fill="#0284c7"/></svg>'
+      },
+      {
+        id: 'officer',
+        name: 'Command Star',
+        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#312e81"/><polygon points="50,22 58,38 76,38 62,49 67,67 50,56 33,67 38,49 24,38 42,38" fill="#fbbf24"/></svg>'
+      }
+    ];
+
     function switchSettingsTab(tab, btn) {
       document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.settings-pane').forEach(p => p.classList.remove('active'));
@@ -272,43 +422,252 @@
       Utils.showToast(`Theme switched to ${theme.toUpperCase()} mode.`, 'info', 2000);
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      await checkAuth();
+    function renderSettingsAvatarPreview(avatarVal) {
+      const preview = document.getElementById('settings-avatar-preview-box');
+      const sideAvatar = document.querySelector('.sidebar-footer .user-avatar');
 
-      document.getElementById('change-password-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const currentPassword = document.getElementById('currentPassword').value;
-        const newPassword = document.getElementById('newPassword').value;
-        const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+      const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+      const name = localUser.fullName || 'Inspector Vikram Kumar';
+      const initials = name.split(' ').map(n => n[0]).filter(Boolean).join('').substring(0, 2).toUpperCase() || 'VK';
 
-        if (newPassword !== confirmNewPassword) {
-          Utils.showToast('New passwords do not match.', 'error');
-          return;
+      if (!avatarVal || avatarVal.trim() === '') {
+        if (preview) {
+          preview.innerHTML = '';
+          preview.textContent = initials;
         }
+        if (sideAvatar) {
+          sideAvatar.innerHTML = '';
+          sideAvatar.textContent = initials;
+        }
+        return;
+      }
 
-        const btn = document.getElementById('change-pwd-btn');
-        btn.disabled = true;
-        btn.textContent = 'Updating Hash...';
+      const val = avatarVal.trim();
+      let htmlContent = '';
 
+      if (val.startsWith('<svg') || val.startsWith('<?xml') || val.includes('<svg')) {
+        htmlContent = val;
+      } else if (val.startsWith('data:image/svg+xml;base64,')) {
         try {
-          const res = await api.request('/auth/change-password', {
-            method: 'POST',
-            body: { currentPassword, newPassword }
-          });
-
-          if (res && res.success) {
-            Utils.showToast('Password updated successfully in database!', 'success');
-            document.getElementById('change-password-form').reset();
-          } else {
-            Utils.showToast(res.message || 'Failed to update password.', 'error');
-          }
-        } catch (err) {
-          Utils.showToast(err.message || 'Failed to update password.', 'error');
-        } finally {
-          btn.disabled = false;
-          btn.textContent = 'Update Password Hash';
+          const b64 = val.replace('data:image/svg+xml;base64,', '');
+          htmlContent = decodeURIComponent(escape(atob(b64)));
+        } catch(e) {
+          htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
         }
+      } else {
+        htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
+      }
+
+      if (preview) {
+        preview.textContent = '';
+        preview.innerHTML = htmlContent;
+      }
+      if (sideAvatar) {
+        sideAvatar.textContent = '';
+        sideAvatar.innerHTML = htmlContent;
+      }
+      // Also update any other user avatars on the page
+      document.querySelectorAll('.user-avatar').forEach(el => {
+        el.textContent = '';
+        el.innerHTML = htmlContent;
       });
+    }
+
+    function selectSettingsPresetAvatar(presetId) {
+      const preset = DEFENSE_AVATAR_PRESETS.find(p => p.id === presetId);
+      if (preset) {
+        currentSettingsAvatar = preset.rawSvg;
+        renderSettingsAvatarPreview(currentSettingsAvatar);
+        document.querySelectorAll('.preset-choice-btn').forEach(btn => {
+          if (btn.getAttribute('data-preset') === presetId) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+        if (typeof Utils !== 'undefined' && Utils.showToast) {
+          Utils.showToast(`${preset.name} selected! Click 'Save Avatar Selection' to save.`, 'info', 2000);
+        }
+      }
+    }
+
+    function resetSettingsAvatarToInitials() {
+      currentSettingsAvatar = '';
+      renderSettingsAvatarPreview('');
+      document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
+      if (typeof Utils !== 'undefined' && Utils.showToast) {
+        Utils.showToast('Reset to initials avatar.', 'info', 1800);
+      }
+    }
+
+    function handleSettingsAvatarFileSelect(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        Utils.showToast('Please select a valid image file (PNG, JPG, WebP).', 'warning');
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        Utils.showToast('Photo size must be under 5MB.', 'warning');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Client-side HTML5 canvas automatic compression (max 256x256 px at 0.85 quality)
+          const canvas = document.createElement('canvas');
+          const maxDim = 256;
+          let w = img.width;
+          let h = img.height;
+          if (w > h) {
+            if (w > maxDim) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            }
+          } else {
+            if (h > maxDim) {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          currentSettingsAvatar = compressedDataUrl;
+          renderSettingsAvatarPreview(currentSettingsAvatar);
+          document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
+          Utils.showToast('Photo uploaded & compressed (256x256)! Click Save to persist.', 'success');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function saveSettingsAvatar() {
+      const btn = document.getElementById('save-settings-avatar-btn');
+      const origText = btn.textContent;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner spinner-primary" style="display:inline-block; width:14px; height:14px; margin-right:6px;"></span> Saving...';
+
+      try {
+        const res = await api.updateProfile({ profileImage: currentSettingsAvatar });
+        if (res && res.success) {
+          try {
+            if (currentSettingsAvatar) {
+              localStorage.setItem('sih_user_avatar', currentSettingsAvatar);
+            } else {
+              localStorage.removeItem('sih_user_avatar');
+            }
+            const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+            localUser.profileImage = currentSettingsAvatar;
+            localStorage.setItem('sih_user', JSON.stringify(localUser));
+          } catch(e) {}
+
+          renderSettingsAvatarPreview(currentSettingsAvatar);
+          Utils.showToast('Avatar saved successfully across platform!', 'success');
+        } else {
+          Utils.showToast((res && res.message) || 'Failed to save avatar.', 'error');
+        }
+      } catch (err) {
+        Utils.showToast('Failed to save avatar: ' + err.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = origText;
+      }
+    }
+
+    window.switchSettingsTab = switchSettingsTab;
+    window.setThemeDirect = setThemeDirect;
+    window.selectSettingsPresetAvatar = selectSettingsPresetAvatar;
+    window.resetSettingsAvatarToInitials = resetSettingsAvatarToInitials;
+    window.handleSettingsAvatarFileSelect = handleSettingsAvatarFileSelect;
+    window.saveSettingsAvatar = saveSettingsAvatar;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Initial avatar render from localStorage
+      const cachedAvatar = localStorage.getItem('sih_user_avatar') || '';
+      currentSettingsAvatar = cachedAvatar;
+      if (cachedAvatar) {
+        renderSettingsAvatarPreview(cachedAvatar);
+        const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === cachedAvatar || pr.rawSvg === cachedAvatar);
+        if (matched) {
+          document.querySelectorAll('.preset-choice-btn').forEach(b => {
+            b.classList.toggle('active', b.getAttribute('data-preset') === matched.id);
+          });
+        }
+      } else {
+        renderSettingsAvatarPreview('');
+      }
+
+      // 2. Attach direct click and touch handlers to preset buttons
+      document.querySelectorAll('#settings-avatar-presets .preset-choice-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const presetId = btn.getAttribute('data-preset');
+          if (presetId) selectSettingsPresetAvatar(presetId);
+        });
+      });
+
+      // 3. Authenticate and fetch profile from backend
+      try {
+        await checkAuth();
+        const profRes = await api.getProfile().catch(() => null);
+        if (profRes && profRes.success && profRes.data && profRes.data.profileImage && !currentSettingsAvatar) {
+          currentSettingsAvatar = profRes.data.profileImage;
+          renderSettingsAvatarPreview(currentSettingsAvatar);
+          const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === currentSettingsAvatar || pr.rawSvg === currentSettingsAvatar);
+          if (matched) {
+            document.querySelectorAll('.preset-choice-btn').forEach(b => {
+              b.classList.toggle('active', b.getAttribute('data-preset') === matched.id);
+            });
+          }
+        }
+      } catch(e) {}
+
+      // Password update handler
+      const pwdForm = document.getElementById('change-password-form');
+      if (pwdForm) {
+        pwdForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const currentPassword = document.getElementById('currentPassword').value;
+          const newPassword = document.getElementById('newPassword').value;
+          const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+          if (newPassword !== confirmNewPassword) {
+            Utils.showToast('New passwords do not match.', 'error');
+            return;
+          }
+
+          const btn = document.getElementById('change-pwd-btn');
+          btn.disabled = true;
+          btn.textContent = 'Updating Hash...';
+
+          try {
+            const res = await api.request('/auth/change-password', {
+              method: 'POST',
+              body: { currentPassword, newPassword }
+            });
+
+            if (res && res.success) {
+              Utils.showToast('Password updated successfully in database!', 'success');
+              pwdForm.reset();
+            } else {
+              Utils.showToast(res.message || 'Failed to update password.', 'error');
+            }
+          } catch (err) {
+            Utils.showToast(err.message || 'Failed to update password.', 'error');
+          } finally {
+            btn.disabled = false;
+            btn.textContent = 'Update Password Hash';
+          }
+        });
+      }
     });
 
     async function exportDataJSON() {

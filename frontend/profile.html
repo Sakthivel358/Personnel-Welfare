@@ -757,9 +757,9 @@
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          // Compress to max 160x160 canvas for lightweight storage
+          // Compress to max 256x256 canvas for lightweight storage
           const canvas = document.createElement('canvas');
-          const maxDim = 160;
+          const maxDim = 256;
           let w = img.width;
           let h = img.height;
           if (w > h) {
