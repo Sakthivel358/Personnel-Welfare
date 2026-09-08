@@ -100,9 +100,9 @@ const register = async (req, res, next) => {
       preferredSupportLanguage: 'English / Hindi',
       isEnrolledInWelfare: true,
       emergencyContact: {
-        name: 'Designated Welfare Liaison',
-        relation: 'Official Contact',
-        phone: '1800-000-0000 (Demo)'
+        name: '',
+        relationship: '',
+        phone: ''
       },
       privacyPreferences: {
         shareWithWelfareOfficer: true,

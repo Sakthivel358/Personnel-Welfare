@@ -63,8 +63,9 @@ function updateUserUI(user) {
   const unitEls = document.querySelectorAll('[data-user="unit"]');
   const avatarEls = document.querySelectorAll('.user-avatar');
 
-  nameEls.forEach(el => el.textContent = user.fullName || user.personnelId);
-  roleEls.forEach(el => el.textContent = `${user.rank || ''} • ${user.role.replace('_', ' ')}`);
+  nameEls.forEach(el => el.textContent = user.fullName || user.personnelId || 'Personnel Member');
+  const roleText = (user.role || 'PERSONNEL').replace(/_/g, ' ');
+  roleEls.forEach(el => el.textContent = `${user.rank || 'Personnel'} • ${roleText}`);
   unitEls.forEach(el => el.textContent = user.unit || 'CRPF Battalion 104');
   
   const avatarVal = user.profileImage || (typeof localStorage !== 'undefined' && localStorage.getItem('sih_user_avatar'));
@@ -77,8 +78,11 @@ function updateUserUI(user) {
       }
     });
   } else if (user.fullName) {
-    const initials = user.fullName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-    avatarEls.forEach(el => el.textContent = initials);
+    const initials = user.fullName.split(' ').map(n => n[0]).filter(Boolean).join('').substring(0, 2).toUpperCase() || 'ME';
+    avatarEls.forEach(el => {
+      el.innerHTML = '';
+      el.textContent = initials;
+    });
   }
 
   // If logged in as Welfare Officer, adapt sidebar and brand on any page that has a general sidebar
@@ -238,4 +242,12 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = '/profile.html';
     });
   });
+
+  // Auto-initialize UI immediately from cached session so there is never a "VK" flicker
+  try {
+    const cachedUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || 'null');
+    if (cachedUser) {
+      updateUserUI(cachedUser);
+    }
+  } catch(e) {}
 });

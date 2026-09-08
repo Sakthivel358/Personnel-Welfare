@@ -110,6 +110,16 @@
       try {
         const res = await api.login(identifier, password, rememberMe);
         if (res && res.success) {
+          try {
+            if (res.user) {
+              localStorage.setItem('sih_user', JSON.stringify(res.user));
+              localStorage.setItem('sih_registered_user', JSON.stringify(res.user));
+            }
+            if (res.token) {
+              localStorage.setItem('sih_token', res.token);
+            }
+          } catch(e) {}
+
           Utils.showToast(`Welcome ${res.user?.fullName || identifier}! Redirecting...`, 'success');
           const role = res.user?.role || 'PERSONNEL';
           setTimeout(() => {

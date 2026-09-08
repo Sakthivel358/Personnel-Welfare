@@ -176,7 +176,7 @@
       </ul>
       <div class="sidebar-footer">
         <div class="user-mini-card">
-          <div class="user-avatar" id="sidebar-avatar">VK</div>
+          <div class="user-avatar" id="sidebar-avatar"></div>
           <div class="user-info-text">
             <div class="user-name" data-user="name" id="sidebar-user-name">Personnel Member</div>
             <div class="user-role-badge" data-user="role" id="sidebar-user-role">Personnel</div>
@@ -260,9 +260,28 @@
             <!-- Avatar Photo & 5 Built-in Defense Insignia Choices -->
             <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1.25rem; border:1px solid var(--border-color);">
               <div class="d-flex align-center gap-2 flex-wrap">
-                <div id="avatar-preview-box" style="width:84px; height:84px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:var(--bg-surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:1.6rem; color:var(--text-primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);">
-                  VK
-                </div>
+                <div id="avatar-preview-box" class="user-avatar" style="width:84px; height:84px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:var(--bg-surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:1.6rem; color:var(--text-primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);"></div>
+                <script>
+                  // Immediate synchronous render so there is never a "VK" flicker
+                  (function() {
+                    try {
+                      const box = document.getElementById('avatar-preview-box');
+                      const side = document.getElementById('sidebar-avatar');
+                      const saved = localStorage.getItem('sih_user_avatar');
+                      const u = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
+                      const name = u.fullName || '';
+                      const initials = name ? name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() : 'ME';
+                      if (saved) {
+                        const content = (saved.startsWith('<svg') || saved.includes('<svg')) ? saved : '<img src="' + saved + '" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
+                        if (box) box.innerHTML = content;
+                        if (side) side.innerHTML = content;
+                      } else {
+                        if (box) box.textContent = initials;
+                        if (side) side.textContent = initials;
+                      }
+                    } catch(e) {}
+                  })();
+                </script>
                 <div style="flex:1; min-width:260px;">
                   <div class="d-flex align-center gap-1 mb-1">
                     <strong style="font-size:0.95rem;">Service Avatar & Profile Photo</strong>
@@ -339,6 +358,20 @@
                 <input type="email" id="prof_email" class="form-control" disabled readonly style="background:var(--bg-card-subtle); cursor:not-allowed;" value="" placeholder="Official Service Email">
               </div>
             </div>
+            <script>
+              // Immediate synchronous population from authentic user session so it is NEVER blank
+              (function() {
+                try {
+                  const u = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
+                  const pId = document.getElementById('prof_personnelId');
+                  const pEmail = document.getElementById('prof_email');
+                  const pName = document.getElementById('prof_fullName');
+                  if (pId && u.personnelId) pId.value = u.personnelId;
+                  if (pEmail && u.email) pEmail.value = u.email;
+                  if (pName && u.fullName && (!pName.value || pName.value.trim() === '')) pName.value = u.fullName;
+                } catch(e) {}
+              })();
+            </script>
 
             <div class="grid-3">
               <div class="form-group">
@@ -603,9 +636,9 @@
     </main>
   </div>
 
-  <script src="/js/api.js?v=20260908c"></script>
-  <script src="/js/utils.js?v=20260908c"></script>
-  <script src="/js/auth.js?v=20260908c"></script>
+  <script src="/js/api.js?v=20260908d"></script>
+  <script src="/js/utils.js?v=20260908d"></script>
+  <script src="/js/auth.js?v=20260908d"></script>
   <script>
     let currentUser = null;
     let currentAvatar = '';
@@ -640,13 +673,13 @@
 
     function populateUserSessionFields(userData) {
       try {
-        const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+        const localUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
         const user = userData || currentUser || localUser;
         const pIdField = document.getElementById('prof_personnelId');
         const pEmailField = document.getElementById('prof_email');
         const pNameField = document.getElementById('prof_fullName');
 
-        // Strictly populate what the user used in creating their account (no fake default values)
+        // Strictly populate what the user entered when creating account
         if (pIdField && user && user.personnelId) {
           pIdField.value = user.personnelId;
         }
@@ -663,7 +696,7 @@
       const preview = document.getElementById('avatar-preview-box');
       const sideAvatar = document.getElementById('sidebar-avatar');
 
-      const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+      const localUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
       const user = currentUser || localUser;
       const name = (user && user.fullName) || (document.getElementById('prof_fullName') && document.getElementById('prof_fullName').value) || '';
       const initials = name ? name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() : 'ME';
@@ -677,6 +710,12 @@
           sideAvatar.innerHTML = '';
           sideAvatar.textContent = initials;
         }
+        document.querySelectorAll('.user-avatar').forEach(el => {
+          if (el !== preview && el !== sideAvatar) {
+            el.innerHTML = '';
+            el.textContent = initials;
+          }
+        });
         return;
       }
 
@@ -684,7 +723,6 @@
       let htmlContent = '';
 
       if (val.startsWith('<svg') || val.startsWith('<?xml') || val.includes('<svg')) {
-        // Direct inline SVG element
         htmlContent = val;
       } else if (val.startsWith('data:image/svg+xml;base64,')) {
         try {
@@ -705,28 +743,59 @@
         sideAvatar.textContent = '';
         sideAvatar.innerHTML = htmlContent;
       }
+      document.querySelectorAll('.user-avatar').forEach(el => {
+        if (el !== preview && el !== sideAvatar) {
+          el.textContent = '';
+          el.innerHTML = htmlContent;
+        }
+      });
     }
 
     function selectPresetAvatar(presetId) {
       const preset = DEFENSE_AVATAR_PRESETS.find(p => p.id === presetId);
-      if (preset) {
-        applyAvatar(preset.rawSvg, true);
-        // Highlight active preset button
-        document.querySelectorAll('.preset-choice-btn').forEach(btn => {
-          if (btn.getAttribute('data-preset') === presetId) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-        if (typeof Utils !== 'undefined' && Utils.showToast) {
-          Utils.showToast(`${preset.name} insignia selected! Click 'Save Profile Changes' to save.`, 'info', 2000);
-        }
+      if (!preset) return;
+
+      currentAvatar = preset.rawSvg;
+
+      // 1. Immediately replace preview circle
+      const preview = document.getElementById('avatar-preview-box');
+      if (preview) {
+        preview.innerHTML = preset.rawSvg;
+      }
+
+      // 2. Immediately replace sidebar avatar
+      const sideAvatar = document.getElementById('sidebar-avatar');
+      if (sideAvatar) {
+        sideAvatar.innerHTML = preset.rawSvg;
+      }
+
+      // 3. Immediately replace all user avatars on page
+      document.querySelectorAll('.user-avatar').forEach(el => {
+        el.innerHTML = preset.rawSvg;
+      });
+
+      // 4. Save to localStorage immediately
+      try {
+        localStorage.setItem('sih_user_avatar', currentAvatar);
+      } catch(e) {}
+
+      // 5. Highlight active preset button
+      document.querySelectorAll('.preset-choice-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-preset') === presetId);
+      });
+
+      if (typeof Utils !== 'undefined' && Utils.showToast) {
+        Utils.showToast(`${preset.name} insignia selected! Click 'Save Profile Changes' below to persist.`, 'info', 2000);
       }
     }
 
     function resetAvatarToInitials() {
-      applyAvatar('', true);
+      currentAvatar = '';
+      try {
+        localStorage.removeItem('sih_user_avatar');
+      } catch(e) {}
+
+      renderAvatarPreview('');
       document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
       if (typeof Utils !== 'undefined' && Utils.showToast) {
         Utils.showToast('Reset to initials avatar.', 'info', 1800);
@@ -799,7 +868,7 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
+    function initProfilePage() {
       // 1. Immediate pre-population from local session so immutable fields are NEVER blank
       populateUserSessionFields();
 
@@ -817,7 +886,7 @@
         renderAvatarPreview('');
       }
 
-      // 3. Attach direct click and touch listeners to preset buttons
+      // 3. Attach direct click listeners to preset buttons
       document.querySelectorAll('.preset-choice-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.preventDefault();
@@ -834,21 +903,28 @@
       calculateProfileCompletion();
 
       // 6. Check Auth & Load authoritative Profile Data asynchronously
-      try {
-        currentUser = await checkAuth('PERSONNEL');
-        if (currentUser) {
-          populateUserSessionFields(currentUser);
+      (async () => {
+        try {
+          currentUser = await checkAuth('PERSONNEL');
+          if (currentUser) {
+            populateUserSessionFields(currentUser);
+          }
+        } catch (err) {
+          console.warn('Auth check deferred:', err);
         }
-      } catch (err) {
-        console.warn('Auth check deferred:', err);
-      }
-      
-      await loadProfileData();
-    });
+        await loadProfileData();
+      })();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initProfilePage);
+    } else {
+      initProfilePage();
+    }
 
     async function loadProfileData() {
       try {
-        const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+        const localUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
         const user = currentUser || localUser;
 
         // Populate session credentials from authenticated user
@@ -863,9 +939,9 @@
         const p = (res && res.success && res.data) ? res.data : user;
 
         if (p) {
-          const authPersonnelId = p.personnelId || (user && user.personnelId);
-          const authEmail = p.email || (user && user.email);
-          const authFullName = p.fullName || (user && user.fullName);
+          const authPersonnelId = p.personnelId || (user && user.personnelId) || (localUser && localUser.personnelId);
+          const authEmail = p.email || (user && user.email) || (localUser && localUser.email);
+          const authFullName = p.fullName || (user && user.fullName) || (localUser && localUser.fullName);
 
           if (pIdField && authPersonnelId) pIdField.value = authPersonnelId;
           if (pEmailField && authEmail) pEmailField.value = authEmail;
@@ -918,7 +994,7 @@
           }
 
           // Initialize Avatar: only overwrite if currentAvatar was not already selected in this page view
-          const savedAvatar = p.profileImage || localStorage.getItem('sih_user_avatar') || '';
+          const savedAvatar = currentAvatar || p.profileImage || localStorage.getItem('sih_user_avatar') || '';
           if (savedAvatar) {
             applyAvatar(savedAvatar, false);
             // If matches a preset SVG, mark it active

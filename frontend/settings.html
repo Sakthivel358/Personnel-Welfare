@@ -118,7 +118,7 @@
       </ul>
       <div class="sidebar-footer">
         <div class="user-mini-card">
-          <div class="user-avatar">VK</div>
+          <div class="user-avatar"></div>
           <div class="user-info-text">
             <div class="user-name" data-user="name">Personnel Member</div>
             <div class="user-role-badge" data-user="role">Personnel</div>
@@ -296,9 +296,24 @@
             </div>
 
             <div class="d-flex align-center gap-2 flex-wrap mb-3 p-3" style="background:var(--bg-card-subtle); border-radius:var(--radius-md); border:1px solid var(--border-color);">
-              <div id="settings-avatar-preview-box" style="width:88px; height:88px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:var(--bg-surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:1.7rem; color:var(--text-primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);">
-                VK
-              </div>
+              <div id="settings-avatar-preview-box" class="user-avatar" style="width:88px; height:88px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:var(--bg-surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:1.7rem; color:var(--text-primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);"></div>
+              <script>
+                (function() {
+                  try {
+                    const box = document.getElementById('settings-avatar-preview-box');
+                    const saved = localStorage.getItem('sih_user_avatar');
+                    const u = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
+                    const name = u.fullName || '';
+                    const initials = name ? name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() : 'ME';
+                    if (saved) {
+                      const content = (saved.startsWith('<svg') || saved.includes('<svg')) ? saved : '<img src="' + saved + '" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
+                      if (box) box.innerHTML = content;
+                    } else if (box) {
+                      box.textContent = initials;
+                    }
+                  } catch(e) {}
+                })();
+              </script>
               <div style="flex:1; min-width:260px;">
                 <div class="d-flex align-center gap-1 mb-1">
                   <strong style="font-size:0.95rem;">Service Avatar & Profile Photo</strong>
@@ -426,9 +441,9 @@
       const preview = document.getElementById('settings-avatar-preview-box');
       const sideAvatar = document.querySelector('.sidebar-footer .user-avatar');
 
-      const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
-      const name = localUser.fullName || 'Inspector Vikram Kumar';
-      const initials = name.split(' ').map(n => n[0]).filter(Boolean).join('').substring(0, 2).toUpperCase() || 'VK';
+      const localUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
+      const name = localUser.fullName || '';
+      const initials = name ? name.split(' ').map(n => n[0]).filter(Boolean).join('').substring(0, 2).toUpperCase() : 'ME';
 
       if (!avatarVal || avatarVal.trim() === '') {
         if (preview) {
@@ -439,6 +454,12 @@
           sideAvatar.innerHTML = '';
           sideAvatar.textContent = initials;
         }
+        document.querySelectorAll('.user-avatar').forEach(el => {
+          if (el !== preview && el !== sideAvatar) {
+            el.innerHTML = '';
+            el.textContent = initials;
+          }
+        });
         return;
       }
 
@@ -468,8 +489,10 @@
       }
       // Also update any other user avatars on the page
       document.querySelectorAll('.user-avatar').forEach(el => {
-        el.textContent = '';
-        el.innerHTML = htmlContent;
+        if (el !== preview && el !== sideAvatar) {
+          el.textContent = '';
+          el.innerHTML = htmlContent;
+        }
       });
     }
 
@@ -477,6 +500,9 @@
       const preset = DEFENSE_AVATAR_PRESETS.find(p => p.id === presetId);
       if (preset) {
         currentSettingsAvatar = preset.rawSvg;
+        try {
+          localStorage.setItem('sih_user_avatar', currentSettingsAvatar);
+        } catch(e) {}
         renderSettingsAvatarPreview(currentSettingsAvatar);
         document.querySelectorAll('.preset-choice-btn').forEach(btn => {
           if (btn.getAttribute('data-preset') === presetId) {
@@ -493,6 +519,9 @@
 
     function resetSettingsAvatarToInitials() {
       currentSettingsAvatar = '';
+      try {
+        localStorage.removeItem('sih_user_avatar');
+      } catch(e) {}
       renderSettingsAvatarPreview('');
       document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
       if (typeof Utils !== 'undefined' && Utils.showToast) {

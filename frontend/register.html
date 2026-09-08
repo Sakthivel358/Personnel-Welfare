@@ -94,8 +94,8 @@
         alertContainer.innerHTML = '';
 
         const fullName = document.getElementById('fullName').value.trim();
-        const personnelId = document.getElementById('personnelId').value.trim();
-        const email = document.getElementById('email').value.trim();
+        const personnelId = document.getElementById('personnelId').value.trim().toUpperCase();
+        const email = document.getElementById('email').value.trim().toLowerCase();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -111,6 +111,13 @@
         submitBtn.disabled = true;
         submitBtn.innerHTML = `<div class="spinner"></div> Registering Account...`;
 
+        // Pre-cache inputs immediately so immutable profile fields are NEVER blank
+        const pendingUserData = { fullName, personnelId, email, role: 'PERSONNEL' };
+        try {
+          localStorage.setItem('sih_registered_user', JSON.stringify(pendingUserData));
+          localStorage.setItem('sih_user', JSON.stringify(pendingUserData));
+        } catch(e) {}
+
         try {
           const res = await api.register({
             fullName,
@@ -122,10 +129,17 @@
           });
 
           if (res && res.success) {
+            const finalUser = res.user ? { ...res.user, personnelId, email, fullName } : pendingUserData;
+            try {
+              localStorage.setItem('sih_user', JSON.stringify(finalUser));
+              localStorage.setItem('sih_registered_user', JSON.stringify(finalUser));
+              if (res.token) localStorage.setItem('sih_token', res.token);
+            } catch(e) {}
+
             Utils.showToast('Account registered permanently! Entering dashboard...', 'success');
             setTimeout(() => {
               window.location.href = '/dashboard.html';
-            }, 700);
+            }, 500);
           }
         } catch (err) {
           alertContainer.innerHTML = `
