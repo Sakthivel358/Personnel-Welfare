@@ -146,14 +146,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       const urlParams = new URLSearchParams(window.location.search);
       
-      if (urlParams.get('expired')) {
-        const alertBox = document.getElementById('login-alert-container');
-        alertBox.innerHTML = `
-          <div class="alert alert-warning">
-            Your session has expired. Please sign in again.
-          </div>
-        `;
-      }
+
 
       // Support auto-login query params e.g. /login.html?demo=personnel or ?demo=officer or ?demo=admin
       const demoParam = urlParams.get('demo');

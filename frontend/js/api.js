@@ -29,18 +29,15 @@ class APIClient {
 
       if (!response.ok) {
         if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/register')) {
-          console.warn('[Auth] Session expired or unauthorized.');
-          if (typeof localStorage !== 'undefined') {
-            localStorage.removeItem('sih_token');
-          }
-          // Only redirect if on protected page
+          console.warn('[Auth] Unauthorized request:', endpoint);
+          const hasToken = typeof localStorage !== 'undefined' && localStorage.getItem('sih_token');
           const isPublicPage = window.location.pathname.endsWith('index.html') || 
                                window.location.pathname.endsWith('landing.html') || 
                                window.location.pathname.endsWith('login.html') || 
                                window.location.pathname.endsWith('signup.html') ||
                                window.location.pathname === '/';
-          if (!isPublicPage) {
-            window.location.href = '/login.html?expired=1';
+          if (!isPublicPage && !hasToken) {
+            window.location.href = '/login.html';
           }
         }
         throw new Error(data.message || `Request failed with status ${response.status}`);
