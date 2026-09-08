@@ -332,11 +332,11 @@
             <div class="grid-2">
               <div class="form-group">
                 <label class="form-label" for="prof_personnelId">Personnel Service ID (Immutable)</label>
-                <input type="text" id="prof_personnelId" class="form-control" disabled style="background:var(--bg-card-subtle); cursor:not-allowed; font-weight:600;" value="CRPF-2024-9842" placeholder="Official Personnel ID">
+                <input type="text" id="prof_personnelId" class="form-control" disabled readonly style="background:var(--bg-card-subtle); cursor:not-allowed; font-weight:600;" value="" placeholder="Official Personnel ID">
               </div>
               <div class="form-group">
                 <label class="form-label" for="prof_email">Official Service Email (Immutable)</label>
-                <input type="email" id="prof_email" class="form-control" disabled style="background:var(--bg-card-subtle); cursor:not-allowed;" value="personnel@crpf.gov.in" placeholder="Official Service Email">
+                <input type="email" id="prof_email" class="form-control" disabled readonly style="background:var(--bg-card-subtle); cursor:not-allowed;" value="" placeholder="Official Service Email">
               </div>
             </div>
 
@@ -638,26 +638,23 @@
       }
     ];
 
-    function populateUserSessionFields() {
+    function populateUserSessionFields(userData) {
       try {
         const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
-        const user = currentUser || localUser;
+        const user = userData || currentUser || localUser;
         const pIdField = document.getElementById('prof_personnelId');
         const pEmailField = document.getElementById('prof_email');
         const pNameField = document.getElementById('prof_fullName');
 
-        const pId = user.personnelId || 'CRPF-2024-9842';
-        const pEmail = user.email || 'personnel@crpf.gov.in';
-        const pName = user.fullName || 'Inspector Vikram Kumar';
-
-        if (pIdField && (!pIdField.value || pIdField.value.includes('Loading'))) {
-          pIdField.value = pId;
+        // Strictly populate what the user used in creating their account (no fake default values)
+        if (pIdField && user && user.personnelId) {
+          pIdField.value = user.personnelId;
         }
-        if (pEmailField && (!pEmailField.value || pEmailField.value.includes('Loading'))) {
-          pEmailField.value = pEmail;
+        if (pEmailField && user && user.email) {
+          pEmailField.value = user.email;
         }
-        if (pNameField && (!pNameField.value || pNameField.value.trim() === '')) {
-          pNameField.value = pName;
+        if (pNameField && user && user.fullName && (!pNameField.value || pNameField.value.trim() === '')) {
+          pNameField.value = user.fullName;
         }
       } catch(e) {}
     }
@@ -667,8 +664,9 @@
       const sideAvatar = document.getElementById('sidebar-avatar');
 
       const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
-      const name = (currentUser && currentUser.fullName) || localUser.fullName || (document.getElementById('prof_fullName') && document.getElementById('prof_fullName').value) || 'Vikram Kumar';
-      const initials = name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() || 'VK';
+      const user = currentUser || localUser;
+      const name = (user && user.fullName) || (document.getElementById('prof_fullName') && document.getElementById('prof_fullName').value) || '';
+      const initials = name ? name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() : 'ME';
 
       if (!avatarVal || avatarVal.trim() === '') {
         if (preview) {
@@ -838,6 +836,9 @@
       // 6. Check Auth & Load authoritative Profile Data asynchronously
       try {
         currentUser = await checkAuth('PERSONNEL');
+        if (currentUser) {
+          populateUserSessionFields(currentUser);
+        }
       } catch (err) {
         console.warn('Auth check deferred:', err);
       }
@@ -850,8 +851,8 @@
         const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
         const user = currentUser || localUser;
 
-        // Populate session defaults
-        populateUserSessionFields();
+        // Populate session credentials from authenticated user
+        populateUserSessionFields(user);
 
         const pIdField = document.getElementById('prof_personnelId');
         const pEmailField = document.getElementById('prof_email');
@@ -862,9 +863,15 @@
         const p = (res && res.success && res.data) ? res.data : user;
 
         if (p) {
-          if (pIdField) pIdField.value = p.personnelId || user.personnelId || 'CRPF-2024-9842';
-          if (pEmailField) pEmailField.value = p.email || user.email || 'personnel@crpf.gov.in';
-          if (p.fullName && pNameField) pNameField.value = p.fullName;
+          const authPersonnelId = p.personnelId || (user && user.personnelId);
+          const authEmail = p.email || (user && user.email);
+          const authFullName = p.fullName || (user && user.fullName);
+
+          if (pIdField && authPersonnelId) pIdField.value = authPersonnelId;
+          if (pEmailField && authEmail) pEmailField.value = authEmail;
+          if (pNameField && authFullName && (!pNameField.value || pNameField.value.trim() === '')) {
+            pNameField.value = authFullName;
+          }
           
           // Set phone number: use real saved phone, or leave blank (do not auto-fill fake phone!)
           const phoneField = document.getElementById('prof_phone');

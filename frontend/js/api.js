@@ -46,14 +46,16 @@ class APIClient {
         throw new Error(data.message || `Request failed with status ${response.status}`);
       }
 
-      // Auto-save auth token and user
-      if (endpoint.includes('/auth/login') || endpoint.includes('/auth/register')) {
-        if (data && data.token && typeof localStorage !== 'undefined') {
-          localStorage.setItem('sih_token', data.token);
-        }
-        if (data && data.user && typeof localStorage !== 'undefined') {
-          localStorage.setItem('sih_user', JSON.stringify(data.user));
-        }
+      // Auto-save auth token and user credentials
+      if (data && data.token && typeof localStorage !== 'undefined') {
+        localStorage.setItem('sih_token', data.token);
+      }
+      if (data && data.user && typeof localStorage !== 'undefined') {
+        const prev = JSON.parse(localStorage.getItem('sih_user') || '{}');
+        localStorage.setItem('sih_user', JSON.stringify({ ...prev, ...data.user }));
+      } else if (data && data.data && data.data.personnelId && typeof localStorage !== 'undefined') {
+        const prev = JSON.parse(localStorage.getItem('sih_user') || '{}');
+        localStorage.setItem('sih_user', JSON.stringify({ ...prev, ...data.data }));
       }
 
       return data;

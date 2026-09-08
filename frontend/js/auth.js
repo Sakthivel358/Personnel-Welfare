@@ -23,6 +23,12 @@ async function checkAuth(requiredRole = null) {
     const res = await api.getMe();
     if (res && res.success && res.user) {
       currentUser = res.user;
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const prev = JSON.parse(localStorage.getItem('sih_user') || '{}');
+          localStorage.setItem('sih_user', JSON.stringify({ ...prev, ...res.user }));
+        }
+      } catch(e) {}
       updateUserUI(currentUser);
 
       if (requiredRole && currentUser.role !== requiredRole && currentUser.role !== 'ADMIN') {

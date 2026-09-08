@@ -15,9 +15,9 @@ const getProfile = async (req, res, next) => {
       success: true,
       data: {
         ...(personnel || {}),
-        personnelId: (personnel && personnel.personnelId) || (user && user.personnelId) || req.user.personnelId || '',
-        email: (user && user.email) || req.user.email || '',
-        fullName: (personnel && personnel.fullName) || (user && user.fullName) || req.user.fullName || '',
+        personnelId: (user && user.personnelId) || (personnel && personnel.personnelId) || req.user.personnelId || '',
+        email: (user && user.email) || (personnel && personnel.email) || req.user.email || '',
+        fullName: (user && user.fullName) || (personnel && personnel.fullName) || req.user.fullName || '',
         rank: (personnel && personnel.rank) || (user && user.rank) || req.user.rank || 'Havildar',
         unit: (personnel && personnel.unit) || (user && user.unit) || req.user.unit || 'CRPF Battalion 104',
         phone: (personnel && personnel.phone) || (user && user.phone) || '',
