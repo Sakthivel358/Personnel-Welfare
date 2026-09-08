@@ -86,36 +86,7 @@
       color: var(--text-muted);
       margin: 0.15rem 0 0;
     }
-    .preset-choice-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0.45rem 0.85rem;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-    .preset-choice-btn * {
-      pointer-events: none;
-    }
-    .preset-choice-btn:hover {
-      border-color: var(--accent);
-      background: var(--bg-card-subtle);
-      transform: translateY(-1px);
-    }
-    .preset-choice-btn.active {
-      border-color: var(--accent);
-      background: rgba(99, 102, 241, 0.16);
-      box-shadow: 0 0 0 2px var(--accent);
-    }
+
     .profile-action-bar {
       position: sticky;
       bottom: 1rem;
@@ -253,16 +224,16 @@
               <div class="section-badge">1</div>
               <div class="section-title-wrap">
                 <h3>Personal & Identity Registry</h3>
-                <p>Service identification, photo avatar insignia, and verified contact credentials.</p>
+                <p>Service identification, official profile photo, and verified contact credentials.</p>
               </div>
             </div>
 
-            <!-- Avatar Photo & 5 Built-in Defense Insignia Choices -->
+            <!-- Avatar Photo & Custom Upload Only -->
             <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1.25rem; border:1px solid var(--border-color);">
               <div class="d-flex align-center gap-2 flex-wrap">
                 <div id="avatar-preview-box" class="user-avatar" style="width:84px; height:84px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:var(--bg-surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:1.6rem; color:var(--text-primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);"></div>
                 <script>
-                  // Immediate synchronous render so there is never a "VK" flicker
+                  // Immediate synchronous render of original DP / initials
                   (function() {
                     try {
                       const box = document.getElementById('avatar-preview-box');
@@ -272,12 +243,12 @@
                       const name = u.fullName || '';
                       const initials = name ? name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() : 'ME';
                       if (saved) {
-                        const content = (saved.startsWith('<svg') || saved.includes('<svg')) ? saved : '<img src="' + saved + '" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
+                        const content = '<img src="' + saved + '" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
                         if (box) box.innerHTML = content;
                         if (side) side.innerHTML = content;
                       } else {
-                        if (box) box.textContent = initials;
-                        if (side) side.textContent = initials;
+                        if (box) { box.innerHTML = ''; box.textContent = initials; }
+                        if (side) { side.innerHTML = ''; side.textContent = initials; }
                       }
                     } catch(e) {}
                   })();
@@ -285,10 +256,10 @@
                 <div style="flex:1; min-width:260px;">
                   <div class="d-flex align-center gap-1 mb-1">
                     <strong style="font-size:0.95rem;">Service Avatar & Profile Photo</strong>
-                    <span class="badge badge-low" style="font-size:0.75rem;">Defense Baseline</span>
+                    <span class="badge badge-low" style="font-size:0.75rem;">Personnel DP</span>
                   </div>
                   <p class="text-muted" style="font-size:0.8rem; margin-bottom:0.75rem;">
-                    Upload an official duty photo (PNG, JPG, WebP) or choose one of the 5 built-in operational defense insignia presets below.
+                    Upload an official duty photo (PNG, JPG, WebP) to personalize your service profile.
                   </p>
                   <div class="d-flex align-center gap-1 flex-wrap">
                     <input type="file" id="avatar-file-input" accept="image/png,image/jpeg,image/webp" style="display:none;" onchange="handleAvatarFileSelect(this)">
@@ -297,52 +268,9 @@
                       Upload Custom Photo
                     </button>
                     <button type="button" class="btn btn-sm btn-outline" onclick="resetAvatarToInitials()">
-                      Reset to Initials
+                      Remove Photo / Reset DP
                     </button>
                   </div>
-                </div>
-              </div>
-
-              <!-- 5 Inbuilt Defense Insignia Choices (Statically Rendered in HTML) -->
-              <div class="mt-3 pt-2" style="border-top:1px solid var(--border-color);">
-                <div class="text-muted mb-2" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">
-                  Choose Operational Insignia Preset (5 Inbuilt Choices):
-                </div>
-                <div class="d-flex align-center gap-2 flex-wrap" id="defense-avatar-presets">
-                  <button type="button" class="preset-choice-btn" data-preset="helmet" onclick="selectPresetAvatar('helmet')">
-                    <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#1e293b"/><path d="M25 50 C25 30 38 22 50 22 C62 22 75 30 75 50 C75 54 70 58 65 58 L35 58 C30 58 25 54 25 50 Z" fill="#475569"/><rect x="22" y="48" width="56" height="8" rx="3" fill="#334155"/><rect x="36" y="60" width="28" height="18" rx="4" fill="#64748b"/><circle cx="50" cy="38" r="5" fill="#94a3b8"/></svg>
-                    </span>
-                    <span>Tactical Helmet</span>
-                  </button>
-
-                  <button type="button" class="preset-choice-btn" data-preset="beret" onclick="selectPresetAvatar('beret')">
-                    <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#14532d"/><path d="M26 44 C28 26 68 22 78 36 C86 47 70 54 48 54 C34 54 24 50 26 44 Z" fill="#15803d"/><circle cx="42" cy="40" r="5" fill="#eab308"/><rect x="36" y="58" width="28" height="20" rx="4" fill="#166534"/></svg>
-                    </span>
-                    <span>Commando Beret</span>
-                  </button>
-
-                  <button type="button" class="preset-choice-btn" data-preset="medic" onclick="selectPresetAvatar('medic')">
-                    <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0f766e"/><circle cx="50" cy="50" r="34" fill="#ffffff"/><path d="M44 28 h12 v16 h16 v12 h-16 v16 h-12 v-16 h-16 v-12 h16 z" fill="#dc2626"/></svg>
-                    </span>
-                    <span>Field Medic</span>
-                  </button>
-
-                  <button type="button" class="preset-choice-btn" data-preset="wing" onclick="selectPresetAvatar('wing')">
-                    <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0369a1"/><path d="M16 46 C30 38 42 44 50 54 C58 44 70 38 84 46 C74 56 62 60 50 57 C38 60 26 56 16 46 Z" fill="#f59e0b"/><circle cx="50" cy="52" r="6" fill="#ffffff"/><circle cx="50" cy="52" r="3" fill="#0284c7"/></svg>
-                    </span>
-                    <span>Airborne Wing</span>
-                  </button>
-
-                  <button type="button" class="preset-choice-btn" data-preset="officer" onclick="selectPresetAvatar('officer')">
-                    <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#312e81"/><polygon points="50,22 58,38 76,38 62,49 67,67 50,56 33,67 38,49 24,38 42,38" fill="#fbbf24"/></svg>
-                    </span>
-                    <span>Command Star</span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -636,158 +564,12 @@
     </main>
   </div>
 
-  <script src="/js/api.js?v=20260908d"></script>
-  <script src="/js/utils.js?v=20260908d"></script>
-  <script src="/js/auth.js?v=20260908d"></script>
+  <script src="/js/api.js?v=20260908e"></script>
+  <script src="/js/utils.js?v=20260908e"></script>
+  <script src="/js/auth.js?v=20260908e"></script>
   <script>
     let currentUser = null;
     let currentAvatar = '';
-
-    const DEFENSE_AVATAR_PRESETS = [
-      {
-        id: 'helmet',
-        name: 'Tactical Helmet',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#1e293b"/><path d="M25 50 C25 30 38 22 50 22 C62 22 75 30 75 50 C75 54 70 58 65 58 L35 58 C30 58 25 54 25 50 Z" fill="#475569"/><rect x="22" y="48" width="56" height="8" rx="3" fill="#334155"/><rect x="36" y="60" width="28" height="18" rx="4" fill="#64748b"/><circle cx="50" cy="38" r="5" fill="#94a3b8"/></svg>'
-      },
-      {
-        id: 'beret',
-        name: 'Commando Beret',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#14532d"/><path d="M26 44 C28 26 68 22 78 36 C86 47 70 54 48 54 C34 54 24 50 26 44 Z" fill="#15803d"/><circle cx="42" cy="40" r="5" fill="#eab308"/><rect x="36" y="58" width="28" height="20" rx="4" fill="#166534"/></svg>'
-      },
-      {
-        id: 'medic',
-        name: 'Field Medic',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0f766e"/><circle cx="50" cy="50" r="34" fill="#ffffff"/><path d="M44 28 h12 v16 h16 v12 h-16 v16 h-12 v-16 h-16 v-12 h16 z" fill="#dc2626"/></svg>'
-      },
-      {
-        id: 'wing',
-        name: 'Airborne Wing',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0369a1"/><path d="M16 46 C30 38 42 44 50 54 C58 44 70 38 84 46 C74 56 62 60 50 57 C38 60 26 56 16 46 Z" fill="#f59e0b"/><circle cx="50" cy="52" r="6" fill="#ffffff"/><circle cx="50" cy="52" r="3" fill="#0284c7"/></svg>'
-      },
-      {
-        id: 'officer',
-        name: 'Command Star',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#312e81"/><polygon points="50,22 58,38 76,38 62,49 67,67 50,56 33,67 38,49 24,38 42,38" fill="#fbbf24"/></svg>'
-      }
-    ];
-
-    function populateUserSessionFields(userData) {
-      try {
-        const localUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
-        const user = userData || currentUser || localUser;
-        const pIdField = document.getElementById('prof_personnelId');
-        const pEmailField = document.getElementById('prof_email');
-        const pNameField = document.getElementById('prof_fullName');
-
-        // Strictly populate what the user entered when creating account
-        if (pIdField && user && user.personnelId) {
-          pIdField.value = user.personnelId;
-        }
-        if (pEmailField && user && user.email) {
-          pEmailField.value = user.email;
-        }
-        if (pNameField && user && user.fullName && (!pNameField.value || pNameField.value.trim() === '')) {
-          pNameField.value = user.fullName;
-        }
-      } catch(e) {}
-    }
-
-    function renderAvatarPreview(avatarVal) {
-      const preview = document.getElementById('avatar-preview-box');
-      const sideAvatar = document.getElementById('sidebar-avatar');
-
-      const localUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
-      const user = currentUser || localUser;
-      const name = (user && user.fullName) || (document.getElementById('prof_fullName') && document.getElementById('prof_fullName').value) || '';
-      const initials = name ? name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() : 'ME';
-
-      if (!avatarVal || avatarVal.trim() === '') {
-        if (preview) {
-          preview.innerHTML = '';
-          preview.textContent = initials;
-        }
-        if (sideAvatar) {
-          sideAvatar.innerHTML = '';
-          sideAvatar.textContent = initials;
-        }
-        document.querySelectorAll('.user-avatar').forEach(el => {
-          if (el !== preview && el !== sideAvatar) {
-            el.innerHTML = '';
-            el.textContent = initials;
-          }
-        });
-        return;
-      }
-
-      const val = avatarVal.trim();
-      let htmlContent = '';
-
-      if (val.startsWith('<svg') || val.startsWith('<?xml') || val.includes('<svg')) {
-        htmlContent = val;
-      } else if (val.startsWith('data:image/svg+xml;base64,')) {
-        try {
-          const b64 = val.replace('data:image/svg+xml;base64,', '');
-          htmlContent = decodeURIComponent(escape(atob(b64)));
-        } catch(e) {
-          htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
-        }
-      } else {
-        htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
-      }
-
-      if (preview) {
-        preview.textContent = '';
-        preview.innerHTML = htmlContent;
-      }
-      if (sideAvatar) {
-        sideAvatar.textContent = '';
-        sideAvatar.innerHTML = htmlContent;
-      }
-      document.querySelectorAll('.user-avatar').forEach(el => {
-        if (el !== preview && el !== sideAvatar) {
-          el.textContent = '';
-          el.innerHTML = htmlContent;
-        }
-      });
-    }
-
-    function selectPresetAvatar(presetId) {
-      const preset = DEFENSE_AVATAR_PRESETS.find(p => p.id === presetId);
-      if (!preset) return;
-
-      currentAvatar = preset.rawSvg;
-
-      // 1. Immediately replace preview circle
-      const preview = document.getElementById('avatar-preview-box');
-      if (preview) {
-        preview.innerHTML = preset.rawSvg;
-      }
-
-      // 2. Immediately replace sidebar avatar
-      const sideAvatar = document.getElementById('sidebar-avatar');
-      if (sideAvatar) {
-        sideAvatar.innerHTML = preset.rawSvg;
-      }
-
-      // 3. Immediately replace all user avatars on page
-      document.querySelectorAll('.user-avatar').forEach(el => {
-        el.innerHTML = preset.rawSvg;
-      });
-
-      // 4. Save to localStorage immediately
-      try {
-        localStorage.setItem('sih_user_avatar', currentAvatar);
-      } catch(e) {}
-
-      // 5. Highlight active preset button
-      document.querySelectorAll('.preset-choice-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('data-preset') === presetId);
-      });
-
-      if (typeof Utils !== 'undefined' && Utils.showToast) {
-        Utils.showToast(`${preset.name} insignia selected! Click 'Save Profile Changes' below to persist.`, 'info', 2000);
-      }
-    }
 
     function resetAvatarToInitials() {
       currentAvatar = '';
@@ -796,13 +578,11 @@
       } catch(e) {}
 
       renderAvatarPreview('');
-      document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
       if (typeof Utils !== 'undefined' && Utils.showToast) {
-        Utils.showToast('Reset to initials avatar.', 'info', 1800);
+        Utils.showToast('Profile photo removed. Reverted to authentic service initials DP.', 'info', 1800);
       }
     }
 
-    window.selectPresetAvatar = selectPresetAvatar;
     window.resetAvatarToInitials = resetAvatarToInitials;
     window.handleAvatarFileSelect = handleAvatarFileSelect;
 
@@ -846,7 +626,6 @@
           ctx.drawImage(img, 0, 0, w, h);
           const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
           applyAvatar(compressedDataUrl, true);
-          document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
           Utils.showToast('Custom photo uploaded & optimized!', 'success');
         };
         img.src = e.target.result;
@@ -872,30 +651,15 @@
       // 1. Immediate pre-population from local session so immutable fields are NEVER blank
       populateUserSessionFields();
 
-      // 2. Immediate render of saved or initial avatar
+      // 2. Immediate render of saved custom photo or initial DP
       const cachedAvatar = localStorage.getItem('sih_user_avatar') || '';
       if (cachedAvatar) {
         applyAvatar(cachedAvatar, false);
-        const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === cachedAvatar || pr.rawSvg === cachedAvatar);
-        if (matched) {
-          document.querySelectorAll('.preset-choice-btn').forEach(b => {
-            b.classList.toggle('active', b.getAttribute('data-preset') === matched.id);
-          });
-        }
       } else {
         renderAvatarPreview('');
       }
 
-      // 3. Attach direct click listeners to preset buttons
-      document.querySelectorAll('.preset-choice-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const presetId = btn.getAttribute('data-preset');
-          if (presetId) selectPresetAvatar(presetId);
-        });
-      });
-
-      // 4. Attach submit listener
+      // 3. Attach submit listener
       const formEl = document.getElementById('profile-form');
       if (formEl) formEl.addEventListener('submit', handleSaveProfile);
 
@@ -993,16 +757,10 @@
             document.getElementById('pref_anonStats').checked = p.privacyPreferences.anonymousAggregatedStats !== false;
           }
 
-          // Initialize Avatar: only overwrite if currentAvatar was not already selected in this page view
+          // Initialize Avatar: only overwrite if currentAvatar was not already set
           const savedAvatar = currentAvatar || p.profileImage || localStorage.getItem('sih_user_avatar') || '';
           if (savedAvatar) {
             applyAvatar(savedAvatar, false);
-            // If matches a preset SVG, mark it active
-            const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === savedAvatar || pr.rawSvg === savedAvatar);
-            if (matched) {
-              const matchedBtn = document.querySelector(`.preset-choice-btn[data-preset="${matched.id}"]`);
-              if (matchedBtn) matchedBtn.classList.add('active');
-            }
           } else if (!currentAvatar) {
             renderAvatarPreview('');
           }

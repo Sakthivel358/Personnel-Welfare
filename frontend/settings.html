@@ -45,36 +45,7 @@
     .settings-pane.active {
       display: block;
     }
-    .preset-choice-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0.45rem 0.85rem;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-    .preset-choice-btn * {
-      pointer-events: none;
-    }
-    .preset-choice-btn:hover {
-      border-color: var(--accent);
-      background: var(--bg-card-subtle);
-      transform: translateY(-1px);
-    }
-    .preset-choice-btn.active {
-      border-color: var(--accent);
-      background: rgba(99, 102, 241, 0.16);
-      box-shadow: 0 0 0 2px var(--accent);
-    }
+
   </style>
 </head>
 <body>
@@ -144,7 +115,7 @@
         <!-- Settings Tabs -->
         <div class="settings-tabs">
           <button class="settings-tab-btn active" onclick="switchSettingsTab('security', this)">🔐 Security & Password</button>
-          <button class="settings-tab-btn" onclick="switchSettingsTab('avatar', this)">🎖️ Avatar & Service Insignia</button>
+          <button class="settings-tab-btn" onclick="switchSettingsTab('avatar', this)">👤 Profile Photo & Avatar</button>
           <button class="settings-tab-btn" onclick="switchSettingsTab('appearance', this)">🎨 Appearance & Theme</button>
           <button class="settings-tab-btn" onclick="switchSettingsTab('notifications', this)">🔔 Notifications</button>
           <button class="settings-tab-btn" onclick="switchSettingsTab('data', this)">💾 Data & Export</button>
@@ -284,13 +255,13 @@
           </div>
         </div>
 
-        <!-- 5. Avatar & Service Insignia Pane -->
+        <!-- 5. Avatar & Profile Photo Pane -->
         <div id="set-pane-avatar" class="settings-pane">
           <div class="card">
             <div class="card-header">
               <div>
-                <h3 style="margin:0;">Avatar Photo & 5 Defense Insignia Presets</h3>
-                <p class="text-muted" style="font-size:0.8rem; margin:4px 0 0;">Upload an official duty photo or select one of the 5 defense service insignia presets.</p>
+                <h3 style="margin:0;">Profile Photo & Service Avatar</h3>
+                <p class="text-muted" style="font-size:0.8rem; margin:4px 0 0;">Upload an official duty photo with automatic compression or reset to your authentic initials.</p>
               </div>
               <span class="badge badge-low">Live Synchronization</span>
             </div>
@@ -320,7 +291,7 @@
                   <span class="badge badge-low" style="font-size:0.72rem;">Defense Baseline</span>
                 </div>
                 <p class="text-muted" style="font-size:0.8rem; margin-bottom:0.75rem;">
-                  Upload a custom photo (PNG, JPG, WebP with client-side HTML5 canvas compression to max 256×256 px at 0.85 quality) or select a defense insignia preset below.
+                  Upload an official duty photo (PNG, JPG, WebP with client-side canvas compression) to personalize your service profile.
                 </p>
                 <div class="d-flex align-center gap-1 flex-wrap">
                   <input type="file" id="settings-avatar-file-input" accept="image/png,image/jpeg,image/webp" style="display:none;" onchange="handleSettingsAvatarFileSelect(this)">
@@ -329,52 +300,9 @@
                     Upload Custom Photo
                   </button>
                   <button type="button" class="btn btn-sm btn-outline" onclick="resetSettingsAvatarToInitials()">
-                    Reset to Initials
+                    Remove Photo / Reset DP
                   </button>
                 </div>
-              </div>
-            </div>
-
-            <!-- 5 Defense Insignia Presets -->
-            <div class="mb-3">
-              <div class="text-muted mb-2" style="font-size:0.75rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">
-                5 Defense Service Insignia Presets:
-              </div>
-              <div class="d-flex align-center gap-2 flex-wrap" id="settings-avatar-presets">
-                <button type="button" class="preset-choice-btn" data-preset="helmet" onclick="selectSettingsPresetAvatar('helmet')">
-                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#1e293b"/><path d="M25 50 C25 30 38 22 50 22 C62 22 75 30 75 50 C75 54 70 58 65 58 L35 58 C30 58 25 54 25 50 Z" fill="#475569"/><rect x="22" y="48" width="56" height="8" rx="3" fill="#334155"/><rect x="36" y="60" width="28" height="18" rx="4" fill="#64748b"/><circle cx="50" cy="38" r="5" fill="#94a3b8"/></svg>
-                  </span>
-                  <span>Tactical Helmet</span>
-                </button>
-
-                <button type="button" class="preset-choice-btn" data-preset="beret" onclick="selectSettingsPresetAvatar('beret')">
-                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#14532d"/><path d="M26 44 C28 26 68 22 78 36 C86 47 70 54 48 54 C34 54 24 50 26 44 Z" fill="#15803d"/><circle cx="42" cy="40" r="5" fill="#eab308"/><rect x="36" y="58" width="28" height="20" rx="4" fill="#166534"/></svg>
-                  </span>
-                  <span>Commando Beret</span>
-                </button>
-
-                <button type="button" class="preset-choice-btn" data-preset="medic" onclick="selectSettingsPresetAvatar('medic')">
-                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0f766e"/><circle cx="50" cy="50" r="34" fill="#ffffff"/><path d="M44 28 h12 v16 h16 v12 h-16 v16 h-12 v-16 h-16 v-12 h16 z" fill="#dc2626"/></svg>
-                  </span>
-                  <span>Field Medic</span>
-                </button>
-
-                <button type="button" class="preset-choice-btn" data-preset="wing" onclick="selectSettingsPresetAvatar('wing')">
-                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#0369a1"/><path d="M16 46 C30 38 42 44 50 54 C58 44 70 38 84 46 C74 56 62 60 50 57 C38 60 26 56 16 46 Z" fill="#f59e0b"/><circle cx="50" cy="52" r="6" fill="#ffffff"/><circle cx="50" cy="52" r="3" fill="#0284c7"/></svg>
-                  </span>
-                  <span>Airborne Wing</span>
-                </button>
-
-                <button type="button" class="preset-choice-btn" data-preset="officer" onclick="selectSettingsPresetAvatar('officer')">
-                  <span style="display:inline-block; width:22px; height:22px; border-radius:50%; overflow:hidden;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="#312e81"/><polygon points="50,22 58,38 76,38 62,49 67,67 50,56 33,67 38,49 24,38 42,38" fill="#fbbf24"/></svg>
-                  </span>
-                  <span>Command Star</span>
-                </button>
               </div>
             </div>
 
@@ -388,39 +316,11 @@
     </main>
   </div>
 
-  <script src="/js/api.js?v=20260908c"></script>
-  <script src="/js/utils.js?v=20260908c"></script>
-  <script src="/js/auth.js?v=20260908c"></script>
+  <script src="/js/api.js?v=20260908e"></script>
+  <script src="/js/utils.js?v=20260908e"></script>
+  <script src="/js/auth.js?v=20260908e"></script>
   <script>
     let currentSettingsAvatar = '';
-
-    const DEFENSE_AVATAR_PRESETS = [
-      {
-        id: 'helmet',
-        name: 'Tactical Helmet',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#1e293b"/><path d="M25 50 C25 30 38 22 50 22 C62 22 75 30 75 50 C75 54 70 58 65 58 L35 58 C30 58 25 54 25 50 Z" fill="#475569"/><rect x="22" y="48" width="56" height="8" rx="3" fill="#334155"/><rect x="36" y="60" width="28" height="18" rx="4" fill="#64748b"/><circle cx="50" cy="38" r="5" fill="#94a3b8"/></svg>'
-      },
-      {
-        id: 'beret',
-        name: 'Commando Beret',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#14532d"/><path d="M26 44 C28 26 68 22 78 36 C86 47 70 54 48 54 C34 54 24 50 26 44 Z" fill="#15803d"/><circle cx="42" cy="40" r="5" fill="#eab308"/><rect x="36" y="58" width="28" height="20" rx="4" fill="#166534"/></svg>'
-      },
-      {
-        id: 'medic',
-        name: 'Field Medic',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0f766e"/><circle cx="50" cy="50" r="34" fill="#ffffff"/><path d="M44 28 h12 v16 h16 v12 h-16 v16 h-12 v-16 h-16 v-12 h16 z" fill="#dc2626"/></svg>'
-      },
-      {
-        id: 'wing',
-        name: 'Airborne Wing',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#0369a1"/><path d="M16 46 C30 38 42 44 50 54 C58 44 70 38 84 46 C74 56 62 60 50 57 C38 60 26 56 16 46 Z" fill="#f59e0b"/><circle cx="50" cy="52" r="6" fill="#ffffff"/><circle cx="50" cy="52" r="3" fill="#0284c7"/></svg>'
-      },
-      {
-        id: 'officer',
-        name: 'Command Star',
-        rawSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%" style="width:100%;height:100%;display:block;border-radius:50%;"><circle cx="50" cy="50" r="48" fill="#312e81"/><polygon points="50,22 58,38 76,38 62,49 67,67 50,56 33,67 38,49 24,38 42,38" fill="#fbbf24"/></svg>'
-      }
-    ];
 
     function switchSettingsTab(tab, btn) {
       document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
@@ -496,34 +396,12 @@
       });
     }
 
-    function selectSettingsPresetAvatar(presetId) {
-      const preset = DEFENSE_AVATAR_PRESETS.find(p => p.id === presetId);
-      if (preset) {
-        currentSettingsAvatar = preset.rawSvg;
-        try {
-          localStorage.setItem('sih_user_avatar', currentSettingsAvatar);
-        } catch(e) {}
-        renderSettingsAvatarPreview(currentSettingsAvatar);
-        document.querySelectorAll('.preset-choice-btn').forEach(btn => {
-          if (btn.getAttribute('data-preset') === presetId) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-        if (typeof Utils !== 'undefined' && Utils.showToast) {
-          Utils.showToast(`${preset.name} selected! Click 'Save Avatar Selection' to save.`, 'info', 2000);
-        }
-      }
-    }
-
     function resetSettingsAvatarToInitials() {
       currentSettingsAvatar = '';
       try {
         localStorage.removeItem('sih_user_avatar');
       } catch(e) {}
       renderSettingsAvatarPreview('');
-      document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
       if (typeof Utils !== 'undefined' && Utils.showToast) {
         Utils.showToast('Reset to initials avatar.', 'info', 1800);
       }
@@ -570,7 +448,6 @@
           const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
           currentSettingsAvatar = compressedDataUrl;
           renderSettingsAvatarPreview(currentSettingsAvatar);
-          document.querySelectorAll('.preset-choice-btn').forEach(b => b.classList.remove('active'));
           Utils.showToast('Photo uploaded & compressed (256x256)! Click Save to persist.', 'success');
         };
         img.src = e.target.result;
@@ -613,7 +490,6 @@
 
     window.switchSettingsTab = switchSettingsTab;
     window.setThemeDirect = setThemeDirect;
-    window.selectSettingsPresetAvatar = selectSettingsPresetAvatar;
     window.resetSettingsAvatarToInitials = resetSettingsAvatarToInitials;
     window.handleSettingsAvatarFileSelect = handleSettingsAvatarFileSelect;
     window.saveSettingsAvatar = saveSettingsAvatar;
@@ -624,38 +500,17 @@
       currentSettingsAvatar = cachedAvatar;
       if (cachedAvatar) {
         renderSettingsAvatarPreview(cachedAvatar);
-        const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === cachedAvatar || pr.rawSvg === cachedAvatar);
-        if (matched) {
-          document.querySelectorAll('.preset-choice-btn').forEach(b => {
-            b.classList.toggle('active', b.getAttribute('data-preset') === matched.id);
-          });
-        }
       } else {
         renderSettingsAvatarPreview('');
       }
 
-      // 2. Attach direct click and touch handlers to preset buttons
-      document.querySelectorAll('#settings-avatar-presets .preset-choice-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          const presetId = btn.getAttribute('data-preset');
-          if (presetId) selectSettingsPresetAvatar(presetId);
-        });
-      });
-
-      // 3. Authenticate and fetch profile from backend
+      // 2. Authenticate and fetch profile from backend
       try {
         await checkAuth();
         const profRes = await api.getProfile().catch(() => null);
         if (profRes && profRes.success && profRes.data && profRes.data.profileImage && !currentSettingsAvatar) {
           currentSettingsAvatar = profRes.data.profileImage;
           renderSettingsAvatarPreview(currentSettingsAvatar);
-          const matched = DEFENSE_AVATAR_PRESETS.find(pr => pr.id === currentSettingsAvatar || pr.rawSvg === currentSettingsAvatar);
-          if (matched) {
-            document.querySelectorAll('.preset-choice-btn').forEach(b => {
-              b.classList.toggle('active', b.getAttribute('data-preset') === matched.id);
-            });
-          }
         }
       } catch(e) {}
 
