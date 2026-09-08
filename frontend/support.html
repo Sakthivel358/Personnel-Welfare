@@ -330,6 +330,7 @@
               </div>
               <div style="font-weight:600; font-size:0.9rem; margin-bottom:0.25rem;">${req.requestType.replace('_', ' ')}</div>
               ${req.description ? `<p class="text-muted" style="font-size:0.8rem; margin-bottom:0.5rem;">${req.description}</p>` : ''}
+              ${req.resolutionNotes ? `<div class="alert alert-success mt-2 mb-2" style="font-size:0.8rem; padding:0.5rem 0.75rem;"><strong>Officer Resolution:</strong> ${req.resolutionNotes}</div>` : ''}
               <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
                 <span>Submitted: ${Utils.formatDate(req.createdAt)}</span>
                 <span>${req.assignedTo ? 'Officer Assigned' : 'Awaiting Assignment'}</span>
