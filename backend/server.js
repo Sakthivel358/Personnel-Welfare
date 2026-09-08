@@ -55,6 +55,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/checkin', checkinRoutes);
 app.use('/api/v1/prediction', predictionRoutes);
+app.use('/api/v1/predictions', predictionRoutes);
 app.use('/api/v1/officer', officerRoutes);
 app.use('/api/v1/followups', followupRoutes);
 app.use('/api/v1/support', supportRoutes);
