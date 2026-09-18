@@ -162,15 +162,10 @@
   <script src="/js/auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      const user = await checkAuth();
+      const user = await checkAuth(['WELFARE_OFFICER', 'COMMANDING_OFFICER', 'ADMIN']);
       if (!user) return;
-      if (user.role === 'WELFARE_OFFICER' || user.role === 'COMMANDING_OFFICER' || user.role === 'ADMIN') {
-        renderOfficerLayout();
-        loadEarlyWarning();
-      } else {
-        // Personnel members monitor personal trajectory rather than unit-wide early-warning triage
-        window.location.replace('/trends.html');
-      }
+      renderOfficerLayout();
+      loadEarlyWarning();
     });
 
     function renderOfficerLayout() {

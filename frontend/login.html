@@ -87,6 +87,8 @@
   <script src="/js/utils.js"></script>
   <script src="/js/auth.js"></script>
   <script>
+    let activePortalRole = 'personnel';
+
     async function performLogin(identifier, password, rememberMe = false) {
       const submitBtn = document.getElementById('login-submit-btn');
       const alertContainer = document.getElementById('login-alert-container');
@@ -98,6 +100,57 @@
       try {
         const res = await api.login(identifier, password, rememberMe);
         if (res && res.success) {
+          const userRole = res.user?.role || 'PERSONNEL';
+
+          // Strict Portal Role Verification: prevent logging into another role's portal
+          if (activePortalRole === 'officer' && userRole !== 'WELFARE_OFFICER') {
+            await api.logout();
+            alertContainer.innerHTML = `
+              <div class="alert alert-danger" style="text-align: left;">
+                <strong>Access Denied:</strong> This account is registered as <strong>${userRole}</strong>, not an appointed Welfare Officer.<br>
+                <div class="mt-2">
+                  <button type="button" class="btn btn-sm btn-secondary" onclick="setLoginRole('personnel')">Switch to Personnel Portal &rarr;</button>
+                </div>
+              </div>
+            `;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `Login to Portal &rarr;`;
+            return;
+          }
+
+          if (activePortalRole === 'admin' && userRole !== 'ADMIN') {
+            await api.logout();
+            alertContainer.innerHTML = `
+              <div class="alert alert-danger" style="text-align: left;">
+                <strong>Access Denied:</strong> This account does not have System Administrator privileges.<br>
+                <div class="mt-2">
+                  <button type="button" class="btn btn-sm btn-secondary" onclick="setLoginRole('personnel')">Switch to Personnel Portal &rarr;</button>
+                </div>
+              </div>
+            `;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `Login to Portal &rarr;`;
+            return;
+          }
+
+          if (activePortalRole === 'personnel' && userRole !== 'PERSONNEL') {
+            await api.logout();
+            const targetRole = userRole === 'WELFARE_OFFICER' ? 'officer' : 'admin';
+            const targetName = userRole === 'WELFARE_OFFICER' ? 'Welfare Officer Command Portal' : 'Admin Governance Portal';
+            alertContainer.innerHTML = `
+              <div class="alert alert-warning" style="text-align: left;">
+                <strong>Command Account Detected:</strong> This account is registered as <strong>${userRole}</strong>.<br>
+                Please sign in through your designated operational portal.<br>
+                <div class="mt-2">
+                  <button type="button" class="btn btn-sm btn-primary" onclick="setLoginRole('${targetRole}')">Switch to ${targetName} &rarr;</button>
+                </div>
+              </div>
+            `;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `Login to Portal &rarr;`;
+            return;
+          }
+
           try {
             if (res.user) {
               localStorage.setItem('sih_user', JSON.stringify(res.user));
@@ -109,11 +162,10 @@
           } catch(e) {}
 
           Utils.showToast(`Welcome ${res.user?.fullName || identifier}! Redirecting...`, 'success');
-          const role = res.user?.role || 'PERSONNEL';
           setTimeout(() => {
-            if (role === 'WELFARE_OFFICER') {
+            if (userRole === 'WELFARE_OFFICER') {
               window.location.href = '/welfare-officer.html';
-            } else if (role === 'ADMIN') {
+            } else if (userRole === 'ADMIN') {
               window.location.href = '/admin.html';
             } else {
               window.location.href = '/dashboard.html';
@@ -168,6 +220,7 @@
     };
 
     function setLoginRole(role) {
+      activePortalRole = role;
       const config = ROLE_CONFIGS[role] || ROLE_CONFIGS.personnel;
       
       document.querySelectorAll('.role-tab-btn').forEach(btn => {

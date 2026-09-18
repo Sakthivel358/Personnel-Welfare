@@ -18,7 +18,7 @@ const auth = {
   directLogout: () => handleDirectLogout()
 };
 
-async function checkAuth(requiredRole = null) {
+async function checkAuth(allowedRoles = null) {
   try {
     const res = await api.getMe();
     if (res && res.success && res.user) {
@@ -31,14 +31,34 @@ async function checkAuth(requiredRole = null) {
       } catch(e) {}
       updateUserUI(currentUser);
 
-      if (requiredRole && currentUser.role !== requiredRole && currentUser.role !== 'ADMIN') {
-        console.warn(`Role mismatch: requires ${requiredRole}, user has ${currentUser.role}`);
-        if (currentUser.role === 'WELFARE_OFFICER') {
-          window.location.href = '/welfare-officer.html';
-        } else if (currentUser.role === 'ADMIN') {
-          window.location.href = '/admin.html';
-        } else {
-          window.location.href = '/dashboard.html';
+      if (allowedRoles) {
+        const roles = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+        const userRole = currentUser.role || 'PERSONNEL';
+
+        if (!roles.includes(userRole)) {
+          console.warn(`[RBAC Guard] Access Denied: requires [${roles.join(', ')}], user is ${userRole}`);
+          
+          if (typeof Utils !== 'undefined' && Utils.showToast) {
+            if (userRole === 'PERSONNEL') {
+              Utils.showToast('Access Denied: That portal is restricted to authorized command roles.', 'danger', 3500);
+            } else if (userRole === 'WELFARE_OFFICER') {
+              Utils.showToast('Redirected to Officer Command Portal.', 'info', 2500);
+            } else if (userRole === 'ADMIN') {
+              Utils.showToast('Redirected to Admin Governance Portal.', 'info', 2500);
+            }
+          }
+
+          setTimeout(() => {
+            if (userRole === 'WELFARE_OFFICER') {
+              window.location.replace('/welfare-officer.html');
+            } else if (userRole === 'ADMIN') {
+              window.location.replace('/admin.html');
+            } else {
+              window.location.replace('/dashboard.html');
+            }
+          }, 350);
+
+          return null;
         }
       }
       return currentUser;
@@ -49,6 +69,7 @@ async function checkAuth(requiredRole = null) {
                      window.location.pathname.endsWith('landing.html') || 
                      window.location.pathname.endsWith('login.html') || 
                      window.location.pathname.endsWith('signup.html') ||
+                     window.location.pathname.endsWith('register.html') ||
                      window.location.pathname === '/';
     if (!isPublic) {
       window.location.href = '/login.html';
