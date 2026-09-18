@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-18T18:00:14.215Z",
+    "lastLogin": "2026-09-18T18:10:58.551Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-18T18:00:14.216Z"
+    "updatedAt": "2026-09-18T18:10:58.551Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,9 +37,9 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-18T18:00:14.415Z",
+    "lastLogin": "2026-09-18T18:10:58.769Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-18T18:00:14.415Z"
+    "updatedAt": "2026-09-18T18:10:58.769Z"
   },
   {
     "_id": "351cc70fa4ab2222abc5f216",
@@ -110,5 +110,19 @@
     "lastLogin": "2026-09-18T18:00:14.054Z",
     "createdAt": "2026-09-18T18:00:13.618Z",
     "updatedAt": "2026-09-18T18:00:14.054Z"
+  },
+  {
+    "_id": "67da3d646c23d8a816e361b2",
+    "personnelId": "CRPF-TEST-7454",
+    "email": "test.1789755057454@crpf.gov.in",
+    "password": "$2a$10$sBMTh3AZ/jnHvpZHfbK/KudHjYAVHL.OOvJ2l.b0LKKwd9ZN0bcga",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-18T18:10:58.445Z",
+    "createdAt": "2026-09-18T18:10:57.564Z",
+    "updatedAt": "2026-09-18T18:10:58.445Z"
   }
 ]

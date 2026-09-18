@@ -1440,5 +1440,48 @@
     "isRead": false,
     "createdAt": "2026-09-18T18:00:14.259Z",
     "updatedAt": "2026-09-18T18:00:14.259Z"
+  },
+  {
+    "_id": "7627086d2232e4fcc69c6333",
+    "userId": "67da3d646c23d8a816e361b2",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-18T18:10:57.566Z",
+    "updatedAt": "2026-09-18T18:10:57.566Z"
+  },
+  {
+    "_id": "bb078c51c85f2abbee0a13f1",
+    "userId": "67da3d646c23d8a816e361b2",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (Weekly Workload & Duty Hours, Perceived Stress Indicator, Rest & Sleep Recovery). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-18T18:10:58.312Z",
+    "updatedAt": "2026-09-18T18:10:58.312Z"
+  },
+  {
+    "_id": "4370fe037064fdfa28f76d7e",
+    "userId": "67da3d646c23d8a816e361b2",
+    "title": "Welfare Follow-up Scheduled",
+    "message": "Your Unit Welfare Officer has scheduled a supportive follow-up session. Please check your schedule.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/recovery-journey.html",
+    "createdAt": "2026-09-18T18:10:58.574Z",
+    "updatedAt": "2026-09-18T18:10:58.574Z"
+  },
+  {
+    "_id": "6e295b742a43f694f3fbfc18",
+    "userId": "67da3d646c23d8a816e361b2",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: LOW concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-18T18:10:58.628Z",
+    "updatedAt": "2026-09-18T18:10:58.628Z"
   }
 ]

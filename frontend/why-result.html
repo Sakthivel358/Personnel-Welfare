@@ -179,6 +179,8 @@
               Please submit a check-in first to generate model attribution breakdown.
             </div>
           `;
+          const tb = document.getElementById('factors-table-body');
+          if (tb) tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No factor parameters available yet. Complete a check-in to view.</td></tr>`;
         }
       } catch (err) {
         console.error('Error loading explainability:', err);

@@ -288,7 +288,7 @@
                 </p>
               </div>
               <div class="d-flex gap-1 align-center">
-                <span class="badge badge-low" id="opt-fatigue-reduction">Est. Battalion Fatigue Reduction: ~26%</span>
+                <span class="badge badge-neutral" id="opt-fatigue-reduction">Est. Battalion Fatigue Reduction: --</span>
                 <button class="btn btn-sm btn-secondary" onclick="loadRosterOptimization()">🔄 Re-Calculate</button>
               </div>
             </div>
@@ -798,8 +798,9 @@
         if (res && res.success && res.data) {
           const { proposals, estimatedBattalionFatigueReduction } = res.data;
           const badgeEl = document.getElementById('opt-fatigue-reduction');
-          if (badgeEl && estimatedBattalionFatigueReduction) {
-            badgeEl.textContent = `Est. Battalion Fatigue Reduction: ~${estimatedBattalionFatigueReduction}`;
+          if (badgeEl) {
+            badgeEl.textContent = `Est. Battalion Fatigue Reduction: ~${estimatedBattalionFatigueReduction || '0%'}`;
+            badgeEl.className = `badge ${estimatedBattalionFatigueReduction && estimatedBattalionFatigueReduction !== '0%' ? 'badge-low' : 'badge-neutral'}`;
           }
 
           if (!proposals || proposals.length === 0) {

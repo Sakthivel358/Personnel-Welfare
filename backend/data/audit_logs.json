@@ -2108,5 +2108,139 @@
     "timestamp": "2026-09-18T18:00:14.417Z",
     "createdAt": "2026-09-18T18:00:14.417Z",
     "updatedAt": "2026-09-18T18:00:14.417Z"
+  },
+  {
+    "_id": "0262b08d720e6e0debbf4255",
+    "action": "USER_REGISTER",
+    "performedBy": "67da3d646c23d8a816e361b2",
+    "personnelId": "CRPF-TEST-7454",
+    "targetResource": "Users",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "test.1789755057454@crpf.gov.in"
+    },
+    "timestamp": "2026-09-18T18:10:57.567Z",
+    "createdAt": "2026-09-18T18:10:57.567Z",
+    "updatedAt": "2026-09-18T18:10:57.567Z"
+  },
+  {
+    "_id": "64e31669780732f797a666f9",
+    "action": "USER_LOGIN",
+    "performedBy": "67da3d646c23d8a816e361b2",
+    "personnelId": "CRPF-TEST-7454",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-18T18:10:57.678Z",
+    "createdAt": "2026-09-18T18:10:57.678Z",
+    "updatedAt": "2026-09-18T18:10:57.678Z"
+  },
+  {
+    "_id": "72d118861b1b3a4b47745c75",
+    "action": "PROFILE_UPDATE",
+    "performedBy": "67da3d646c23d8a816e361b2",
+    "personnelId": "CRPF-TEST-7454",
+    "targetResource": "Personnel",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {},
+    "timestamp": "2026-09-18T18:10:57.697Z",
+    "createdAt": "2026-09-18T18:10:57.697Z",
+    "updatedAt": "2026-09-18T18:10:57.697Z"
+  },
+  {
+    "_id": "72c18e0f4db5069bd02f49df",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "67da3d646c23d8a816e361b2",
+    "personnelId": "CRPF-TEST-7454",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "HIGH",
+      "compositeRiskScore": 77.4,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-18T18:10:58.313Z",
+    "createdAt": "2026-09-18T18:10:58.313Z",
+    "updatedAt": "2026-09-18T18:10:58.313Z"
+  },
+  {
+    "_id": "bbef9e89c5b4c50afb6bc973",
+    "action": "USER_LOGIN",
+    "performedBy": "67da3d646c23d8a816e361b2",
+    "personnelId": "CRPF-TEST-7454",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-18T18:10:58.446Z",
+    "createdAt": "2026-09-18T18:10:58.446Z",
+    "updatedAt": "2026-09-18T18:10:58.446Z"
+  },
+  {
+    "_id": "113e2574e02f80f5d92a83ab",
+    "action": "USER_LOGIN",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "WELFARE_OFFICER",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-18T18:10:58.552Z",
+    "createdAt": "2026-09-18T18:10:58.552Z",
+    "updatedAt": "2026-09-18T18:10:58.552Z"
+  },
+  {
+    "_id": "cc8d7284d399b47c8093018f",
+    "action": "ALERT_REVIEWED",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-TEST-7454",
+    "targetResource": "Alerts",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "newStatus": "FOLLOW_UP_ASSIGNED",
+      "followUpAssigned": true
+    },
+    "timestamp": "2026-09-18T18:10:58.575Z",
+    "createdAt": "2026-09-18T18:10:58.575Z",
+    "updatedAt": "2026-09-18T18:10:58.575Z"
+  },
+  {
+    "_id": "70cf855082d4aea344e13491",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "67da3d646c23d8a816e361b2",
+    "personnelId": "CRPF-TEST-7454",
+    "targetResource": "CheckIns",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 5.7,
+      "modelVersion": "v1.4.0-sih26186"
+    },
+    "timestamp": "2026-09-18T18:10:58.629Z",
+    "createdAt": "2026-09-18T18:10:58.629Z",
+    "updatedAt": "2026-09-18T18:10:58.629Z"
+  },
+  {
+    "_id": "4b2a4f8169f9952d546c65a3",
+    "action": "USER_LOGIN",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Auth",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "ADMIN",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-18T18:10:58.769Z",
+    "createdAt": "2026-09-18T18:10:58.769Z",
+    "updatedAt": "2026-09-18T18:10:58.769Z"
   }
 ]

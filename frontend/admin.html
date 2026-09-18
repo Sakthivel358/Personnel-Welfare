@@ -351,6 +351,10 @@
         const res = await api.request('/admin/users', { method: 'GET' });
         if (res && res.success) {
           const users = res.data;
+          if (!users || users.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:2rem;">No registered user records found.</td></tr>`;
+            return;
+          }
           tbody.innerHTML = users.map(u => `
             <tr style="border-bottom: 1px solid var(--border-color);">
               <td style="padding:0.75rem;"><strong>${u.personnelId}</strong></td>

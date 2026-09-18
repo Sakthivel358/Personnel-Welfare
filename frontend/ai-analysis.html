@@ -218,8 +218,21 @@
             document.getElementById('top-drivers-list').textContent = 'All operational variables are within standard healthy thresholds.';
           }
         } else {
-          Utils.showToast('No check-in predictions found. Please complete a check-in first.', 'warning');
-          setTimeout(() => { location.href = '/stress-checkin.html'; }, 1000);
+          const container = document.querySelector('.page-container');
+          if (container) {
+            container.innerHTML = `
+              <div class="card text-center py-5" style="background:var(--bg-card); border: 1px dashed var(--border-color);">
+                <div style="font-size:2.5rem; margin-bottom:1rem;">🌲</div>
+                <h3>No AI Analysis Available Yet</h3>
+                <p class="text-muted" style="max-width:480px; margin:0.5rem auto 1.5rem;">
+                  You have not submitted any stress check-ins yet. Complete your first confidential check-in to generate your Random Forest risk inference.
+                </p>
+                <div>
+                  <a href="/stress-checkin.html" class="btn btn-primary">Start Initial Check-in &rarr;</a>
+                </div>
+              </div>
+            `;
+          }
         }
       } catch (err) {
         console.error('Error loading AI analysis:', err);
