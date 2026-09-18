@@ -9,5 +9,26 @@
     "status": "OPEN",
     "createdAt": "2026-09-06T04:18:51.566Z",
     "updatedAt": "2026-09-06T04:18:51.566Z"
+  },
+  {
+    "_id": "6efb3d44fe0c343f465699a3",
+    "referenceId": "REQ-8571",
+    "userId": "c05a10fc7acabca5b05930df",
+    "personnelId": "CRPF-AUDIT-4182",
+    "requestType": "CONFIDENTIAL_COUNSELING",
+    "urgency": "ROUTINE",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "preferredTime": "ANYTIME",
+    "notes": "Personnel automated audit test request.",
+    "status": "SUBMITTED",
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-08T05:53:44.558Z",
+        "note": "Request received and logged confidentially."
+      }
+    ],
+    "createdAt": "2026-09-08T05:53:44.558Z",
+    "updatedAt": "2026-09-08T05:53:44.558Z"
   }
 ]

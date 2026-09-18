@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-07T19:05:09.830Z",
+    "lastLogin": "2026-09-08T05:52:51.666Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-07T19:05:09.830Z"
+    "updatedAt": "2026-09-08T05:52:51.666Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,8 +37,64 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-07T19:05:09.935Z",
+    "lastLogin": "2026-09-08T05:52:51.854Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-07T19:05:09.935Z"
+    "updatedAt": "2026-09-08T05:52:51.855Z"
+  },
+  {
+    "_id": "351cc70fa4ab2222abc5f216",
+    "personnelId": "CRPF-TEST-3156",
+    "email": "test.1788831993156@crpf.gov.in",
+    "password": "$2a$10$lMm70204W7k5amiCOBPAce21cS1LHIG.muWUAqmTI2clZPfqBWkoi",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-08T01:46:33.777Z",
+    "createdAt": "2026-09-08T01:46:33.281Z",
+    "updatedAt": "2026-09-08T01:46:33.777Z"
+  },
+  {
+    "_id": "2a93c22fafb6ec49e8d070f5",
+    "personnelId": "CRPF-TEST-3666",
+    "email": "test.1788845013666@crpf.gov.in",
+    "password": "$2a$10$oAFNx1jV.3s.zhQPpP/PzOifsHLaZzM0CqTn9xqM6wHxHG7ht64Lu",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-08T05:23:34.337Z",
+    "createdAt": "2026-09-08T05:23:33.813Z",
+    "updatedAt": "2026-09-08T05:23:34.337Z"
+  },
+  {
+    "_id": "09cec89d5b64c55c99cf33b3",
+    "personnelId": "CRPF-TEST-1024",
+    "email": "test.1788846771024@crpf.gov.in",
+    "password": "$2a$10$n99cmWaGhrvrKpeU9NEC2.hsa46eps4DXGziLBW2DrhF.JKEV6k4K",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-08T05:52:51.547Z",
+    "createdAt": "2026-09-08T05:52:51.174Z",
+    "updatedAt": "2026-09-08T05:52:51.547Z"
+  },
+  {
+    "_id": "c05a10fc7acabca5b05930df",
+    "personnelId": "CRPF-AUDIT-4182",
+    "email": "audit.4182@crpf.gov.in",
+    "password": "$2a$10$BMW9XhrkpjM6oZZN6R5LPOAo5XmWKB5Qv1COgZUyttTJJ8hnXDwqS",
+    "fullName": "Havildar Rajesh Kumar",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-08T05:53:44.442Z",
+    "createdAt": "2026-09-08T05:53:44.314Z",
+    "updatedAt": "2026-09-08T05:53:44.463Z"
   }
 ]

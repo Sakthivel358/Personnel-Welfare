@@ -10,13 +10,10 @@ const generateToken = (user, rememberMe = false) => {
       id: user._id,
       personnelId: user.personnelId,
       email: user.email,
-      role: user.role,
-      fullName: user.fullName,
-      rank: user.rank,
-      unit: user.unit
+      role: user.role
     },
     JWT_SECRET,
-    { expiresIn: '3650d' } // Never expires
+    { expiresIn: rememberMe ? '30d' : '3h' }
   );
 };
 
@@ -25,7 +22,7 @@ const setAuthCookie = (res, token, rememberMe = false) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 3650 * 24 * 60 * 60 * 1000 // 10 years
+    maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 3 * 60 * 60 * 1000 // 30 days or 3 hours default
   });
 };
 
