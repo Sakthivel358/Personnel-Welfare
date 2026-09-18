@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In — WelfareAI</title>
+  <title>Login — WelfareAI</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/landing.css">
 </head>
@@ -22,7 +22,7 @@
           <div class="brand-icon">🛡️</div>
           <div>WelfareAI</div>
         </a>
-        <h2 id="login-title">Sign In to Portal</h2>
+        <h2 id="login-title">Portal Login</h2>
         <p class="text-muted" style="font-size: 0.85rem;" id="login-subtitle">Select your role to access your dedicated dashboard</p>
       </div>
 
@@ -69,7 +69,7 @@
         </div>
 
         <button type="submit" id="login-submit-btn" class="btn btn-primary w-100 mb-3" style="padding: 0.75rem;">
-          Sign In to Portal &rarr;
+          Login to Portal &rarr;
         </button>
       </form>
 
@@ -127,14 +127,14 @@
           </div>
         `;
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `Sign In to Portal &rarr;`;
+        submitBtn.innerHTML = `Login to Portal &rarr;`;
       }
     }
 
     const ROLE_CONFIGS = {
       personnel: {
-        title: 'Personnel Portal Sign In',
-        subtitle: 'Sign in to access your personal stress index, leave tracker, and wellness logs',
+        title: 'Personnel Portal Login',
+        subtitle: 'Login to access your personal stress index, leave tracker, and wellness logs',
         badgeBg: '#eff6ff',
         badgeColor: '#1e40af',
         badgeBorder: '#bfdbfe',
@@ -144,8 +144,8 @@
         footer: 'New personnel? <a href="/register.html" style="font-weight: 600;">Register New Account</a>'
       },
       officer: {
-        title: 'Welfare Officer Command Portal',
-        subtitle: 'Sign in to access unit mental health heatmaps, early alerts, and clinical intervention logs',
+        title: 'Welfare Officer Command Portal Login',
+        subtitle: 'Login to access unit mental health heatmaps, early alerts, and clinical intervention logs',
         badgeBg: '#ecfdf5',
         badgeColor: '#065f46',
         badgeBorder: '#a7f3d0',
@@ -155,8 +155,8 @@
         footer: 'Officer accounts are provisioned by Force HQ. Need access? <a href="/help.html" style="font-weight: 600;">Contact Admin</a>'
       },
       admin: {
-        title: 'System Administration Portal',
-        subtitle: 'Sign in to configure model thresholds, manage user accounts, and review audit trails',
+        title: 'System Administration Portal Login',
+        subtitle: 'Login to configure model thresholds, manage user accounts, and review audit trails',
         badgeBg: '#fef2f2',
         badgeColor: '#991b1b',
         badgeBorder: '#fecaca',
@@ -212,7 +212,7 @@
         const alertBox = document.getElementById('login-alert-container');
         alertBox.innerHTML = `
           <div class="alert alert-warning">
-            Your session has expired. Please sign in again.
+            Your session has expired. Please login again.
           </div>
         `;
       }
