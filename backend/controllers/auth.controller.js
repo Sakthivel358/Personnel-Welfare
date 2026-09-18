@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const db = require('../models/dbAdapter');
 const { JWT_SECRET } = require('../middleware/auth.middleware');
 const auditService = require('../services/audit.service');
@@ -10,10 +11,11 @@ const generateToken = (user, rememberMe = false) => {
       id: user._id,
       personnelId: user.personnelId,
       email: user.email,
-      role: user.role
+      role: user.role,
+      jti: crypto.randomBytes(16).toString('hex') // RFC 7519 unique JWT identifier
     },
     JWT_SECRET,
-    { expiresIn: rememberMe ? '30d' : '3h' }
+    { expiresIn: rememberMe ? '30d' : '24h' }
   );
 };
 
@@ -22,7 +24,7 @@ const setAuthCookie = (res, token, rememberMe = false) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 3 * 60 * 60 * 1000 // 30 days or 3 hours default
+    maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000 // 30 days or 24 hours operational shift
   });
 };
 
@@ -216,7 +218,7 @@ const login = async (req, res, next) => {
       success: true,
       message: 'Signed in successfully.',
       token,
-      expiresIn: rememberMe ? '30d' : '3h',
+      expiresIn: rememberMe ? '30d' : '24h',
       user: safeUser
     });
   } catch (err) {
@@ -226,21 +228,33 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
+    let token = req.cookies?.token;
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
     let user = req.user;
-    if (!user) {
-      let token = req.cookies?.token;
-      if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-        token = req.headers.authorization.split(' ')[1];
-      }
-      if (token) {
-        try {
-          const decoded = jwt.verify(token, JWT_SECRET);
-          user = await db.Users.findById(decoded.id || decoded._id);
-        } catch (_) {}
-      }
+    if (!user && token) {
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        user = await db.Users.findById(decoded.id || decoded._id);
+      } catch (_) {}
+    }
+
+    // Explicitly revoke the token
+    if (token) {
+      await db.RevokedTokens.create({
+        token,
+        userId: user ? user._id : null,
+        revokedAt: new Date().toISOString()
+      });
     }
 
     if (user) {
+      await db.Users.findByIdAndUpdate(user._id, {
+        lastLogout: new Date().toISOString()
+      });
+
       await auditService.log({
         action: 'USER_LOGOUT',
         userId: user._id,

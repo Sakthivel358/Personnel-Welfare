@@ -262,7 +262,8 @@ const db = {
   SupportRequests: new Collection('support_requests'),
   Notifications: new Collection('notifications'),
   WelfareResources: new Collection('welfare_resources'),
-  AuditLogs: new Collection('audit_logs')
+  AuditLogs: new Collection('audit_logs'),
+  RevokedTokens: new Collection('revoked_tokens')
 };
 
 module.exports = db;

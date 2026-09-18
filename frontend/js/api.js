@@ -27,9 +27,15 @@ class APIClient {
       const response = await fetch(url, config);
       const data = await response.json().catch(() => ({}));
 
+      // Transparent sliding session extension
+      const renewedToken = response.headers && response.headers.get('x-renewed-token');
+      if (renewedToken && typeof localStorage !== 'undefined') {
+        localStorage.setItem('sih_token', renewedToken);
+      }
+
       if (!response.ok) {
         if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/register')) {
-          console.warn('[Auth] Session expired or unauthorized.');
+          console.warn('[Auth] Session expired or revoked.');
           if (typeof localStorage !== 'undefined') {
             localStorage.removeItem('sih_token');
             localStorage.removeItem('sih_user');
@@ -41,6 +47,7 @@ class APIClient {
                                window.location.pathname.endsWith('landing.html') || 
                                window.location.pathname.endsWith('login.html') || 
                                window.location.pathname.endsWith('signup.html') ||
+                               window.location.pathname.endsWith('register.html') ||
                                window.location.pathname === '/';
           if (!isPublicPage) {
             window.location.href = '/login.html?expired=1';
