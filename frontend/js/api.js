@@ -32,6 +32,9 @@ class APIClient {
           console.warn('[Auth] Session expired or unauthorized.');
           if (typeof localStorage !== 'undefined') {
             localStorage.removeItem('sih_token');
+            localStorage.removeItem('sih_user');
+            localStorage.removeItem('sih_registered_user');
+            localStorage.removeItem('sih_user_avatar');
           }
           // Only redirect if on protected page
           const isPublicPage = window.location.pathname.endsWith('index.html') || 
@@ -46,16 +49,15 @@ class APIClient {
         throw new Error(data.message || `Request failed with status ${response.status}`);
       }
 
-      // Auto-save auth token and user credentials
+      // Auto-save auth token and user credentials cleanly
       if (data && data.token && typeof localStorage !== 'undefined') {
         localStorage.setItem('sih_token', data.token);
       }
       if (data && data.user && typeof localStorage !== 'undefined') {
-        const prev = JSON.parse(localStorage.getItem('sih_user') || '{}');
-        localStorage.setItem('sih_user', JSON.stringify({ ...prev, ...data.user }));
+        localStorage.setItem('sih_user', JSON.stringify(data.user));
+        localStorage.setItem('sih_registered_user', JSON.stringify(data.user));
       } else if (data && data.data && data.data.personnelId && typeof localStorage !== 'undefined') {
-        const prev = JSON.parse(localStorage.getItem('sih_user') || '{}');
-        localStorage.setItem('sih_user', JSON.stringify({ ...prev, ...data.data }));
+        localStorage.setItem('sih_user', JSON.stringify(data.data));
       }
 
       return data;
@@ -76,12 +78,22 @@ class APIClient {
 
   async logout() {
     try {
-      if (typeof localStorage !== 'undefined') {
-        localStorage.removeItem('sih_token');
-        localStorage.removeItem('sih_user');
-      }
-    } catch(e) {}
-    return this.request('/auth/logout', { method: 'POST' });
+      // 1. Notify backend with existing token if available
+      await this.request('/auth/logout', { method: 'POST' });
+    } catch (e) {
+      console.warn('[API] Logout request warning:', e.message);
+    } finally {
+      // 2. Cleanly purge all local authentication and user session storage
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('sih_token');
+          localStorage.removeItem('sih_user');
+          localStorage.removeItem('sih_registered_user');
+          localStorage.removeItem('sih_user_avatar');
+        }
+      } catch (e) {}
+    }
+    return { success: true };
   }
 
   async getMe() {

@@ -226,11 +226,25 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
-    if (req.user) {
+    let user = req.user;
+    if (!user) {
+      let token = req.cookies?.token;
+      if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+      }
+      if (token) {
+        try {
+          const decoded = jwt.verify(token, JWT_SECRET);
+          user = await db.Users.findById(decoded.id || decoded._id);
+        } catch (_) {}
+      }
+    }
+
+    if (user) {
       await auditService.log({
         action: 'USER_LOGOUT',
-        userId: req.user._id,
-        personnelId: req.user.personnelId,
+        userId: user._id,
+        personnelId: user.personnelId,
         targetResource: 'Auth',
         ipAddress: req.ip
       });

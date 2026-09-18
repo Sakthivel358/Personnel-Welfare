@@ -25,8 +25,8 @@ async function checkAuth(requiredRole = null) {
       currentUser = res.user;
       try {
         if (typeof localStorage !== 'undefined') {
-          const prev = JSON.parse(localStorage.getItem('sih_user') || '{}');
-          localStorage.setItem('sih_user', JSON.stringify({ ...prev, ...res.user }));
+          localStorage.setItem('sih_user', JSON.stringify(res.user));
+          localStorage.setItem('sih_registered_user', JSON.stringify(res.user));
         }
       } catch(e) {}
       updateUserUI(currentUser);
@@ -177,10 +177,11 @@ function updateUserUI(user) {
 }
 
 async function handleDirectLogout() {
+  currentUser = null;
   try {
     await api.logout();
     if (typeof Utils !== 'undefined' && Utils.showToast) {
-      Utils.showToast('You have been signed out securely.', 'success');
+      Utils.showToast('You have been logged out securely.', 'success');
     }
     setTimeout(() => {
       window.location.href = '/login.html';
@@ -243,9 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Auto-initialize UI immediately from cached session so there is never a "VK" flicker
+  // Auto-initialize UI immediately from cached session if present
   try {
-    const cachedUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || 'null');
+    const cachedUser = JSON.parse(localStorage.getItem('sih_user') || 'null');
     if (cachedUser) {
       updateUserUI(cachedUser);
     }
