@@ -302,41 +302,10 @@ const Utils = {
       </div>
     `;
     modal.style.display = 'flex';
-  },
-
-  // Production View Mode Toggle
-  initProductionMode() {
-    const isProd = localStorage.getItem('welfareai_production_mode') === 'true';
-    if (isProd) {
-      document.body.classList.add('production-mode');
-    }
-
-    // Attach dismiss button to demo banners
-    document.querySelectorAll('.demo-banner').forEach(banner => {
-      if (!banner.querySelector('.banner-dismiss-btn')) {
-        const btn = document.createElement('button');
-        btn.className = 'banner-dismiss-btn';
-        btn.title = 'Switch to clean production view (hides hackathon evaluation headers)';
-        btn.innerHTML = '👁️ Hide Evaluation Header';
-        btn.onclick = () => Utils.toggleProductionMode();
-        banner.appendChild(btn);
-      }
-    });
-  },
-
-  toggleProductionMode() {
-    const isProd = document.body.classList.toggle('production-mode');
-    localStorage.setItem('welfareai_production_mode', isProd ? 'true' : 'false');
-    if (isProd) {
-      Utils.showToast('Production View enabled: Hackathon evaluation banners hidden.', 'info');
-    } else {
-      Utils.showToast('Hackathon Evaluation View enabled.', 'info');
-    }
   }
 };
 
-// Auto initialize theme & production mode
+// Auto initialize theme
 document.addEventListener('DOMContentLoaded', () => {
   Utils.initTheme();
-  Utils.initProductionMode();
 });

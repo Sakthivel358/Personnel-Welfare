@@ -22,15 +22,34 @@
           <div class="brand-icon">🛡️</div>
           <div>WelfareAI</div>
         </a>
-        <h2>Sign In to WelfareAI</h2>
-        <p class="text-muted" style="font-size: 0.85rem;">Uniformed Personnel & Welfare Officers Portal</p>
+        <h2 id="login-title">Sign In to Portal</h2>
+        <p class="text-muted" style="font-size: 0.85rem;" id="login-subtitle">Select your role to access your dedicated dashboard</p>
+      </div>
+
+      <!-- 3-Role Portal Switcher Tabs -->
+      <div class="role-tabs-container mb-3" style="display: flex; gap: 6px; background: rgba(0,0,0,0.04); padding: 4px; border-radius: 8px; border: 1px solid var(--border-color);">
+        <button type="button" class="role-tab-btn active" data-role="personnel" id="tab-personnel" style="flex: 1; padding: 8px 4px; border: none; background: #fff; border-radius: 6px; font-weight: 600; font-size: 0.8rem; cursor: pointer; color: var(--text-primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.2s;">
+          👤 Personnel
+        </button>
+        <button type="button" class="role-tab-btn" data-role="officer" id="tab-officer" style="flex: 1; padding: 8px 4px; border: none; background: transparent; border-radius: 6px; font-weight: 500; font-size: 0.8rem; cursor: pointer; color: var(--text-secondary); transition: all 0.2s;">
+          🩺 Officer
+        </button>
+        <button type="button" class="role-tab-btn" data-role="admin" id="tab-admin" style="flex: 1; padding: 8px 4px; border: none; background: transparent; border-radius: 6px; font-weight: 500; font-size: 0.8rem; cursor: pointer; color: var(--text-secondary); transition: all 0.2s;">
+          ⚙️ Admin
+        </button>
+      </div>
+
+      <!-- Role Context Info Badge -->
+      <div id="role-context-badge" class="mb-3" style="display: flex; align-items: flex-start; gap: 8px; font-size: 0.8rem; padding: 8px 12px; border-radius: 6px; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; line-height: 1.4;">
+        <span style="font-size: 1rem; line-height: 1;">ℹ️</span>
+        <span id="role-context-desc">Signing in as <strong>Personnel</strong>. Access personal stress assessment, leave balance, and welfare support.</span>
       </div>
 
       <div id="login-alert-container"></div>
 
       <form id="login-form" autocomplete="off">
         <div class="form-group">
-          <label class="form-label" for="identifier">Personnel ID or Official Email</label>
+          <label class="form-label" for="identifier" id="identifier-label">Personnel ID or Official Email</label>
           <input type="text" id="identifier" class="form-control" placeholder="e.g. CRPF-9042 or user@crpf.gov.in" required autocomplete="off">
         </div>
 
@@ -54,7 +73,7 @@
         </button>
       </form>
 
-      <div class="text-center mt-2" style="font-size: 0.85rem; color: var(--text-secondary);">
+      <div class="text-center mt-2" id="login-footer-action" style="font-size: 0.85rem; color: var(--text-secondary);">
         New personnel? <a href="/register.html" style="font-weight: 600;">Register New Account</a>
       </div>
     </div>
@@ -112,8 +131,82 @@
       }
     }
 
+    const ROLE_CONFIGS = {
+      personnel: {
+        title: 'Personnel Portal Sign In',
+        subtitle: 'Sign in to access your personal stress index, leave tracker, and wellness logs',
+        badgeBg: '#eff6ff',
+        badgeColor: '#1e40af',
+        badgeBorder: '#bfdbfe',
+        badgeText: 'Signing in as <strong>Personnel</strong>. Access personal stress assessment, leave balance, and welfare support.',
+        label: 'Personnel ID or Official Email',
+        placeholder: 'e.g. CRPF-9042 or user@crpf.gov.in',
+        footer: 'New personnel? <a href="/register.html" style="font-weight: 600;">Register New Account</a>'
+      },
+      officer: {
+        title: 'Welfare Officer Command Portal',
+        subtitle: 'Sign in to access unit mental health heatmaps, early alerts, and clinical intervention logs',
+        badgeBg: '#ecfdf5',
+        badgeColor: '#065f46',
+        badgeBorder: '#a7f3d0',
+        badgeText: 'Signing in as <strong>Welfare Officer</strong>. Access unit-level risk heatmaps, counseling referrals, and clinical interventions.',
+        label: 'Officer ID or Official Email',
+        placeholder: 'e.g. OFF-3001 or officer@crpf.gov.in',
+        footer: 'Officer accounts are provisioned by Force HQ. Need access? <a href="/help.html" style="font-weight: 600;">Contact Admin</a>'
+      },
+      admin: {
+        title: 'System Administration Portal',
+        subtitle: 'Sign in to configure model thresholds, manage user accounts, and review audit trails',
+        badgeBg: '#fef2f2',
+        badgeColor: '#991b1b',
+        badgeBorder: '#fecaca',
+        badgeText: 'Signing in as <strong>System Administrator</strong>. Access system configuration, user governance, audit logs, and model monitoring.',
+        label: 'Administrator ID or Official Email',
+        placeholder: 'e.g. ADM-001 or admin@crpf.gov.in',
+        footer: 'Strict audit-logged access. Need credentials? <a href="/help.html" style="font-weight: 600;">Helpdesk</a>'
+      }
+    };
+
+    function setLoginRole(role) {
+      const config = ROLE_CONFIGS[role] || ROLE_CONFIGS.personnel;
+      
+      document.querySelectorAll('.role-tab-btn').forEach(btn => {
+        const isActive = btn.getAttribute('data-role') === role;
+        btn.style.background = isActive ? '#fff' : 'transparent';
+        btn.style.color = isActive ? 'var(--text-primary)' : 'var(--text-secondary)';
+        btn.style.fontWeight = isActive ? '600' : '500';
+        btn.style.boxShadow = isActive ? '0 1px 3px rgba(0,0,0,0.1)' : 'none';
+      });
+
+      document.getElementById('login-title').textContent = config.title;
+      document.getElementById('login-subtitle').textContent = config.subtitle;
+      
+      const badge = document.getElementById('role-context-badge');
+      badge.style.background = config.badgeBg;
+      badge.style.color = config.badgeColor;
+      badge.style.borderColor = config.badgeBorder;
+      document.getElementById('role-context-desc').innerHTML = config.badgeText;
+
+      document.getElementById('identifier-label').textContent = config.label;
+      document.getElementById('identifier').placeholder = config.placeholder;
+      document.getElementById('login-footer-action').innerHTML = config.footer;
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
       const urlParams = new URLSearchParams(window.location.search);
+      const initialRole = urlParams.get('role');
+      if (initialRole && ROLE_CONFIGS[initialRole.toLowerCase()]) {
+        setLoginRole(initialRole.toLowerCase());
+      } else {
+        setLoginRole('personnel');
+      }
+
+      document.querySelectorAll('.role-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const role = btn.getAttribute('data-role');
+          setLoginRole(role);
+        });
+      });
       
       if (urlParams.get('expired')) {
         const alertBox = document.getElementById('login-alert-container');

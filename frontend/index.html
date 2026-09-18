@@ -21,19 +21,23 @@
       <a href="/" class="brand-logo">
         <div class="brand-icon">🛡️</div>
         <div>
-          <div>WelfareAI</div>
-          <div style="font-size:0.7rem; color:var(--text-muted); font-weight:normal;">Personnel Welfare & Resilience Platform</div>
+          <div style="font-size:1.15rem; font-weight:800;">WelfareAI</div>
+          <div style="font-size:0.7rem; color:var(--text-muted); font-weight:normal;">Defense Welfare & Resilience Platform</div>
         </div>
       </a>
-      <ul class="nav-links">
-        <li><a href="#how-it-works">How It Works</a></li>
-        <li><a href="#pipeline">AI Pipeline</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="/privacy.html">Privacy & Ethics</a></li>
-        <li><a href="/help.html">Help & FAQ</a></li>
-        <li><button class="theme-toggle btn btn-sm btn-secondary">🌙</button></li>
-        <li><a href="/login.html" class="btn btn-primary btn-sm">Sign In</a></li>
-      </ul>
+      <div class="d-flex align-center gap-1">
+        <ul class="nav-links">
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#pipeline">AI Pipeline</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="/privacy.html">Privacy & Ethics</a></li>
+          <li><a href="/help.html">Help & FAQ</a></li>
+        </ul>
+        <button class="theme-toggle btn btn-sm btn-secondary" title="Toggle theme">🌙</button>
+        <a href="/login.html" class="btn btn-primary btn-sm" style="font-weight:700; white-space:nowrap; padding:0.45rem 1rem;">
+          🔑 Portal Sign In
+        </a>
+      </div>
     </div>
   </header>
 
@@ -53,9 +57,74 @@
       </p>
       
       <div class="hero-actions">
-        <a href="/login.html" class="btn btn-primary btn-lg">Get Started / Sign In</a>
+        <a href="/login.html" class="btn btn-primary btn-lg">🔑 Sign In to Portal</a>
         <a href="/explanation-lab.html" class="btn btn-secondary btn-lg">Open AI Explanation Lab 🔬</a>
         <a href="/register.html" class="btn btn-outline btn-lg">Register Account</a>
+      </div>
+
+      <!-- 3-Role Operational Portal Access Section -->
+      <div style="max-width: 960px; margin: 3rem auto 2.5rem; text-align: left;">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">
+            Choose Your Operational Portal to Sign In
+          </h3>
+          <p class="text-muted" style="font-size: 0.85rem;">
+            Select your service role to access your dedicated decision-support workspace
+          </p>
+        </div>
+
+        <div class="grid-3" style="gap: 1.25rem;">
+          <!-- 1. Personnel Role -->
+          <div class="card" style="background: var(--bg-card); border-top: 4px solid var(--risk-low); display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem; box-shadow: var(--shadow-md);">
+            <div>
+              <div class="d-flex justify-between align-center mb-1">
+                <span style="font-size: 1.5rem;">👤</span>
+                <span class="badge badge-low">Service Personnel</span>
+              </div>
+              <h4 style="font-size: 1.05rem; margin-bottom: 0.35rem;">Personnel Portal</h4>
+              <p class="text-muted" style="font-size: 0.82rem; line-height: 1.5; margin-bottom: 1rem;">
+                Submit confidential stress check-ins, view personal welfare radar, review explainability drivers, and submit private welfare requests.
+              </p>
+            </div>
+            <a href="/login.html?role=personnel" class="btn btn-primary w-100" style="padding: 0.55rem; font-size: 0.85rem; font-weight: 600;">
+              Personnel Sign In &rarr;
+            </a>
+          </div>
+
+          <!-- 2. Welfare Officer Role -->
+          <div class="card" style="background: var(--bg-card); border-top: 4px solid var(--risk-mod); display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem; box-shadow: var(--shadow-md);">
+            <div>
+              <div class="d-flex justify-between align-center mb-1">
+                <span style="font-size: 1.5rem;">🩺</span>
+                <span class="badge badge-mod">Welfare Officer</span>
+              </div>
+              <h4 style="font-size: 1.05rem; margin-bottom: 0.35rem;">Officer Command Portal</h4>
+              <p class="text-muted" style="font-size: 0.82rem; line-height: 1.5; margin-bottom: 1rem;">
+                Battalion welfare telemetry, real-time high-risk alert triage, early-warning scatter radar, shift pacing rest optimizer, and support desk.
+              </p>
+            </div>
+            <a href="/login.html?role=officer" class="btn btn-secondary w-100" style="padding: 0.55rem; font-size: 0.85rem; font-weight: 700; color: var(--accent);">
+              Officer Sign In &rarr;
+            </a>
+          </div>
+
+          <!-- 3. System Admin Role -->
+          <div class="card" style="background: var(--bg-card); border-top: 4px solid var(--risk-high); display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem; box-shadow: var(--shadow-md);">
+            <div>
+              <div class="d-flex justify-between align-center mb-1">
+                <span style="font-size: 1.5rem;">⚙️</span>
+                <span class="badge badge-high">System Admin</span>
+              </div>
+              <h4 style="font-size: 1.05rem; margin-bottom: 0.35rem;">Admin Governance Portal</h4>
+              <p class="text-muted" style="font-size: 0.82rem; line-height: 1.5; margin-bottom: 1rem;">
+                User account lifecycle governance, Random Forest model transparency oversight, system component telemetry, and immutable audit logs.
+              </p>
+            </div>
+            <a href="/login.html?role=admin" class="btn btn-outline w-100" style="padding: 0.55rem; font-size: 0.85rem; font-weight: 600;">
+              Admin Sign In &rarr;
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- Live Pipeline Flow Card -->
@@ -242,9 +311,7 @@
 
     <div class="footer-bottom">
       <div>&copy; 2026 WelfareAI. Developed for Ministry of Home Affairs / Police II Division.</div>
-      <div class="d-flex align-center gap-1">
-        <button class="btn btn-sm btn-secondary" style="font-size:0.75rem; padding:0.2rem 0.6rem;" onclick="Utils.toggleProductionMode()">👁️ Toggle Production / Evaluation View</button>
-      </div>
+      <div class="text-muted" style="font-size:0.8rem;">Protected Decision-Support Architecture</div>
     </div>
   </footer>
 
