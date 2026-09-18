@@ -42,7 +42,7 @@ const getModelTransparency = async (req, res, next) => {
           framework: 'scikit-learn',
           model_version: 'v1.4.0',
           n_estimators: 60,
-          disclaimer: 'DEMO / SYNTHETIC DATA — Decision-support model.'
+          disclaimer: 'Decision-support model for personnel welfare and resilience monitoring.'
         },
         evaluation: evaluation || {
           metrics: {
