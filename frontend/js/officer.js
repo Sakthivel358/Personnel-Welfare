@@ -56,14 +56,26 @@ function renderAlertsTable(alerts) {
     return;
   }
 
-  tbody.innerHTML = alerts.map(a => `
+  tbody.innerHTML = alerts.map(a => {
+    const concernHtml = Utils.getWelfareConcernDisplay(a.concernLevel);
+    const evidenceHtml = Utils.getEvidenceStrengthDisplay(a.evidenceStrength);
+    const dataAvailHtml = Utils.getDataAvailableDisplay(a.dataAvailableCount != null ? a.dataAvailableCount : 4, 5);
+    const driversList = (a.topDrivers || []).slice(0, 3).join(', ');
+
+    return `
     <tr>
       <td><strong>${a.personnelId}</strong></td>
       <td>${a.personnelName} <div class="text-muted" style="font-size:0.75rem;">${a.rank} • ${a.unit}</div></td>
       <td>${Utils.getPriorityBadge(a.priority)}</td>
       <td>
-        ${Utils.getConcernBadge(a.concernLevel)}
-        <div class="text-muted" style="font-size:0.75rem;margin-top:0.2rem;">Risk Index: ${a.compositeRiskScore || 0}%</div>
+        <div class="d-flex flex-column gap-1">
+          <div>${concernHtml}</div>
+          <div class="d-flex gap-1 flex-wrap mt-1">
+            ${evidenceHtml}
+            ${dataAvailHtml}
+          </div>
+          ${driversList ? `<div class="text-muted" style="font-size:0.75rem; margin-top:0.25rem;"><strong>Drivers:</strong> ${driversList}</div>` : ''}
+        </div>
       </td>
       <td>${Utils.getStatusBadge(a.status)}</td>
       <td>
@@ -72,7 +84,8 @@ function renderAlertsTable(alerts) {
         </button>
       </td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function openReviewModal(alertId) {
@@ -83,19 +96,30 @@ function openReviewModal(alertId) {
   const detailsEl = document.getElementById('modal-alert-details');
   if (!modal || !detailsEl) return;
 
+  const concernBadge = Utils.getWelfareConcernDisplay(selectedAlert.concernLevel);
+  const evidenceBadge = Utils.getEvidenceStrengthDisplay(selectedAlert.evidenceStrength);
+  const dataAvailBadge = Utils.getDataAvailableDisplay(selectedAlert.dataAvailableCount != null ? selectedAlert.dataAvailableCount : 4, 5);
+  const driversList = (selectedAlert.topDrivers || []).join(', ') || 'Operational strain';
+
   detailsEl.innerHTML = `
     <div class="card mb-3" style="background: var(--bg-card-subtle);">
       <div class="d-flex justify-between align-center mb-2">
         <h4>${selectedAlert.personnelName} (${selectedAlert.personnelId})</h4>
-        ${Utils.getConcernBadge(selectedAlert.concernLevel)}
+        ${Utils.getPriorityBadge(selectedAlert.priority)}
+      </div>
+      <div class="d-flex gap-1 flex-wrap mb-3">
+        ${concernBadge}
+        ${evidenceBadge}
+        ${dataAvailBadge}
       </div>
       <div class="grid-2 mb-2">
         <div><strong>Unit:</strong> ${selectedAlert.unit}</div>
         <div><strong>Rank:</strong> ${selectedAlert.rank}</div>
-        <div><strong>Composite Score:</strong> ${selectedAlert.compositeRiskScore}%</div>
+        <div><strong>Composite Score:</strong> ${selectedAlert.compositeRiskScore != null ? selectedAlert.compositeRiskScore + '%' : 'N/A'}</div>
         <div><strong>Triggered:</strong> ${Utils.formatDate(selectedAlert.createdAt)}</div>
       </div>
-      <div><strong>Top Contributing Risk Drivers:</strong> ${(selectedAlert.topDrivers || []).join(', ') || 'General Operational Strain'}</div>
+      <div class="mt-2"><strong>Contributing Indicators:</strong> ${driversList}</div>
+      ${selectedAlert.recommendedOfficerAction ? `<div class="mt-2 text-muted" style="font-size:0.85rem; border-top:1px solid var(--border-color); padding-top:0.5rem;"><strong>Guidance:</strong> ${selectedAlert.recommendedOfficerAction}</div>` : ''}
     </div>
   `;
 

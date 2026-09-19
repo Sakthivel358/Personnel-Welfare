@@ -15,6 +15,7 @@ const getLatestPrediction = async (req, res, next) => {
     const latest = predictions[predictions.length - 1];
     const recommendations = await db.Recommendations.findOne({ predictionId: latest._id });
     const checkIn = latest.checkInId ? await db.CheckIns.findById(latest.checkInId) : null;
+    const count = latest.dataAvailableCount != null ? latest.dataAvailableCount : (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.dataAvailableCount : (latest.evidenceSources || []).length);
 
     return res.status(200).json({
       success: true,
@@ -22,6 +23,11 @@ const getLatestPrediction = async (req, res, next) => {
         prediction: latest,
         decisionLayer: latest.decisionLayer || null,
         evidenceStrength: latest.evidenceStrength || 'MODERATE',
+        welfareConcernDisplay: latest.welfareConcernDisplay || (latest.isUndetermined ? 'WELFARE CONCERN — UNDETERMINED' : `WELFARE CONCERN — ${latest.concernLevel}`),
+        evidenceDisplay: latest.evidenceDisplay || (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.displayLabel : `EVIDENCE — ${latest.evidenceStrength || 'MODERATE'}`),
+        dataAvailableCount: count,
+        dataAvailableTotal: 5,
+        dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
         recommendations,
         checkIn
       }
@@ -43,18 +49,25 @@ const getPredictionHistory = async (req, res, next) => {
 
     const series = predictions.map((p, index) => {
       const relatedCheckIn = checkInMap[String(p.checkInId)] || {};
+      const cCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || 3);
       return {
         _id: p._id,
         checkInId: p.checkInId || relatedCheckIn._id,
         checkInIndex: index + 1,
         date: p.analyzedAt || p.createdAt || relatedCheckIn.createdAt || relatedCheckIn.checkInDate,
         concernLevel: p.concernLevel,
+        welfareConcernDisplay: p.welfareConcernDisplay || `WELFARE CONCERN — ${p.concernLevel}`,
         compositeRiskScore: p.compositeRiskScore != null ? Number(p.compositeRiskScore) : null,
         isUndetermined: Boolean(p.isUndetermined || p.concernLevel === 'UNDETERMINED'),
         confidence: p.confidence,
         modelUsed: p.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
         evidenceSources: p.evidenceSources || relatedCheckIn.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
         evidenceCount: p.evidenceCount || (relatedCheckIn.evidenceSources ? relatedCheckIn.evidenceSources.length : 3),
+        evidenceStrength: p.evidenceStrength || 'MODERATE',
+        evidenceDisplay: p.evidenceDisplay || `EVIDENCE — ${p.evidenceStrength || 'MODERATE'}`,
+        dataAvailableCount: cCount,
+        dataAvailableTotal: 5,
+        dataAvailableDisplay: p.dataAvailableDisplay || `DATA AVAILABLE — ${cCount} / 5`,
         pss_score: relatedCheckIn.pss_score != null ? Number(relatedCheckIn.pss_score) : null,
         workload_hours: relatedCheckIn.workload_hours != null ? Number(relatedCheckIn.workload_hours) : 0,
         recovery_sleep_hours: relatedCheckIn.recovery_sleep_hours != null ? Number(relatedCheckIn.recovery_sleep_hours) : 0,
@@ -117,16 +130,22 @@ const getExplainability = async (req, res, next) => {
     }
 
     const latest = predictions[predictions.length - 1];
+    const count = latest.dataAvailableCount != null ? latest.dataAvailableCount : (latest.evidenceCount || 3);
 
     return res.status(200).json({
       success: true,
       data: {
         predictionId: latest._id,
         concernLevel: latest.concernLevel,
+        welfareConcernDisplay: latest.welfareConcernDisplay || (latest.isUndetermined ? 'WELFARE CONCERN — UNDETERMINED' : `WELFARE CONCERN — ${latest.concernLevel}`),
         compositeRiskScore: latest.compositeRiskScore,
         evidenceSources: latest.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
         evidenceCount: latest.evidenceCount || (latest.evidenceSources ? latest.evidenceSources.length : 3),
         evidenceStrength: latest.evidenceStrength || (latest.decisionLayer ? latest.decisionLayer.evidenceStrength.level : 'MODERATE'),
+        evidenceDisplay: latest.evidenceDisplay || `EVIDENCE — ${latest.evidenceStrength || 'MODERATE'}`,
+        dataAvailableCount: count,
+        dataAvailableTotal: 5,
+        dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
         decisionLayer: latest.decisionLayer || null,
         topDrivers: latest.topDrivers,
         contributingFactors: latest.contributingFactors || [],

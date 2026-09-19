@@ -59,8 +59,40 @@ const Utils = {
       return `<span class="badge badge-high"><span style="color:#ef4444;">●</span> High Welfare Concern</span>`;
     } else if (lvl === 'MODERATE') {
       return `<span class="badge badge-moderate"><span style="color:#f59e0b;">●</span> Moderate Strain Signal</span>`;
+    } else if (lvl === 'UNDETERMINED') {
+      return `<span class="badge badge-neutral"><span style="color:#94a3b8;">●</span> Undetermined (Insufficient Data)</span>`;
     }
     return `<span class="badge badge-low"><span style="color:#10b981;">●</span> Low / Balanced Baseline</span>`;
+  },
+
+  getWelfareConcernDisplay(level) {
+    const lvl = (level || 'LOW').toUpperCase();
+    if (lvl === 'HIGH') {
+      return `<span class="badge badge-high" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — HIGH</span>`;
+    } else if (lvl === 'MODERATE') {
+      return `<span class="badge badge-moderate" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — MODERATE</span>`;
+    } else if (lvl === 'UNDETERMINED') {
+      return `<span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — UNDETERMINED</span>`;
+    }
+    return `<span class="badge badge-low" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — LOW</span>`;
+  },
+
+  getEvidenceStrengthDisplay(level, score) {
+    const lvl = (level || 'MODERATE').toUpperCase();
+    if (lvl === 'HIGH') {
+      return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(37,99,235,0.15); color:#2563eb; border:1px solid rgba(37,99,235,0.35);">EVIDENCE — HIGH</span>`;
+    } else if (lvl === 'MODERATE') {
+      return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(14,165,233,0.15); color:#0284c7; border:1px solid rgba(14,165,233,0.35);">EVIDENCE — MODERATE</span>`;
+    } else if (lvl === 'EMERGING') {
+      return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(234,179,8,0.15); color:#ca8a04; border:1px solid rgba(234,179,8,0.35);">EVIDENCE — EMERGING</span>`;
+    }
+    return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>`;
+  },
+
+  getDataAvailableDisplay(count, total) {
+    const c = count != null ? count : 3;
+    const t = total != null ? total : 5;
+    return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.12); color:var(--text-secondary); border:1px solid var(--border-color);">DATA AVAILABLE — ${c} / ${t}</span>`;
   },
 
   getPriorityBadge(priority) {

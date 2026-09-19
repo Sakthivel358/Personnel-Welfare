@@ -81,12 +81,11 @@
           </div>
         </div>
 
-        <!-- Evidence Sources Banner -->
+        <!-- Evidence & Signal Banner -->
         <div class="card mb-3" id="evidence-sources-card" style="display:none; background: var(--bg-card-subtle); padding: 0.85rem 1.25rem; border-left: 3px solid var(--accent);">
           <div class="d-flex justify-between align-center flex-wrap gap-1">
-            <div>
-              <strong style="font-size:0.9rem;">Multi-Source Evidence Breakdown:</strong>
-              <div class="text-muted" style="font-size:0.8rem;">Authorized streams fused into this Random Forest inference</div>
+            <div class="d-flex align-center gap-1 flex-wrap" id="why-dual-badges">
+              <!-- Rendered via JS: WELFARE CONCERN, EVIDENCE, DATA AVAILABLE -->
             </div>
             <div id="why-evidence-pills" class="d-flex gap-1 flex-wrap"></div>
           </div>
@@ -181,23 +180,35 @@
         const res = await api.getExplainability();
         if (res && res.success && res.data && res.data.contributingFactors) {
           const factors = res.data.contributingFactors;
+          const card = document.getElementById('evidence-sources-card');
+          const dualBadges = document.getElementById('why-dual-badges');
+          const pills = document.getElementById('why-evidence-pills');
+
+          if (card && dualBadges) {
+            card.style.display = 'block';
+            const concernBadge = Utils.getWelfareConcernDisplay(res.data.concernLevel);
+            const evidenceBadge = Utils.getEvidenceStrengthDisplay(res.data.evidenceStrength);
+            const avCount = res.data.dataAvailableCount != null ? res.data.dataAvailableCount : (res.data.evidenceCount || 4);
+            const dataAvailBadge = Utils.getDataAvailableDisplay(avCount, 5);
+
+            dualBadges.innerHTML = `
+              ${concernBadge}
+              ${evidenceBadge}
+              ${dataAvailBadge}
+            `;
+          }
           
-          if (res.data.evidenceSources && Array.isArray(res.data.evidenceSources)) {
-            const card = document.getElementById('evidence-sources-card');
-            const pills = document.getElementById('why-evidence-pills');
-            if (card && pills) {
-              card.style.display = 'block';
-              const labelMap = {
-                'DUTY': '🪖 Duty Exposure',
-                'WORKLOAD': '⏱️ Workload Pace',
-                'REST_RECOVERY': '🛌 Rest & Recovery',
-                'SELF_CHECK': '📝 Self-Check (PSS-10)',
-                'WEARABLE': '🦺 Smart Jacket Telemetry'
-              };
-              pills.innerHTML = res.data.evidenceSources.map(s => `
-                <span class="badge badge-low" style="font-size:0.75rem; padding:0.35rem 0.6rem;">${labelMap[s] || s}</span>
-              `).join('');
-            }
+          if (res.data.evidenceSources && Array.isArray(res.data.evidenceSources) && pills) {
+            const labelMap = {
+              'DUTY': '🪖 Duty Exposure',
+              'WORKLOAD': '⏱️ Workload Pace',
+              'REST_RECOVERY': '🛌 Rest & Recovery',
+              'SELF_CHECK': '📝 Self-Check (PSS-10)',
+              'WEARABLE': '🦺 Smart Jacket Telemetry'
+            };
+            pills.innerHTML = res.data.evidenceSources.map(s => `
+              <span class="badge badge-low" style="font-size:0.75rem; padding:0.35rem 0.6rem;">${labelMap[s] || s}</span>
+            `).join('');
           }
 
           ChartsManager.renderRadarChart('factor-radar-chart', factors);
@@ -220,21 +231,24 @@
 
     function renderDetailedList(factors) {
       const container = document.getElementById('factors-detailed-list');
-      container.innerHTML = factors.map(f => `
+      container.innerHTML = factors.map(f => {
+        const titleText = f.directionalTitle || f.title;
+        return `
         <div class="factor-bar-item">
           <div class="factor-bar-header">
-            <strong>${f.title}</strong>
-            <span class="badge badge-${f.impact_level.toLowerCase()}">${f.status}</span>
+            <strong>${titleText}</strong>
+            <span class="badge badge-${(f.impact_level || f.impactLevel || 'low').toLowerCase()}">${f.status || 'Within Baseline'}</span>
           </div>
           <div class="factor-progress-track">
-            <div class="factor-progress-fill ${f.impact_level}" style="width: ${Math.min(100, Math.max(0, f.contribution_score || 0))}%;"></div>
+            <div class="factor-progress-fill ${f.impact_level || f.impactLevel || 'LOW'}" style="width: ${Math.min(100, Math.max(0, f.contribution_score || f.contributionScore || 0))}%;"></div>
           </div>
           <div class="d-flex justify-between mt-1 text-muted" style="font-size:0.75rem;">
-            <span>Your input: <strong>${f.user_value} ${f.unit}</strong></span>
-            <span>Attribution: +${Math.round(f.contribution_score)}%</span>
+            <span>Your input: <strong>${f.user_value !== undefined ? f.user_value : f.userValue} ${f.unit || ''}</strong></span>
+            <span>Attribution: +${Math.round(f.contribution_score || f.contributionScore || 0)}%</span>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     function renderTable(factors) {

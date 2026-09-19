@@ -317,8 +317,25 @@
       const circle = document.getElementById('risk-circle-indicator');
       circle.className = `risk-circle ${p.concernLevel}`;
       
-      document.getElementById('risk-score-val').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
-      document.getElementById('concern-badge-container').innerHTML = Utils.getConcernBadge(p.concernLevel);
+      const scoreVal = p.compositeRiskScore != null ? `${Math.round(p.compositeRiskScore)}%` : 'N/A';
+      document.getElementById('risk-score-val').textContent = scoreVal;
+
+      const concernBadgeHtml = Utils.getWelfareConcernDisplay(p.concernLevel);
+      const evLevel = p.evidenceStrength || (p.decisionLayer && p.decisionLayer.evidenceStrength ? p.decisionLayer.evidenceStrength.level : 'MODERATE');
+      const evidenceBadgeHtml = Utils.getEvidenceStrengthDisplay(evLevel);
+      const avCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || (p.evidenceSources ? p.evidenceSources.length : 4));
+      const dataAvailHtml = Utils.getDataAvailableDisplay(avCount, 5);
+
+      document.getElementById('concern-badge-container').innerHTML = `
+        <div class="d-flex flex-column align-center gap-1 w-100">
+          <div>${concernBadgeHtml}</div>
+          <div class="d-flex justify-center gap-1 flex-wrap mt-1">
+            ${evidenceBadgeHtml}
+            ${dataAvailHtml}
+          </div>
+        </div>
+      `;
+
       document.getElementById('last-analyzed-time').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
       if (p.modelVersion) {
         document.getElementById('model-version-tag').textContent = p.modelVersion;
@@ -343,7 +360,6 @@
       }
     }
 
-
     function renderFactors(factors) {
       const container = document.getElementById('factors-container');
       if (!factors || factors.length === 0) {
@@ -355,15 +371,15 @@
       container.innerHTML = top3.map(f => `
         <div class="factor-bar-item">
           <div class="factor-bar-header">
-            <strong>${f.title}</strong>
-            <span class="badge badge-${f.impact_level.toLowerCase()}">${f.status}</span>
+            <strong>${f.directionalTitle || f.title}</strong>
+            <span class="badge badge-${(f.impact_level || f.impactLevel || 'low').toLowerCase()}">${f.status || 'Within Baseline'}</span>
           </div>
           <div class="factor-progress-track">
-            <div class="factor-progress-fill ${f.impact_level}" style="width: ${Math.min(100, Math.max(0, f.contribution_score || 0))}%;"></div>
+            <div class="factor-progress-fill ${f.impact_level || f.impactLevel || 'LOW'}" style="width: ${Math.min(100, Math.max(0, f.contribution_score || f.contributionScore || 0))}%;"></div>
           </div>
           <div class="d-flex justify-between mt-1 text-muted" style="font-size:0.75rem;">
-            <span>Current: ${f.user_value} ${f.unit}</span>
-            <span>Baseline: ${f.baseline_mean} ${f.unit}</span>
+            <span>Current: ${f.user_value !== undefined ? f.user_value : f.userValue} ${f.unit || ''}</span>
+            <span>Baseline: ${f.baseline_mean !== undefined ? f.baseline_mean : f.baselineMean} ${f.unit || ''}</span>
           </div>
         </div>
       `).join('');

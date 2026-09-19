@@ -422,52 +422,172 @@ class MLClientService {
     const decisionLayer = this.synthesizeDecisionLayer(checkinData, rawResult);
     return {
       ...rawResult,
-      decisionLayer,
+      welfareConcernDisplay: decisionLayer.welfareConcern.displayLabel,
       evidenceStrength: decisionLayer.evidenceStrength.level,
+      evidenceDisplay: decisionLayer.evidenceStrength.displayLabel,
       evidenceStrengthScore: decisionLayer.evidenceStrength.score,
+      dataAvailableCount: decisionLayer.evidenceStrength.dataAvailableCount,
+      dataAvailableTotal: decisionLayer.evidenceStrength.dataAvailableTotal,
+      dataAvailableDisplay: decisionLayer.evidenceStrength.dataAvailableDisplay,
+      evidenceSources: decisionLayer.evidenceStrength.sources,
+      evidenceCount: decisionLayer.evidenceStrength.sourcesCount,
+      topDrivers: decisionLayer.mainContributors.filter(m => m.isRiskDriver).map(m => m.directionalTitle).slice(0, 4),
       requiresHumanReview: decisionLayer.humanWelfareReview.requiresHumanReview,
-      humanReviewPriority: decisionLayer.humanWelfareReview.priority
+      humanReviewPriority: decisionLayer.humanWelfareReview.priority,
+      decisionLayer
+    };
+  }
+
+  evaluateDataAvailability(checkinData) {
+    const availableSources = [];
+    const unavailableSources = [];
+    const sourceDetails = {};
+
+    // 1. DUTY
+    let hasDuty = false;
+    const prolonged = checkinData.prolonged_duty_hours || checkinData.duty_duration_hours;
+    const night = checkinData.night_duty_hours;
+    const shifts = checkinData.shift_continuity_days || checkinData.consecutive_duty_days;
+    const dutyType = checkinData.duty_type;
+    if ((prolonged != null && Number(prolonged) > 0) ||
+        (night != null && Number(night) > 0) ||
+        (shifts != null && Number(shifts) > 0) ||
+        (dutyType && String(dutyType).trim().toLowerCase() !== 'none' && String(dutyType).trim().toLowerCase() !== 'null')) {
+      hasDuty = true;
+    }
+    if (hasDuty) {
+      availableSources.push('DUTY');
+      sourceDetails.DUTY = { valid: true };
+    } else {
+      unavailableSources.push('DUTY');
+      sourceDetails.DUTY = { valid: false };
+    }
+
+    // 2. WORKLOAD
+    let hasWorkload = false;
+    const workload = checkinData.workload_hours;
+    const pressure = checkinData.work_pressure_rating;
+    if ((workload != null && Number(workload) > 0) || (pressure != null && Number(pressure) > 0)) {
+      hasWorkload = true;
+    }
+    if (hasWorkload) {
+      availableSources.push('WORKLOAD');
+      sourceDetails.WORKLOAD = { valid: true };
+    } else {
+      unavailableSources.push('WORKLOAD');
+      sourceDetails.WORKLOAD = { valid: false };
+    }
+
+    // 3. REST_RECOVERY
+    let hasRest = false;
+    const sleep = checkinData.recovery_sleep_hours;
+    const interval = checkinData.rest_interval_hours;
+    const pattern = checkinData.recovery_pattern;
+    if ((sleep != null && Number(sleep) > 0) || (interval != null && Number(interval) > 0) || (pattern && String(pattern).trim().toLowerCase() !== 'none' && String(pattern).trim().toLowerCase() !== 'null')) {
+      hasRest = true;
+    }
+    if (hasRest) {
+      availableSources.push('REST_RECOVERY');
+      sourceDetails.REST_RECOVERY = { valid: true };
+    } else {
+      unavailableSources.push('REST_RECOVERY');
+      sourceDetails.REST_RECOVERY = { valid: false };
+    }
+
+    // 4. SELF_CHECK
+    let hasPss = false;
+    const pss = checkinData.pss_score;
+    if (pss != null && !isNaN(Number(pss)) && Number(pss) >= 0 && Number(pss) <= 40) {
+      hasPss = true;
+    }
+    if (hasPss) {
+      availableSources.push('SELF_CHECK');
+      sourceDetails.SELF_CHECK = { valid: true, pssScore: Number(pss) };
+    } else {
+      unavailableSources.push('SELF_CHECK');
+      sourceDetails.SELF_CHECK = { valid: false };
+    }
+
+    // 5. WEARABLE
+    let hasWearable = false;
+    const isSynced = Boolean(checkinData.wearable_synced);
+    const rhr = checkinData.resting_heart_rate;
+    const hrv = checkinData.hrv_ms;
+    const resp = checkinData.respiration_rate;
+    const temp = checkinData.skin_temperature_c;
+    const strain = checkinData.fatigue_physical_strain;
+    let validBioCount = 0;
+    if (rhr != null && Number(rhr) >= 35 && Number(rhr) <= 220) validBioCount++;
+    if (hrv != null && Number(hrv) >= 5 && Number(hrv) <= 200) validBioCount++;
+    if (resp != null && Number(resp) >= 5 && Number(resp) <= 50) validBioCount++;
+    if (temp != null && Number(temp) >= 28 && Number(temp) <= 45) validBioCount++;
+    if (strain != null && Number(strain) >= 0 && Number(strain) <= 100) validBioCount++;
+
+    if ((isSynced || validBioCount >= 1) && validBioCount >= 1) {
+      hasWearable = true;
+    }
+    if (hasWearable) {
+      availableSources.push('WEARABLE');
+      sourceDetails.WEARABLE = { valid: true, synced: isSynced, count: validBioCount };
+    } else {
+      unavailableSources.push('WEARABLE');
+      sourceDetails.WEARABLE = { valid: false };
+    }
+
+    const count = availableSources.length;
+    const total = 5;
+    return {
+      count,
+      total,
+      display: `DATA AVAILABLE — ${count} / ${total}`,
+      availableSources,
+      unavailableSources,
+      details: sourceDetails
     };
   }
 
   synthesizeDecisionLayer(checkinData, mlResult) {
-    const evidenceSources = mlResult.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'];
+    const dataAvail = this.evaluateDataAvailability(checkinData);
+    const evidenceSources = dataAvail.availableSources;
     const hasWearable = evidenceSources.includes('WEARABLE');
     const hasSelfCheck = evidenceSources.includes('SELF_CHECK');
     const hasDuty = evidenceSources.includes('DUTY');
     const hasWorkload = evidenceSources.includes('WORKLOAD');
     const hasRest = evidenceSources.includes('REST_RECOVERY');
+    const count = dataAvail.count;
 
-    let evidenceScore = 0.0;
-    const details = [];
-    if (hasDuty) { evidenceScore += 0.20; details.push('Authorized duty schedule verified'); }
-    if (hasWorkload) { evidenceScore += 0.20; details.push('Operational workload logged'); }
-    if (hasRest) { evidenceScore += 0.20; details.push('Rest and recovery data documented'); }
-    if (hasSelfCheck) { evidenceScore += 0.15; details.push('Self-check questionnaire provided'); }
-    if (hasWearable) { evidenceScore += 0.25; details.push('Continuous wearable biometric telemetry synchronized'); }
+    const availabilityScore = Number((count / 5.0).toFixed(2));
+    const qualityScore = hasWearable ? 0.95 : (count >= 3 ? 0.85 : 0.65);
+    const completenessScore = Number(Math.min(1.0, Object.keys(checkinData).filter(k => checkinData[k] != null).length / 15).toFixed(2));
+    const compositeScore = Number((availabilityScore * 0.35 + qualityScore * 0.35 + completenessScore * 0.30).toFixed(2));
 
-    evidenceScore = Number(Math.min(1.0, Math.max(0.1, evidenceScore)).toFixed(2));
     let evidenceLevel = 'EMERGING';
     let evidenceSummary = 'Preliminary evidence based on sparse or partial parameters.';
-    if (evidenceScore >= 0.75 && hasWearable) {
+    if ((compositeScore >= 0.75 && hasWearable) || count === 5) {
       evidenceLevel = 'HIGH';
       evidenceSummary = 'Robust multi-source evidence with active continuous wearable biometric telemetry and verified operational logs.';
-    } else if (evidenceScore >= 0.50) {
+    } else if (count >= 3 || compositeScore >= 0.50) {
       evidenceLevel = 'MODERATE';
       evidenceSummary = 'Sufficient evidence based on authorized operational logs, rest records, and self-check input.';
     }
 
     const evidenceStrength = {
       level: evidenceLevel,
-      score: evidenceScore,
-      sourcesCount: evidenceSources.length,
+      displayLabel: `EVIDENCE — ${evidenceLevel}`,
+      score: compositeScore,
+      dataAvailableCount: count,
+      dataAvailableTotal: 5,
+      dataAvailableDisplay: dataAvail.display,
+      sourcesCount: count,
       sources: evidenceSources,
       hasWearableTelemetry: hasWearable,
       hasOperationalDuty: hasDuty,
       hasRestRecovery: hasRest,
       hasSelfCheck: hasSelfCheck,
-      summary: evidenceSummary,
-      evidenceDetails: details
+      quality: { score: qualityScore, percentage: Math.round(qualityScore * 100), rating: qualityScore >= 0.8 ? 'HIGH' : 'MODERATE' },
+      completeness: { score: completenessScore, percentage: Math.round(completenessScore * 100) },
+      availability: { score: availabilityScore, percentage: Math.round(availabilityScore * 100), availableSources: evidenceSources, unavailableSources: dataAvail.unavailableSources },
+      summary: evidenceSummary
     };
 
     // Compound strain checks
@@ -497,6 +617,7 @@ class MLClientService {
 
     const welfareConcern = {
       concernLevel: finalConcern,
+      displayLabel: `WELFARE CONCERN — ${finalConcern}`,
       rawModelConcern: mlResult.concernLevel,
       compositeRiskScore: finalScore,
       confidence: mlResult.confidence,
@@ -507,7 +628,13 @@ class MLClientService {
       status: finalScore >= 80 ? 'CRITICAL' : (finalScore >= 60 ? 'ELEVATED' : (finalScore >= 40 ? 'MODERATE' : 'BALANCED'))
     };
 
-    const mainContributors = (mlResult.contributingFactors || []).map(f => {
+    // Formulate directional contributors with zero invention
+    const mainContributors = (mlResult.contributingFactors || []).filter(f => {
+      const k = f.feature_key || f.featureKey || '';
+      if (['resting_heart_rate', 'hrv_ms', 'respiration_rate', 'skin_temperature_c', 'fatigue_physical_strain'].includes(k) && !hasWearable) return false;
+      if (k === 'pss_score' && !hasSelfCheck) return false;
+      return true;
+    }).map(f => {
       let cat = 'PSYCHOLOGICAL_EQUILIBRIUM';
       const k = f.feature_key || f.featureKey || '';
       if (['resting_heart_rate', 'hrv_ms', 'respiration_rate', 'skin_temperature_c', 'fatigue_physical_strain'].includes(k)) cat = 'WEARABLE_BIOMETRIC';
@@ -515,9 +642,29 @@ class MLClientService {
       else if (['workload_hours', 'work_pressure_rating', 'personal_workload_surge'].includes(k)) cat = 'WORKLOAD_PRESSURE';
       else if (['recovery_sleep_hours', 'rest_interval_hours', 'recovery_pattern_score', 'personal_sleep_deficit'].includes(k)) cat = 'REST_RECOVERY';
 
+      let directionalTitle = `↑ ${f.title || k}`;
+      let arrow = '↑';
+      let direction = 'UP';
+      if (k === 'workload_hours') { directionalTitle = '↑ Workload'; }
+      else if (k === 'work_pressure_rating') { directionalTitle = '↑ Work Pressure'; }
+      else if (k === 'recovery_sleep_hours') { directionalTitle = '↓ Rest'; arrow = '↓'; direction = 'DOWN'; }
+      else if (k === 'rest_interval_hours') { directionalTitle = '↓ Rest Interval'; arrow = '↓'; direction = 'DOWN'; }
+      else if (k === 'night_duty_hours') { directionalTitle = '↑ Night duty'; }
+      else if (k === 'prolonged_duty_hours') { directionalTitle = '↑ Prolonged Duty'; }
+      else if (k === 'shift_continuity_days') { directionalTitle = '↑ Shift Continuity'; }
+      else if (k === 'fatigue_physical_strain') { directionalTitle = '↑ Fatigue indicators'; }
+      else if (k === 'resting_heart_rate') { directionalTitle = '↑ Heart Rate'; }
+      else if (k === 'hrv_ms') { directionalTitle = '↓ Heart Rate Variability'; arrow = '↓'; direction = 'DOWN'; }
+      else if (k === 'respiration_rate') { directionalTitle = '↑ Respiration Rate'; }
+      else if (k === 'skin_temperature_c') { directionalTitle = '↑ Body Temperature'; }
+      else if (k === 'pss_score') { directionalTitle = '↑ Perceived Stress'; }
+
       return {
         featureKey: k,
         title: f.title || k.replace(/_/g, ' '),
+        directionalTitle,
+        direction,
+        arrow,
         category: cat,
         userValue: f.user_value !== undefined ? f.user_value : f.userValue,
         unit: f.unit || '',
@@ -585,15 +732,26 @@ class MLClientService {
       mainContributors,
       humanWelfareReview,
       evaluatedAt: new Date().toISOString(),
-      decisionEngineVersion: 'v2.1.0-decision-layer'
+      decisionEngineVersion: 'v2.2.0-decision-layer'
     };
   }
 
   synthesizeUndetermined(features, reason) {
     const defaultReason = reason || 'Insufficient authorized evidence to determine welfare concern reliably.';
+    const dataAvail = this.evaluateDataAvailability(features || {});
+    const count = dataAvail.count;
+    const availDisplay = dataAvail.display;
+    const availSources = dataAvail.availableSources;
+
+    const availabilityScore = Number((count / 5.0).toFixed(2));
+    const qualityScore = count >= 3 ? 0.75 : 0.40;
+    const completenessScore = Number(Math.min(1.0, Object.keys(features || {}).filter(k => features[k] != null).length / 15).toFixed(2));
+    const evidenceScore = Number((availabilityScore * 0.35 + qualityScore * 0.35 + completenessScore * 0.30).toFixed(2));
+
     const decisionLayer = {
       welfareConcern: {
         concernLevel: 'UNDETERMINED',
+        displayLabel: 'WELFARE CONCERN — UNDETERMINED',
         compositeRiskScore: null,
         confidence: 0.0,
         status: 'INSUFFICIENT_EVIDENCE',
@@ -603,13 +761,20 @@ class MLClientService {
       },
       evidenceStrength: {
         level: 'INSUFFICIENT',
-        score: 0.0,
-        sourcesCount: 0,
-        sources: [],
-        hasWearableTelemetry: false,
-        hasOperationalDuty: false,
-        hasRestRecovery: false,
-        hasSelfCheck: false,
+        displayLabel: 'EVIDENCE — INSUFFICIENT',
+        score: evidenceScore,
+        dataAvailableCount: count,
+        dataAvailableTotal: 5,
+        dataAvailableDisplay: availDisplay,
+        sourcesCount: availSources.length,
+        sources: availSources,
+        hasWearableTelemetry: availSources.includes('WEARABLE'),
+        hasOperationalDuty: availSources.includes('DUTY'),
+        hasRestRecovery: availSources.includes('REST_RECOVERY'),
+        hasSelfCheck: availSources.includes('SELF_CHECK'),
+        quality: { score: qualityScore, percentage: Math.round(qualityScore * 100), rating: 'INSUFFICIENT' },
+        completeness: { score: completenessScore, percentage: Math.round(completenessScore * 100) },
+        availability: { score: availabilityScore, percentage: Math.round(availabilityScore * 100), availableSources: availSources, unavailableSources: dataAvail.unavailableSources },
         summary: 'Evidence is insufficient to establish an authorized assessment. Assessment omitted to avoid arbitrary guessing.',
         missingEvidence: ['Operational duty context or authorized biometrics / self-check']
       },
@@ -623,18 +788,23 @@ class MLClientService {
         assignedRole: 'Unit Welfare Officer'
       },
       evaluatedAt: new Date().toISOString(),
-      decisionEngineVersion: 'v2.1.0-decision-layer'
+      decisionEngineVersion: 'v2.2.0-decision-layer'
     };
 
     return {
       concernLevel: 'UNDETERMINED',
+      welfareConcernDisplay: 'WELFARE CONCERN — UNDETERMINED',
       compositeRiskScore: null,
       confidence: 0.0,
       isUndetermined: true,
       evidenceStrength: 'INSUFFICIENT',
-      evidenceStrengthScore: 0.0,
-      evidenceSources: [],
-      evidenceCount: 0,
+      evidenceDisplay: 'EVIDENCE — INSUFFICIENT',
+      evidenceStrengthScore: evidenceScore,
+      dataAvailableCount: count,
+      dataAvailableTotal: 5,
+      dataAvailableDisplay: availDisplay,
+      evidenceSources: availSources,
+      evidenceCount: availSources.length,
       topDrivers: [],
       contributingFactors: [],
       modelUsed: 'NONE_INSUFFICIENT_EVIDENCE',

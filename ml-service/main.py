@@ -479,21 +479,36 @@ async def get_decision_layer_info():
     """
     return {
         "engine": "WelfareAI Decision Layer",
-        "version": "v2.1.0-decision-layer",
+        "version": "v2.2.0-decision-layer",
         "role": "Synthesizes final Welfare Concern, Evidence Strength, and Main Contributors downstream of ML Models 1 & 2 to drive Human Welfare Review",
         "architecture_flow": [
             "1. Authorized Multi-Source Ingestion (Wearable, Duty, Workload, Rest, Self-Check)",
             "2. Model Dispatch (Model 1 when wearable telemetry synced; Model 2 fallback when absent)",
             "3. Decision Layer Post-Processing (Compounding operational strain & baseline calibration)",
-            "4. Evidence Strength Metric Formulation (HIGH, MODERATE, EMERGING)",
-            "5. Main Contributors Attribution Ranking",
+            "4. Evidence Strength & Data Availability (Quality, Completeness, Availability — DATA AVAILABLE X/5)",
+            "5. Main Contributors Attribution Ranking with Directional Indicators (↑ Workload, ↓ Rest)",
             "6. Automated Human Welfare Review Protocol (Officer Triage Alert & Guidelines)"
         ],
+        "evidence_strength_pillars": {
+            "quality": "Validity and plausibility of authorized signals (biometric ranges, telemetry sync, psychometric validity)",
+            "completeness": "Coverage and parameter density across the 5 authorized streams",
+            "availability": "Active synchronized streams vs offline/missing (DATA AVAILABLE — X / 5)",
+            "decoupled_from_risk": True
+        },
         "evidence_strength_levels": {
             "HIGH": "Score >= 0.75: Multi-source evidence with active continuous wearable biometrics + duty logs",
             "MODERATE": "Score >= 0.50: Authorized operational logs, rest records, and self-check input",
-            "EMERGING": "Score < 0.50: Preliminary evidence based on sparse or single-source parameters",
-            "INSUFFICIENT": "Score 0.0: Insufficient evidence; evaluation strictly marked UNDETERMINED"
+            "EMERGING": "Score >= 0.25: Preliminary evidence based on sparse or single-source parameters",
+            "INSUFFICIENT": "Score < 0.25: Insufficient evidence; evaluation strictly marked UNDETERMINED"
+        },
+        "data_availability_rules": {
+            "display_format": "DATA AVAILABLE — X / 5",
+            "authorized_streams": ["DUTY", "WORKLOAD", "REST_RECOVERY", "SELF_CHECK", "WEARABLE"],
+            "strict_counting": "Only count evidence sources that actually contain valid authorized data. Never count fake/demo values."
+        },
+        "main_contributors_rules": {
+            "directional_indicators": "Clear directional arrows: ↑ Workload, ↓ Rest, ↑ Night duty, ↑ Fatigue indicators, wearable changes",
+            "zero_invention": "Do not invent contributors; only features actually provided with true strain contribution are returned."
         },
         "model_selection_logic": {
             "pathway_1": "Wearable + operational data available -> Model 1 (Wearable + Operational RF)",

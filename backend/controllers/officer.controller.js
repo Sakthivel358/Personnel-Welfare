@@ -256,10 +256,16 @@ const getAlerts = async (req, res, next) => {
 
     const enriched = alerts.map(a => {
       const u = userMap[String(a.userId)] || {};
+      const aCount = a.dataAvailableCount != null ? a.dataAvailableCount : 4;
       return {
         ...a,
+        welfareConcernDisplay: a.welfareConcernDisplay || `WELFARE CONCERN — ${a.concernLevel || 'HIGH'}`,
         evidenceStrength: a.evidenceStrength || 'MODERATE',
+        evidenceDisplay: a.evidenceDisplay || `EVIDENCE — ${a.evidenceStrength || 'MODERATE'}`,
         evidenceStrengthScore: a.evidenceStrengthScore !== undefined ? a.evidenceStrengthScore : 0.6,
+        dataAvailableCount: aCount,
+        dataAvailableTotal: 5,
+        dataAvailableDisplay: a.dataAvailableDisplay || `DATA AVAILABLE — ${aCount} / 5`,
         mainContributors: a.mainContributors || [],
         reviewTriggers: a.reviewTriggers || (a.topDrivers ? a.topDrivers.map(d => `${d} strain detected`) : ['Elevated welfare strain detected']),
         recommendedOfficerAction: a.recommendedOfficerAction || 'Conduct welfare review and verify restorative downtime.',

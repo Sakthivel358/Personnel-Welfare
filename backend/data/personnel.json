@@ -1244,5 +1244,723 @@
     "preferredContactTime": "Evening (Post-Duty)",
     "welfareContactPreference": "Welfare Officer In-Person",
     "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "e19fb72145609fecbdf196f5",
+    "userId": "6d99992ef4cddac04e3e1450",
+    "personnelId": "CRPF-1789797213409",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T05:53:33.501Z",
+    "updatedAt": "2026-09-19T05:53:33.501Z"
+  },
+  {
+    "_id": "ed66a7d084961029084e467b",
+    "userId": "0ebb296ef08ad24103d1673f",
+    "personnelId": "CRPF-M2-7499",
+    "fullName": "Constable Rajesh Rao",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T05:53:47.560Z",
+    "updatedAt": "2026-09-19T05:53:47.560Z"
+  },
+  {
+    "_id": "01d0ac50eabfe11152b35e0b",
+    "userId": "e309244a113f15117b30204b",
+    "personnelId": "CRPF-TEST-8797",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T05:53:58.861Z",
+    "updatedAt": "2026-09-19T05:53:58.951Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "684bc4c7791b5e4877b8717f",
+    "userId": "ba602725ed9231f7cf392b6e",
+    "personnelId": "PERS-DEC-7308",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:05:47.419Z",
+    "updatedAt": "2026-09-19T06:05:47.419Z"
+  },
+  {
+    "_id": "994d9613c6e0e67817e6f2c4",
+    "userId": "1e978ada81bd8152d1948f8c",
+    "personnelId": "PERS-DEC-8347",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:06:48.415Z",
+    "updatedAt": "2026-09-19T06:06:48.415Z"
+  },
+  {
+    "_id": "d3f8bafc22e31039a208a80c",
+    "userId": "391f286c5fede43aa88d0341",
+    "personnelId": "PERS-DEC-2170",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:07:02.237Z",
+    "updatedAt": "2026-09-19T06:07:02.237Z"
+  },
+  {
+    "_id": "70ce77501cb9a3bcacf620ac",
+    "userId": "dd5c995c6b79cc2bea5bf50f",
+    "personnelId": "PERS-DEC-0040",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:07:20.106Z",
+    "updatedAt": "2026-09-19T06:07:20.106Z"
+  },
+  {
+    "_id": "a11a12af1a922455db983955",
+    "userId": "cdc7df7722625f1f3908302b",
+    "personnelId": "CRPF-1789798060261",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:07:40.338Z",
+    "updatedAt": "2026-09-19T06:07:40.338Z"
+  },
+  {
+    "_id": "75b3a64411c8021d50b228d8",
+    "userId": "5e9841849e23b6291f643f99",
+    "personnelId": "CRPF-M2-6748",
+    "fullName": "Constable Rajesh Rao",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:07:46.814Z",
+    "updatedAt": "2026-09-19T06:07:46.814Z"
+  },
+  {
+    "_id": "de08516e39353d46e6319e03",
+    "userId": "9e15357ac6f7c5dffb66c2c3",
+    "personnelId": "CRPF-TEST-2465",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:07:52.530Z",
+    "updatedAt": "2026-09-19T06:07:52.616Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "4698974b0dde3f8bec420ce7",
+    "userId": "d9b56f46eb45b2e72ab465b8",
+    "personnelId": "PERS-SEL-6607",
+    "fullName": "Naik Selection Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:20:56.729Z",
+    "updatedAt": "2026-09-19T06:20:56.729Z"
+  },
+  {
+    "_id": "e50c607e9d923240b48674fa",
+    "userId": "246fc34a594e093410f032f7",
+    "personnelId": "PERS-SEL-3872",
+    "fullName": "Naik Selection Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:21:53.960Z",
+    "updatedAt": "2026-09-19T06:21:53.960Z"
+  },
+  {
+    "_id": "56d35ab90e690c901ed3f6fb",
+    "userId": "26c18871ae6b1603126d1bfd",
+    "personnelId": "PERS-DEC-9333",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:24:09.395Z",
+    "updatedAt": "2026-09-19T06:24:09.395Z"
+  },
+  {
+    "_id": "d2f2b5f6153a7cdc1953847b",
+    "userId": "0a52fe0f8fbbd4526d4828d2",
+    "personnelId": "CRPF-1789799155457",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:25:55.521Z",
+    "updatedAt": "2026-09-19T06:25:55.521Z"
+  },
+  {
+    "_id": "8f12a3576ff8c9cc3c5a4f06",
+    "userId": "ec7789cac68b41e7002cac94",
+    "personnelId": "CRPF-M2-4240",
+    "fullName": "Constable Rajesh Rao",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:54:34.498Z",
+    "updatedAt": "2026-09-19T06:54:34.498Z"
+  },
+  {
+    "_id": "465e76a915aa5469bf94b055",
+    "userId": "22286e6062593a59bca9b89a",
+    "personnelId": "CRPF-TEST-3495",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T06:54:43.567Z",
+    "updatedAt": "2026-09-19T06:54:43.664Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "7f516646993b6222eebf2156",
+    "userId": "578ceb609d6c12a0364e36eb",
+    "personnelId": "PERS-EV-1742",
+    "fullName": "Subedar Evidence Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T10:55:31.964Z",
+    "updatedAt": "2026-09-19T10:55:31.964Z"
+  },
+  {
+    "_id": "f91942a4bf9cd03e77ceb920",
+    "userId": "cab6cb8c4c0fa929b8092dfa",
+    "personnelId": "PERS-EV-0203",
+    "fullName": "Subedar Evidence Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T10:58:40.320Z",
+    "updatedAt": "2026-09-19T10:58:40.320Z"
+  },
+  {
+    "_id": "7afbe4d4724a8aac13172042",
+    "userId": "71e3e2466f032614549a20bf",
+    "personnelId": "PERS-EV-9544",
+    "fullName": "Subedar Evidence Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:00:19.726Z",
+    "updatedAt": "2026-09-19T11:00:19.726Z"
+  },
+  {
+    "_id": "526ee5c9f72d7c493a76b5f3",
+    "userId": "ca361972efcccf8b1a37bd1b",
+    "personnelId": "PERS-SEL-1385",
+    "fullName": "Naik Selection Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:00:31.489Z",
+    "updatedAt": "2026-09-19T11:00:31.489Z"
+  },
+  {
+    "_id": "09e59c52f3373977d6a90508",
+    "userId": "35f49d9391d30433ab88f73a",
+    "personnelId": "PERS-SEL-1921",
+    "fullName": "Naik Selection Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:01:02.068Z",
+    "updatedAt": "2026-09-19T11:01:02.068Z"
+  },
+  {
+    "_id": "34e174d6e0fdd152167d5874",
+    "userId": "d28539138637caa8a5ce8f88",
+    "personnelId": "PERS-DEC-2634",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:01:22.700Z",
+    "updatedAt": "2026-09-19T11:01:22.700Z"
+  },
+  {
+    "_id": "e6e13e2203df0e300922f91d",
+    "userId": "3d40a0b58f4f9a81690ccbde",
+    "personnelId": "PERS-DEC-9654",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:02:39.718Z",
+    "updatedAt": "2026-09-19T11:02:39.718Z"
+  },
+  {
+    "_id": "3c31af607d741b2e79796570",
+    "userId": "37930a7c08aeb3f002b60ef0",
+    "personnelId": "CRPF-1789815772908",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:02:52.991Z",
+    "updatedAt": "2026-09-19T11:02:52.991Z"
+  },
+  {
+    "_id": "f792a39b090d931fe911113a",
+    "userId": "1b6405f9ebec6f7c75dceb44",
+    "personnelId": "CRPF-M2-1031",
+    "fullName": "Constable Rajesh Rao",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:03:01.121Z",
+    "updatedAt": "2026-09-19T11:03:01.121Z"
+  },
+  {
+    "_id": "09c87590a5115b61677787c6",
+    "userId": "fff9cb3359a6fd927c573b9b",
+    "personnelId": "PERS-EV-6815",
+    "fullName": "Subedar Evidence Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T11:03:06.938Z",
+    "updatedAt": "2026-09-19T11:03:06.938Z"
   }
 ]
