@@ -269,6 +269,19 @@ class APIClient {
   async getWelfareResources() {
     return this.request('/admin/resources', { method: 'GET' });
   }
+
+  // Privacy Sandbox & Safeguards (Tasks 35 & 36)
+  async getPrivacySandboxSample() {
+    return this.request('/privacy/sandbox/sample', { method: 'GET' });
+  }
+
+  async transformPrivacySandbox(record) {
+    return this.request('/privacy/sandbox/transform', { method: 'POST', body: JSON.stringify(record) });
+  }
+
+  async getPrivacyStatus() {
+    return this.request('/privacy/status', { method: 'GET' });
+  }
 }
 
 const api = new APIClient();

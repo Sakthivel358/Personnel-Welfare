@@ -75,5 +75,92 @@
     ],
     "createdAt": "2026-09-19T15:51:05.526Z",
     "updatedAt": "2026-09-19T15:51:05.526Z"
+  },
+  {
+    "_id": "93767d56bc1b3d15abb60f6c",
+    "referenceId": "ACT-9027",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "REST_RECOVERY",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: REST_RECOVERY. Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "resolutionNotes": "Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T15:59:34.573Z",
+        "note": "Unit Welfare Officer initiated support action: REST_RECOVERY"
+      }
+    ],
+    "createdAt": "2026-09-19T15:59:34.573Z",
+    "updatedAt": "2026-09-19T15:59:34.573Z"
+  },
+  {
+    "_id": "f6b83bcd4e80091685cf7272",
+    "referenceId": "ACT-3118",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "MANDATORY_REST_PERIOD",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: MANDATORY_REST_PERIOD. Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "resolutionNotes": "Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T16:00:23.132Z",
+        "note": "Unit Welfare Officer initiated support action: MANDATORY_REST_PERIOD"
+      }
+    ],
+    "createdAt": "2026-09-19T16:00:23.133Z",
+    "updatedAt": "2026-09-19T16:00:23.133Z"
+  },
+  {
+    "_id": "bd50dff3ab87c57507104f33",
+    "referenceId": "REQ-1055",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "CONFIDENTIAL_COUNSELING",
+    "urgency": "PRIORITY",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "preferredTime": "ANYTIME",
+    "notes": "Voluntary self-request for stress decompression consultation.",
+    "status": "SUBMITTED",
+    "personnelConcernLevel": "HIGH",
+    "isSelfRequested": true,
+    "accessibleRegardlessOfConcern": true,
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-19T16:00:23.151Z",
+        "note": "Request received and logged confidentially. Unit Welfare Officer notified."
+      }
+    ],
+    "createdAt": "2026-09-19T16:00:23.151Z",
+    "updatedAt": "2026-09-19T16:00:23.151Z"
+  },
+  {
+    "_id": "3658ad309f65bc2f60c553a8",
+    "referenceId": "ACT-5890",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "REST_RECOVERY",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: REST_RECOVERY. Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "resolutionNotes": "Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T16:00:32.769Z",
+        "note": "Unit Welfare Officer initiated support action: REST_RECOVERY"
+      }
+    ],
+    "createdAt": "2026-09-19T16:00:32.770Z",
+    "updatedAt": "2026-09-19T16:00:32.770Z"
   }
 ]

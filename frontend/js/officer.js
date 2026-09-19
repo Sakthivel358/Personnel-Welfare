@@ -178,10 +178,33 @@ async function openReviewModal(alertId) {
           <div>
             <span style="font-size:0.75rem; font-weight:700; color:var(--accent); text-transform:uppercase;">Stage 1: Alert Dossier</span>
             <h4 style="margin:0.2rem 0;">${st1.personnelName} (${st1.personnelId}) — ${st1.rank} • ${st1.unit}</h4>
+            <div class="d-flex gap-1 align-center flex-wrap mt-1 mb-1">
+              ${st1.userToken ? `<span class="badge badge-neutral" style="font-family:monospace; font-size:0.72rem;">Token: ${st1.userToken}</span>` : ''}
+              ${st1.ageGroup ? `<span class="badge badge-neutral" style="font-size:0.72rem;">Cohort: ${st1.ageGroup}</span>` : ''}
+              ${st1.unitGroup ? `<span class="badge badge-neutral" style="font-size:0.72rem;">${st1.unitGroup}</span>` : ''}
+            </div>
             <div class="text-muted" style="font-size:0.78rem;">Triggered: ${Utils.formatDate(st1.triggeredAt)} • Risk Score: <strong>${st1.compositeRiskScore != null ? Math.round(st1.compositeRiskScore) + '%' : 'N/A'}</strong></div>
           </div>
           <div>${Utils.getPriorityBadge(st1.priority)}</div>
         </div>
+
+        <!-- Mandatory Non-Disciplinary Directive Notice -->
+        <div class="alert alert-info p-2 mb-2" style="font-size:0.78rem; border-left:4px solid var(--accent); line-height:1.4;">
+          <strong>🛡️ NON-DISCIPLINARY MANDATE:</strong> An ML prediction must never automatically become a disciplinary action. All findings are strictly non-punitive and protected.
+        </div>
+
+        <!-- Why Alert Was Generated -->
+        ${st1.whyAlertGenerated ? `
+          <div class="p-2 mb-3" style="background:rgba(59, 130, 246, 0.05); border-radius:6px; border:1px solid rgba(59, 130, 246, 0.2); font-size:0.8rem;">
+            <div style="font-weight:700; color:var(--accent); margin-bottom:0.25rem;">🔍 Why this alert was generated:</div>
+            <p style="margin:0 0 0.35rem; color:var(--text-main); line-height:1.4;">${st1.whyAlertGenerated.summary || 'Elevated welfare strain detected across operational telemetry.'}</p>
+            ${st1.whyAlertGenerated.primaryFactors && st1.whyAlertGenerated.primaryFactors.length > 0 ? `
+              <ul style="margin:0; padding-left:1.2rem; color:var(--text-muted); font-size:0.78rem;">
+                ${st1.whyAlertGenerated.primaryFactors.map(f => `<li style="margin-bottom:0.15rem;">${f}</li>`).join('')}
+              </ul>
+            ` : ''}
+          </div>
+        ` : ''}
 
         <!-- Stage 2: Evidence & Badges -->
         <div class="mb-3">

@@ -1,5 +1,6 @@
 const db = require('../models/dbAdapter');
 const auditService = require('../services/audit.service');
+const privacyService = require('../services/privacy.service');
 const { computePersonalBaseline } = require('./prediction.controller');
 
 const getOfficerDashboard = async (req, res, next) => {
@@ -258,6 +259,21 @@ const getAlerts = async (req, res, next) => {
     const enriched = alerts.map(a => {
       const u = userMap[String(a.userId)] || {};
       const aCount = a.dataAvailableCount != null ? a.dataAvailableCount : 4;
+      const whyAlertGenerated = a.whyAlertGenerated || {
+        summary: `Alert generated because ${a.concernLevel || 'HIGH'} welfare strain was detected backed by ${aCount} authorized evidence sources.`,
+        primaryFactors: (a.mainContributors && a.mainContributors.length > 0)
+          ? a.mainContributors.map(c => `${c.arrow || '↑'} ${c.title || c.factor || c.directionalTitle || 'Operational Factor'}`)
+          : (a.topDrivers ? a.topDrivers.map(d => `↑ ${d}`) : ['↑ Cumulative operational duty strain']),
+        evidenceSources: a.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY', 'SELF_CHECK'],
+        evidenceStrength: a.evidenceStrength || 'MODERATE',
+        dataAvailableDisplay: a.dataAvailableDisplay || `DATA AVAILABLE — ${aCount} / 5`,
+        isEvidenceBased: true
+      };
+
+      const userToken = a.userToken || privacyService.generateUserToken(a.userId);
+      const ageGroup = a.ageGroup || privacyService.toAgeGroup(u.age || 28);
+      const unitGroup = privacyService.toUnitGroup(u.unit || a.unit);
+
       return {
         ...a,
         welfareConcernDisplay: a.welfareConcernDisplay || `WELFARE CONCERN — ${a.concernLevel || 'HIGH'}`,
@@ -270,6 +286,16 @@ const getAlerts = async (req, res, next) => {
         mainContributors: a.mainContributors || [],
         reviewTriggers: a.reviewTriggers || (a.topDrivers ? a.topDrivers.map(d => `${d} strain detected`) : ['Elevated welfare strain detected']),
         recommendedOfficerAction: a.recommendedOfficerAction || 'Conduct welfare review and verify restorative downtime.',
+        whyAlertGenerated: whyAlertGenerated,
+        nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.',
+        isNonDisciplinary: true,
+        disciplinaryActionPermitted: false,
+        disciplinaryProhibitionNotice: 'Under Force Welfare Governance Directive, an ML prediction must never automatically become a disciplinary action. Welfare alerts are strictly non-punitive decision support tools for supportive care, fatigue management, and restorative health intervention.',
+        userToken: userToken,
+        ageGroup: ageGroup,
+        unitGroup: unitGroup,
+        maskedServiceId: privacyService.maskIdentifier(a.personnelId),
+        maskedPersonnelName: privacyService.maskName(u.fullName || 'Personnel Member'),
         personnelName: u.fullName || 'Personnel Member',
         unit: u.unit || 'Operational Unit',
         rank: u.rank || 'Member'
@@ -341,6 +367,26 @@ const getAlertWorkflow = async (req, res, next) => {
         status: alert.status,
         reviewTriggers: alert.reviewTriggers || (alert.topDrivers ? alert.topDrivers.map(d => `${d} strain detected`) : ['Elevated operational strain']),
         recommendedOfficerAction: alert.recommendedOfficerAction || 'Conduct supportive welfare review and verify restorative downtime.',
+        whyAlertGenerated: alert.whyAlertGenerated || {
+          summary: `Alert generated because ${alert.concernLevel || 'HIGH'} welfare strain was detected backed by ${aCount} authorized evidence sources.`,
+          primaryFactors: (contributors && contributors.length > 0)
+            ? contributors.map(c => `${c.arrow || '↑'} ${c.title || c.factor || c.directionalTitle || 'Operational Factor'}`)
+            : (alert.topDrivers ? alert.topDrivers.map(d => `↑ ${d}`) : ['↑ Cumulative operational duty strain']),
+          evidenceSources: (latestPred && latestPred.evidenceSources) || ['DUTY', 'WORKLOAD', 'REST_RECOVERY', 'SELF_CHECK'],
+          evidenceStrength: alert.evidenceStrength || 'MODERATE',
+          dataAvailableDisplay: alert.dataAvailableDisplay || `DATA AVAILABLE — ${aCount} / 5`,
+          isEvidenceBased: true
+        },
+        nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.',
+        isNonDisciplinary: true,
+        disciplinaryActionPermitted: false,
+        prohibitDisciplinaryAction: true,
+        disciplinaryProhibitionNotice: 'Under Force Welfare Governance Directive, an ML prediction must never automatically become a disciplinary action. Alerts are strictly non-punitive decision support tools for supportive care, fatigue management, and restorative health intervention.',
+        userToken: alert.userToken || privacyService.generateUserToken(alert.userId),
+        ageGroup: alert.ageGroup || privacyService.toAgeGroup(user.age || 28),
+        unitGroup: privacyService.toUnitGroup(user.unit || alert.unit),
+        maskedServiceId: privacyService.maskIdentifier(alert.personnelId),
+        maskedPersonnelName: privacyService.maskName(user.fullName || 'Personnel Member'),
         policyNotice: '🛡️ NON-PUNITIVE POLICY: Welfare insights and AI assessments are strictly for health support, resilience, and fatigue mitigation. Never to be used for disciplinary action, performance profiling, or punitive personnel measures.',
         nonPunitiveNotice: '🛡️ NON-PUNITIVE POLICY: Welfare insights and AI assessments are strictly for health support, resilience, and fatigue mitigation. Never to be used for disciplinary action, performance profiling, or punitive personnel measures.'
       },
@@ -462,6 +508,32 @@ const reviewAlert = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Welfare alert record not found.' });
     }
 
+    // Mandatory Non-Disciplinary Directive Enforcement:
+    // An ML prediction must never automatically become a disciplinary action.
+    const sanitizedCheckText = `${reviewDecision || ''} ${officerNotes || ''}`
+      .toLowerCase()
+      .replace(/non-punitive/g, '')
+      .replace(/non punitive/g, '')
+      .replace(/not punitive/g, '')
+      .replace(/non-disciplinary/g, '')
+      .replace(/non disciplinary/g, '')
+      .replace(/not disciplinary/g, '');
+
+    const prohibitedDisciplinaryKeywords = [
+      'disciplinary', 'court-martial', 'punitive', 'penalty', 'demote',
+      'charge sheet', 'charge-sheet', 'punish'
+    ];
+    for (const kw of prohibitedDisciplinaryKeywords) {
+      if (sanitizedCheckText.includes(kw)) {
+        return res.status(400).json({
+          success: false,
+          error: 'NON_DISCIPLINARY_VIOLATION',
+          message: 'Prohibited Action: An ML prediction must never automatically become a disciplinary action. Welfare alerts are strictly non-punitive.',
+          nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.'
+        });
+      }
+    }
+
     const effectiveStatus = reviewDecision || status || 'ACKNOWLEDGED';
 
     const updateFields = {
@@ -469,7 +541,9 @@ const reviewAlert = async (req, res, next) => {
       officerNotes: officerNotes || alert.officerNotes,
       reviewedBy: req.user._id,
       reviewedAt: new Date().toISOString(),
-      isNonPunitive: true
+      isNonPunitive: true,
+      isNonDisciplinary: true,
+      nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.'
     };
 
     if (supportAction) {

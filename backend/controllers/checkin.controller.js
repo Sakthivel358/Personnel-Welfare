@@ -2,6 +2,7 @@ const db = require('../models/dbAdapter');
 const mlClient = require('../services/mlClient.service');
 const recommendationService = require('../services/recommendation.service');
 const auditService = require('../services/audit.service');
+const privacyService = require('../services/privacy.service');
 
 const submitCheckIn = async (req, res, next) => {
   try {
@@ -310,24 +311,56 @@ const submitCheckIn = async (req, res, next) => {
     if (newPrediction.isAlertGenerated) {
       alertCreated = true;
       const alertPriority = humanReview ? humanReview.priority : (mlPrediction.compositeRiskScore >= 80 ? 'CRITICAL' : 'HIGH');
+      const alertContributors = decisionLayer ? decisionLayer.mainContributors.slice(0, 5) : [];
+      const contributorBullets = alertContributors.length > 0
+        ? alertContributors.map(c => `${c.arrow || '↑'} ${c.title || c.factor} (${c.impactLevel || 'ELEVATED'} Impact)`)
+        : (mlPrediction.topDrivers || ['Operational duty strain']);
+
+      const whyAlertGenerated = {
+        summary: `Alert generated because ${mlPrediction.concernLevel} welfare strain was detected backed by ${newPrediction.dataAvailableCount || 4} authorized evidence sources (${evidenceSources.join(', ')}).`,
+        primaryFactors: contributorBullets,
+        evidenceSources: evidenceSources,
+        evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : 'MODERATE',
+        dataAvailableDisplay: newPrediction.dataAvailableDisplay,
+        thresholdBreaches: [
+          checkInPayload.workload_hours >= 60 ? `Weekly workload reached ${checkInPayload.workload_hours}h (threshold: 60h)` : null,
+          checkInPayload.recovery_sleep_hours <= 5 ? `Daily restorative sleep reduced to ${checkInPayload.recovery_sleep_hours}h (minimum: 6h)` : null,
+          checkInPayload.night_duty_hours >= 12 ? `Night duty hours elevated to ${checkInPayload.night_duty_hours}h` : null,
+          checkInPayload.pss_score >= 26 ? `Perceived stress index elevated to ${checkInPayload.pss_score}/40` : null,
+          checkInPayload.fatigue_physical_strain >= 60 ? `Physical fatigue strain marker escalated to ${checkInPayload.fatigue_physical_strain}/100` : null
+        ].filter(Boolean),
+        isEvidenceBased: true
+      };
+
+      const userToken = privacyService.generateUserToken(req.user._id);
+      const ageGroup = privacyService.toAgeGroup(req.user.age || 28);
+
       const newAlert = await db.Alerts.create({
         personnelId: req.user.personnelId,
         userId: req.user._id,
+        userToken: userToken,
+        ageGroup: ageGroup,
         predictionId: newPrediction._id,
         priority: alertPriority,
         concernLevel: mlPrediction.concernLevel,
         welfareConcernDisplay: newPrediction.welfareConcernDisplay,
         compositeRiskScore: mlPrediction.compositeRiskScore,
         topDrivers: mlPrediction.topDrivers,
+        evidenceSources: evidenceSources,
         evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : 'MODERATE',
         evidenceDisplay: newPrediction.evidenceDisplay,
         evidenceStrengthScore: decisionLayer ? decisionLayer.evidenceStrength.score : 0.6,
         dataAvailableCount: newPrediction.dataAvailableCount,
         dataAvailableTotal: 5,
         dataAvailableDisplay: newPrediction.dataAvailableDisplay,
-        mainContributors: decisionLayer ? decisionLayer.mainContributors.slice(0, 5) : [],
+        mainContributors: alertContributors,
         reviewTriggers: humanReview ? humanReview.reviewTriggers : (mlPrediction.topDrivers || []),
         recommendedOfficerAction: humanReview ? humanReview.recommendedOfficerAction : 'Conduct supportive welfare review and verify restorative downtime.',
+        whyAlertGenerated: whyAlertGenerated,
+        nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.',
+        isNonDisciplinary: true,
+        disciplinaryActionPermitted: false,
+        disciplinaryProhibitionNotice: 'Under Force Welfare Governance Directive, an ML prediction must never automatically become a disciplinary action. Welfare alerts are strictly non-punitive decision support tools for supportive care, fatigue management, and restorative health intervention.',
         status: 'PENDING_REVIEW',
         officerNotes: '',
         createdAt: new Date().toISOString()

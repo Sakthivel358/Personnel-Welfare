@@ -318,5 +318,22 @@
     "isNonPunitive": true,
     "createdAt": "2026-09-19T15:51:05.516Z",
     "updatedAt": "2026-09-19T15:51:05.516Z"
+  },
+  {
+    "_id": "c59ecd4b7d2365248cb65c03",
+    "alertId": "ffe13cd4441781d659998ccc",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "status": "CHECKIN_COMPLETED",
+    "scheduledDate": "2026-09-22T16:00:23.122Z",
+    "initialRiskScore": 85.2,
+    "reAnalyzedRiskScore": 85.1,
+    "welfareDelta": "STABLE",
+    "officerNotes": "Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-19T16:00:23.133Z",
+    "updatedAt": "2026-09-19T16:00:32.722Z",
+    "completedAt": "2026-09-19T16:00:32.722Z"
   }
 ]

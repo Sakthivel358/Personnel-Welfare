@@ -9,9 +9,9 @@
     "unit": "CRPF Battalion 104",
     "rank": "Havildar (GD)",
     "isActive": true,
-    "lastLogin": "2026-09-19T15:51:05.367Z",
+    "lastLogin": "2026-09-19T16:00:32.373Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-19T15:51:05.368Z"
+    "updatedAt": "2026-09-19T16:00:32.373Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T15:51:43.601Z",
+    "lastLogin": "2026-09-19T16:01:18.355Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T15:51:43.601Z"
+    "updatedAt": "2026-09-19T16:01:18.355Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -1272,5 +1272,89 @@
     "lastLogin": "2026-09-19T15:51:43.415Z",
     "createdAt": "2026-09-19T15:51:43.415Z",
     "updatedAt": "2026-09-19T15:51:43.415Z"
+  },
+  {
+    "_id": "76d05b5ff7e9c819800c221f",
+    "personnelId": "EXP641930",
+    "email": "explain_test_1789833641930@defence.gov.in",
+    "password": "$2a$10$Xt6LuX4aXfXQMRn07UMuFeTBVi.Mrj.RLxlJdFcPinQvULGluEbhe",
+    "fullName": "Subedar Explainability Spec",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:00:42.172Z",
+    "createdAt": "2026-09-19T16:00:42.172Z",
+    "updatedAt": "2026-09-19T16:00:42.172Z"
+  },
+  {
+    "_id": "edab06443ce49c5d24519d46",
+    "personnelId": "ZERO651066",
+    "email": "baseline_zero_1789833651066@defence.gov.in",
+    "password": "$2a$10$H2KMOSQb7NycJr2N36/fH.HV2y93v8d37UnTAAKhzMahsHKiT2qRa",
+    "fullName": "Havildar Zero Checkins",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:00:51.238Z",
+    "createdAt": "2026-09-19T16:00:51.238Z",
+    "updatedAt": "2026-09-19T16:00:51.238Z"
+  },
+  {
+    "_id": "f5f6b7e40bdf91dddc854209",
+    "personnelId": "INSUF651066",
+    "email": "insufficient_user_1789833651066@defence.gov.in",
+    "password": "$2a$10$ujeM9D4hb.84t66523fj2.aDaqPU4LL36QrYrUvBcrSV4oTMu3UD.",
+    "fullName": "Subedar Insufficient Tester",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:00:51.751Z",
+    "createdAt": "2026-09-19T16:00:51.752Z",
+    "updatedAt": "2026-09-19T16:00:51.752Z"
+  },
+  {
+    "_id": "328198b2c11d4d544c387fd4",
+    "personnelId": "PERS-EV-0491",
+    "email": "evidence_test_1789833660491@forces.gov.in",
+    "password": "$2a$10$lj9el1oO0hIgVeOzbCaKFOP4Pj/A.maxjPknCLwgTOXCw4VIiq0x2",
+    "fullName": "Subedar Evidence Tester",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:01:00.674Z",
+    "createdAt": "2026-09-19T16:01:00.674Z",
+    "updatedAt": "2026-09-19T16:01:00.674Z"
+  },
+  {
+    "_id": "776d8d20af8080a20f9a78a9",
+    "personnelId": "PERS-SEL-0007",
+    "email": "model_select_1789833670007@forces.gov.in",
+    "password": "$2a$10$lPXSlCazEgT2E77k2hZc3.Vy79K4igunMljw6ZLVAknWoRDuP2Jtu",
+    "fullName": "Naik Selection Tester",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:01:10.117Z",
+    "createdAt": "2026-09-19T16:01:10.118Z",
+    "updatedAt": "2026-09-19T16:01:10.118Z"
+  },
+  {
+    "_id": "f4f295c8c2f21cbc28504f2f",
+    "personnelId": "PERS-DEC-8000",
+    "email": "welfare_decision_1789833678000@forces.gov.in",
+    "password": "$2a$10$UwvNwuEiv7dqMnglOFgVAuC4/9RhmBuhnf0GPew3oJ1UgYjcLwyr.",
+    "fullName": "Subedar Decision Tester",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:01:18.104Z",
+    "createdAt": "2026-09-19T16:01:18.105Z",
+    "updatedAt": "2026-09-19T16:01:18.105Z"
   }
 ]

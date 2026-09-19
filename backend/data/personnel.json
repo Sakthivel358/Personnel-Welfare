@@ -2586,5 +2586,161 @@
     },
     "createdAt": "2026-09-19T15:51:43.416Z",
     "updatedAt": "2026-09-19T15:51:43.416Z"
+  },
+  {
+    "_id": "2e14690dab66a8f9eadec874",
+    "userId": "76d05b5ff7e9c819800c221f",
+    "personnelId": "EXP641930",
+    "fullName": "Subedar Explainability Spec",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:00:42.173Z",
+    "updatedAt": "2026-09-19T16:00:42.173Z"
+  },
+  {
+    "_id": "3c697dd5145b2cbe7130e85a",
+    "userId": "edab06443ce49c5d24519d46",
+    "personnelId": "ZERO651066",
+    "fullName": "Havildar Zero Checkins",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:00:51.240Z",
+    "updatedAt": "2026-09-19T16:00:51.240Z"
+  },
+  {
+    "_id": "d8df4485ae82f1a3a0df5f70",
+    "userId": "f5f6b7e40bdf91dddc854209",
+    "personnelId": "INSUF651066",
+    "fullName": "Subedar Insufficient Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:00:51.753Z",
+    "updatedAt": "2026-09-19T16:00:51.753Z"
+  },
+  {
+    "_id": "96e58bfb89770e8ff5c96535",
+    "userId": "328198b2c11d4d544c387fd4",
+    "personnelId": "PERS-EV-0491",
+    "fullName": "Subedar Evidence Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:01:00.675Z",
+    "updatedAt": "2026-09-19T16:01:00.675Z"
+  },
+  {
+    "_id": "b75fb4c49eafb1b66c256eb4",
+    "userId": "776d8d20af8080a20f9a78a9",
+    "personnelId": "PERS-SEL-0007",
+    "fullName": "Naik Selection Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:01:10.118Z",
+    "updatedAt": "2026-09-19T16:01:10.118Z"
+  },
+  {
+    "_id": "d7defde844e5f634be5e3786",
+    "userId": "f4f295c8c2f21cbc28504f2f",
+    "personnelId": "PERS-DEC-8000",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:01:18.106Z",
+    "updatedAt": "2026-09-19T16:01:18.106Z"
   }
 ]
