@@ -77,7 +77,8 @@ async function runTests() {
     `Model 1 macro-recall evaluated: ${m1Data.recall_macro}`);
   assert(typeof m1Data.f1_macro === 'number' && m1Data.f1_macro > 0.70, 
     `Model 1 macro-F1 evaluated: ${m1Data.f1_macro}`);
-  assert(Array.isArray(m1Data.confusion_matrix) && m1Data.confusion_matrix.length === 3, 
+  const m1Matrix = Array.isArray(m1Data.confusion_matrix) ? m1Data.confusion_matrix : (m1Data.confusion_matrix?.matrix || m1Data.matrix || []);
+  assert(Array.isArray(m1Matrix) && m1Matrix.length === 3, 
     'Model 1 includes 3x3 confusion matrix for Low/Moderate/High classes');
   assert(m1Data.per_class && m1Data.per_class.LOW && m1Data.per_class.HIGH, 
     'Model 1 provides per-class precision, recall, and f1-scores');
@@ -103,7 +104,8 @@ async function runTests() {
     `Model 2 macro-recall evaluated: ${m2Data.recall_macro}`);
   assert(typeof m2Data.f1_macro === 'number' && m2Data.f1_macro > 0.70, 
     `Model 2 macro-F1 evaluated: ${m2Data.f1_macro}`);
-  assert(Array.isArray(m2Data.confusion_matrix) && m2Data.confusion_matrix.length === 3, 
+  const m2Matrix = Array.isArray(m2Data.confusion_matrix) ? m2Data.confusion_matrix : (m2Data.confusion_matrix?.matrix || m2Data.matrix || []);
+  assert(Array.isArray(m2Matrix) && m2Matrix.length === 3, 
     'Model 2 includes 3x3 confusion matrix for Low/Moderate/High classes');
   assert(m2Data.train_samples === 2800 && m2Data.test_samples === 700, 
     'Model 2 used valid 80/20 train/test split validation (2800 train, 700 test)');

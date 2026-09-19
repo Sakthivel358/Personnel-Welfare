@@ -335,9 +335,9 @@
             document.getElementById('ev-f1').textContent = m.f1_macro != null ? `${(m.f1_macro * 100).toFixed(1)}%` : '--';
           }
           const cmEl = document.getElementById('confusion-matrix-display');
-          if (cmEl) {
-            if (evaluation && evaluation.confusion_matrix && Array.isArray(evaluation.confusion_matrix)) {
-              const cm = evaluation.confusion_matrix;
+            const rawCm = evaluation && evaluation.confusion_matrix;
+            const cm = Array.isArray(rawCm) ? rawCm : (rawCm && rawCm.matrix ? rawCm.matrix : (evaluation && evaluation.matrix ? evaluation.matrix : []));
+            if (Array.isArray(cm) && cm.length >= 3) {
               cmEl.innerHTML = `
                 <div style="background:var(--bg-surface); padding:0.75rem; border-radius:6px; font-family:monospace; line-height:1.8;">
                   <div>[${cm[0] ? cm[0].join(', ') : '0, 0, 0'}] &nbsp;<em>(Low Strain Cohort)</em></div>

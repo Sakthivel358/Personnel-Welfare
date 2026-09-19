@@ -362,7 +362,7 @@ const changePassword = async (req, res, next) => {
 
 const verifyCurrentPassword = async (req, res, next) => {
   try {
-    const { password } = req.body;
+    const password = req.body.password || req.body.currentPassword;
     if (!password) {
       return res.status(400).json({ success: false, message: 'Current password is required for verification.' });
     }

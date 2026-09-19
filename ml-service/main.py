@@ -293,7 +293,8 @@ async def get_model1_evaluation():
         "train_samples": metrics.get("train_samples"),
         "test_samples": metrics.get("test_samples"),
         "metrics": metrics,
-        "confusion_matrix": cm_data.get("matrix", cm_data),
+        "confusion_matrix": cm_data,
+        "matrix": cm_data.get("matrix", []),
         "confusion_matrix_details": cm_data,
         "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL: Evaluated on synthetic prototype benchmark data. Accuracy does NOT represent real-world clinical or operational validated performance.")
     }
@@ -393,7 +394,8 @@ async def get_model2_evaluation():
         "train_samples": metrics.get("train_samples"),
         "test_samples": metrics.get("test_samples"),
         "metrics": metrics,
-        "confusion_matrix": cm_data.get("matrix", cm_data),
+        "confusion_matrix": cm_data,
+        "matrix": cm_data.get("matrix", []),
         "confusion_matrix_details": cm_data,
         "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL 2: Evaluated on synthetic prototype benchmark data for fallback verification. Accuracy does NOT represent real-world clinical or operational validated performance.")
     }
