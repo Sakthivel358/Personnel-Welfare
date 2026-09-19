@@ -262,6 +262,47 @@ class MLClientService {
       });
     }
 
+    // Longitudinal Personal Baseline Deviation (Tasks 13 & 14)
+    if (checkinData.personal_workload_delta !== undefined && checkinData.personal_workload_delta > 5.0) {
+      const surgeDelta = Number(checkinData.personal_workload_delta);
+      const personalContribution = Math.min(18.0, (surgeDelta / 5.0) * 4.0);
+      normalizedRiskDelta += personalContribution * 0.4;
+      contributingFactors.push({
+        feature_key: 'personal_workload_surge',
+        title: 'Workload Surge vs Personal Baseline',
+        description: `Current duty is +${surgeDelta} hrs/wk above personal average (${checkinData.personal_avg_workload || 48} hrs/wk)`,
+        user_value: surgeDelta,
+        unit: 'hrs above normal',
+        healthy_range: 'Within ±3 hrs',
+        baseline_mean: 0,
+        importance_weight: 0.12,
+        contribution_score: Number((personalContribution * 2.5).toFixed(2)),
+        impact_level: surgeDelta >= 10.0 ? 'HIGH' : 'MODERATE',
+        status: 'Acute Workload Surge',
+        is_risk_driver: surgeDelta >= 8.0
+      });
+    }
+
+    if (checkinData.personal_sleep_delta !== undefined && checkinData.personal_sleep_delta < -1.0) {
+      const sleepDeficit = Math.abs(Number(checkinData.personal_sleep_delta));
+      const deficitContribution = Math.min(16.0, sleepDeficit * 3.5);
+      normalizedRiskDelta += deficitContribution * 0.4;
+      contributingFactors.push({
+        feature_key: 'personal_sleep_deficit',
+        title: 'Recovery Sleep Deficit vs Personal Baseline',
+        description: `Current sleep is ${sleepDeficit} hrs/day below personal typical rest (${checkinData.personal_avg_sleep || 7.0} hrs/day)`,
+        user_value: sleepDeficit,
+        unit: 'hrs below normal',
+        healthy_range: 'Within ±0.5 hrs',
+        baseline_mean: 0,
+        importance_weight: 0.11,
+        contribution_score: Number((deficitContribution * 2.5).toFixed(2)),
+        impact_level: sleepDeficit >= 2.0 ? 'HIGH' : 'MODERATE',
+        status: 'Acute Rest Deficit',
+        is_risk_driver: sleepDeficit >= 1.5
+      });
+    }
+
     let compositeRisk = Math.min(95.0, Math.max(5.0, 45.0 + normalizedRiskDelta));
     compositeRisk = Number(compositeRisk.toFixed(1));
 

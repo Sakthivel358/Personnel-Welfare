@@ -83,6 +83,45 @@
           </div>
         </div>
 
+        <!-- Personal Historical Baseline (Tasks 13 & 14) -->
+        <div class="card mb-3" id="personal-baseline-card" style="border-left: 4px solid #3b82f6;">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <div class="d-flex align-center gap-1">
+                <h3 style="font-size: 1.05rem;">📊 Personal Historical Baseline (Your Normal Pattern)</h3>
+                <span class="badge badge-neutral" id="baseline-record-count">Baseline Active</span>
+              </div>
+              <p class="text-muted" style="font-size:0.83rem; margin-top:0.2rem;">
+                Comparing current check-in metrics against your personal historical mean (not just population averages) to detect duty surges and sleep deficits.
+              </p>
+            </div>
+            <span class="badge badge-low" style="font-size:0.75rem;">Longitudinal Tracking</span>
+          </div>
+
+          <div class="grid-4" id="personal-baseline-grid">
+            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
+              <div class="text-muted" style="font-size:0.75rem;">Normal Weekly Workload</div>
+              <div style="font-size:1.1rem; font-weight:700;" id="base-workload-val">-- hrs/wk</div>
+              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-workload-delta">Loading...</div>
+            </div>
+            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
+              <div class="text-muted" style="font-size:0.75rem;">Normal Rest & Sleep</div>
+              <div style="font-size:1.1rem; font-weight:700;" id="base-sleep-val">-- hrs/day</div>
+              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-sleep-delta">Loading...</div>
+            </div>
+            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
+              <div class="text-muted" style="font-size:0.75rem;">Normal Work Pressure</div>
+              <div style="font-size:1.1rem; font-weight:700;" id="base-pressure-val">-- / 10</div>
+              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-pressure-delta">Loading...</div>
+            </div>
+            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
+              <div class="text-muted" style="font-size:0.75rem;">Normal Rest Interval</div>
+              <div style="font-size:1.1rem; font-weight:700;" id="base-interval-val">-- hrs</div>
+              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-interval-delta">Loading...</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Comparative Breakdown Table -->
         <div class="card mb-3">
           <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
@@ -204,6 +243,62 @@
                 window.location.href = `/what-changed.html?id=${encodeURIComponent(selectedVal)}`;
               }
             };
+          }
+
+          if (res.personalBaseline) {
+            const pb = res.personalBaseline;
+            const card = document.getElementById('personal-baseline-card');
+            if (card) card.style.display = 'block';
+
+            const countEl = document.getElementById('baseline-record-count');
+            if (countEl) countEl.textContent = `Computed from ${pb.baselineCheckInCount || pb.totalCheckInCount || pb.recordCount || 2} check-ins`;
+
+            const workEl = document.getElementById('base-workload-val');
+            if (workEl) workEl.textContent = pb.avgWorkloadHours != null ? `${pb.avgWorkloadHours} hrs/wk` : '-- hrs/wk';
+
+            const sleepEl = document.getElementById('base-sleep-val');
+            if (sleepEl) sleepEl.textContent = pb.avgRecoverySleepHours != null ? `${pb.avgRecoverySleepHours} hrs/day` : '-- hrs/day';
+
+            const pressEl = document.getElementById('base-pressure-val');
+            if (pressEl) pressEl.textContent = pb.avgWorkPressure != null ? `${pb.avgWorkPressure} / 10` : '-- / 10';
+
+            const intEl = document.getElementById('base-interval-val');
+            if (intEl) intEl.textContent = pb.avgRestIntervalHours != null ? `${pb.avgRestIntervalHours} hrs` : '-- hrs';
+
+            if (pb.comparison) {
+              const comp = pb.comparison;
+              const wDeltaEl = document.getElementById('base-workload-delta');
+              if (wDeltaEl) {
+                if (comp.workloadDelta > 0) {
+                  wDeltaEl.innerHTML = `<span style="color:var(--risk-high); font-weight:600;">+${comp.workloadDelta} hrs</span> above normal`;
+                } else if (comp.workloadDelta < 0) {
+                  wDeltaEl.innerHTML = `<span style="color:var(--risk-low); font-weight:600;">${comp.workloadDelta} hrs</span> below normal`;
+                } else {
+                  wDeltaEl.innerHTML = `<span style="color:var(--accent); font-weight:600;">At normal baseline</span>`;
+                }
+              }
+
+              const sDeltaEl = document.getElementById('base-sleep-delta');
+              if (sDeltaEl) {
+                if (comp.sleepDelta < 0) {
+                  sDeltaEl.innerHTML = `<span style="color:var(--risk-high); font-weight:600;">${comp.sleepDelta} hrs</span> rest deficit`;
+                } else if (comp.sleepDelta > 0) {
+                  sDeltaEl.innerHTML = `<span style="color:var(--risk-low); font-weight:600;">+${comp.sleepDelta} hrs</span> surplus`;
+                } else {
+                  sDeltaEl.innerHTML = `<span style="color:var(--accent); font-weight:600;">At normal pattern</span>`;
+                }
+              }
+
+              const pDeltaEl = document.getElementById('base-pressure-delta');
+              if (pDeltaEl) {
+                pDeltaEl.innerHTML = `<span style="font-weight:600;">${comp.pressureDelta > 0 ? '+' : ''}${comp.pressureDelta}</span> vs typical pace`;
+              }
+
+              const iDeltaEl = document.getElementById('base-interval-delta');
+              if (iDeltaEl) {
+                iDeltaEl.innerHTML = `<span style="color:var(--text-muted); font-size:0.75rem;">Consecutive: ${pb.avgShiftContinuityDays != null ? pb.avgShiftContinuityDays : '--'}d avg</span>`;
+              }
+            }
           }
 
           const metrics = res.metrics;

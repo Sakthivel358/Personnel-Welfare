@@ -129,6 +129,26 @@ const submitCheckIn = async (req, res, next) => {
       }
     }
 
+    // Tasks 13 & 14: Historical Personal Workload & Rest/Recovery Baselines
+    let personal_avg_workload = cleanWorkload;
+    let personal_avg_sleep = cleanSleep;
+    let personal_workload_delta = 0.0;
+    let personal_sleep_delta = 0.0;
+
+    if (priorCheckIns.length > 0) {
+      const priorWorkloads = priorCheckIns.map(c => Number(c.workload_hours)).filter(v => !isNaN(v) && v > 0);
+      if (priorWorkloads.length > 0) {
+        personal_avg_workload = Number((priorWorkloads.reduce((a, b) => a + b, 0) / priorWorkloads.length).toFixed(1));
+        personal_workload_delta = Number((cleanWorkload - personal_avg_workload).toFixed(1));
+      }
+
+      const priorSleeps = priorCheckIns.map(c => Number(c.recovery_sleep_hours)).filter(v => !isNaN(v) && v > 0);
+      if (priorSleeps.length > 0) {
+        personal_avg_sleep = Number((priorSleeps.reduce((a, b) => a + b, 0) / priorSleeps.length).toFixed(1));
+        personal_sleep_delta = Number((cleanSleep - personal_avg_sleep).toFixed(1));
+      }
+    }
+
     // Determine active evidence sources
     const evidenceSources = ['DUTY', 'WORKLOAD', 'REST_RECOVERY'];
     const hasSelfCheck = pss_score !== undefined && pss_score !== null;
@@ -172,6 +192,10 @@ const submitCheckIn = async (req, res, next) => {
       recovery_pattern: recovery_pattern || 'CONTINUOUS',
       rest_interval_hours: rest_interval_hours !== undefined ? Number(rest_interval_hours) : 8.0,
       recent_trend_indicator: Number(recent_trend_indicator.toFixed(1)),
+      personal_avg_workload: personal_avg_workload,
+      personal_workload_delta: personal_workload_delta,
+      personal_avg_sleep: personal_avg_sleep,
+      personal_sleep_delta: personal_sleep_delta,
       resting_heart_rate: resting_heart_rate != null ? Number(resting_heart_rate) : null,
       hrv_ms: hrv_ms != null ? Number(hrv_ms) : null,
       respiration_rate: respiration_rate != null ? Number(respiration_rate) : null,
@@ -208,6 +232,10 @@ const submitCheckIn = async (req, res, next) => {
       recovery_pattern: checkInPayload.recovery_pattern,
       rest_interval_hours: checkInPayload.rest_interval_hours,
       recent_trend_indicator: checkInPayload.recent_trend_indicator,
+      personal_avg_workload: checkInPayload.personal_avg_workload,
+      personal_workload_delta: checkInPayload.personal_workload_delta,
+      personal_avg_sleep: checkInPayload.personal_avg_sleep,
+      personal_sleep_delta: checkInPayload.personal_sleep_delta,
       resting_heart_rate: checkInPayload.resting_heart_rate,
       hrv_ms: checkInPayload.hrv_ms,
       respiration_rate: checkInPayload.respiration_rate,

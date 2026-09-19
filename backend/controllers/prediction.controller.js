@@ -75,9 +75,26 @@ const getPredictionHistory = async (req, res, next) => {
       };
     });
 
+    // Calculate personal historical baseline across user's check-ins (Tasks 13 & 14)
+    const workloadVals = series.map(s => s.workload_hours).filter(v => v != null && !isNaN(v) && v > 0);
+    const sleepVals = series.map(s => s.recovery_sleep_hours).filter(v => v != null && !isNaN(v) && v > 0);
+    const pressureVals = series.map(s => s.work_pressure_rating).filter(v => v != null && !isNaN(v) && v > 0);
+    const restIntervalVals = series.map(s => s.rest_interval_hours).filter(v => v != null && !isNaN(v) && v > 0);
+
+    const calcSeriesAvg = arr => arr.length > 0 ? Number((arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1)) : null;
+
+    const personalBaseline = {
+      recordCount: series.length,
+      avgWorkloadHours: calcSeriesAvg(workloadVals),
+      avgRecoverySleepHours: calcSeriesAvg(sleepVals),
+      avgWorkPressure: calcSeriesAvg(pressureVals),
+      avgRestIntervalHours: calcSeriesAvg(restIntervalVals)
+    };
+
     return res.status(200).json({
       success: true,
-      data: series
+      data: series,
+      personalBaseline
     });
   } catch (err) {
     next(err);
@@ -179,6 +196,75 @@ const getWhatChanged = async (req, res, next) => {
       }
     }
 
+    // Tasks 13 & 14: Calculate user's personal historical baseline (across prior check-ins, or all check-ins)
+    const priorCheckIns = checkIns.slice(0, checkIns.length - 1);
+    const baselineSource = priorCheckIns.length > 0 ? priorCheckIns : checkIns;
+
+    const bWorkloads = baselineSource.map(c => Number(c.workload_hours)).filter(v => !isNaN(v) && v > 0);
+    const bSleeps = baselineSource.map(c => Number(c.recovery_sleep_hours)).filter(v => !isNaN(v) && v > 0);
+    const bPressures = baselineSource.map(c => Number(c.work_pressure_rating)).filter(v => !isNaN(v) && v > 0);
+    const bIntervals = baselineSource.map(c => Number(c.rest_interval_hours)).filter(v => !isNaN(v) && v > 0);
+    const bShifts = baselineSource.map(c => Number(c.shift_continuity_days)).filter(v => !isNaN(v));
+
+    const calcArrAvg = arr => arr.length > 0 ? Number((arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1)) : null;
+
+    const avgWorkload = calcArrAvg(bWorkloads);
+    const avgSleep = calcArrAvg(bSleeps);
+    const avgPressure = calcArrAvg(bPressures);
+    const avgRestInterval = calcArrAvg(bIntervals);
+    const avgShifts = calcArrAvg(bShifts);
+
+    const currentWorkload = currentCheckIn.workload_hours != null ? Number(currentCheckIn.workload_hours) : null;
+    const currentSleep = currentCheckIn.recovery_sleep_hours != null ? Number(currentCheckIn.recovery_sleep_hours) : null;
+    const currentPressure = currentCheckIn.work_pressure_rating != null ? Number(currentCheckIn.work_pressure_rating) : null;
+
+    const workloadDeltaFromPersonal = (currentWorkload != null && avgWorkload != null)
+      ? Number((currentWorkload - avgWorkload).toFixed(1))
+      : 0;
+
+    const sleepDeltaFromPersonal = (currentSleep != null && avgSleep != null)
+      ? Number((currentSleep - avgSleep).toFixed(1))
+      : 0;
+
+    const pressureDeltaFromPersonal = (currentPressure != null && avgPressure != null)
+      ? Number((currentPressure - avgPressure).toFixed(1))
+      : 0;
+
+    let personalWorkloadStatus = 'AT_PERSONAL_NORMAL';
+    if (workloadDeltaFromPersonal > 4.0) personalWorkloadStatus = 'ELEVATED_ABOVE_NORMAL';
+    else if (workloadDeltaFromPersonal < -4.0) personalWorkloadStatus = 'BELOW_NORMAL';
+
+    let personalSleepStatus = 'AT_PERSONAL_NORMAL';
+    if (sleepDeltaFromPersonal < -1.0) personalSleepStatus = 'REST_DEFICIT';
+    else if (sleepDeltaFromPersonal > 1.0) personalSleepStatus = 'REST_SURPLUS';
+
+    const personalBaseline = {
+      baselineCheckInCount: baselineSource.length,
+      totalCheckInCount: checkIns.length,
+      avgWorkloadHours: avgWorkload,
+      avgRecoverySleepHours: avgSleep,
+      avgWorkPressure: avgPressure,
+      avgRestIntervalHours: avgRestInterval,
+      avgShiftContinuityDays: avgShifts,
+      comparison: {
+        workloadDelta: workloadDeltaFromPersonal,
+        workloadStatus: personalWorkloadStatus,
+        workloadLabel: workloadDeltaFromPersonal > 0 
+          ? `+${workloadDeltaFromPersonal} hrs/wk above your normal pattern (${avgWorkload} hrs/wk avg)`
+          : workloadDeltaFromPersonal < 0
+          ? `${workloadDeltaFromPersonal} hrs/wk below your normal pattern (${avgWorkload} hrs/wk avg)`
+          : `Aligned with your normal pattern (${avgWorkload} hrs/wk avg)`,
+        sleepDelta: sleepDeltaFromPersonal,
+        sleepStatus: personalSleepStatus,
+        sleepLabel: sleepDeltaFromPersonal < 0
+          ? `${sleepDeltaFromPersonal} hrs/day below your normal rest (${avgSleep} hrs/day avg)`
+          : sleepDeltaFromPersonal > 0
+          ? `+${sleepDeltaFromPersonal} hrs/day above your normal rest (${avgSleep} hrs/day avg)`
+          : `Aligned with your normal rest pattern (${avgSleep} hrs/day avg)`,
+        pressureDelta: pressureDeltaFromPersonal
+      }
+    };
+
     const calcDelta = (currentVal, prevVal, isHigherRisk = true) => {
       if (currentVal === null || currentVal === undefined || prevVal === null || prevVal === undefined) {
         return {
@@ -216,11 +302,15 @@ const getWhatChanged = async (req, res, next) => {
       workload_hours: {
         title: 'Weekly Duty Hours',
         unit: 'hrs/wk',
+        personalBaselineAvg: avgWorkload,
+        deltaFromPersonalBaseline: workloadDeltaFromPersonal,
         ...calcDelta(currentCheckIn.workload_hours, previousCheckIn.workload_hours, true)
       },
       recovery_sleep_hours: {
         title: 'Daily Sleep & Recovery',
         unit: 'hrs/day',
+        personalBaselineAvg: avgSleep,
+        deltaFromPersonalBaseline: sleepDeltaFromPersonal,
         ...calcDelta(currentCheckIn.recovery_sleep_hours, previousCheckIn.recovery_sleep_hours, false)
       },
       work_pressure_rating: {
@@ -331,6 +421,7 @@ const getWhatChanged = async (req, res, next) => {
       isCustomComparison: Boolean(targetId && String(previousCheckIn._id) !== String(checkIns[checkIns.length - 2]._id)),
       summary: summaryText,
       metrics,
+      personalBaseline,
       availableCheckIns,
       disclaimer: 'Observed differences represent factual variation between check-in inputs, not proof of individual causation.'
     });

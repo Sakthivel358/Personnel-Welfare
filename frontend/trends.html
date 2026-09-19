@@ -75,18 +75,26 @@
 
       <div class="page-container">
         <!-- Summary Stats Grid -->
-        <div class="grid-3 mb-3">
+        <div class="grid-5 mb-3" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
           <div class="card">
             <div class="text-muted" style="font-size:0.85rem;">Total Recorded Check-ins</div>
-            <h2 id="stat-total-checkins" style="font-size:2rem; margin-top:0.25rem;">0</h2>
+            <h2 id="stat-total-checkins" style="font-size:1.8rem; margin-top:0.25rem;">0</h2>
           </div>
           <div class="card">
             <div class="text-muted" style="font-size:0.85rem;">Average Risk Score</div>
-            <h2 id="stat-avg-score" style="font-size:2rem; margin-top:0.25rem;">0%</h2>
+            <h2 id="stat-avg-score" style="font-size:1.8rem; margin-top:0.25rem;">0%</h2>
           </div>
           <div class="card">
             <div class="text-muted" style="font-size:0.85rem;">Trajectory Velocity</div>
-            <h2 id="stat-trend-delta" style="font-size:2rem; margin-top:0.25rem;">Stable</h2>
+            <h2 id="stat-trend-delta" style="font-size:1.8rem; margin-top:0.25rem;">Stable</h2>
+          </div>
+          <div class="card" style="border-left: 3px solid #3b82f6;">
+            <div class="text-muted" style="font-size:0.85rem;">Your Normal Workload</div>
+            <h2 id="stat-normal-workload" style="font-size:1.8rem; margin-top:0.25rem;">-- hrs</h2>
+          </div>
+          <div class="card" style="border-left: 3px solid #10b981;">
+            <div class="text-muted" style="font-size:0.85rem;">Your Normal Rest</div>
+            <h2 id="stat-normal-sleep" style="font-size:1.8rem; margin-top:0.25rem;">-- hrs</h2>
           </div>
         </div>
 
@@ -171,7 +179,7 @@
         const res = await api.getPredictionHistory();
         if (res && res.success && res.data && res.data.length > 0) {
           rawHistory = res.data;
-          renderTrajectory(rawHistory);
+          renderTrajectory(rawHistory, res.personalBaseline);
           renderTable(rawHistory);
         } else {
           document.getElementById('trend-no-data').style.display = 'block';
@@ -190,8 +198,28 @@
       }
     }
 
-    function renderTrajectory(series) {
+    function renderTrajectory(series, baseline = null) {
       document.getElementById('stat-total-checkins').textContent = series.length;
+
+      if (baseline) {
+        if (baseline.avgWorkloadHours != null) {
+          document.getElementById('stat-normal-workload').textContent = `${baseline.avgWorkloadHours} hrs/wk`;
+        }
+        if (baseline.avgRecoverySleepHours != null) {
+          document.getElementById('stat-normal-sleep').textContent = `${baseline.avgRecoverySleepHours} hrs/day`;
+        }
+      } else if (series.length > 0) {
+        const wVals = series.map(s => s.workload_hours).filter(v => v != null && !isNaN(v) && v > 0);
+        if (wVals.length > 0) {
+          const wAvg = (wVals.reduce((a, b) => a + b, 0) / wVals.length).toFixed(1);
+          document.getElementById('stat-normal-workload').textContent = `${wAvg} hrs/wk`;
+        }
+        const sVals = series.map(s => s.recovery_sleep_hours).filter(v => v != null && !isNaN(v) && v > 0);
+        if (sVals.length > 0) {
+          const sAvg = (sVals.reduce((a, b) => a + b, 0) / sVals.length).toFixed(1);
+          document.getElementById('stat-normal-sleep').textContent = `${sAvg} hrs/day`;
+        }
+      }
 
       const avg = series.length > 0 ? (series.reduce((acc, cur) => acc + (cur.compositeRiskScore || 0), 0) / series.length) : 0;
       document.getElementById('stat-avg-score').textContent = `${Math.round(avg)}%`;

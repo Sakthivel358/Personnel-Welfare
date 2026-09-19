@@ -335,6 +335,47 @@ def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
             "is_risk_driver": duty_mult >= 3.0
         })
 
+    # 6. Personal Historical Baseline Deviation (Tasks 13 & 14)
+    p_workload_delta = checkin_data.get("personal_workload_delta")
+    if p_workload_delta is not None and float(p_workload_delta) > 5.0:
+        w_delta_val = float(p_workload_delta)
+        p_avg = checkin_data.get("personal_avg_workload") or 48.0
+        biometric_delta += min(12.0, (w_delta_val / 5.0) * 1.8)
+        extra_factors.append({
+            "feature_key": "personal_workload_surge",
+            "title": "Workload Surge vs Personal Baseline",
+            "description": f"Current duty is +{round(w_delta_val, 1)} hrs/wk above your normal pattern ({round(float(p_avg), 1)} hrs/wk avg)",
+            "user_value": round(w_delta_val, 1),
+            "unit": "hrs above normal",
+            "healthy_range": "Within ±3 hrs",
+            "baseline_mean": 0.0,
+            "importance_weight": 0.12,
+            "contribution_score": round(min(24.0, (w_delta_val / 5.0) * 8.0), 2),
+            "impact_level": "HIGH" if w_delta_val >= 10.0 else "MODERATE",
+            "status": "Acute Workload Surge",
+            "is_risk_driver": w_delta_val >= 8.0
+        })
+
+    p_sleep_delta = checkin_data.get("personal_sleep_delta")
+    if p_sleep_delta is not None and float(p_sleep_delta) < -1.0:
+        s_deficit_val = abs(float(p_sleep_delta))
+        p_sleep_avg = checkin_data.get("personal_avg_sleep") or 7.0
+        biometric_delta += min(10.0, s_deficit_val * 2.0)
+        extra_factors.append({
+            "feature_key": "personal_sleep_deficit",
+            "title": "Sleep Deficit vs Personal Baseline",
+            "description": f"Current sleep is {round(s_deficit_val, 1)} hrs/day below your normal rest ({round(float(p_sleep_avg), 1)} hrs/day avg)",
+            "user_value": round(s_deficit_val, 1),
+            "unit": "hrs below normal",
+            "healthy_range": "Within ±0.5 hrs",
+            "baseline_mean": 0.0,
+            "importance_weight": 0.11,
+            "contribution_score": round(min(22.0, s_deficit_val * 7.5), 2),
+            "impact_level": "HIGH" if s_deficit_val >= 2.0 else "MODERATE",
+            "status": "Acute Rest Deficit",
+            "is_risk_driver": s_deficit_val >= 1.5
+        })
+
     composite_risk_score = round(max(5.0, min(95.0, base_risk_score + biometric_delta)), 1)
     if composite_risk_score >= 66.0:
         concern_level = "HIGH"
