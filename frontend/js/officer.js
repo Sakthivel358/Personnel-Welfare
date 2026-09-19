@@ -330,3 +330,249 @@ async function loadPersonnelRoster() {
     console.error('Error loading roster:', err);
   }
 }
+
+// ==========================================
+// Personnel Welfare Search (Task Implementation)
+// ==========================================
+
+async function handlePersonnelSearch(event) {
+  if (event) event.preventDefault();
+
+  const input = document.getElementById('officer-personnel-search-input');
+  const query = (input ? input.value : '').trim();
+
+  const emptyEl = document.getElementById('search-state-empty');
+  const notFoundEl = document.getElementById('search-state-notfound');
+  const notFoundText = document.getElementById('search-notfound-text');
+  const loadingEl = document.getElementById('search-state-loading');
+  const resultsEl = document.getElementById('search-state-results');
+
+  if (!query) {
+    if (emptyEl) emptyEl.style.display = 'block';
+    if (notFoundEl) notFoundEl.style.display = 'none';
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (resultsEl) resultsEl.style.display = 'none';
+    if (typeof Utils !== 'undefined' && Utils.showToast) {
+      Utils.showToast('Please enter a Personnel or Service ID to search.', 'warning');
+    }
+    return;
+  }
+
+  // Set loading state
+  if (emptyEl) emptyEl.style.display = 'none';
+  if (notFoundEl) notFoundEl.style.display = 'none';
+  if (resultsEl) resultsEl.style.display = 'none';
+  if (loadingEl) loadingEl.style.display = 'block';
+
+  try {
+    const res = await api.searchOfficerPersonnel(query);
+
+    if (loadingEl) loadingEl.style.display = 'none';
+
+    if (!res || !res.success || !res.data || res.data.length === 0) {
+      if (notFoundEl) {
+        notFoundEl.style.display = 'block';
+        if (notFoundText) {
+          notFoundText.innerHTML = `No authorized personnel record matching <strong>"${Utils.sanitize(query)}"</strong> was found in the database. Please verify the service number or check with Unit Administration.`;
+        }
+      }
+      return;
+    }
+
+    // Render results
+    renderPersonnelSearchResults(res.data);
+
+  } catch (err) {
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (notFoundEl) {
+      notFoundEl.style.display = 'block';
+      if (notFoundText) {
+        notFoundText.textContent = `Search error: ${err.message || 'Unable to retrieve personnel records.'}`;
+      }
+    }
+    if (typeof Utils !== 'undefined' && Utils.showToast) {
+      Utils.showToast(`Search failed: ${err.message}`, 'danger');
+    }
+  }
+}
+
+function resetPersonnelSearch() {
+  const input = document.getElementById('officer-personnel-search-input');
+  if (input) input.value = '';
+
+  const emptyEl = document.getElementById('search-state-empty');
+  const notFoundEl = document.getElementById('search-state-notfound');
+  const loadingEl = document.getElementById('search-state-loading');
+  const resultsEl = document.getElementById('search-state-results');
+
+  if (emptyEl) emptyEl.style.display = 'block';
+  if (notFoundEl) notFoundEl.style.display = 'none';
+  if (loadingEl) loadingEl.style.display = 'none';
+  if (resultsEl) {
+    resultsEl.style.display = 'none';
+    resultsEl.innerHTML = '';
+  }
+}
+
+function renderPersonnelSearchResults(records) {
+  const resultsEl = document.getElementById('search-state-results');
+  if (!resultsEl) return;
+
+  resultsEl.innerHTML = records.map(p => {
+    const ws = p.welfareStatus || {};
+    const concernHtml = Utils.getWelfareConcernDisplay 
+      ? Utils.getWelfareConcernDisplay(ws.concernLevel) 
+      : Utils.getConcernBadge(ws.concernLevel);
+
+    const scoreDisplay = (ws.compositeRiskScore !== null && ws.compositeRiskScore !== undefined)
+      ? `${ws.compositeRiskScore} / 100`
+      : 'Unassessed';
+
+    const recentCheckin = ws.lastCheckinAt 
+      ? Utils.formatDate(ws.lastCheckinAt)
+      : 'No check-in on record';
+
+    const lastAnalyzed = ws.lastAnalyzedAt
+      ? Utils.formatDate(ws.lastAnalyzedAt)
+      : 'Unassessed';
+
+    const shiftDisplay = ws.recentDutyHours ? `${ws.recentDutyHours} hrs/shift` : 'Standard Rotation';
+    const weeklyDisplay = ws.recentWeeklyHours ? `${ws.recentWeeklyHours} hrs/wk` : 'Nominal';
+    const sleepDisplay = ws.recentSleepHours ? `${ws.recentSleepHours} hrs/night` : 'Not reported';
+    const hrvDisplay = ws.recentHrvMs ? `${ws.recentHrvMs} ms (HRV)` : 'Sensor Standby';
+    const hrDisplay = ws.recentHeartRate ? `${ws.recentHeartRate} BPM` : 'Sensor Standby';
+
+    return `
+      <div class="card mb-3" style="background: var(--bg-card-subtle); border: 1px solid var(--border-color); padding: 1.25rem; border-left: 4px solid var(--accent);">
+        <!-- Top Info Header -->
+        <div class="d-flex justify-between align-center flex-wrap gap-2 mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
+          <div class="d-flex align-center gap-2 flex-wrap">
+            <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem;">
+              ${(p.fullName || 'P').charAt(0)}
+            </div>
+            <div>
+              <div class="d-flex align-center gap-1 flex-wrap">
+                <h3 style="margin: 0; font-size: 1.15rem;">${Utils.sanitize(p.fullName)}</h3>
+                <span class="badge badge-primary" style="font-size: 0.78rem; font-weight: 700;">${Utils.sanitize(p.personnelId)}</span>
+                <span class="badge badge-neutral" style="font-size: 0.75rem;">${Utils.sanitize(p.rank)}</span>
+              </div>
+              <div class="text-muted" style="font-size: 0.82rem; margin-top: 2px;">
+                ${Utils.sanitize(p.unit)} • ${Utils.sanitize(p.deploymentZone)}
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-center gap-1 flex-wrap">
+            <span class="badge ${p.isEnrolledInWelfare ? 'badge-low' : 'badge-neutral'}" style="font-size: 0.78rem;">
+              ${p.isEnrolledInWelfare ? '✓ Enrolled in Welfare Program' : 'Standard Roster'}
+            </span>
+            ${ws.pendingAlertsCount > 0 ? `<span class="badge badge-high" style="font-size: 0.78rem;">⚠️ ${ws.pendingAlertsCount} Pending Alert(s)</span>` : `<span class="badge badge-low" style="font-size: 0.78rem;">0 Pending Alerts</span>`}
+          </div>
+        </div>
+
+        <!-- 3-Column Authorized Welfare Details -->
+        <div class="grid-3 mb-3">
+          <!-- Column 1: Operational Duty & Posting -->
+          <div class="card" style="background: var(--bg-card); padding: 1rem; border: 1px solid var(--border-color);">
+            <div style="font-weight: 700; font-size: 0.85rem; color: var(--accent); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em;">
+              🛡️ Operational Duty Posture
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem;">
+              <div><span class="text-muted">Watch Profile:</span> <strong>${Utils.sanitize(p.dutyType)}</strong></div>
+              <div><span class="text-muted">Rotation Schedule:</span> <strong>${Utils.sanitize(p.workSchedule)}</strong></div>
+              <div><span class="text-muted">Service Longevity:</span> <strong>${p.yearsOfService} Years</strong></div>
+              <div><span class="text-muted">Deployment Sector:</span> <strong>${Utils.sanitize(p.deploymentZone)}</strong></div>
+              <div><span class="text-muted">Preferred Support Lang:</span> <strong>${Utils.sanitize(p.preferredSupportLanguage)}</strong></div>
+            </div>
+          </div>
+
+          <!-- Column 2: Longitudinal AI Stress & Fatigue Profile -->
+          <div class="card" style="background: var(--bg-card); padding: 1rem; border: 1px solid var(--border-color);">
+            <div style="font-weight: 700; font-size: 0.85rem; color: var(--accent); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em;">
+              🧠 Welfare & Strain State
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem;">
+              <div class="d-flex align-center justify-between">
+                <span class="text-muted">Welfare Signal:</span> 
+                <span>${concernHtml}</span>
+              </div>
+              <div class="d-flex align-center justify-between">
+                <span class="text-muted">Composite Strain Index:</span> 
+                <strong>${scoreDisplay}</strong>
+              </div>
+              <div class="d-flex align-center justify-between">
+                <span class="text-muted">Evidence Fusion:</span> 
+                <span class="badge badge-neutral" style="font-size: 0.72rem;">${ws.evidenceStrength}</span>
+              </div>
+              <div><span class="text-muted">Active ML Model:</span> <strong>${ws.primaryPathway}</strong></div>
+              <div><span class="text-muted">Last Assessment:</span> <strong>${lastAnalyzed}</strong></div>
+            </div>
+          </div>
+
+          <!-- Column 3: Rest, Recovery & Biometric Telemetry -->
+          <div class="card" style="background: var(--bg-card); padding: 1rem; border: 1px solid var(--border-color);">
+            <div style="font-weight: 700; font-size: 0.85rem; color: var(--accent); margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em;">
+              🦺 Exposure & Recovery Metrics
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.82rem;">
+              <div><span class="text-muted">Shift Duration:</span> <strong>${shiftDisplay}</strong> (${weeklyDisplay})</div>
+              <div><span class="text-muted">Restorative Sleep:</span> <strong>${sleepDisplay}</strong></div>
+              <div><span class="text-muted">Autonomic Metrics:</span> <strong>${hrvDisplay}</strong> • <strong>${hrDisplay}</strong></div>
+              <div><span class="text-muted">Total Completed Check-ins:</span> <strong>${p.totalCheckinsCount} recorded</strong></div>
+              <div><span class="text-muted">Last Check-in Date:</span> <strong>${recentCheckin}</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Non-Punitive Legal Notice & Actions Footer -->
+        <div class="d-flex justify-between align-center flex-wrap gap-2 pt-2" style="border-top: 1px solid var(--border-color);">
+          <div class="text-muted" style="font-size: 0.76rem; max-width: 600px; line-height: 1.4;">
+            ⚖️ <strong>Strict Non-Punitive Mandate:</strong> Authorized database records are accessible exclusively for proactive supportive care and shift rotation. They cannot be cited in administrative actions or appraisal boards.
+          </div>
+          <div class="d-flex gap-1 flex-wrap align-center">
+            ${ws.pendingAlertsCount > 0 ? `
+              <button class="btn btn-sm btn-primary" onclick="filterAlertsByPersonnel('${p.personnelId}')">
+                Review Alerts (${ws.pendingAlertsCount}) &rarr;
+              </button>
+            ` : ''}
+            <button class="btn btn-sm btn-secondary" onclick="showTab('roster'); filterRosterTable('${p.personnelId}')">
+              View in Roster
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  resultsEl.style.display = 'block';
+}
+
+function filterAlertsByPersonnel(personnelId) {
+  showTab('dashboard');
+  const input = document.getElementById('filter-alert-status');
+  if (input) input.value = '';
+  if (activeAlerts && activeAlerts.length > 0) {
+    const filtered = activeAlerts.filter(a => (a.personnelId || '').toUpperCase() === personnelId.toUpperCase());
+    renderAlertsTable(filtered.length > 0 ? filtered : activeAlerts);
+    if (filtered.length > 0) {
+      Utils.showToast(`Filtered triage table to alerts for ${personnelId}.`, 'info');
+    }
+  }
+}
+
+function filterRosterTable(query) {
+  const q = (query || '').toUpperCase().trim();
+  const rows = document.querySelectorAll('#roster-table-body tr');
+  rows.forEach(r => {
+    if (!q) {
+      r.style.display = '';
+    } else {
+      const text = r.textContent.toUpperCase();
+      r.style.display = text.includes(q) ? '' : 'none';
+    }
+  });
+}
+
+window.handlePersonnelSearch = handlePersonnelSearch;
+window.resetPersonnelSearch = resetPersonnelSearch;
+window.filterAlertsByPersonnel = filterAlertsByPersonnel;
+window.filterRosterTable = filterRosterTable;

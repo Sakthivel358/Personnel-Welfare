@@ -674,6 +674,143 @@ const getPersonnelList = async (req, res, next) => {
   }
 };
 
+const searchPersonnel = async (req, res, next) => {
+  try {
+    const rawQuery = String(req.query.q || req.query.id || req.query.personnelId || '').trim();
+    if (!rawQuery) {
+      return res.status(200).json({
+        success: true,
+        count: 0,
+        data: [],
+        message: 'Please enter a Personnel or Service ID to search.'
+      });
+    }
+
+    const queryClean = rawQuery.toUpperCase();
+    const personnelRecords = await db.Personnel.find();
+    const users = await db.Users.find();
+
+    const userMap = {};
+    users.forEach(u => { userMap[String(u._id)] = u; });
+
+    // Filter matching personnel by personnelId (exact or prefix/substring) or fullName or email
+    const matches = personnelRecords.filter(p => {
+      const u = userMap[String(p.userId)] || {};
+      const pid = (p.personnelId || '').toUpperCase();
+      const fn = (p.fullName || u.fullName || '').toUpperCase();
+      const em = (u.email || '').toUpperCase();
+      return pid === queryClean || pid.includes(queryClean) || fn.includes(queryClean) || em.includes(queryClean);
+    });
+
+    if (matches.length === 0) {
+      return res.status(200).json({
+        success: true,
+        count: 0,
+        data: [],
+        query: rawQuery,
+        message: `No authorized personnel record matching "${rawQuery}" was found.`
+      });
+    }
+
+    // Retrieve rich welfare monitoring context from database
+    const allPredictions = await db.Predictions.find();
+    const allCheckIns = await db.CheckIns.find();
+    const allAlerts = await db.Alerts.find();
+
+    const results = matches.map(p => {
+      const u = userMap[String(p.userId)] || {};
+      const uidStr = String(p.userId);
+
+      // Latest prediction
+      const userPreds = allPredictions.filter(pr => String(pr.userId) === uidStr);
+      userPreds.sort((a, b) => new Date(b.analyzedAt || b.createdAt) - new Date(a.analyzedAt || a.createdAt));
+      const latestPred = userPreds[0] || null;
+
+      // User checkins
+      const userCheckins = allCheckIns.filter(c => String(c.userId) === uidStr);
+      userCheckins.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const latestCheckin = userCheckins[0] || null;
+
+      // Active alerts
+      const activeAlerts = allAlerts.filter(a => String(a.userId) === uidStr && a.status === 'PENDING_REVIEW');
+
+      return {
+        _id: p._id,
+        userId: p.userId,
+        personnelId: p.personnelId,
+        fullName: p.fullName || u.fullName || 'Personnel Member',
+        rank: p.rank || u.rank || 'Personnel',
+        unit: p.unit || u.unit || 'Operational Unit',
+        deploymentZone: p.deploymentZone || 'Field Sector',
+        yearsOfService: p.yearsOfService != null ? p.yearsOfService : 'N/A',
+        dutyType: p.dutyType || 'Active Duty',
+        workSchedule: p.workSchedule || 'Standard Rotation',
+        preferredSupportLanguage: p.preferredSupportLanguage || 'Hindi / English',
+        isEnrolledInWelfare: p.isEnrolledInWelfare !== false,
+        totalCheckinsCount: userCheckins.length,
+        privacyPreferences: p.privacyPreferences || {
+          shareWithWelfareOfficer: true,
+          anonymousAggregatedStats: true
+        },
+        welfareStatus: {
+          concernLevel: latestPred ? latestPred.concernLevel : 'UNASSESSED',
+          compositeRiskScore: latestPred ? latestPred.compositeRiskScore : null,
+          evidenceStrength: latestPred ? latestPred.evidenceStrength : 'INSUFFICIENT',
+          primaryPathway: latestPred ? (latestPred.primaryPathway || latestPred.modelPathways?.primaryModel || 'Model 1 (Wearable)') : 'N/A',
+          lastAnalyzedAt: latestPred ? (latestPred.analyzedAt || latestPred.createdAt) : null,
+          lastCheckinAt: latestCheckin ? latestCheckin.createdAt : null,
+          recentDutyHours: latestCheckin ? latestCheckin.shift_duration_hours : null,
+          recentWeeklyHours: latestCheckin ? latestCheckin.weekly_duty_hours : null,
+          recentSleepHours: latestCheckin ? latestCheckin.sleep_hours_per_night : null,
+          recentRecoveryPattern: latestCheckin ? latestCheckin.recovery_pattern : null,
+          recentHrvMs: latestCheckin ? latestCheckin.hrv_ms : null,
+          recentHeartRate: latestCheckin ? latestCheckin.resting_heart_rate : null,
+          recentFatigueStrain: latestCheckin ? latestCheckin.fatigue_physical_strain : null,
+          pendingAlertsCount: activeAlerts.length,
+          activeAlerts: activeAlerts.map(a => ({
+            _id: a._id,
+            alertType: a.alertType,
+            concernLevel: a.concernLevel,
+            triggerReason: a.triggerReason,
+            createdAt: a.createdAt
+          }))
+        }
+      };
+    });
+
+    // Audit log
+    if (typeof auditService !== 'undefined' && auditService.log) {
+      await auditService.log({
+        action: 'OFFICER_PERSONNEL_SEARCH',
+        userId: req.user._id,
+        personnelId: req.user.personnelId,
+        targetResource: 'Personnel',
+        ipAddress: req.ip,
+        details: { query: rawQuery, matchCount: results.length }
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      count: results.length,
+      data: results,
+      query: rawQuery
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getPersonnelById = async (req, res, next) => {
+  try {
+    const id = String(req.params.id || '').trim();
+    req.query.q = id;
+    return searchPersonnel(req, res, next);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getRosterOptimization = async (req, res, next) => {
   try {
     const personnel = await db.Personnel.find();
@@ -799,6 +936,8 @@ module.exports = {
   getAlertWorkflow,
   reviewAlert,
   getPersonnelList,
+  searchPersonnel,
+  getPersonnelById,
   getRosterOptimization,
   approveRosterPacing
 };

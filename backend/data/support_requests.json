@@ -423,5 +423,26 @@
     ],
     "createdAt": "2026-09-19T17:35:17.689Z",
     "updatedAt": "2026-09-19T17:35:17.689Z"
+  },
+  {
+    "_id": "851352f58b8d4503fbaa9982",
+    "referenceId": "ACT-4257",
+    "userId": "7991de6a6594734995d86d60",
+    "personnelId": "PERS_FIN_648501",
+    "requestType": "SUPPORT_SESSION",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: SUPPORT_SESSION. Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "1fbb0198d7e28afe47e0509d",
+    "resolutionNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T17:42:02.094Z",
+        "note": "Unit Welfare Officer initiated support action: SUPPORT_SESSION"
+      }
+    ],
+    "createdAt": "2026-09-19T17:42:02.094Z",
+    "updatedAt": "2026-09-19T17:42:02.094Z"
   }
 ]

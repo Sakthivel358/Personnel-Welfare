@@ -198,6 +198,11 @@ class APIClient {
     return this.request('/officer/personnel', { method: 'GET' });
   }
 
+  async searchOfficerPersonnel(query) {
+    const q = encodeURIComponent((query || '').trim());
+    return this.request(`/officer/personnel/search?q=${q}`, { method: 'GET' });
+  }
+
   async getRosterOptimization() {
     return this.request('/officer/roster-optimizer', { method: 'GET' });
   }

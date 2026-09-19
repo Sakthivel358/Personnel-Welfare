@@ -16,6 +16,8 @@ router.get('/alerts/:alertId/workflow', officerController.getAlertWorkflow);
 router.put('/alerts/:alertId/review', officerController.reviewAlert);
 router.post('/alerts/:alertId/review', officerController.reviewAlert);
 router.get('/personnel', officerController.getPersonnelList);
+router.get('/personnel/search', officerController.searchPersonnel);
+router.get('/personnel/:id', officerController.getPersonnelById);
 router.get('/roster-optimizer', officerController.getRosterOptimization);
 router.get('/roster-optimization', officerController.getRosterOptimization);
 router.post('/approve-pacing', officerController.approveRosterPacing);
