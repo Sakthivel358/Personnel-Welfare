@@ -143,7 +143,16 @@ class RecommendationService {
 
 
     // Determine primary action
-    if (concernLevel === 'HIGH') {
+    if (concernLevel === 'UNDETERMINED') {
+      primaryAction = 'Authorized evidence is currently insufficient to determine welfare concern reliably. Please sync your Smart Jacket sensor or complete the optional self-check.';
+      actionItems.length = 0; // Clear speculative items
+      actionItems.push({
+        category: 'Evidence Provision',
+        title: 'Synchronize Telemetry or Complete Self-Check',
+        description: 'To prevent inaccurate guessing, WelfareAI requires either authorized Smart Jacket sensor telemetry or a self-check questionnaire alongside operational duty context.',
+        priority: 'MEDIUM'
+      });
+    } else if (concernLevel === 'HIGH') {
       primaryAction = 'Elevated welfare strain detected. We recommend connecting with a designated Unit Welfare Officer for proactive support.';
     } else if (concernLevel === 'MODERATE') {
       primaryAction = 'Moderate strain signals identified. Review the personalized rest and workload guidance below.';

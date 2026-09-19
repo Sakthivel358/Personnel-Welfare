@@ -156,9 +156,43 @@ class MLClientService {
       features.fatigue_physical_strain != null
     );
 
-    if (hasWearable) {
-      // Task 17: Sensor prediction MUST strictly use Model 1 (Wearable + Operational RF).
-      // Under NO circumstances should sensor data be routed to the legacy PSS-10-trained model.
+    const hasPSS = features.pss_score !== undefined && features.pss_score !== null && !isNaN(Number(features.pss_score));
+
+    const hasWorkload = features.workload_hours != null || features.work_pressure_rating != null;
+    const hasDuty = features.prolonged_duty_hours != null || features.duty_duration_hours != null || features.night_duty_hours != null || features.shift_continuity_days != null || features.consecutive_duty_days != null || Boolean(features.duty_type);
+    const hasRest = features.recovery_sleep_hours != null || features.rest_interval_hours != null || Boolean(features.recovery_pattern);
+    const hasOperational = hasWorkload || hasDuty || hasRest;
+
+    // Pathway 4: Insufficient evidence -> UNDETERMINED
+    // "Never guess a welfare concern when evidence is insufficient."
+    if ((!hasWearable && !hasPSS) || !hasOperational) {
+      return this.synthesizeUndetermined(
+        features,
+        (!hasWearable && !hasPSS)
+          ? 'Neither wearable biometric telemetry nor PSS-10 self-check is available. Never guessing welfare concern when evidence is insufficient.'
+          : 'Operational duty and workload logs are absent. Welfare analysis requires operational context.'
+      );
+    }
+
+    // Pathway 3: Both wearable and PSS available -> Dual-Model consensus through Decision Layer
+    if (hasWearable && hasPSS) {
+      try {
+        const response = await this.client.post('/predict', features);
+        if (response.data && response.data.success) {
+          const resData = response.data.data;
+          if (!resData.decisionLayer) {
+            resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
+          }
+          return resData;
+        }
+      } catch (err) {
+        console.warn('[ML Client] Remote Dual-Model /predict call failed. Using Embedded Dual-Model Consensus. Error:', err.message);
+      }
+      return this.calculateEmbeddedDualModelPrediction(features);
+    }
+
+    // Pathway 1: Wearable + operational data available (no PSS) -> Model 1
+    if (hasWearable && !hasPSS) {
       try {
         const response = await this.client.post('/predict/model1', features);
         if (response.data && response.data.success) {
@@ -171,26 +205,27 @@ class MLClientService {
       } catch (err) {
         console.warn('[ML Client] Remote Model 1 call failed for sensor checkin. Using Embedded Model 1 Engine. Error:', err.message);
       }
-      // Strictly fall back to Embedded Model 1 (Wearable + Operational), NEVER the legacy PSS-10 model!
       return this.calculateEmbeddedPrediction(features);
     }
 
-    // For non-sensor check-ins (when wearable evidence is unavailable):
-    // Task 18: Fallback pathway is strictly Model 2 (PSS + Operational RF)
-    try {
-      const response = await this.client.post('/predict/model2', features);
-      if (response.data && response.data.success) {
-        const resData = response.data.data;
-        if (!resData.decisionLayer) {
-          resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
+    // Pathway 2: No wearable, but PSS-10 + operational data available -> Model 2
+    if (!hasWearable && hasPSS) {
+      try {
+        const response = await this.client.post('/predict/model2', features);
+        if (response.data && response.data.success) {
+          const resData = response.data.data;
+          if (!resData.decisionLayer) {
+            resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
+          }
+          return resData;
         }
-        return resData;
+      } catch (err) {
+        console.warn('[ML Client] Remote Model 2 call failed. Using Embedded Model 2 Engine. Error:', err.message);
       }
-    } catch (err) {
-      console.warn('[ML Client] Remote Model 2 call failed. Using Embedded Model 2 Engine. Error:', err.message);
+      return this.calculateEmbeddedPrediction(features);
     }
 
-    return this.calculateEmbeddedPrediction(features);
+    return this.synthesizeUndetermined(features, 'Evidence sufficiency criteria not met.');
   }
 
   calculateEmbeddedPrediction(checkinData) {
@@ -552,6 +587,99 @@ class MLClientService {
       evaluatedAt: new Date().toISOString(),
       decisionEngineVersion: 'v2.1.0-decision-layer'
     };
+  }
+
+  synthesizeUndetermined(features, reason) {
+    const defaultReason = reason || 'Insufficient authorized evidence to determine welfare concern reliably.';
+    const decisionLayer = {
+      welfareConcern: {
+        concernLevel: 'UNDETERMINED',
+        compositeRiskScore: null,
+        confidence: 0.0,
+        status: 'INSUFFICIENT_EVIDENCE',
+        modelUsed: 'NONE_INSUFFICIENT_EVIDENCE',
+        reason: defaultReason,
+        compoundStrainDetected: false
+      },
+      evidenceStrength: {
+        level: 'INSUFFICIENT',
+        score: 0.0,
+        sourcesCount: 0,
+        sources: [],
+        hasWearableTelemetry: false,
+        hasOperationalDuty: false,
+        hasRestRecovery: false,
+        hasSelfCheck: false,
+        summary: 'Evidence is insufficient to establish an authorized assessment. Assessment omitted to avoid arbitrary guessing.',
+        missingEvidence: ['Operational duty context or authorized biometrics / self-check']
+      },
+      mainContributors: [],
+      humanWelfareReview: {
+        requiresHumanReview: false,
+        priority: 'NONE',
+        status: 'MONITORING_ONLY',
+        reviewTriggers: [defaultReason],
+        recommendedOfficerAction: 'Encourage personnel to synchronize wearable Smart Jacket sensor or complete self-check questionnaire to provide sufficient authorized evidence.',
+        assignedRole: 'Unit Welfare Officer'
+      },
+      evaluatedAt: new Date().toISOString(),
+      decisionEngineVersion: 'v2.1.0-decision-layer'
+    };
+
+    return {
+      concernLevel: 'UNDETERMINED',
+      compositeRiskScore: null,
+      confidence: 0.0,
+      isUndetermined: true,
+      evidenceStrength: 'INSUFFICIENT',
+      evidenceStrengthScore: 0.0,
+      evidenceSources: [],
+      evidenceCount: 0,
+      topDrivers: [],
+      contributingFactors: [],
+      modelUsed: 'NONE_INSUFFICIENT_EVIDENCE',
+      requiresHumanReview: false,
+      humanReviewPriority: 'NONE',
+      decisionLayer,
+      analyzedAt: new Date().toISOString(),
+      disclaimer: 'EVIDENCE INSUFFICIENT: Never guess a welfare concern when evidence is insufficient. Check-in must include authorized operational data alongside either wearable sensor telemetry or self-check input.'
+    };
+  }
+
+  calculateEmbeddedDualModelPrediction(features) {
+    const m1 = this.calculateEmbeddedPrediction(features);
+    const m2Features = { ...features };
+    delete m2Features.resting_heart_rate;
+    delete m2Features.hrv_ms;
+    delete m2Features.respiration_rate;
+    delete m2Features.skin_temperature_c;
+    delete m2Features.fatigue_physical_strain;
+    delete m2Features.wearable_synced;
+    const m2 = this.calculateEmbeddedPrediction(m2Features);
+
+    const m1Score = m1.compositeRiskScore != null ? Number(m1.compositeRiskScore) : 20.0;
+    const m2Score = m2.compositeRiskScore != null ? Number(m2.compositeRiskScore) : 20.0;
+    const consensusScore = Number((m1Score * 0.55 + m2Score * 0.45).toFixed(1));
+
+    let consensusConcern = 'LOW';
+    if (consensusScore >= 65.0 || m1.concernLevel === 'HIGH' || m2.concernLevel === 'HIGH') {
+      consensusConcern = consensusScore >= 65.0 ? 'HIGH' : 'MODERATE';
+    } else if (consensusScore >= 38.0 || m1.concernLevel === 'MODERATE' || m2.concernLevel === 'MODERATE') {
+      consensusConcern = 'MODERATE';
+    }
+
+    const res = {
+      ...m1,
+      concernLevel: consensusConcern,
+      compositeRiskScore: consensusScore,
+      modelUsed: 'DUAL_MODEL_CONSENSUS',
+      modelsEvaluated: ['MODEL_1_WEARABLE_OPERATIONAL', 'MODEL_2_PSS_OPERATIONAL'],
+      disclaimer: 'DUAL-MODEL DECISION CONSENSUS: Evaluated across ML Model 1 (Wearable + Operational) and ML Model 2 (PSS-10 Fallback) through the WelfareAI Decision Layer.'
+    };
+    res.decisionLayer = this.synthesizeDecisionLayer(features, res);
+    res.evidenceStrength = 'HIGH';
+    res.evidenceStrengthScore = 0.95;
+    return res;
   }
 
   async checkHealth() {

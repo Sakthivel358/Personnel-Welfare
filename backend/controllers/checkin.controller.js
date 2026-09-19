@@ -253,28 +253,30 @@ const submitCheckIn = async (req, res, next) => {
     // 3. Persist StressPrediction Record
     const decisionLayer = mlPrediction.decisionLayer || null;
     const humanReview = decisionLayer ? decisionLayer.humanWelfareReview : null;
-    const isAlertGenerated = humanReview ? humanReview.requiresHumanReview : (mlPrediction.concernLevel === 'HIGH' || mlPrediction.compositeRiskScore >= 65);
+    const isUndetermined = mlPrediction.concernLevel === 'UNDETERMINED' || mlPrediction.isUndetermined;
+    const isAlertGenerated = !isUndetermined && (humanReview ? humanReview.requiresHumanReview : (mlPrediction.concernLevel === 'HIGH' || (mlPrediction.compositeRiskScore != null && mlPrediction.compositeRiskScore >= 65)));
 
     const newPrediction = await db.Predictions.create({
       userId: req.user._id,
       checkInId: newCheckIn._id,
       concernLevel: mlPrediction.concernLevel,
-      confidence: mlPrediction.confidence,
-      compositeRiskScore: mlPrediction.compositeRiskScore,
-      probabilities: mlPrediction.probabilities,
+      confidence: mlPrediction.confidence || 0.0,
+      compositeRiskScore: isUndetermined ? null : mlPrediction.compositeRiskScore,
+      isUndetermined: Boolean(isUndetermined),
+      probabilities: mlPrediction.probabilities || {},
       evidenceSources: mlPrediction.evidenceSources || evidenceSources,
       evidenceCount: (mlPrediction.evidenceSources || evidenceSources).length,
-      evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : (mlPrediction.evidenceStrength || 'MODERATE'),
-      evidenceStrengthScore: decisionLayer ? decisionLayer.evidenceStrength.score : (mlPrediction.evidenceStrengthScore || 0.6),
+      evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : (mlPrediction.evidenceStrength || (isUndetermined ? 'INSUFFICIENT' : 'MODERATE')),
+      evidenceStrengthScore: decisionLayer ? decisionLayer.evidenceStrength.score : (mlPrediction.evidenceStrengthScore || 0.0),
       decisionLayer: decisionLayer,
-      topDrivers: mlPrediction.topDrivers,
-      contributingFactors: mlPrediction.contributingFactors,
+      topDrivers: mlPrediction.topDrivers || [],
+      contributingFactors: mlPrediction.contributingFactors || [],
       modelUsed: mlPrediction.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
       modelVersion: mlPrediction.modelVersion,
       analyzedAt: mlPrediction.analyzedAt,
       isAlertGenerated: isAlertGenerated,
       requiresHumanReview: isAlertGenerated,
-      humanReviewPriority: humanReview ? humanReview.priority : (mlPrediction.compositeRiskScore >= 80 ? 'CRITICAL' : 'HIGH')
+      humanReviewPriority: isAlertGenerated ? (humanReview ? humanReview.priority : 'HIGH') : 'NONE'
     });
 
     // Link prediction ID back to check-in
@@ -342,7 +344,7 @@ const submitCheckIn = async (req, res, next) => {
       status: { $in: ['SCHEDULED', 'IN_PROGRESS'] }
     });
 
-    if (activeFollowUp) {
+    if (activeFollowUp && mlPrediction.compositeRiskScore != null) {
       let delta = 'STABLE';
       const initialScore = activeFollowUp.initialRiskScore != null ? Number(activeFollowUp.initialRiskScore) : mlPrediction.compositeRiskScore;
       if (mlPrediction.compositeRiskScore < (initialScore - 8)) {

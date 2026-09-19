@@ -592,9 +592,11 @@ def predict_model2_pss_operational(checkin_data: Dict[str, Any]) -> Dict[str, An
 
 def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Primary inference router:
-    - If wearable biometrics are present: strictly executes Model 1 (Wearable + Operational RF).
-    - If wearable biometrics are absent / insufficient: strictly executes Model 2 (PSS + Operational Fallback RF).
+    Model selection logic (Requirement 21):
+    1. Wearable + operational data available (no PSS) -> Model 1 (Wearable + Operational RF)
+    2. No wearable, but PSS-10 + operational data available -> Model 2 (PSS Fallback RF)
+    3. Both wearable and PSS available -> use available evidence from both models through the decision layer
+    4. Insufficient evidence -> UNDETERMINED. Never guess a welfare concern when evidence is insufficient.
     """
     has_wearable = bool(
         checkin_data.get("wearable_synced") or
@@ -605,12 +607,64 @@ def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
         checkin_data.get("fatigue_physical_strain") is not None
     )
 
-    if has_wearable:
-        # Sensor prediction MUST strictly use Model 1 (Wearable + Operational RF)
+    pss_val = checkin_data.get("pss_score")
+    has_pss = pss_val is not None and not (isinstance(pss_val, str) and pss_val.strip() == "")
+
+    # Check operational data presence (workload, duty, rest)
+    has_workload = checkin_data.get("workload_hours") is not None or checkin_data.get("work_pressure_rating") is not None
+    has_duty = (
+        checkin_data.get("prolonged_duty_hours") is not None or
+        checkin_data.get("duty_duration_hours") is not None or
+        checkin_data.get("night_duty_hours") is not None or
+        checkin_data.get("shift_continuity_days") is not None or
+        checkin_data.get("consecutive_duty_days") is not None or
+        bool(checkin_data.get("duty_type"))
+    )
+    has_rest = (
+        checkin_data.get("recovery_sleep_hours") is not None or
+        checkin_data.get("rest_interval_hours") is not None or
+        bool(checkin_data.get("recovery_pattern"))
+    )
+    has_operational = has_workload or has_duty or has_rest
+
+    # Rule 4: Insufficient evidence -> UNDETERMINED
+    # "Never guess a welfare concern when evidence is insufficient."
+    if not (has_wearable or has_pss):
+        missing = ["Wearable biometric telemetry (Smart Jacket) or PSS-10 self-check assessment"]
+        if not has_operational:
+            missing.append("Authorized operational duty/workload logs")
+        return WelfareAIDecisionLayer.evaluate_undetermined(
+            checkin_data,
+            reason="Neither wearable biometric telemetry nor PSS-10 self-check is available. Never guessing welfare concern when evidence is insufficient.",
+            missing_evidence=missing
+        )
+
+    if not has_operational:
+        return WelfareAIDecisionLayer.evaluate_undetermined(
+            checkin_data,
+            reason="Operational duty and workload logs are absent. Welfare analysis requires operational context.",
+            missing_evidence=["Operational duty hours, workload, or rest/recovery logs"]
+        )
+
+    # Rule 3: Both wearable and PSS available -> Dual-Model consensus through Decision Layer
+    if has_wearable and has_pss:
+        m1_result = predict_model1_wearable_operational(checkin_data)
+        m2_result = predict_model2_pss_operational(checkin_data)
+        return WelfareAIDecisionLayer.evaluate_dual_model(checkin_data, m1_result, m2_result)
+
+    # Rule 1: Wearable + operational data available (no PSS) -> Model 1
+    if has_wearable and not has_pss:
         return predict_model1_wearable_operational(checkin_data)
-    else:
-        # Fallback pathway when wearable evidence is unavailable: Model 2 (PSS + Operational RF)
+
+    # Rule 2: No wearable, but PSS-10 + operational data available -> Model 2
+    if not has_wearable and has_pss:
         return predict_model2_pss_operational(checkin_data)
+
+    # Default safety fallback
+    return WelfareAIDecisionLayer.evaluate_undetermined(
+        checkin_data,
+        reason="Evidence sufficiency verification could not be satisfied."
+    )
 
 def _predict_legacy_model(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     has_wearable = bool(

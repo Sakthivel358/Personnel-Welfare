@@ -55,18 +55,18 @@ class CheckInInput(BaseModel):
     pss_score: Optional[float] = Field(default=None, ge=0.0, le=40.0, description="Perceived Stress Scale score (0-40, optional)")
     
     # Source 2: Operational Workload
-    workload_hours: float = Field(..., ge=20.0, le=120.0, description="Weekly duty hours (20-120)")
-    work_pressure_rating: float = Field(..., ge=1.0, le=10.0, description="Subjective pressure rating (1-10)")
-    recent_trend_indicator: float = Field(default=0.0, ge=-10.0, le=10.0, description="Recent trend delta indicator (-10 to 10)")
+    workload_hours: Optional[float] = Field(default=None, ge=0.0, le=168.0, description="Weekly duty hours (0-168, optional)")
+    work_pressure_rating: Optional[float] = Field(default=None, ge=1.0, le=10.0, description="Subjective pressure rating (1-10, optional)")
+    recent_trend_indicator: Optional[float] = Field(default=0.0, ge=-10.0, le=10.0, description="Recent trend delta indicator (-10 to 10)")
     
     # Source 3: Rest & Recovery Patterns
-    recovery_sleep_hours: float = Field(..., ge=2.0, le=14.0, description="Daily sleep/rest hours (2-14)")
-    work_life_balance_rating: float = Field(default=5.0, ge=1.0, le=10.0, description="Work-life balance rating (1-10)")
+    recovery_sleep_hours: Optional[float] = Field(default=None, ge=0.0, le=24.0, description="Daily sleep/rest hours (0-24, optional)")
+    work_life_balance_rating: Optional[float] = Field(default=5.0, ge=1.0, le=10.0, description="Work-life balance rating (1-10)")
     recovery_pattern: Optional[str] = Field(default='CONTINUOUS', description="Recovery pattern (e.g. CONTINUOUS, FRAGMENTED, SLEEP_DEBT)")
     rest_interval_hours: Optional[float] = Field(default=8.0, ge=0.0, le=48.0, description="Unbroken rest interval between watches (hours)")
     
     # Source 1: Duty Exposure
-    shift_continuity_days: float = Field(default=0.0, ge=0.0, le=60.0, description="Consecutive shift duty days (0-60)")
+    shift_continuity_days: Optional[float] = Field(default=0.0, ge=0.0, le=60.0, description="Consecutive shift duty days (0-60)")
     prolonged_duty_hours: Optional[float] = Field(default=0.0, ge=0.0, le=48.0, description="Continuous uninterrupted shift duty (hours)")
     night_duty_hours: Optional[float] = Field(default=0.0, ge=0.0, le=80.0, description="Graveyard / night duty exposure in last 7 days (hours)")
     duty_type: Optional[str] = Field(default='Patrol & Active Security', description="Operational duty role or watch profile")
@@ -74,7 +74,7 @@ class CheckInInput(BaseModel):
     deploymentZone: Optional[str] = Field(default='Standard Field Deployment', description="Operational sector or terrain classification")
     
     # Source 4: Self-Check Additional
-    social_support_rating: float = Field(default=5.0, ge=1.0, le=10.0, description="Social & peer support rating (1-10)")
+    social_support_rating: Optional[float] = Field(default=5.0, ge=1.0, le=10.0, description="Social & peer support rating (1-10, optional)")
     
     # Source 5: Smart Jacket & Wearable Biometric Telemetry (Optional)
     resting_heart_rate: Optional[float] = Field(default=None, ge=40.0, le=180.0, description="Resting heart rate in bpm (40-180)")
@@ -492,9 +492,17 @@ async def get_decision_layer_info():
         "evidence_strength_levels": {
             "HIGH": "Score >= 0.75: Multi-source evidence with active continuous wearable biometrics + duty logs",
             "MODERATE": "Score >= 0.50: Authorized operational logs, rest records, and self-check input",
-            "EMERGING": "Score < 0.50: Preliminary evidence based on sparse or single-source parameters"
+            "EMERGING": "Score < 0.50: Preliminary evidence based on sparse or single-source parameters",
+            "INSUFFICIENT": "Score 0.0: Insufficient evidence; evaluation strictly marked UNDETERMINED"
         },
-        "review_priorities": ["CRITICAL", "HIGH", "ROUTINE", "STANDARD_MONITORING"]
+        "model_selection_logic": {
+            "pathway_1": "Wearable + operational data available -> Model 1 (Wearable + Operational RF)",
+            "pathway_2": "No wearable, but PSS-10 + operational data available -> Model 2 (PSS Fallback RF)",
+            "pathway_3": "Both wearable and PSS available -> Dual-Model consensus through WelfareAI Decision Layer",
+            "pathway_4": "Insufficient evidence -> UNDETERMINED (Never guess a welfare concern when evidence is insufficient)"
+        },
+        "zero_guessing_guarantee": True,
+        "review_priorities": ["CRITICAL", "HIGH", "ROUTINE", "STANDARD_MONITORING", "NONE"]
     }
 
 if __name__ == "__main__":

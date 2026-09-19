@@ -83,6 +83,200 @@ class WelfareAIDecisionLayer:
 
         return enriched_result
 
+    @classmethod
+    def evaluate_undetermined(
+        cls,
+        checkin_data: Dict[str, Any],
+        reason: str = "Insufficient authorized evidence to determine welfare concern reliably.",
+        missing_evidence: Optional[List[str]] = None
+    ) -> Dict[str, Any]:
+        """
+        Enforces the zero-guessing policy:
+        Never guess a welfare concern when evidence is insufficient.
+        """
+        if missing_evidence is None:
+            missing_evidence = ["Operational duty context or authorized biometrics / self-check"]
+
+        decision_layer_payload = {
+            "welfareConcern": {
+                "concernLevel": "UNDETERMINED",
+                "compositeRiskScore": None,
+                "confidence": 0.0,
+                "status": "INSUFFICIENT_EVIDENCE",
+                "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+                "reason": reason,
+                "compoundStrainDetected": False
+            },
+            "evidenceStrength": {
+                "level": "INSUFFICIENT",
+                "score": 0.0,
+                "sourcesCount": 0,
+                "sources": [],
+                "hasWearableTelemetry": False,
+                "hasOperationalDuty": False,
+                "hasRestRecovery": False,
+                "hasSelfCheck": False,
+                "summary": "Evidence is insufficient to establish an authorized assessment. Assessment omitted to avoid arbitrary guessing.",
+                "missingEvidence": missing_evidence
+            },
+            "mainContributors": [],
+            "humanWelfareReview": {
+                "requiresHumanReview": False,
+                "priority": "NONE",
+                "status": "MONITORING_ONLY",
+                "reviewTriggers": [reason],
+                "recommendedOfficerAction": "Encourage personnel to synchronize wearable Smart Jacket sensor or complete self-check questionnaire to provide sufficient authorized evidence.",
+                "assignedRole": "Unit Welfare Officer"
+            },
+            "evaluatedAt": datetime.now().isoformat(),
+            "decisionEngineVersion": "v2.1.0-decision-layer"
+        }
+
+        return {
+            "concernLevel": "UNDETERMINED",
+            "compositeRiskScore": None,
+            "confidence": 0.0,
+            "isUndetermined": True,
+            "evidenceStrength": "INSUFFICIENT",
+            "evidenceStrengthScore": 0.0,
+            "evidenceSources": [],
+            "evidenceCount": 0,
+            "topDrivers": [],
+            "contributingFactors": [],
+            "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+            "requiresHumanReview": False,
+            "humanReviewPriority": "NONE",
+            "decisionLayer": decision_layer_payload,
+            "analyzedAt": datetime.now().isoformat(),
+            "disclaimer": "EVIDENCE INSUFFICIENT: Never guess a welfare concern when evidence is insufficient. Check-in must include authorized operational data alongside either wearable sensor telemetry or self-check input."
+        }
+
+    @classmethod
+    def evaluate_dual_model(
+        cls,
+        checkin_data: Dict[str, Any],
+        m1_result: Dict[str, Any],
+        m2_result: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Pathway 3: Both wearable biometrics and PSS-10 self-check available.
+        Uses available evidence from both Model 1 and Model 2 through the WelfareAI Decision Layer.
+        Synthesizes objective biometric strain (Model 1) with subjective psychometric perception (Model 2).
+        """
+        # 1. Fuse Evidence Strength (5 authorized sources with verified biometrics + PSS-10)
+        evidence_strength = cls._compute_evidence_strength(checkin_data, m1_result)
+        evidence_strength["level"] = "HIGH"
+        evidence_strength["score"] = max(0.85, evidence_strength["score"])
+        evidence_strength["dualModelVerified"] = True
+        evidence_strength["summary"] = "Maximum multi-source evidence: verified wearable biometric telemetry, duty logs, workload, rest records, and PSS-10 self-check harmonized."
+
+        # 2. Harmonize Welfare Concern across Model 1 and Model 2
+        m1_score = float(m1_result.get("compositeRiskScore") or 20.0)
+        m2_score = float(m2_result.get("compositeRiskScore") or 20.0)
+        m1_concern = m1_result.get("concernLevel", "LOW")
+        m2_concern = m2_result.get("concernLevel", "LOW")
+
+        consensus_score = round(m1_score * 0.55 + m2_score * 0.45, 1)
+
+        if consensus_score >= 65.0 or m1_concern == "HIGH" or m2_concern == "HIGH":
+            consensus_concern = "HIGH" if (consensus_score >= 60.0 or (m1_concern == "HIGH" and m2_concern == "HIGH")) else "MODERATE"
+            if consensus_score >= 65.0:
+                consensus_concern = "HIGH"
+        elif consensus_score >= 38.0 or m1_concern == "MODERATE" or m2_concern == "MODERATE":
+            consensus_concern = "MODERATE"
+        else:
+            consensus_concern = "LOW"
+
+        # Check cross-modal discordance
+        discordance_detected = False
+        discordance_note = ""
+        if m1_concern == "HIGH" and m2_concern == "LOW":
+            discordance_detected = True
+            discordance_note = "Cross-modal discordance: Wearable sensors indicate high physical strain while self-check reported low stress (possible masked fatigue or high operational stoicism)."
+        elif m1_concern == "LOW" and m2_concern == "HIGH":
+            discordance_detected = True
+            discordance_note = "Cross-modal discordance: Self-check reports high perceived stress while resting biometrics remain within normal baseline (acute psychological tension or early cognitive load)."
+
+        p1 = m1_result.get("probabilities", {"LOW": 0.7, "MODERATE": 0.2, "HIGH": 0.1})
+        p2 = m2_result.get("probabilities", {"LOW": 0.7, "MODERATE": 0.2, "HIGH": 0.1})
+        blended_probs = {
+            "LOW": round(p1.get("LOW", 0.0) * 0.55 + p2.get("LOW", 0.0) * 0.45, 4),
+            "MODERATE": round(p1.get("MODERATE", 0.0) * 0.55 + p2.get("MODERATE", 0.0) * 0.45, 4),
+            "HIGH": round(p1.get("HIGH", 0.0) * 0.55 + p2.get("HIGH", 0.0) * 0.45, 4)
+        }
+
+        welfare_concern = {
+            "concernLevel": consensus_concern,
+            "rawModel1Concern": m1_concern,
+            "rawModel2Concern": m2_concern,
+            "compositeRiskScore": consensus_score,
+            "confidence": round(float(m1_result.get("confidence", 0.8) * 0.55 + m2_result.get("confidence", 0.8) * 0.45), 4),
+            "probabilities": blended_probs,
+            "modelUsed": "DUAL_MODEL_CONSENSUS",
+            "modelsEvaluated": ["MODEL_1_WEARABLE_OPERATIONAL", "MODEL_2_PSS_OPERATIONAL"],
+            "crossModalDiscordance": discordance_detected,
+            "discordanceNote": discordance_note,
+            "compoundStrainDetected": m1_result.get("decisionLayer", {}).get("welfareConcern", {}).get("compoundStrainDetected", False),
+            "status": "CRITICAL" if consensus_score >= 80 else ("ELEVATED" if consensus_score >= 60 else ("MODERATE" if consensus_score >= 40 else "BALANCED"))
+        }
+
+        # 3. Fuse Main Contributors
+        m1_factors = m1_result.get("decisionLayer", {}).get("mainContributors") or cls._extract_main_contributors(checkin_data, m1_result)
+        m2_factors = m2_result.get("decisionLayer", {}).get("mainContributors") or cls._extract_main_contributors(checkin_data, m2_result)
+
+        seen_keys = set()
+        fused_contributors = []
+        for f in m1_factors + m2_factors:
+            k = f.get("featureKey")
+            if k not in seen_keys:
+                seen_keys.add(k)
+                fused_contributors.append(f)
+
+        fused_contributors.sort(key=lambda x: x.get("contributionScore", 0.0), reverse=True)
+
+        # 4. Formulate Human Welfare Review
+        human_review = cls._formulate_human_welfare_review(
+            checkin_data, m1_result, welfare_concern, evidence_strength, fused_contributors
+        )
+
+        if discordance_detected:
+            human_review["requiresHumanReview"] = True
+            if human_review["priority"] == "STANDARD_MONITORING":
+                human_review["priority"] = "ROUTINE"
+            human_review["reviewTriggers"].append(discordance_note)
+            human_review["recommendedOfficerAction"] += f" Note: {discordance_note}"
+
+        decision_layer_payload = {
+            "welfareConcern": welfare_concern,
+            "evidenceStrength": evidence_strength,
+            "mainContributors": fused_contributors,
+            "humanWelfareReview": human_review,
+            "evaluatedAt": datetime.now().isoformat(),
+            "decisionEngineVersion": "v2.1.0-decision-layer"
+        }
+
+        all_sources = list(set(list(m1_result.get("evidenceSources", [])) + list(m2_result.get("evidenceSources", []))))
+
+        return {
+            "concernLevel": consensus_concern,
+            "compositeRiskScore": consensus_score,
+            "confidence": welfare_concern["confidence"],
+            "probabilities": blended_probs,
+            "modelUsed": "DUAL_MODEL_CONSENSUS",
+            "modelsEvaluated": ["MODEL_1_WEARABLE_OPERATIONAL", "MODEL_2_PSS_OPERATIONAL"],
+            "evidenceSources": all_sources,
+            "evidenceCount": len(all_sources),
+            "evidenceStrength": evidence_strength["level"],
+            "evidenceStrengthScore": evidence_strength["score"],
+            "topDrivers": [c["title"] for c in fused_contributors if c.get("isRiskDriver")][:3],
+            "contributingFactors": m1_result.get("contributingFactors", []),
+            "requiresHumanReview": human_review["requiresHumanReview"],
+            "humanReviewPriority": human_review["priority"],
+            "decisionLayer": decision_layer_payload,
+            "analyzedAt": datetime.now().isoformat(),
+            "disclaimer": "DUAL-MODEL DECISION CONSENSUS: Evaluated across ML Model 1 (Wearable + Operational) and ML Model 2 (PSS-10 Fallback) through the WelfareAI Decision Layer."
+        }
+
     @staticmethod
     def _compute_evidence_strength(checkin_data: Dict[str, Any], ml_result: Dict[str, Any]) -> Dict[str, Any]:
         """
