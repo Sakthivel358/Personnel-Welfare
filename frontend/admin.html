@@ -23,7 +23,7 @@
   <div class="app-layout">
     <aside class="app-sidebar">
       <div class="sidebar-header">
-        <div class="brand-icon" style="background: linear-gradient(135deg, #475569, #0f172a);">⚙️</div>
+        <div class="brand-icon" style="background-color: #334155;">⚙️</div>
         <div>
           <div class="sidebar-brand-title">WelfareAI</div>
           <div class="sidebar-brand-sub">Admin & Governance</div>
@@ -206,15 +206,15 @@
               <h3>Immutable Security Audit Trail</h3>
               <span class="badge badge-neutral">Recent 100 Events</span>
             </div>
-            <div style="overflow-x: auto;">
-              <table class="w-100" style="border-collapse: collapse; font-size: 0.85rem;">
+            <div class="table-responsive">
+              <table class="data-table">
                 <thead>
-                  <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                    <th style="padding: 0.75rem;">Timestamp</th>
-                    <th style="padding: 0.75rem;">Action</th>
-                    <th style="padding: 0.75rem;">Personnel ID</th>
-                    <th style="padding: 0.75rem;">Target</th>
-                    <th style="padding: 0.75rem;">IP Address</th>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Action</th>
+                    <th>Personnel ID</th>
+                    <th>Target</th>
+                    <th>IP Address</th>
                   </tr>
                 </thead>
                 <tbody id="audit-logs-table-body">
@@ -232,16 +232,16 @@
               <h3>Registered User Accounts</h3>
               <span class="badge badge-neutral">Role Governance</span>
             </div>
-            <div style="overflow-x: auto;">
-              <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+            <div class="table-responsive">
+              <table class="data-table">
                 <thead>
-                  <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                    <th style="padding: 0.75rem;">Personnel ID</th>
-                    <th style="padding: 0.75rem;">Full Name</th>
-                    <th style="padding: 0.75rem;">Official Email</th>
-                    <th style="padding: 0.75rem;">Assigned Role</th>
-                    <th style="padding: 0.75rem;">Unit / Rank</th>
-                    <th style="padding: 0.75rem;">Last Login</th>
+                  <tr>
+                    <th>Personnel ID</th>
+                    <th>Full Name</th>
+                    <th>Official Email</th>
+                    <th>Assigned Role</th>
+                    <th>Unit / Rank</th>
+                    <th>Last Login</th>
                   </tr>
                 </thead>
                 <tbody id="users-table-body">

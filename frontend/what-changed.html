@@ -69,8 +69,7 @@
       </header>
 
       <div class="page-container">
-        <!-- Summary Banner -->
-        <div class="card mb-3" style="background: linear-gradient(135deg, #1e3a8a, #1e293b); color: #fff;">
+        <div class="card mb-3" style="background-color: #0f172a; border: 1px solid #1e293b; color: #fff;">
           <div class="d-flex justify-between align-center mb-1">
             <h2>Recent Check-in Variation Breakdown</h2>
             <span class="badge badge-low" id="comparison-status-badge">Comparative Analysis</span>
@@ -119,16 +118,16 @@
             </div>
           </div>
 
-          <div style="overflow-x: auto;">
-            <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+          <div class="table-responsive">
+            <table class="data-table">
               <thead>
-                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                  <th style="padding: 0.75rem;">Observed Indicator</th>
-                  <th style="padding: 0.75rem;" id="col-prev-title">Selected Check-in</th>
-                  <th style="padding: 0.75rem;" id="col-curr-title">Current Check-in (Latest)</th>
-                  <th style="padding: 0.75rem;">Observed Delta</th>
-                  <th style="padding: 0.75rem;">Trend Direction</th>
-                  <th style="padding: 0.75rem;">Welfare Context</th>
+                <tr>
+                  <th>Observed Indicator</th>
+                  <th id="col-prev-title">Selected Check-in</th>
+                  <th id="col-curr-title">Current Check-in (Latest)</th>
+                  <th>Observed Delta</th>
+                  <th>Trend Direction</th>
+                  <th>Welfare Context</th>
                 </tr>
               </thead>
               <tbody id="comparison-table-body">

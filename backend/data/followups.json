@@ -342,14 +342,31 @@
     "userId": "b89451b0525f73ec0e2338ef",
     "personnelId": "CRPF-9042",
     "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
-    "status": "SCHEDULED",
+    "status": "CHECKIN_COMPLETED",
     "scheduledDate": "2026-09-22T16:16:09.959Z",
+    "initialRiskScore": 85.1,
+    "reAnalyzedRiskScore": 85.1,
+    "welfareDelta": "STABLE",
+    "officerNotes": "Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-19T16:16:09.965Z",
+    "updatedAt": "2026-09-19T16:39:15.328Z",
+    "completedAt": "2026-09-19T16:39:15.328Z"
+  },
+  {
+    "_id": "3977a373cc21e64b5395034e",
+    "alertId": "34cf9b14f35a936cd752de4b",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "status": "SCHEDULED",
+    "scheduledDate": "2026-09-22T16:41:30.453Z",
     "initialRiskScore": 85.1,
     "reAnalyzedRiskScore": null,
     "welfareDelta": "PENDING_DATA",
     "officerNotes": "Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
     "isNonPunitive": true,
-    "createdAt": "2026-09-19T16:16:09.965Z",
-    "updatedAt": "2026-09-19T16:16:09.965Z"
+    "createdAt": "2026-09-19T16:41:30.461Z",
+    "updatedAt": "2026-09-19T16:41:30.461Z"
   }
 ]

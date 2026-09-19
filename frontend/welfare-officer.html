@@ -25,7 +25,7 @@
     <!-- Officer Sidebar -->
     <aside class="app-sidebar">
       <div class="sidebar-header">
-        <div class="brand-icon" style="background: linear-gradient(135deg, #059669, #10b981);">🩺</div>
+        <div class="brand-icon" style="background-color: #059669;">🩺</div>
         <div>
           <div class="sidebar-brand-title">WelfareAI</div>
           <div class="sidebar-brand-sub">Welfare Intelligence</div>
@@ -114,8 +114,7 @@
           </div>
         </div>
 
-        <!-- Quick Access to Early Warning -->
-        <div class="card mb-3" style="background:linear-gradient(135deg, rgba(37,99,235,0.05), rgba(16,185,129,0.05)); border:1px solid var(--accent); padding:1rem 1.25rem;">
+        <div class="card mb-3" style="background-color: var(--bg-card-subtle); border: 1px solid var(--border-color); padding: 1rem 1.25rem;">
           <div class="d-flex justify-between align-center flex-wrap gap-1">
             <div>
               <strong>⚡ Proactive Welfare Early-Warning Center Available</strong>
@@ -145,16 +144,16 @@
                 </div>
               </div>
 
-              <div style="overflow-x: auto;">
-                <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+              <div class="table-responsive">
+                <table class="data-table">
                   <thead>
-                    <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                      <th style="padding: 0.75rem;">Personnel ID</th>
-                      <th style="padding: 0.75rem;">Name & Unit</th>
-                      <th style="padding: 0.75rem;">Priority</th>
-                      <th style="padding: 0.75rem;">Welfare Signal</th>
-                      <th style="padding: 0.75rem;">Review Status</th>
-                      <th style="padding: 0.75rem;">Action</th>
+                    <tr>
+                      <th>Personnel ID</th>
+                      <th>Name & Unit</th>
+                      <th>Priority</th>
+                      <th>Welfare Signal</th>
+                      <th>Review Status</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody id="alerts-table-body">
@@ -170,7 +169,7 @@
                 <h3>Risk Distribution</h3>
                 <span class="badge badge-neutral">Aggregated</span>
               </div>
-              <div style="height: 260px; position: relative;">
+              <div class="chart-container" style="height: 260px;">
                 <canvas id="risk-distribution-chart"></canvas>
               </div>
               <div class="text-muted text-center mt-2" style="font-size:0.8rem;">
@@ -182,7 +181,7 @@
 
         <!-- TAB: Early-Warning Center -->
         <div id="tab-earlywarning" class="officer-tab-content" style="display:none;">
-          <div class="card mb-3" style="background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff;">
+          <div class="card mb-3" style="background-color: #0f172a; border: 1px solid #1e293b; color: #fff;">
             <div class="d-flex justify-between align-center flex-wrap gap-1">
               <div>
                 <h2>⚡ Proactive Welfare Early-Warning Center</h2>
@@ -277,16 +276,16 @@
               <h3>Authorized Unit Personnel Roster</h3>
               <span class="badge badge-neutral">Roster View</span>
             </div>
-            <div style="overflow-x: auto;">
-              <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+            <div class="table-responsive">
+              <table class="data-table">
                 <thead>
-                  <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                    <th style="padding: 0.75rem;">Personnel ID</th>
-                    <th style="padding: 0.75rem;">Full Name</th>
-                    <th style="padding: 0.75rem;">Rank</th>
-                    <th style="padding: 0.75rem;">Unit</th>
-                    <th style="padding: 0.75rem;">Latest Signal</th>
-                    <th style="padding: 0.75rem;">Last Check-in</th>
+                  <tr>
+                    <th>Personnel ID</th>
+                    <th>Full Name</th>
+                    <th>Rank</th>
+                    <th>Unit</th>
+                    <th>Latest Signal</th>
+                    <th>Last Check-in</th>
                   </tr>
                 </thead>
                 <tbody id="roster-table-body">
@@ -299,7 +298,7 @@
 
         <!-- TAB 3: AI Roster Pacing & Shift Optimizer -->
         <div id="tab-optimizer" class="officer-tab-content" style="display:none;">
-          <div class="card mb-3" style="background: linear-gradient(135deg, rgba(37,99,235,0.08), rgba(16,185,129,0.08)); border: 1px solid rgba(37,99,235,0.25);">
+          <div class="card mb-3" style="background-color: var(--bg-card-subtle); border: 1px solid var(--border-color);">
             <div class="d-flex justify-between align-center flex-wrap gap-1">
               <div>
                 <h3>🛡️ AI Shift Pacing & Rest Rotation Optimizer</h3>
@@ -328,16 +327,16 @@
                 <p class="text-muted" style="font-size:0.85rem;">Tracking personnel recovery velocity across check-in cycles</p>
               </div>
             </div>
-            <div style="overflow-x: auto;">
-              <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+            <div class="table-responsive">
+              <table class="data-table">
                 <thead>
-                  <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                    <th style="padding: 0.75rem;">Personnel</th>
-                    <th style="padding: 0.75rem;">Scheduled Date</th>
-                    <th style="padding: 0.75rem;">Initial Risk Index</th>
-                    <th style="padding: 0.75rem;">Re-analyzed Index</th>
-                    <th style="padding: 0.75rem;">Welfare Trajectory</th>
-                    <th style="padding: 0.75rem;">Status</th>
+                  <tr>
+                    <th>Personnel</th>
+                    <th>Scheduled Date</th>
+                    <th>Initial Risk Index</th>
+                    <th>Re-analyzed Index</th>
+                    <th>Welfare Trajectory</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody id="followups-table-body">

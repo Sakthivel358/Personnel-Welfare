@@ -138,7 +138,7 @@ function updateUserUI(user) {
       // Update sidebar brand title/sub/icon
       document.querySelectorAll('.sidebar-header .brand-icon').forEach(icon => {
         icon.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
-        icon.style.background = 'linear-gradient(135deg, #059669, #10b981)';
+        icon.style.backgroundColor = '#059669';
       });
       document.querySelectorAll('.sidebar-brand-sub').forEach(sub => {
         sub.textContent = 'Welfare Intelligence';
@@ -230,15 +230,60 @@ function initTheme() {
   });
 }
 
-// Mobile sidebar toggle
+// Mobile sidebar drawer with backdrop overlay & touch dismissal
 function initSidebar() {
-  const mobileToggle = document.querySelector('.mobile-toggle');
+  const mobileToggles = document.querySelectorAll('.mobile-toggle');
   const sidebar = document.querySelector('.app-sidebar');
-  if (mobileToggle && sidebar) {
-    mobileToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-    });
+  if (!sidebar) return;
+
+  // Ensure backdrop exists
+  let backdrop = document.querySelector('.sidebar-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.className = 'sidebar-backdrop';
+    document.body.appendChild(backdrop);
   }
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  mobileToggles.forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (sidebar.classList.contains('open')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+  });
+
+  backdrop.addEventListener('click', closeSidebar);
+
+  // Close sidebar on navigation on mobile
+  sidebar.querySelectorAll('.menu-item a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 1024) {
+        closeSidebar();
+      }
+    });
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+      closeSidebar();
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

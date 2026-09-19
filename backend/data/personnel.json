@@ -2924,5 +2924,83 @@
     },
     "createdAt": "2026-09-19T16:16:40.937Z",
     "updatedAt": "2026-09-19T16:16:40.937Z"
+  },
+  {
+    "_id": "13c73143030ea61939d26ff6",
+    "userId": "45d909d97abbfda2668cf203",
+    "personnelId": "TEST_P_8138",
+    "fullName": "Test Personnel 8138",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:38:55.080Z",
+    "updatedAt": "2026-09-19T16:38:55.080Z"
+  },
+  {
+    "_id": "dbaaf22133cd296fcb601d9b",
+    "userId": "fa0654ac242a601d368a8425",
+    "personnelId": "TEST_ADM_8138",
+    "fullName": "Test Admin 8138",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:38:55.186Z",
+    "updatedAt": "2026-09-19T16:38:55.186Z"
+  },
+  {
+    "_id": "14bc8c8f117e2e6fe9dad621",
+    "userId": "860ac36ad3246a088a4b5819",
+    "personnelId": "TEST_WO_8138",
+    "fullName": "Test Officer 8138",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:38:55.288Z",
+    "updatedAt": "2026-09-19T16:38:55.288Z"
   }
 ]

@@ -126,7 +126,7 @@ async function openReviewModal(alertId) {
       ? st3.mainContributors.map(c => {
           const label = c.directionalTitle || c.title || c.factor || 'Operational factor';
           const isDriver = c.isRiskDriver || c.impactLevel === 'HIGH' || c.direction === 'UP';
-          return `<span class="badge" style="background:${isDriver ? 'rgba(239,68,68,0.12)' : 'rgba(59,130,246,0.12)'}; color:${isDriver ? '#ef4444' : '#3b82f6'}; border:1px solid ${isDriver ? 'rgba(239,68,68,0.25)' : 'rgba(59,130,246,0.25)'}; font-size:0.75rem; padding:3px 8px; font-weight:600;">${label}</span>`;
+          return `<span class="badge" style="background:${isDriver ? 'var(--risk-high-bg)' : 'var(--status-info-bg)'}; color:${isDriver ? 'var(--risk-high)' : 'var(--status-info)'}; border:1px solid ${isDriver ? 'var(--risk-high-border)' : 'var(--status-info-border)'}; font-size:0.75rem; padding:3px 8px; font-weight:600;">${label}</span>`;
         }).join(' ')
       : `<span class="text-muted" style="font-size:0.8rem;">Operating within normal baseline ranges</span>`;
 
@@ -136,7 +136,7 @@ async function openReviewModal(alertId) {
       const cats = st4.comparisonCategories;
       whatChangedHtml = `
         <div class="table-responsive mt-2">
-          <table class="table" style="font-size:0.8rem; margin-bottom:0;">
+          <table class="data-table" style="font-size:0.8rem; margin-bottom:0;">
             <thead>
               <tr style="background:var(--bg-card-subtle);">
                 <th style="padding:0.4rem 0.6rem;">Category</th>
@@ -149,7 +149,7 @@ async function openReviewModal(alertId) {
               ${['workload', 'rest', 'fatigue', 'stress_indicators'].map(k => {
                 const item = cats[k];
                 if (!item) return '';
-                const dirColor = (item.delta > 0 && k !== 'rest') || (item.delta < 0 && k === 'rest') ? '#ef4444' : '#10b981';
+                const dirColor = (item.delta > 0 && k !== 'rest') || (item.delta < 0 && k === 'rest') ? '#e11d48' : '#059669';
                 return `
                   <tr>
                     <td style="padding:0.4rem 0.6rem; font-weight:600;">${item.categoryName}</td>

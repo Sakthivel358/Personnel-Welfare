@@ -1,5 +1,6 @@
 /**
  * Chart.js Integration for WelfareAI Personnel Welfare System
+ * Clean, restrained enterprise charts with zero neon glow.
  */
 
 const ChartsManager = {
@@ -51,7 +52,7 @@ const ChartsManager = {
 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const textColor = isDark ? '#cbd5e1' : '#475569';
-    const gridColor = isDark ? '#334155' : '#e2e8f0';
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
 
     this.detailedTrendChartInstance = new Chart(ctx, {
       type: 'line',
@@ -62,26 +63,26 @@ const ChartsManager = {
             label: 'Welfare Risk Index (%)',
             data: riskScores,
             borderColor: '#2563eb',
-            backgroundColor: 'rgba(37, 99, 235, 0.12)',
-            borderWidth: 3,
+            backgroundColor: 'rgba(37, 99, 235, 0.08)',
+            borderWidth: 2.5,
             fill: true,
-            tension: 0.35,
+            tension: 0.3,
             pointBackgroundColor: '#2563eb',
-            pointRadius: sorted.length === 1 ? 7 : 5,
-            pointHoverRadius: 8
+            pointRadius: sorted.length === 1 ? 6 : 4,
+            pointHoverRadius: 7
           },
           {
             label: 'Normalized PSS Score (%)',
             data: pssScores,
-            borderColor: '#f59e0b',
-            backgroundColor: 'rgba(245, 158, 11, 0.05)',
+            borderColor: '#d97706',
+            backgroundColor: 'rgba(217, 119, 6, 0.04)',
             borderWidth: 2,
-            borderDash: [5, 5],
+            borderDash: [4, 4],
             fill: false,
-            tension: 0.35,
-            pointBackgroundColor: '#f59e0b',
-            pointRadius: sorted.length === 1 ? 6 : 4,
-            pointHoverRadius: 7
+            tension: 0.3,
+            pointBackgroundColor: '#d97706',
+            pointRadius: sorted.length === 1 ? 5 : 3.5,
+            pointHoverRadius: 6
           }
         ]
       },
@@ -92,24 +93,27 @@ const ChartsManager = {
           y: {
             min: 0,
             max: 100,
-            ticks: { color: textColor, stepSize: 20 },
+            ticks: { color: textColor, stepSize: 20, font: { size: 11 } },
             grid: { color: gridColor },
-            title: { display: true, text: 'Index / Normalized Score (0 - 100)', color: textColor }
+            title: { display: true, text: 'Index / Normalized Score (0 - 100)', color: textColor, font: { size: 11, weight: '600' } }
           },
           x: {
-            ticks: { color: textColor },
+            ticks: { color: textColor, font: { size: 11 } },
             grid: { color: gridColor }
           }
         },
         plugins: {
           legend: {
             position: 'top',
-            labels: { color: textColor, font: { weight: '600' }, padding: 12 }
+            labels: { color: textColor, font: { weight: '600', size: 12 }, padding: 12 }
           },
           tooltip: {
             backgroundColor: '#0f172a',
-            padding: 12,
-            titleFont: { size: 13, weight: 'bold' },
+            borderColor: '#1e293b',
+            borderWidth: 1,
+            padding: 10,
+            cornerRadius: 6,
+            titleFont: { size: 12, weight: 'bold' },
             bodyFont: { size: 12 }
           }
         }
@@ -132,7 +136,7 @@ const ChartsManager = {
 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const textColor = isDark ? '#cbd5e1' : '#475569';
-    const gridColor = isDark ? '#334155' : '#e2e8f0';
+    const gridColor = isDark ? '#1f2937' : '#e2e8f0';
 
     this.radarChartInstance = new Chart(ctx, {
       type: 'radar',
@@ -141,12 +145,12 @@ const ChartsManager = {
         datasets: [{
           label: 'Contributing Stress Signal (%)',
           data: dataValues,
-          backgroundColor: 'rgba(239, 68, 68, 0.2)',
-          borderColor: '#ef4444',
-          pointBackgroundColor: '#ef4444',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#ef4444',
+          backgroundColor: 'rgba(225, 29, 72, 0.1)',
+          borderColor: '#e11d48',
+          pointBackgroundColor: '#e11d48',
+          pointBorderColor: '#ffffff',
+          pointHoverBackgroundColor: '#ffffff',
+          pointHoverBorderColor: '#e11d48',
           borderWidth: 2
         }]
       },
@@ -157,12 +161,19 @@ const ChartsManager = {
           r: {
             angleLines: { color: gridColor },
             grid: { color: gridColor },
-            pointLabels: { color: textColor, font: { size: 11, weight: 'bold' } },
-            ticks: { color: textColor, backdropColor: 'transparent', min: 0, max: 100 }
+            pointLabels: { color: textColor, font: { size: 11, weight: '600' } },
+            ticks: { color: textColor, backdropColor: 'transparent', min: 0, max: 100, stepSize: 25, font: { size: 10 } }
           }
         },
         plugins: {
-          legend: { labels: { color: textColor } }
+          legend: { labels: { color: textColor, font: { size: 12, weight: '600' } } },
+          tooltip: {
+            backgroundColor: '#0f172a',
+            borderColor: '#1e293b',
+            borderWidth: 1,
+            padding: 10,
+            cornerRadius: 6
+          }
         }
       }
     });
@@ -182,17 +193,25 @@ const ChartsManager = {
         labels: ['Low / Baseline', 'Moderate Strain', 'High Welfare Concern'],
         datasets: [{
           data: [dist.LOW || 0, dist.MODERATE || 0, dist.HIGH || 0],
-          backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
-          borderWidth: 0
+          backgroundColor: ['#059669', '#d97706', '#e11d48'],
+          borderWidth: 2,
+          borderColor: document.documentElement.getAttribute('data-theme') === 'dark' ? '#111827' : '#ffffff'
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'bottom', labels: { padding: 15 } }
+          legend: { position: 'bottom', labels: { padding: 12, font: { size: 11, weight: '600' } } },
+          tooltip: {
+            backgroundColor: '#0f172a',
+            borderColor: '#1e293b',
+            borderWidth: 1,
+            padding: 10,
+            cornerRadius: 6
+          }
         },
-        cutout: '70%'
+        cutout: '72%'
       }
     });
   }

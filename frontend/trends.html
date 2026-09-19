@@ -113,7 +113,7 @@
               <a href="/what-changed.html" class="btn btn-sm btn-primary">Compare Details &rarr;</a>
             </div>
           </div>
-          <div style="height: 340px; position: relative;">
+          <div class="chart-container" style="height: 340px;">
             <canvas id="detailed-trend-chart"></canvas>
             <div id="trend-no-data" class="text-center text-muted" style="display:none; padding-top:6rem;">
               Complete at least 1 check-in to start graphing historical trends.
@@ -139,17 +139,17 @@
               <button class="btn btn-sm btn-secondary" onclick="exportHistoryCSV()">📥 Export CSV</button>
             </div>
           </div>
-          <div style="overflow-x: auto;">
-            <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+          <div class="table-responsive">
+            <table class="data-table">
               <thead>
-                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                  <th style="padding: 0.75rem;">Date & Time</th>
-                  <th style="padding: 0.75rem;">Concern Level</th>
-                  <th style="padding: 0.75rem;">Risk Index</th>
-                  <th style="padding: 0.75rem;">PSS Score</th>
-                  <th style="padding: 0.75rem;">Duty Hours</th>
-                  <th style="padding: 0.75rem;">Sleep Hours</th>
-                  <th style="padding: 0.75rem; text-align: right;">Actions</th>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Concern Level</th>
+                  <th>Risk Index</th>
+                  <th>PSS Score</th>
+                  <th>Duty Hours</th>
+                  <th>Sleep Hours</th>
+                  <th style="text-align: right;">Actions</th>
                 </tr>
               </thead>
               <tbody id="history-table-body">

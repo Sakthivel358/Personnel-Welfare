@@ -246,7 +246,7 @@
               <a href="/trends.html" class="btn btn-sm btn-secondary">Detailed Analytics &rarr;</a>
             </div>
           </div>
-          <div style="height: 280px; position: relative;">
+          <div class="chart-container" style="height: 280px;">
             <canvas id="dashboard-trend-chart"></canvas>
             <div id="trend-empty" class="text-center text-muted" style="display:none; padding-top:5rem;">
               Submit 2 or more check-ins to view continuous historical trajectory.
@@ -255,7 +255,7 @@
         </div>
 
         <!-- Tactical 4-4-4-4 Box-Breathing Decompression Widget -->
-        <div class="card mb-3" style="background: linear-gradient(135deg, rgba(30,58,138,0.06), rgba(16,185,129,0.06)); border: 1px solid rgba(37,99,235,0.25);">
+        <div class="card mb-3" style="background-color: var(--bg-card-subtle); border: 1px solid var(--border-color);">
           <div class="card-header d-flex justify-between align-center">
             <div>
               <h3 style="font-size: 1.05rem;">🧘 Tactical Box-Breathing Decompression (4-4-4-4 Cadence)</h3>
@@ -266,7 +266,7 @@
           <div class="d-flex align-center justify-between flex-wrap gap-2" style="padding: 0.5rem 0.5rem;">
             <div style="display: flex; align-items: center; gap: 1.5rem;" class="flex-wrap">
               <div id="breath-circle-wrapper" style="width: 100px; height: 100px; position: relative; display: flex; align-items: center; justify-content: center;">
-                <div id="breath-circle" style="width: 65px; height: 65px; border-radius: 50%; background: radial-gradient(circle, #2563eb 0%, #1e3a8a 100%); transition: all 4s ease-in-out; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(37,99,235,0.4); text-align: center; font-size: 0.78rem;">
+                <div id="breath-circle" style="width: 65px; height: 65px; border-radius: 50%; background-color: var(--primary); border: 2px solid var(--accent); transition: all 4s ease-in-out; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: var(--shadow-sm); text-align: center; font-size: 0.78rem;">
                   Ready
                 </div>
               </div>
@@ -649,7 +649,7 @@
       const circle = document.getElementById('breath-circle');
       circle.style.width = '65px';
       circle.style.height = '65px';
-      circle.style.background = 'radial-gradient(circle, #2563eb 0%, #1e3a8a 100%)';
+      circle.style.background = 'var(--primary)';
       circle.textContent = 'Ready';
     }
   </script>

@@ -4862,5 +4862,69 @@
     "isRead": false,
     "createdAt": "2026-09-19T16:16:41.031Z",
     "updatedAt": "2026-09-19T16:16:41.031Z"
+  },
+  {
+    "_id": "63d42a0f083250146827568d",
+    "userId": "45d909d97abbfda2668cf203",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T16:38:55.081Z",
+    "updatedAt": "2026-09-19T16:38:55.081Z"
+  },
+  {
+    "_id": "bb9c093e1a22e405616b68b9",
+    "userId": "fa0654ac242a601d368a8425",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T16:38:55.187Z",
+    "updatedAt": "2026-09-19T16:38:55.187Z"
+  },
+  {
+    "_id": "5aba3922fd32068e7b0438dd",
+    "userId": "860ac36ad3246a088a4b5819",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T16:38:55.289Z",
+    "updatedAt": "2026-09-19T16:38:55.289Z"
+  },
+  {
+    "_id": "a94c077d4b7509728d63ca32",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (↑ Fatigue indicators, ↓ Rest, ↑ Workload, ↑ Perceived Stress). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T16:39:15.327Z",
+    "updatedAt": "2026-09-19T16:39:15.327Z"
+  },
+  {
+    "_id": "7f383dbc10ae6c9bd47a7fdf",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Welfare Follow-up Scheduled",
+    "message": "Your Unit Welfare Officer has scheduled a supportive follow-up session. Please check your schedule.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/recovery-journey.html",
+    "createdAt": "2026-09-19T16:41:30.461Z",
+    "updatedAt": "2026-09-19T16:41:30.461Z"
+  },
+  {
+    "_id": "a00bd5cc94425630de9c24dd",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Received",
+    "message": "Your request (REQ-7200) for \"CONFIDENTIAL COUNSELING\" is logged. An authorized welfare officer will review it confidentially.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T16:41:30.470Z",
+    "updatedAt": "2026-09-19T16:41:30.470Z"
   }
 ]

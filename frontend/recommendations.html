@@ -197,7 +197,7 @@
         </div>
 
         <!-- 3.5 Tactical 4-4-4-4 Box-Breathing Decompression Widget -->
-        <div class="card mb-3" style="background: linear-gradient(135deg, rgba(30,58,138,0.06), rgba(16,185,129,0.06)); border: 1px solid rgba(37,99,235,0.25);">
+        <div class="card mb-3" style="background-color: var(--bg-card-subtle); border: 1px solid var(--border-color);">
           <div class="card-header d-flex justify-between align-center">
             <div>
               <h3 style="font-size: 1.05rem;">🧘 Tactical Box-Breathing Decompression (4-4-4-4 Cadence)</h3>
@@ -208,7 +208,7 @@
           <div class="d-flex align-center justify-between flex-wrap gap-2" style="padding: 0.5rem 0.5rem;">
             <div style="display: flex; align-items: center; gap: 1.5rem;" class="flex-wrap">
               <div id="breath-circle-wrapper" style="width: 100px; height: 100px; position: relative; display: flex; align-items: center; justify-content: center;">
-                <div id="breath-circle" style="width: 65px; height: 65px; border-radius: 50%; background: radial-gradient(circle, #2563eb 0%, #1e3a8a 100%); transition: all 4s ease-in-out; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 0 15px rgba(37,99,235,0.4); text-align: center; font-size: 0.78rem;">
+                <div id="breath-circle" style="width: 65px; height: 65px; border-radius: 50%; background-color: var(--primary); border: 2px solid var(--accent); transition: all 4s ease-in-out; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: var(--shadow-sm); text-align: center; font-size: 0.78rem;">
                   READY
                 </div>
               </div>
@@ -357,10 +357,10 @@
     let breathCycles = 0;
     const maxCycles = 4;
     const breathPhases = [
-      { text: 'INHALE', sub: 'Inhale deeply through nose (4s)', scale: '1.45', bg: 'radial-gradient(circle, #3b82f6 0%, #1d4ed8 100%)', badge: 'Inhaling' },
-      { text: 'HOLD', sub: 'Retain lungs full (4s)', scale: '1.45', bg: 'radial-gradient(circle, #0ea5e9 0%, #0284c7 100%)', badge: 'Holding Full' },
-      { text: 'EXHALE', sub: 'Exhale smoothly through mouth (4s)', scale: '1.0', bg: 'radial-gradient(circle, #10b981 0%, #047857 100%)', badge: 'Exhaling' },
-      { text: 'HOLD', sub: 'Rest lungs empty before next cycle (4s)', scale: '1.0', bg: 'radial-gradient(circle, #6366f1 0%, #4338ca 100%)', badge: 'Holding Empty' }
+      { text: 'INHALE', sub: 'Inhale deeply through nose (4s)', scale: '1.45', bg: '#1e3a8a', badge: 'Inhaling' },
+      { text: 'HOLD', sub: 'Retain lungs full (4s)', scale: '1.45', bg: '#0284c7', badge: 'Holding Full' },
+      { text: 'EXHALE', sub: 'Exhale smoothly through mouth (4s)', scale: '1.0', bg: '#059669', badge: 'Exhaling' },
+      { text: 'HOLD', sub: 'Rest lungs empty before next cycle (4s)', scale: '1.0', bg: '#4338ca', badge: 'Holding Empty' }
     ];
 
     function toggleBreathingGuide() {
@@ -408,7 +408,7 @@
           breathInterval = null;
           circle.textContent = 'RESTED';
           circle.style.transform = 'scale(1.1)';
-          circle.style.background = 'radial-gradient(circle, #10b981 0%, #059669 100%)';
+          circle.style.background = '#059669';
           instruction.textContent = 'Session Complete — Vagal Tone Restored!';
           subtext.textContent = 'Heart rate deceleration & stress relief achieved.';
           document.getElementById('breath-status-badge').textContent = '✓ Completed';
@@ -431,7 +431,7 @@
       const circle = document.getElementById('breath-circle');
       circle.textContent = 'READY';
       circle.style.transform = 'scale(1.0)';
-      circle.style.background = 'radial-gradient(circle, #2563eb 0%, #1e3a8a 100%)';
+      circle.style.background = '#1e3a8a';
       document.getElementById('breath-instruction').textContent = 'Click Start to begin 3-Min Reset';
       document.getElementById('breath-subtext').textContent = 'Lowers heart rate, stabilizes autonomic nervous system & cortisol.';
       document.getElementById('breath-cycles').textContent = '0 / 4';

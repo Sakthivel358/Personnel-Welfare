@@ -80,7 +80,7 @@
           </div>
         </div>
 
-        <div class="card mb-3" style="background: linear-gradient(135deg, #1e3a8a, #1e293b); color: #fff;">
+        <div class="card mb-3" style="background-color: #0f172a; border: 1px solid #1e293b; color: #fff;">
           <h2>Model-Derived Contributing Indicators</h2>
           <p style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.25rem;">
             Your current welfare signal reflects the combination of indicators submitted in your recent check-in compared against standard operational baseline distributions.
@@ -109,7 +109,7 @@
               <h3>Multi-Factor Stress Radar</h3>
               <span class="badge badge-neutral">Normalized Scale</span>
             </div>
-            <div style="height: 320px; position: relative;">
+            <div class="chart-container" style="height: 320px;">
               <canvas id="factor-radar-chart"></canvas>
             </div>
           </div>
@@ -132,16 +132,16 @@
             <h3>Detailed Parameter Analysis</h3>
             <span class="badge badge-neutral">Transparent ML Features</span>
           </div>
-          <div style="overflow-x: auto;">
-            <table class="w-100" style="border-collapse: collapse; font-size: 0.9rem;">
+          <div class="table-responsive">
+            <table class="data-table">
               <thead>
-                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
-                  <th style="padding: 0.75rem;">Factor / Variable</th>
-                  <th style="padding: 0.75rem;">Your Input</th>
-                  <th style="padding: 0.75rem;">Baseline Mean</th>
-                  <th style="padding: 0.75rem;">Healthy Range</th>
-                  <th style="padding: 0.75rem;">Model Weight</th>
-                  <th style="padding: 0.75rem;">Status</th>
+                <tr>
+                  <th>Factor / Variable</th>
+                  <th>Your Input</th>
+                  <th>Baseline Mean</th>
+                  <th>Healthy Range</th>
+                  <th>Model Weight</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody id="factors-table-body">
