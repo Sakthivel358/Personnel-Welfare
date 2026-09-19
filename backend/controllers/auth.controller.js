@@ -177,16 +177,17 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { identifier, password, rememberMe } = req.body;
+    const rawIdentifier = req.body.identifier || req.body.personnelId || req.body.email;
+    const { password, rememberMe } = req.body;
 
-    if (!identifier || !password) {
+    if (!rawIdentifier || !password) {
       return res.status(400).json({
         success: false,
         message: 'Please provide both your Personnel ID/Email and Password.'
       });
     }
 
-    const cleanIdentifier = identifier.trim();
+    const cleanIdentifier = String(rawIdentifier).trim();
 
     // Query user by personnelId OR email (case insensitive)
     const user = await db.Users.findOne({

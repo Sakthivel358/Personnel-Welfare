@@ -294,5 +294,134 @@
     ],
     "createdAt": "2026-09-19T16:41:30.470Z",
     "updatedAt": "2026-09-19T16:41:30.470Z"
+  },
+  {
+    "_id": "4074b40ec511f809249a7034",
+    "referenceId": "ACT-7448",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "REST_RECOVERY",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: REST_RECOVERY. Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "resolutionNotes": "Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T16:56:42.247Z",
+        "note": "Unit Welfare Officer initiated support action: REST_RECOVERY"
+      }
+    ],
+    "createdAt": "2026-09-19T16:56:42.247Z",
+    "updatedAt": "2026-09-19T16:56:42.247Z"
+  },
+  {
+    "_id": "451f930582032fba27edefc8",
+    "referenceId": "ACT-3983",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "MANDATORY_REST_PERIOD",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: MANDATORY_REST_PERIOD. Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "resolutionNotes": "Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T16:56:51.002Z",
+        "note": "Unit Welfare Officer initiated support action: MANDATORY_REST_PERIOD"
+      }
+    ],
+    "createdAt": "2026-09-19T16:56:51.002Z",
+    "updatedAt": "2026-09-19T16:56:51.002Z"
+  },
+  {
+    "_id": "4dea37ec9b15030da0d2b138",
+    "referenceId": "REQ-4332",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "CONFIDENTIAL_COUNSELING",
+    "urgency": "PRIORITY",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "preferredTime": "ANYTIME",
+    "notes": "Voluntary self-request for stress decompression consultation.",
+    "status": "SUBMITTED",
+    "personnelConcernLevel": "HIGH",
+    "isSelfRequested": true,
+    "accessibleRegardlessOfConcern": true,
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-19T16:56:51.017Z",
+        "note": "Request received and logged confidentially. Unit Welfare Officer notified."
+      }
+    ],
+    "createdAt": "2026-09-19T16:56:51.017Z",
+    "updatedAt": "2026-09-19T16:56:51.017Z"
+  },
+  {
+    "_id": "c76fb8c472c16d37a5c696c9",
+    "referenceId": "ACT-5663",
+    "userId": "8fc4083126d56c0eda88a856",
+    "personnelId": "PERS_FIN_360989",
+    "requestType": "SUPPORT_SESSION",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: SUPPORT_SESSION. Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "dfb4e75ec8fe1faf258a9ecf",
+    "resolutionNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T17:15:06.891Z",
+        "note": "Unit Welfare Officer initiated support action: SUPPORT_SESSION"
+      }
+    ],
+    "createdAt": "2026-09-19T17:15:06.891Z",
+    "updatedAt": "2026-09-19T17:15:06.891Z"
+  },
+  {
+    "_id": "22dabf3adec5a59667b03c16",
+    "referenceId": "ACT-6085",
+    "userId": "5d591bd8bdaeaace68ade02e",
+    "personnelId": "PERS_FIN_601958",
+    "requestType": "SUPPORT_SESSION",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: SUPPORT_SESSION. Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "688db773d4bc39b4a3a5a0d7",
+    "resolutionNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T17:16:00.788Z",
+        "note": "Unit Welfare Officer initiated support action: SUPPORT_SESSION"
+      }
+    ],
+    "createdAt": "2026-09-19T17:16:00.788Z",
+    "updatedAt": "2026-09-19T17:16:00.788Z"
+  },
+  {
+    "_id": "84587767669d4327cfd6a9f9",
+    "referenceId": "ACT-1256",
+    "userId": "ad7744fe5c5ae0f34603b7fd",
+    "personnelId": "PERS_FIN_257435",
+    "requestType": "SUPPORT_SESSION",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: SUPPORT_SESSION. Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "dc98fd09da4c36ca0e33dfbc",
+    "resolutionNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T17:35:17.689Z",
+        "note": "Unit Welfare Officer initiated support action: SUPPORT_SESSION"
+      }
+    ],
+    "createdAt": "2026-09-19T17:35:17.689Z",
+    "updatedAt": "2026-09-19T17:35:17.689Z"
   }
 ]

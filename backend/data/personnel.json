@@ -3002,5 +3002,1429 @@
     },
     "createdAt": "2026-09-19T16:38:55.288Z",
     "updatedAt": "2026-09-19T16:38:55.288Z"
+  },
+  {
+    "_id": "82ce9d0116bcd68fd1908ff2",
+    "userId": "da7b23939af6dee926c8230c",
+    "personnelId": "ROGUE_ADM_920660",
+    "fullName": "Rogue Escalation 920660",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:20.783Z",
+    "updatedAt": "2026-09-19T16:54:20.783Z"
+  },
+  {
+    "_id": "049f413b1246713336b4bb18",
+    "userId": "6a734b71115249041a5024ed",
+    "personnelId": "SECURE_ADM_920660",
+    "fullName": "Authorized Administrator 920660",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:20.927Z",
+    "updatedAt": "2026-09-19T16:54:20.927Z"
+  },
+  {
+    "_id": "97e0f54e55d4f690ff50f2f0",
+    "userId": "68023a2ba8172a290a6fac7a",
+    "personnelId": "TEST_WO_920660",
+    "fullName": "Unit Welfare Officer 920660",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:21.051Z",
+    "updatedAt": "2026-09-19T16:54:21.051Z"
+  },
+  {
+    "_id": "2ac521f0e28e4f858faff775",
+    "userId": "182338a68c8781101b1bea37",
+    "personnelId": "PERS_CUST_920660",
+    "fullName": "Captain Rajesh Varma",
+    "rank": "Captain",
+    "unit": "84th Mountain Brigade (Leh Sector)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:21.181Z",
+    "updatedAt": "2026-09-19T16:54:21.181Z"
+  },
+  {
+    "_id": "d89479bdc599d0870ce22a95",
+    "userId": "dc6625f7fe912d33d6d9b068",
+    "personnelId": "PERS_B_920660",
+    "fullName": "Constable Suresh Patel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:21.522Z",
+    "updatedAt": "2026-09-19T16:54:21.522Z"
+  },
+  {
+    "_id": "f9c8d5093e8760f0f85ecc2c",
+    "userId": "cf0478f9fde0f6c7cc1ec253",
+    "personnelId": "TEST_P_9058",
+    "fullName": "Test Personnel 9058",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:32.046Z",
+    "updatedAt": "2026-09-19T16:54:32.046Z"
+  },
+  {
+    "_id": "ba892d7156b8e70f4115aacf",
+    "userId": "ba8e12dba986b53608d90950",
+    "personnelId": "TEST_ADM_9058",
+    "fullName": "Test Admin 9058",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:32.172Z",
+    "updatedAt": "2026-09-19T16:54:32.172Z"
+  },
+  {
+    "_id": "cf2dd0c62c99f6920b9dda1e",
+    "userId": "74839d2ee7a161d6ce7650c6",
+    "personnelId": "TEST_WO_9058",
+    "fullName": "Test Officer 9058",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T16:54:32.292Z",
+    "updatedAt": "2026-09-19T16:54:32.292Z"
+  },
+  {
+    "_id": "948c5efd4d06962109b6e6d0",
+    "userId": "93adcebbe05187b2b9e41338",
+    "personnelId": "PERS-DEC-5622",
+    "fullName": "Subedar Decision Tester",
+    "rank": "Subedar",
+    "unit": "1st Mechanized Division",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:01:15.685Z",
+    "updatedAt": "2026-09-19T17:01:15.685Z"
+  },
+  {
+    "_id": "d210463af58d15ad3b49bf45",
+    "userId": "1c6ed687a1a4128f58563c73",
+    "personnelId": "ZERO283530",
+    "fullName": "Havildar Zero Checkins",
+    "rank": "Havildar",
+    "unit": "10 Para SF",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:01:23.639Z",
+    "updatedAt": "2026-09-19T17:01:23.639Z"
+  },
+  {
+    "_id": "393e2ecb740f6d8370d4ef43",
+    "userId": "f89c28698987f20a31735dd1",
+    "personnelId": "INSUF283530",
+    "fullName": "Subedar Insufficient Tester",
+    "rank": "Subedar",
+    "unit": "15 Kumaon",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:01:23.961Z",
+    "updatedAt": "2026-09-19T17:01:23.961Z"
+  },
+  {
+    "_id": "538b85807c87a971abe18f59",
+    "userId": "5ba9e4bfcb05a279950504cb",
+    "personnelId": "CRPF-1789837289930",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Head Constable",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:01:30.018Z",
+    "updatedAt": "2026-09-19T17:01:30.018Z"
+  },
+  {
+    "_id": "2e3f268c14df270403146485",
+    "userId": "eca883d1db50524ca5f3aef9",
+    "personnelId": "CRPF-1789837735261",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Head Constable",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:08:55.327Z",
+    "updatedAt": "2026-09-19T17:08:55.327Z"
+  },
+  {
+    "_id": "677bf2b7605b48bfe12edddc",
+    "userId": "f28ffd01d06e7cbd08fd753a",
+    "personnelId": "CRPF-M2-4118",
+    "fullName": "Constable Rajesh Rao",
+    "rank": "Constable",
+    "unit": "CRPF Battalion 104",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:09:04.180Z",
+    "updatedAt": "2026-09-19T17:09:04.180Z"
+  },
+  {
+    "_id": "76ccea46693b8dc41c94d00c",
+    "userId": "706f130fee1e075f952dd788",
+    "personnelId": "EXP809675",
+    "fullName": "Subedar Explainability Spec",
+    "rank": "Subedar",
+    "unit": "15 Kumaon",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:10:09.782Z",
+    "updatedAt": "2026-09-19T17:10:09.782Z"
+  },
+  {
+    "_id": "d052f374e7578fbe42ceb110",
+    "userId": "c877be4965e9e2991d22c78e",
+    "personnelId": "PERS_FIN_908068",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:10:50.879Z",
+    "updatedAt": "2026-09-19T17:10:51.282Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "f1adfbe019639d704047f73f",
+    "userId": "090789b9a691ab745059abd1",
+    "personnelId": "TEST_WO_908068",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:10:50.970Z",
+    "updatedAt": "2026-09-19T17:10:50.970Z"
+  },
+  {
+    "_id": "95849aa7cad9d48fd807a750",
+    "userId": "a7b47dcac680ab7fd6d05064",
+    "personnelId": "ADM_FIN_908068",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:10:51.061Z",
+    "updatedAt": "2026-09-19T17:10:51.061Z"
+  },
+  {
+    "_id": "4ac0a20fda368ed267b6d191",
+    "userId": "1c982fba827c18db419cb60f",
+    "personnelId": "TEMP_LO_908068",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:10:51.240Z",
+    "updatedAt": "2026-09-19T17:10:51.240Z"
+  },
+  {
+    "_id": "9265df16ca1dd28057ceab95",
+    "userId": "262ef793104016199c4ea34d",
+    "personnelId": "PERS_FIN_483963",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:20.918Z",
+    "updatedAt": "2026-09-19T17:11:21.210Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "b12f60e6773026843099cf8c",
+    "userId": "52dbcbf9138170ac6189df79",
+    "personnelId": "TEST_WO_483963",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:20.985Z",
+    "updatedAt": "2026-09-19T17:11:20.985Z"
+  },
+  {
+    "_id": "af8a518422b1971e3c1b3833",
+    "userId": "898fc7c5aeea7dbf750f3e28",
+    "personnelId": "ADM_FIN_483963",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:21.052Z",
+    "updatedAt": "2026-09-19T17:11:21.052Z"
+  },
+  {
+    "_id": "06e50bd429252557110cff26",
+    "userId": "1af29d44d1d2daad410b7300",
+    "personnelId": "TEMP_LO_483963",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:21.186Z",
+    "updatedAt": "2026-09-19T17:11:21.186Z"
+  },
+  {
+    "_id": "b8864206349104e1ced4319c",
+    "userId": "1ff05652096510e3c0cbc4df",
+    "personnelId": "PERS_FIN_674441",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:47.612Z",
+    "updatedAt": "2026-09-19T17:11:47.905Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "035e0596903299223d1e558d",
+    "userId": "cb3f34f8b8ce44b600358178",
+    "personnelId": "TEST_WO_674441",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:47.684Z",
+    "updatedAt": "2026-09-19T17:11:47.684Z"
+  },
+  {
+    "_id": "93fb0097dea9db2dd4a15bf9",
+    "userId": "6c3a207a52c656df968d5c40",
+    "personnelId": "ADM_FIN_674441",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:47.755Z",
+    "updatedAt": "2026-09-19T17:11:47.755Z"
+  },
+  {
+    "_id": "21bad4222db8b6bec5e55be5",
+    "userId": "5dab2a04a75dcdaf25f64a78",
+    "personnelId": "TEMP_LO_674441",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:11:47.881Z",
+    "updatedAt": "2026-09-19T17:11:47.881Z"
+  },
+  {
+    "_id": "04181d4e54798d101e87c094",
+    "userId": "a1728b60d36832c2d877e7e8",
+    "personnelId": "PERS_FIN_414882",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:12:07.140Z",
+    "updatedAt": "2026-09-19T17:12:07.445Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "3fb106779d91432a66530ead",
+    "userId": "b060e85a0537f644f6b9ce13",
+    "personnelId": "TEST_WO_414882",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:12:07.220Z",
+    "updatedAt": "2026-09-19T17:12:07.220Z"
+  },
+  {
+    "_id": "0b3ca88c4ad30cc72891d5a5",
+    "userId": "0e2ca7edd80f755f7ca76168",
+    "personnelId": "ADM_FIN_414882",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:12:07.288Z",
+    "updatedAt": "2026-09-19T17:12:07.288Z"
+  },
+  {
+    "_id": "11f02743ee6eb4fe5126c53e",
+    "userId": "67bfb4d11ecf8b027978b06f",
+    "personnelId": "TEMP_LO_414882",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:12:07.417Z",
+    "updatedAt": "2026-09-19T17:12:07.417Z"
+  },
+  {
+    "_id": "542308cb767eaf1754ca0e24",
+    "userId": "8fc4083126d56c0eda88a856",
+    "personnelId": "PERS_FIN_360989",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:15:06.369Z",
+    "updatedAt": "2026-09-19T17:15:06.660Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "24623460d0b8a004f1292e08",
+    "userId": "dfb4e75ec8fe1faf258a9ecf",
+    "personnelId": "TEST_WO_360989",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:15:06.438Z",
+    "updatedAt": "2026-09-19T17:15:06.438Z"
+  },
+  {
+    "_id": "4c6c160e1095074456786f1a",
+    "userId": "9efd3d3c5b9264d894da1059",
+    "personnelId": "ADM_FIN_360989",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:15:06.505Z",
+    "updatedAt": "2026-09-19T17:15:06.505Z"
+  },
+  {
+    "_id": "a06bd2de55c93613c16c5182",
+    "userId": "f97a6736c4ee3c3ffbacebfa",
+    "personnelId": "TEMP_LO_360989",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:15:06.634Z",
+    "updatedAt": "2026-09-19T17:15:06.634Z"
+  },
+  {
+    "_id": "717e25f114cfe619ce1d560d",
+    "userId": "5d591bd8bdaeaace68ade02e",
+    "personnelId": "PERS_FIN_601958",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:00.158Z",
+    "updatedAt": "2026-09-19T17:16:00.525Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "04da0c0922ce5f564e168d4a",
+    "userId": "688db773d4bc39b4a3a5a0d7",
+    "personnelId": "TEST_WO_601958",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:00.248Z",
+    "updatedAt": "2026-09-19T17:16:00.248Z"
+  },
+  {
+    "_id": "44798508c9f8db71ecf1e803",
+    "userId": "1e9d8d6ef1ed9c90732c95df",
+    "personnelId": "ADM_FIN_601958",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:00.315Z",
+    "updatedAt": "2026-09-19T17:16:00.315Z"
+  },
+  {
+    "_id": "d2af307ec3d694ad5ae8ff36",
+    "userId": "b6bd7059d12422df2c48a143",
+    "personnelId": "TEMP_LO_601958",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:00.449Z",
+    "updatedAt": "2026-09-19T17:16:00.449Z"
+  },
+  {
+    "_id": "afb494b401cc70e0d2bec5fc",
+    "userId": "ec3fe92b23a885831a860f34",
+    "personnelId": "ROGUE_ADM_613171",
+    "fullName": "Rogue Escalation 613171",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:10.398Z",
+    "updatedAt": "2026-09-19T17:16:10.398Z"
+  },
+  {
+    "_id": "acfd0ac68835eee633986730",
+    "userId": "382cad6ecb9d71516d7a121d",
+    "personnelId": "SECURE_ADM_613171",
+    "fullName": "Authorized Administrator 613171",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:10.469Z",
+    "updatedAt": "2026-09-19T17:16:10.469Z"
+  },
+  {
+    "_id": "521c07129bb46b5e542fdb14",
+    "userId": "5a08cccce0d67972d9dda2a5",
+    "personnelId": "TEST_WO_613171",
+    "fullName": "Unit Welfare Officer 613171",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:10.533Z",
+    "updatedAt": "2026-09-19T17:16:10.533Z"
+  },
+  {
+    "_id": "2cc64caf6a515303097f5442",
+    "userId": "0df6762fcbd253750807a3d4",
+    "personnelId": "PERS_CUST_613171",
+    "fullName": "Captain Rajesh Varma",
+    "rank": "Captain",
+    "unit": "84th Mountain Brigade (Leh Sector)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:10.598Z",
+    "updatedAt": "2026-09-19T17:16:10.598Z"
+  },
+  {
+    "_id": "53ec3567edd265b7534cc725",
+    "userId": "c6b55ce62a4d175677d6a316",
+    "personnelId": "PERS_B_613171",
+    "fullName": "Constable Suresh Patel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:16:10.737Z",
+    "updatedAt": "2026-09-19T17:16:10.737Z"
+  },
+  {
+    "_id": "3c37fcbd9ffffeb68e37772e",
+    "userId": "ad7744fe5c5ae0f34603b7fd",
+    "personnelId": "PERS_FIN_257435",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:35:17.016Z",
+    "updatedAt": "2026-09-19T17:35:17.367Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "c6c756658b4f85decebafa96",
+    "userId": "dc98fd09da4c36ca0e33dfbc",
+    "personnelId": "TEST_WO_257435",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:35:17.100Z",
+    "updatedAt": "2026-09-19T17:35:17.100Z"
+  },
+  {
+    "_id": "af19bb25661ab7fe1b156ee6",
+    "userId": "259c185a60e1382f72bd90b9",
+    "personnelId": "ADM_FIN_257435",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:35:17.179Z",
+    "updatedAt": "2026-09-19T17:35:17.179Z"
+  },
+  {
+    "_id": "0b52a09de74bdf51d8d7d319",
+    "userId": "c4612e1e861ddf222987f8f8",
+    "personnelId": "TEMP_LO_257435",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:35:17.331Z",
+    "updatedAt": "2026-09-19T17:35:17.332Z"
+  },
+  {
+    "_id": "c5ac221945c34ea8b372d2ce",
+    "userId": "1c79db88c9ed83d43e839753",
+    "personnelId": "TEST_P_2448",
+    "fullName": "Test Personnel 2448",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:35:27.342Z",
+    "updatedAt": "2026-09-19T17:35:27.342Z"
+  },
+  {
+    "_id": "d920841f344920c6dd4dbe0d",
+    "userId": "e2c6b03b2c0be179348630f7",
+    "personnelId": "TEST_ADM_2448",
+    "fullName": "Test Admin 2448",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:35:27.422Z",
+    "updatedAt": "2026-09-19T17:35:27.422Z"
+  },
+  {
+    "_id": "4252a1e3590b6fbea2afe03b",
+    "userId": "d506a6fd1171811d5f303a7b",
+    "personnelId": "TEST_WO_2448",
+    "fullName": "Test Officer 2448",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T17:35:27.501Z",
+    "updatedAt": "2026-09-19T17:35:27.501Z"
   }
 ]

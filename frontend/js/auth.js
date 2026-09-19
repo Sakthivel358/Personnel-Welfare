@@ -15,7 +15,8 @@ const auth = {
       handleDirectLogout();
     }
   },
-  directLogout: () => handleDirectLogout()
+  directLogout: () => handleDirectLogout(),
+  openSystemGuide: () => (typeof Utils !== 'undefined' && Utils.openSystemGuide ? Utils.openSystemGuide() : null)
 };
 
 async function checkAuth(allowedRoles = null) {

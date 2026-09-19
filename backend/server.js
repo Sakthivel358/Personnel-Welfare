@@ -83,7 +83,13 @@ app.use('/api/v1/privacy', privacyRoutes);
 
 // Health check alias
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
+  res.status(200).json({ status: 'UP', success: true, timestamp: new Date().toISOString() });
+});
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'UP', success: true, timestamp: new Date().toISOString() });
+});
+app.get('/api/v1/health', (req, res) => {
+  res.status(200).json({ status: 'UP', success: true, timestamp: new Date().toISOString() });
 });
 
 // Seed Initial Demo Accounts if empty

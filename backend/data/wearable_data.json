@@ -218,5 +218,49 @@
     },
     "createdAt": "2026-09-19T02:41:11.950Z",
     "updatedAt": "2026-09-19T02:41:11.950Z"
+  },
+  {
+    "_id": "11a90aa1f41da500a52e364c",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "deviceId": "TACTICAL-SMART-JACKET-01",
+    "deviceType": "TACTICAL_SMART_JACKET",
+    "idempotencyKey": "test-key-wb-1789837263225",
+    "timestamp": "2026-09-19T17:01:03.225Z",
+    "batteryLevel": 85,
+    "signalQuality": 92,
+    "telemetry": {
+      "resting_heart_rate": 68,
+      "hrv_ms": 58,
+      "respiration_rate": 15,
+      "skin_temperature_c": 36.6,
+      "fatigue_physical_strain": 35,
+      "activity_movement": "MODERATE_PATROL",
+      "posture_inactivity": "NORMAL_MOBILITY"
+    },
+    "createdAt": "2026-09-19T17:01:03.235Z",
+    "updatedAt": "2026-09-19T17:01:03.235Z"
+  },
+  {
+    "_id": "eaf80f1b412f7c38c3cf9860",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "deviceId": "TACTICAL-SMART-JACKET-01",
+    "deviceType": "TACTICAL_SMART_JACKET",
+    "idempotencyKey": "wb-batch-sync-new-1789837263225",
+    "timestamp": "2026-09-19T17:01:03.315Z",
+    "batteryLevel": null,
+    "signalQuality": null,
+    "telemetry": {
+      "resting_heart_rate": 72,
+      "hrv_ms": 52,
+      "respiration_rate": 16,
+      "skin_temperature_c": 36.7,
+      "fatigue_physical_strain": 40,
+      "activity_movement": "MODERATE_PATROL",
+      "posture_inactivity": "NORMAL_MOBILITY"
+    },
+    "createdAt": "2026-09-19T17:01:03.317Z",
+    "updatedAt": "2026-09-19T17:01:03.317Z"
   }
 ]

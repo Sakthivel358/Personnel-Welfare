@@ -9,9 +9,9 @@
 </head>
 <body>
 
-  <div class="demo-banner">
+  <div class="system-header-strip">
     <div class="d-flex align-center gap-1">
-      <span class="demo-tag">WELFARE CHECK-IN</span>
+      <span class="system-tag">WELFARE CHECK-IN</span>
       <span>Confidential decision-support input. Used solely for proactive personnel welfare.</span>
     </div>
     <div class="d-flex align-center gap-1">
@@ -96,6 +96,36 @@
               <button type="button" id="btn-vault-manual-sync" class="btn btn-sm btn-primary" style="display:none;" onclick="OfflineVault.syncAllPending(api)">
                 <svg class="svg-icon" style="width:12px;height:12px;margin-right:4px;" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
                 Sync Buffered Vault
+              </button>
+            </div>
+          <!-- Evaluation & Clinical Scenario Presets Toolbar -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle); border: 1px solid var(--border-color); padding: 0.85rem 1.15rem;">
+            <div class="d-flex justify-between align-center flex-wrap gap-1 mb-2">
+              <div class="d-flex align-center gap-1">
+                <span style="font-size: 1.05rem;">🔬</span>
+                <strong>System Evaluation Scenarios:</strong>
+                <span class="text-muted" style="font-size: 0.78rem;">Rapid multi-source evaluation presets for evaluators & officers</span>
+              </div>
+              <span class="badge badge-info" style="font-size: 0.7rem;">Evaluation Mode</span>
+            </div>
+            <div class="d-flex gap-1 flex-wrap align-center">
+              <button type="button" class="btn btn-sm btn-secondary" onclick="loadEvaluationScenario('M1_HIGH')" title="Smart Jacket Telemetry Active: Tactical QRF (HR 96, HRV 24ms, 78h week) -> High Strain">
+                🦺 <strong>Model 1 High</strong> (Wearable: QRF Acute)
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="loadEvaluationScenario('M1_LOW')" title="Smart Jacket Telemetry Active: Rested Base Duty (HR 60, HRV 75ms, 40h week) -> Low Strain">
+                🦺 <strong>Model 1 Low</strong> (Wearable: Rested)
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="loadEvaluationScenario('M2_HIGH')" title="Smart Jacket Disabled: Remote Outpost Watch + PSS-10 High -> High Strain">
+                📋 <strong>Model 2 High</strong> (PSS-10 Fallback)
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="loadEvaluationScenario('M2_LOW')" title="Smart Jacket Disabled: Standard Station + PSS-10 Low -> Low Strain">
+                📋 <strong>Model 2 Low</strong> (PSS-10 Fallback)
+              </button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="loadEvaluationScenario('UNDETERMINED')" title="Zero-Guessing Mandate: Insufficient inputs -> Undetermined state">
+                ⚖️ <strong>Zero-Guessing</strong> (Undetermined)
+              </button>
+              <button type="button" class="btn btn-sm btn-outline" onclick="loadEvaluationScenario('RESET')" title="Reset form to default blank state" style="margin-left: auto;">
+                ↺ Reset
               </button>
             </div>
           </div>

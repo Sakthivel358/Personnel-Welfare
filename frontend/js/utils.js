@@ -355,10 +355,125 @@ const Utils = {
       </div>
     `;
     modal.style.display = 'flex';
+  },
+
+  // Modal: System Demonstration Guide
+  openSystemGuide() {
+    let modal = document.getElementById('system-guide-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'system-guide-modal';
+      modal.style.cssText = `
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.65); z-index: 10000;
+        display: flex; align-items: center; justify-content: center; padding: 1.25rem;
+        backdrop-filter: blur(4px);
+      `;
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+      <div class="card" style="max-width: 680px; width: 100%; max-height: 88vh; overflow-y: auto; box-shadow: var(--shadow-xl); border: 1px solid var(--border-color); padding: 1.5rem;">
+        <div class="d-flex justify-between align-center mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
+          <div class="d-flex align-center gap-1">
+            <span style="font-size: 1.4rem;">📘</span>
+            <div>
+              <h3 style="margin: 0; font-size: 1.15rem;">WelfareAI System & Evaluation Guide</h3>
+              <p class="text-muted mb-0" style="font-size: 0.78rem;">National Defense & Paramilitary Welfare Decision-Support Architecture</p>
+            </div>
+          </div>
+          <button onclick="Utils.closeSystemGuide()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted); line-height: 1;">&times;</button>
+        </div>
+
+        <div style="font-size: 0.88rem; line-height: 1.55;">
+          <!-- 1. Credentials -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle); padding: 0.85rem 1rem;">
+            <h4 style="margin: 0 0 0.5rem 0; font-size: 0.92rem; color: var(--accent);">🔑 Authorized Evaluation Credentials</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.5rem;">
+              <div style="background: var(--bg-card); padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                <div style="font-weight: 700; color: var(--text-primary); font-size: 0.82rem;">🎖️ Tactical Personnel</div>
+                <div class="text-muted" style="font-size: 0.75rem;">ID: <code>CRPF-9042</code></div>
+                <div class="text-muted" style="font-size: 0.75rem;">Password: <code>Password@123</code></div>
+                <div class="text-muted" style="font-size: 0.72rem; margin-top: 2px;">Role: CRPF QRT Constable</div>
+              </div>
+              <div style="background: var(--bg-card); padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                <div style="font-weight: 700; color: var(--text-primary); font-size: 0.82rem;">🩺 Welfare Officer</div>
+                <div class="text-muted" style="font-size: 0.75rem;">ID: <code>WO-101</code></div>
+                <div class="text-muted" style="font-size: 0.75rem;">Password: <code>Password@123</code></div>
+                <div class="text-muted" style="font-size: 0.72rem; margin-top: 2px;">Role: Unit Medical/Welfare</div>
+              </div>
+              <div style="background: var(--bg-card); padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                <div style="font-weight: 700; color: var(--text-primary); font-size: 0.82rem;">🛡️ System Administrator</div>
+                <div class="text-muted" style="font-size: 0.75rem;">ID: <code>ADM-001</code></div>
+                <div class="text-muted" style="font-size: 0.75rem;">Password: <code>Password@123</code></div>
+                <div class="text-muted" style="font-size: 0.72rem; margin-top: 2px;">Role: Auditor & System Admin</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Dual-Pathway ML Architecture -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle); padding: 0.85rem 1rem;">
+            <h4 style="margin: 0 0 0.5rem 0; font-size: 0.92rem; color: var(--accent);">🧠 Dual-Pathway ML & Decision Consensus</h4>
+            <ul style="padding-left: 1.2rem; margin-bottom: 0.3rem; font-size: 0.82rem;">
+              <li><strong>Model 1 (Primary Wearable Pathway):</strong> Random Forest Classifier over 28-D physiological telemetry from Tactical Smart Jacket (HR, HRV, respiration, temperature, accelerometry, physical strain).</li>
+              <li><strong>Model 2 (Fallback Self-Check Pathway):</strong> Random Forest Classifier utilizing operational duty exposure, shift continuity, sleep recovery, rest interval, and optional PSS-10 psychological questionnaire.</li>
+              <li><strong>Decision Consensus & Zero-Guessing:</strong> Enforces minimum evidence thresholds. When biometric and questionnaire signals diverge or data is incomplete, marks status as <code>UNDETERMINED</code> rather than guessing.</li>
+            </ul>
+          </div>
+
+          <!-- 3. Ethical Directives & Legal Compliance -->
+          <div class="card mb-3" style="background: var(--bg-card-subtle); padding: 0.85rem 1rem; border-left: 3px solid var(--risk-high);">
+            <h4 style="margin: 0 0 0.35rem 0; font-size: 0.92rem; color: var(--risk-high-text);">⚖️ Strict Non-Punitive Mandate</h4>
+            <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary);">
+              WelfareAI is strictly a proactive welfare decision-support tool. Automated inferences are legally insulated from administrative appraisals, promotion boards, disciplinary proceedings, or punishment. Medical disclaimer: decision support only, not a psychiatric diagnosis.
+            </p>
+          </div>
+
+          <!-- 4. Quick Portals Navigation -->
+          <div class="d-flex gap-1 flex-wrap align-center justify-between" style="font-size: 0.8rem;">
+            <span><strong>Quick Portals:</strong></span>
+            <div class="d-flex gap-1 flex-wrap">
+              <a href="/stress-checkin.html" class="btn btn-xs btn-outline">Check-in</a>
+              <a href="/ai-analysis.html" class="btn btn-xs btn-outline">AI Analysis</a>
+              <a href="/welfare-officer.html" class="btn btn-xs btn-outline">Welfare Officer</a>
+              <a href="/admin.html" class="btn btn-xs btn-outline">Admin Portal</a>
+              <a href="/privacy-sandbox.html" class="btn btn-xs btn-outline">Privacy Sandbox</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-end align-center mt-3 pt-2" style="border-top: 1px solid var(--border-color);">
+          <button class="btn btn-sm btn-primary" onclick="Utils.closeSystemGuide()">Acknowledge & Close</button>
+        </div>
+      </div>
+    `;
+    modal.style.display = 'flex';
+  },
+
+  closeSystemGuide() {
+    const modal = document.getElementById('system-guide-modal');
+    if (modal) modal.style.display = 'none';
+  },
+
+  initSystemGuideButton() {
+    const topbarRight = document.querySelector('.topbar-right');
+    if (topbarRight && !document.getElementById('topbar-system-guide-btn')) {
+      const guideBtn = document.createElement('button');
+      guideBtn.id = 'topbar-system-guide-btn';
+      guideBtn.className = 'topbar-btn';
+      guideBtn.title = 'System & Evaluation Guide';
+      guideBtn.innerHTML = '📘 <span style="font-size:0.75rem; font-weight:600; margin-left:4px;" class="hide-mobile">Guide</span>';
+      guideBtn.onclick = () => Utils.openSystemGuide();
+      topbarRight.insertBefore(guideBtn, topbarRight.firstChild);
+    }
   }
 };
 
-// Auto initialize theme
+window.openSystemGuide = () => Utils.openSystemGuide();
+window.closeSystemGuide = () => Utils.closeSystemGuide();
+
+// Auto initialize theme & guide button
 document.addEventListener('DOMContentLoaded', () => {
   Utils.initTheme();
+  Utils.initSystemGuideButton();
 });

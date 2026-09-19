@@ -422,6 +422,178 @@ function setScenarioPreset(type) {
   Utils.showToast(`Applied ${type} Multi-Source Strain Scenario!`, 'info', 2000);
 }
 
+function loadEvaluationScenario(scenarioKey) {
+  if (scenarioKey === 'M1_HIGH') {
+    const dutySelect = document.getElementById('duty_type');
+    if (dutySelect) dutySelect.value = 'Quick Reaction Team (QRT)';
+    updateDutyContextNote('Quick Reaction Team (QRT)');
+
+    syncReviewInput('workload_hours', 78);
+    syncReviewInput('work_pressure_rating', 9);
+    syncReviewInput('shift_continuity_days', 12);
+    syncReviewInput('prolonged_duty_hours', 16);
+    syncReviewInput('night_duty_hours', 24);
+    syncReviewInput('recovery_sleep_hours', 4.0);
+    syncReviewInput('rest_interval_hours', 5);
+    const recPat = document.getElementById('recovery_pattern');
+    if (recPat) recPat.value = 'EXTENDED_DEFICIT';
+    syncReviewInput('social_support_rating', 2);
+    syncReviewInput('work_life_balance_rating', 2);
+
+    // Smart Jacket: Active (Model 1 Pathway)
+    toggleWearablePillar(true);
+    syncReviewInput('resting_heart_rate', 96);
+    syncReviewInput('hrv_ms', 24);
+    syncReviewInput('respiration_rate', 24);
+    syncReviewInput('skin_temperature_c', 38.2);
+    syncReviewInput('fatigue_physical_strain', 85);
+    const actMov = document.getElementById('activity_movement');
+    if (actMov) actMov.value = 'HIGH_MOBILITY_TACTICAL';
+    const postInact = document.getElementById('posture_inactivity');
+    if (postInact) postInact.value = 'IMMOBILE_FATIGUE';
+
+    // Optional PSS-10 responses
+    for (let i = 0; i < 10; i++) {
+      const radio = document.querySelector(`input[name="pss_q_${i}"][value="${REVERSE_ITEMS.includes(i) ? '1' : '3'}"]`);
+      if (radio) radio.checked = true;
+    }
+    pssSkipped = false;
+    onPssOptionSelected();
+
+    goToStep(5);
+    populateReviewSummary();
+    Utils.showToast('Evaluation Scenario: Model 1 Wearable High Strain Loaded', 'success', 2500);
+
+  } else if (scenarioKey === 'M1_LOW') {
+    const dutySelect = document.getElementById('duty_type');
+    if (dutySelect) dutySelect.value = 'Headquarters / Base Staff';
+    updateDutyContextNote('Headquarters / Base Staff');
+
+    syncReviewInput('workload_hours', 40);
+    syncReviewInput('work_pressure_rating', 3);
+    syncReviewInput('shift_continuity_days', 1);
+    syncReviewInput('prolonged_duty_hours', 6);
+    syncReviewInput('night_duty_hours', 0);
+    syncReviewInput('recovery_sleep_hours', 8.0);
+    syncReviewInput('rest_interval_hours', 14);
+    const recPat = document.getElementById('recovery_pattern');
+    if (recPat) recPat.value = 'BALANCED_CIRCADIAN';
+    syncReviewInput('social_support_rating', 8);
+    syncReviewInput('work_life_balance_rating', 8);
+
+    // Smart Jacket: Active (Model 1 Pathway)
+    toggleWearablePillar(true);
+    syncReviewInput('resting_heart_rate', 60);
+    syncReviewInput('hrv_ms', 75);
+    syncReviewInput('respiration_rate', 13);
+    syncReviewInput('skin_temperature_c', 36.4);
+    syncReviewInput('fatigue_physical_strain', 20);
+    const actMov = document.getElementById('activity_movement');
+    if (actMov) actMov.value = 'MODERATE_PATROL';
+    const postInact = document.getElementById('posture_inactivity');
+    if (postInact) postInact.value = 'NORMAL_MOBILITY';
+
+    // Optional PSS-10 low responses
+    for (let i = 0; i < 10; i++) {
+      const radio = document.querySelector(`input[name="pss_q_${i}"][value="${REVERSE_ITEMS.includes(i) ? '4' : '0'}"]`);
+      if (radio) radio.checked = true;
+    }
+    pssSkipped = false;
+    onPssOptionSelected();
+
+    goToStep(5);
+    populateReviewSummary();
+    Utils.showToast('Evaluation Scenario: Model 1 Wearable Low Strain Loaded', 'success', 2500);
+
+  } else if (scenarioKey === 'M2_HIGH') {
+    const dutySelect = document.getElementById('duty_type');
+    if (dutySelect) dutySelect.value = 'Static Outpost Watch';
+    updateDutyContextNote('Static Outpost Watch');
+
+    syncReviewInput('workload_hours', 72);
+    syncReviewInput('work_pressure_rating', 8);
+    syncReviewInput('shift_continuity_days', 8);
+    syncReviewInput('prolonged_duty_hours', 14);
+    syncReviewInput('night_duty_hours', 18);
+    syncReviewInput('recovery_sleep_hours', 4.5);
+    syncReviewInput('rest_interval_hours', 6);
+    const recPat = document.getElementById('recovery_pattern');
+    if (recPat) recPat.value = 'INTERRUPTED_SLEEP';
+    syncReviewInput('social_support_rating', 3);
+    syncReviewInput('work_life_balance_rating', 3);
+
+    // Smart Jacket: Inactive (Model 2 Fallback Pathway)
+    toggleWearablePillar(false);
+
+    // High PSS-10 responses (scores ~28-32)
+    for (let i = 0; i < 10; i++) {
+      const radio = document.querySelector(`input[name="pss_q_${i}"][value="${REVERSE_ITEMS.includes(i) ? '0' : '4'}"]`);
+      if (radio) radio.checked = true;
+    }
+    pssSkipped = false;
+    onPssOptionSelected();
+
+    goToStep(5);
+    populateReviewSummary();
+    Utils.showToast('Evaluation Scenario: Model 2 PSS-10 High Stress Fallback Loaded', 'success', 2500);
+
+  } else if (scenarioKey === 'M2_LOW') {
+    const dutySelect = document.getElementById('duty_type');
+    if (dutySelect) dutySelect.value = 'Signals & Operational Communication';
+    updateDutyContextNote('Signals & Operational Communication');
+
+    syncReviewInput('workload_hours', 42);
+    syncReviewInput('work_pressure_rating', 3);
+    syncReviewInput('shift_continuity_days', 2);
+    syncReviewInput('prolonged_duty_hours', 7);
+    syncReviewInput('night_duty_hours', 4);
+    syncReviewInput('recovery_sleep_hours', 7.5);
+    syncReviewInput('rest_interval_hours', 12);
+    const recPat = document.getElementById('recovery_pattern');
+    if (recPat) recPat.value = 'BALANCED_CIRCADIAN';
+    syncReviewInput('social_support_rating', 8);
+    syncReviewInput('work_life_balance_rating', 8);
+
+    // Smart Jacket: Inactive (Model 2 Fallback Pathway)
+    toggleWearablePillar(false);
+
+    // Low PSS-10 responses (scores ~6-10)
+    for (let i = 0; i < 10; i++) {
+      const radio = document.querySelector(`input[name="pss_q_${i}"][value="${REVERSE_ITEMS.includes(i) ? '4' : '1'}"]`);
+      if (radio) radio.checked = true;
+    }
+    pssSkipped = false;
+    onPssOptionSelected();
+
+    goToStep(5);
+    populateReviewSummary();
+    Utils.showToast('Evaluation Scenario: Model 2 PSS-10 Low Stress Fallback Loaded', 'success', 2500);
+
+  } else if (scenarioKey === 'UNDETERMINED') {
+    clearPssAnswers();
+    toggleWearablePillar(false);
+    syncReviewInput('workload_hours', 48);
+    syncReviewInput('work_pressure_rating', 5);
+    syncReviewInput('shift_continuity_days', 3);
+    syncReviewInput('prolonged_duty_hours', 8);
+    syncReviewInput('night_duty_hours', 0);
+    syncReviewInput('recovery_sleep_hours', 6.0);
+    syncReviewInput('rest_interval_hours', 8);
+    goToStep(5);
+    populateReviewSummary();
+    Utils.showToast('Evaluation Scenario: Zero-Guessing Mandate Loaded', 'warning', 2500);
+
+  } else if (scenarioKey === 'RESET') {
+    clearPssAnswers();
+    toggleWearablePillar(false);
+    goToStep(1);
+    Utils.showToast('Check-in form reset.', 'info', 2000);
+  }
+}
+
+window.loadEvaluationScenario = loadEvaluationScenario;
+window.setScenarioPreset = setScenarioPreset;
+
 function syncReviewInput(fieldId, value) {
   const el = document.getElementById(fieldId);
   if (el) {

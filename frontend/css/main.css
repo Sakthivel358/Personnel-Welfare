@@ -397,12 +397,12 @@ table tbody tr:hover, .data-table tbody tr:hover {
   color: #93c5fd;
 }
 
-.system-header-strip {
-  background-color: #0f172a;
-  color: #cbd5e1;
+.system-header-strip, .demo-banner {
+  background-color: #0b1329;
+  color: #94a3b8;
   border-bottom: 1px solid #1e293b;
-  padding: 0.35rem 1.25rem;
-  font-size: 0.75rem;
+  padding: 0.4rem 1.25rem;
+  font-size: 0.78rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -410,9 +410,23 @@ table tbody tr:hover, .data-table tbody tr:hover {
   gap: 0.5rem;
 }
 
+.system-tag, .demo-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: #1e3a8a;
+  color: #bfdbfe;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
 /* Production Mode Utility */
 body.production-mode .gov-top-bar,
-body.production-mode .demo-banner {
+body.production-mode .demo-banner,
+body.production-mode .system-header-strip {
   display: none !important;
 }
 
@@ -556,6 +570,9 @@ body.production-mode .demo-banner {
   }
   h1 { font-size: 1.5rem; }
   h2 { font-size: 1.25rem; }
+  .hide-mobile {
+    display: none !important;
+  }
 }
 
 /* Mobile (< 480px) */
