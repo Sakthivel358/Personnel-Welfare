@@ -7,8 +7,35 @@ const getLatestPrediction = async (req, res, next) => {
     if (predictions.length === 0) {
       return res.status(200).json({
         success: true,
-        data: null,
-        message: 'No check-in predictions found yet. Please complete your initial check-in.'
+        hasPrediction: false,
+        welfareConcernDisplay: 'WELFARE CONCERN — UNDETERMINED',
+        evidenceDisplay: 'EVIDENCE — INSUFFICIENT',
+        guidanceText: 'Additional authorized data or a welfare check-in is required.',
+        message: 'Additional authorized data or a welfare check-in is required.',
+        data: {
+          concernLevel: 'UNDETERMINED',
+          evidenceStrength: 'INSUFFICIENT',
+          welfareConcernDisplay: 'WELFARE CONCERN — UNDETERMINED',
+          evidenceDisplay: 'EVIDENCE — INSUFFICIENT',
+          guidanceText: 'Additional authorized data or a welfare check-in is required.',
+          dataAvailableCount: 0,
+          dataAvailableTotal: 5,
+          dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
+          prediction: {
+            concernLevel: 'UNDETERMINED',
+            welfareConcernDisplay: 'WELFARE CONCERN — UNDETERMINED',
+            evidenceStrength: 'INSUFFICIENT',
+            evidenceDisplay: 'EVIDENCE — INSUFFICIENT',
+            compositeRiskScore: null,
+            dataAvailableCount: 0,
+            dataAvailableTotal: 5,
+            dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
+            guidanceText: 'Additional authorized data or a welfare check-in is required.'
+          },
+          recommendations: {
+            primaryAction: 'Additional authorized data or a welfare check-in is required.'
+          }
+        }
       });
     }
 
@@ -17,14 +44,31 @@ const getLatestPrediction = async (req, res, next) => {
     const checkIn = latest.checkInId ? await db.CheckIns.findById(latest.checkInId) : null;
     const count = latest.dataAvailableCount != null ? latest.dataAvailableCount : (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.dataAvailableCount : (latest.evidenceSources || []).length);
 
+    const isUndet = latest.isUndetermined || latest.concernLevel === 'UNDETERMINED';
+    const concernDisplay = latest.welfareConcernDisplay || (isUndet ? 'WELFARE CONCERN — UNDETERMINED' : `WELFARE CONCERN — ${latest.concernLevel}`);
+    const evDisplay = latest.evidenceDisplay || (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.displayLabel : `EVIDENCE — ${latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE')}`);
+    const guidance = isUndet ? 'Additional authorized data or a welfare check-in is required.' : null;
+
     return res.status(200).json({
       success: true,
+      hasPrediction: true,
+      welfareConcernDisplay: concernDisplay,
+      evidenceDisplay: evDisplay,
+      guidanceText: guidance,
       data: {
-        prediction: latest,
+        concernLevel: isUndet ? 'UNDETERMINED' : latest.concernLevel,
+        prediction: {
+          ...latest,
+          concernLevel: isUndet ? 'UNDETERMINED' : latest.concernLevel,
+          welfareConcernDisplay: concernDisplay,
+          evidenceDisplay: evDisplay,
+          guidanceText: guidance
+        },
         decisionLayer: latest.decisionLayer || null,
-        evidenceStrength: latest.evidenceStrength || 'MODERATE',
-        welfareConcernDisplay: latest.welfareConcernDisplay || (latest.isUndetermined ? 'WELFARE CONCERN — UNDETERMINED' : `WELFARE CONCERN — ${latest.concernLevel}`),
-        evidenceDisplay: latest.evidenceDisplay || (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.displayLabel : `EVIDENCE — ${latest.evidenceStrength || 'MODERATE'}`),
+        evidenceStrength: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
+        welfareConcernDisplay: concernDisplay,
+        evidenceDisplay: evDisplay,
+        guidanceText: guidance,
         dataAvailableCount: count,
         dataAvailableTotal: 5,
         dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
@@ -161,6 +205,238 @@ const getExplainability = async (req, res, next) => {
   }
 };
 
+// Helper to compute personal historical baseline using the person's actual authorized data
+const computePersonalBaseline = (checkIns, targetIndex = null) => {
+  if (!checkIns || checkIns.length < 2) {
+    return {
+      baselineEstablished: false,
+      status: 'INSUFFICIENT_HISTORY',
+      message: 'Baseline not established yet.',
+      guidanceText: 'Additional authorized data or a welfare check-in is required.',
+      baselineCheckInCount: checkIns ? checkIns.length : 0,
+      totalCheckInCount: checkIns ? checkIns.length : 0,
+      comparisonCategories: null,
+      yourNormalPattern: null,
+      current: null
+    };
+  }
+
+  // Chronological order
+  const sorted = [...checkIns].sort((a, b) => new Date(a.checkInDate || a.createdAt || 0) - new Date(b.checkInDate || b.createdAt || 0));
+  const currentIdx = (targetIndex !== null && targetIndex >= 0 && targetIndex < sorted.length)
+    ? targetIndex
+    : sorted.length - 1;
+  const current = sorted[currentIdx];
+
+  // Prior check-ins forming the baseline
+  const priorCheckIns = sorted.filter((_, idx) => idx !== currentIdx);
+  if (priorCheckIns.length === 0) {
+    return {
+      baselineEstablished: false,
+      status: 'INSUFFICIENT_HISTORY',
+      message: 'Baseline not established yet.',
+      guidanceText: 'Additional authorized data or a welfare check-in is required.',
+      baselineCheckInCount: 0,
+      totalCheckInCount: sorted.length,
+      comparisonCategories: null,
+      yourNormalPattern: null,
+      current: null
+    };
+  }
+
+  const calcMean = (arr, key) => {
+    const valid = arr.map(item => item[key]).filter(v => v !== null && v !== undefined && !isNaN(Number(v)));
+    if (valid.length === 0) return null;
+    const sum = valid.reduce((acc, v) => acc + Number(v), 0);
+    return Number((sum / valid.length).toFixed(1));
+  };
+
+  // 1. Workload Category
+  const baseWorkloadHours = calcMean(priorCheckIns, 'workload_hours');
+  const baseWorkPressure = calcMean(priorCheckIns, 'work_pressure_rating');
+  const baseProlongedDuty = calcMean(priorCheckIns, 'prolonged_duty_hours');
+
+  const currWorkloadHours = current.workload_hours != null ? Number(current.workload_hours) : null;
+  const currWorkPressure = current.work_pressure_rating != null ? Number(current.work_pressure_rating) : null;
+  const currProlongedDuty = current.prolonged_duty_hours != null ? Number(current.prolonged_duty_hours) : null;
+
+  const workloadDelta = (currWorkloadHours != null && baseWorkloadHours != null)
+    ? Number((currWorkloadHours - baseWorkloadHours).toFixed(1))
+    : 0;
+
+  // 2. Rest Category
+  const baseSleep = calcMean(priorCheckIns, 'recovery_sleep_hours');
+  const baseRestInterval = calcMean(priorCheckIns, 'rest_interval_hours');
+
+  const currSleep = current.recovery_sleep_hours != null ? Number(current.recovery_sleep_hours) : null;
+  const currRestInterval = current.rest_interval_hours != null ? Number(current.rest_interval_hours) : null;
+
+  const sleepDelta = (currSleep != null && baseSleep != null)
+    ? Number((currSleep - baseSleep).toFixed(1))
+    : 0;
+
+  // 3. Fatigue Category
+  const baseFatigue = calcMean(priorCheckIns, 'fatigue_physical_strain');
+  const baseShiftContinuity = calcMean(priorCheckIns, 'shift_continuity_days');
+  const baseNightDuty = calcMean(priorCheckIns, 'night_duty_hours');
+
+  const currFatigue = current.fatigue_physical_strain != null ? Number(current.fatigue_physical_strain) : null;
+  const currShiftContinuity = current.shift_continuity_days != null ? Number(current.shift_continuity_days) : null;
+  const currNightDuty = current.night_duty_hours != null ? Number(current.night_duty_hours) : null;
+
+  const fatigueDelta = (currFatigue != null && baseFatigue != null)
+    ? Number((currFatigue - baseFatigue).toFixed(1))
+    : (currNightDuty != null && baseNightDuty != null ? Number((currNightDuty - baseNightDuty).toFixed(1)) : 0);
+
+  // 4. Relevant Stress Indicators Category
+  const basePss = calcMean(priorCheckIns, 'pss_score');
+  const baseHr = calcMean(priorCheckIns, 'resting_heart_rate');
+  const baseHrv = calcMean(priorCheckIns, 'hrv_ms');
+  const baseResp = calcMean(priorCheckIns, 'respiration_rate');
+
+  const currPss = current.pss_score != null ? Number(current.pss_score) : null;
+  const currHr = current.resting_heart_rate != null ? Number(current.resting_heart_rate) : null;
+  const currHrv = current.hrv_ms != null ? Number(current.hrv_ms) : null;
+  const currResp = current.respiration_rate != null ? Number(current.respiration_rate) : null;
+
+  const pssDelta = (currPss != null && basePss != null)
+    ? Number((currPss - basePss).toFixed(1))
+    : null;
+
+  let workloadStatus = 'AT_PERSONAL_NORMAL';
+  if (workloadDelta > 4.0) workloadStatus = 'ELEVATED_ABOVE_NORMAL';
+  else if (workloadDelta < -4.0) workloadStatus = 'BELOW_NORMAL';
+
+  let sleepStatus = 'AT_PERSONAL_NORMAL';
+  if (sleepDelta < -1.0) sleepStatus = 'REST_DEFICIT';
+  else if (sleepDelta > 1.0) sleepStatus = 'REST_SURPLUS';
+
+  let workloadChange = 'Consistent with your normal pattern';
+  if (workloadDelta > 0) workloadChange = `+${workloadDelta} hrs/wk above your normal pattern (${baseWorkloadHours} hrs/wk avg)`;
+  else if (workloadDelta < 0) workloadChange = `${workloadDelta} hrs/wk below your normal pattern (${baseWorkloadHours} hrs/wk avg)`;
+
+  let restChange = 'Consistent with your normal rest pattern';
+  if (sleepDelta < 0) restChange = `${sleepDelta} hrs/day below your normal rest (${baseSleep} hrs/day avg)`;
+  else if (sleepDelta > 0) restChange = `+${sleepDelta} hrs/day above your normal rest (${baseSleep} hrs/day avg)`;
+
+  let fatigueChange = 'Consistent with normal fatigue pattern';
+  if (currFatigue != null && baseFatigue != null) {
+    const diff = Number((currFatigue - baseFatigue).toFixed(1));
+    if (diff > 5.0) fatigueChange = `+${diff} pts above normal fatigue level (${baseFatigue} avg)`;
+    else if (diff < -5.0) fatigueChange = `${diff} pts below normal fatigue level (${baseFatigue} avg)`;
+  } else if (currNightDuty != null && baseNightDuty != null && currNightDuty > baseNightDuty) {
+    fatigueChange = `+${Number((currNightDuty - baseNightDuty).toFixed(1))} hrs night duty above normal (${baseNightDuty} hrs avg)`;
+  }
+
+  let stressChange = 'Consistent with baseline stress markers';
+  if (pssDelta !== null) {
+    if (pssDelta > 3.0) stressChange = `+${pssDelta} pts elevated perceived stress (vs ${basePss} normal PSS)`;
+    else if (pssDelta < -3.0) stressChange = `${pssDelta} pts reduced perceived stress (vs ${basePss} normal PSS)`;
+  } else if (currHr != null && baseHr != null && (currHr - baseHr) > 5) {
+    stressChange = `+${Number((currHr - baseHr).toFixed(1))} BPM elevated heart rate (vs ${baseHr} BPM baseline)`;
+  }
+
+  return {
+    baselineEstablished: true,
+    status: 'BASELINE_ACTIVE',
+    message: 'Personal baseline active based on authorized historical records.',
+    baselineCheckInCount: priorCheckIns.length,
+    totalCheckInCount: sorted.length,
+    avgWorkloadHours: baseWorkloadHours,
+    avgRecoverySleepHours: baseSleep,
+    avgWorkPressure: baseWorkPressure,
+    avgRestIntervalHours: baseRestInterval,
+    avgShiftContinuityDays: baseShiftContinuity,
+    comparison: {
+      workloadDelta,
+      workloadStatus,
+      workloadLabel: workloadChange,
+      sleepDelta,
+      sleepStatus,
+      sleepLabel: restChange,
+      pressureDelta: (currWorkPressure != null && baseWorkPressure != null) ? Number((currWorkPressure - baseWorkPressure).toFixed(1)) : 0,
+      fatigueDelta: (currFatigue != null && baseFatigue != null) ? Number((currFatigue - baseFatigue).toFixed(1)) : 0,
+      fatigueLabel: fatigueChange,
+      stressDelta: pssDelta,
+      stressLabel: stressChange
+    },
+    comparisonCategories: {
+      workload: {
+        title: 'Workload',
+        normalPattern: {
+          value: baseWorkloadHours,
+          unit: 'hrs/wk',
+          label: baseWorkloadHours != null ? `${baseWorkloadHours} hrs/wk` : 'N/A'
+        },
+        current: {
+          value: currWorkloadHours,
+          unit: 'hrs/wk',
+          label: currWorkloadHours != null ? `${currWorkloadHours} hrs/wk` : 'N/A'
+        },
+        delta: workloadDelta,
+        directionalChange: workloadChange
+      },
+      rest: {
+        title: 'Rest',
+        normalPattern: {
+          value: baseSleep,
+          unit: 'hrs/day',
+          label: baseSleep != null ? `${baseSleep} hrs/day` : 'N/A'
+        },
+        current: {
+          value: currSleep,
+          unit: 'hrs/day',
+          label: currSleep != null ? `${currSleep} hrs/day` : 'N/A'
+        },
+        delta: sleepDelta,
+        directionalChange: restChange
+      },
+      fatigue: {
+        title: 'Fatigue',
+        normalPattern: {
+          value: baseFatigue != null ? baseFatigue : baseNightDuty,
+          unit: baseFatigue != null ? '/100' : 'hrs night',
+          label: baseFatigue != null ? `${baseFatigue} / 100` : (baseNightDuty != null ? `${baseNightDuty} hrs night` : (baseShiftContinuity != null ? `${baseShiftContinuity}d shift` : 'N/A'))
+        },
+        current: {
+          value: currFatigue != null ? currFatigue : currNightDuty,
+          unit: currFatigue != null ? '/100' : 'hrs night',
+          label: currFatigue != null ? `${currFatigue} / 100` : (currNightDuty != null ? `${currNightDuty} hrs night` : (currShiftContinuity != null ? `${currShiftContinuity}d shift` : 'N/A'))
+        },
+        delta: fatigueDelta,
+        directionalChange: fatigueChange
+      },
+      stressIndicators: {
+        title: 'Relevant Stress Indicators',
+        normalPattern: {
+          value: basePss != null ? basePss : baseHr,
+          unit: basePss != null ? 'pts' : 'BPM',
+          label: basePss != null ? `PSS: ${basePss}` : (baseHr != null ? `HR: ${baseHr} BPM` : 'N/A')
+        },
+        current: {
+          value: currPss != null ? currPss : currHr,
+          unit: currPss != null ? 'pts' : 'BPM',
+          label: currPss != null ? `PSS: ${currPss}` : (currHr != null ? `HR: ${currHr} BPM` : 'N/A')
+        },
+        delta: pssDelta,
+        directionalChange: stressChange
+      }
+    },
+    yourNormalPattern: {
+      workload: baseWorkloadHours != null ? `${baseWorkloadHours} hrs/wk` : 'N/A',
+      rest: baseSleep != null ? `${baseSleep} hrs/day` : 'N/A',
+      fatigue: baseFatigue != null ? `${baseFatigue} / 100` : (baseNightDuty != null ? `${baseNightDuty} hrs night` : (baseShiftContinuity != null ? `${baseShiftContinuity}d shift` : 'N/A')),
+      stressIndicators: basePss != null ? `PSS: ${basePss}` : (baseHr != null ? `HR: ${baseHr} BPM` : 'N/A')
+    },
+    current: {
+      workload: currWorkloadHours != null ? `${currWorkloadHours} hrs/wk` : 'N/A',
+      rest: currSleep != null ? `${currSleep} hrs/day` : 'N/A',
+      fatigue: currFatigue != null ? `${currFatigue} / 100` : (currNightDuty != null ? `${currNightDuty} hrs night` : (currShiftContinuity != null ? `${currShiftContinuity}d shift` : 'N/A')),
+      stressIndicators: currPss != null ? `PSS: ${currPss}` : (currHr != null ? `HR: ${currHr} BPM` : 'N/A')
+    }
+  };
+};
+
 // "What Changed?" Comparison between current and selected (or immediately preceding) check-in
 const getWhatChanged = async (req, res, next) => {
   try {
@@ -171,7 +447,21 @@ const getWhatChanged = async (req, res, next) => {
       return res.status(200).json({
         success: true,
         hasComparison: false,
-        message: 'At least 2 check-ins are required to calculate observed changes.',
+        baselineEstablished: false,
+        status: 'INSUFFICIENT_HISTORY',
+        message: 'Baseline not established yet.',
+        guidanceText: 'Additional authorized data or a welfare check-in is required.',
+        personalBaseline: {
+          baselineEstablished: false,
+          status: 'INSUFFICIENT_HISTORY',
+          message: 'Baseline not established yet.',
+          guidanceText: 'Additional authorized data or a welfare check-in is required.',
+          baselineCheckInCount: checkIns.length,
+          totalCheckInCount: checkIns.length,
+          comparisonCategories: null,
+          yourNormalPattern: null,
+          current: null
+        },
         data: checkIns.length === 1 ? { currentCheckIn: checkIns[0] } : null
       });
     }
@@ -222,74 +512,8 @@ const getWhatChanged = async (req, res, next) => {
       }
     }
 
-    // Tasks 13 & 14: Calculate user's personal historical baseline (across prior check-ins, or all check-ins)
-    const priorCheckIns = checkIns.slice(0, checkIns.length - 1);
-    const baselineSource = priorCheckIns.length > 0 ? priorCheckIns : checkIns;
-
-    const bWorkloads = baselineSource.map(c => Number(c.workload_hours)).filter(v => !isNaN(v) && v > 0);
-    const bSleeps = baselineSource.map(c => Number(c.recovery_sleep_hours)).filter(v => !isNaN(v) && v > 0);
-    const bPressures = baselineSource.map(c => Number(c.work_pressure_rating)).filter(v => !isNaN(v) && v > 0);
-    const bIntervals = baselineSource.map(c => Number(c.rest_interval_hours)).filter(v => !isNaN(v) && v > 0);
-    const bShifts = baselineSource.map(c => Number(c.shift_continuity_days)).filter(v => !isNaN(v));
-
-    const calcArrAvg = arr => arr.length > 0 ? Number((arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1)) : null;
-
-    const avgWorkload = calcArrAvg(bWorkloads);
-    const avgSleep = calcArrAvg(bSleeps);
-    const avgPressure = calcArrAvg(bPressures);
-    const avgRestInterval = calcArrAvg(bIntervals);
-    const avgShifts = calcArrAvg(bShifts);
-
-    const currentWorkload = currentCheckIn.workload_hours != null ? Number(currentCheckIn.workload_hours) : null;
-    const currentSleep = currentCheckIn.recovery_sleep_hours != null ? Number(currentCheckIn.recovery_sleep_hours) : null;
-    const currentPressure = currentCheckIn.work_pressure_rating != null ? Number(currentCheckIn.work_pressure_rating) : null;
-
-    const workloadDeltaFromPersonal = (currentWorkload != null && avgWorkload != null)
-      ? Number((currentWorkload - avgWorkload).toFixed(1))
-      : 0;
-
-    const sleepDeltaFromPersonal = (currentSleep != null && avgSleep != null)
-      ? Number((currentSleep - avgSleep).toFixed(1))
-      : 0;
-
-    const pressureDeltaFromPersonal = (currentPressure != null && avgPressure != null)
-      ? Number((currentPressure - avgPressure).toFixed(1))
-      : 0;
-
-    let personalWorkloadStatus = 'AT_PERSONAL_NORMAL';
-    if (workloadDeltaFromPersonal > 4.0) personalWorkloadStatus = 'ELEVATED_ABOVE_NORMAL';
-    else if (workloadDeltaFromPersonal < -4.0) personalWorkloadStatus = 'BELOW_NORMAL';
-
-    let personalSleepStatus = 'AT_PERSONAL_NORMAL';
-    if (sleepDeltaFromPersonal < -1.0) personalSleepStatus = 'REST_DEFICIT';
-    else if (sleepDeltaFromPersonal > 1.0) personalSleepStatus = 'REST_SURPLUS';
-
-    const personalBaseline = {
-      baselineCheckInCount: baselineSource.length,
-      totalCheckInCount: checkIns.length,
-      avgWorkloadHours: avgWorkload,
-      avgRecoverySleepHours: avgSleep,
-      avgWorkPressure: avgPressure,
-      avgRestIntervalHours: avgRestInterval,
-      avgShiftContinuityDays: avgShifts,
-      comparison: {
-        workloadDelta: workloadDeltaFromPersonal,
-        workloadStatus: personalWorkloadStatus,
-        workloadLabel: workloadDeltaFromPersonal > 0 
-          ? `+${workloadDeltaFromPersonal} hrs/wk above your normal pattern (${avgWorkload} hrs/wk avg)`
-          : workloadDeltaFromPersonal < 0
-          ? `${workloadDeltaFromPersonal} hrs/wk below your normal pattern (${avgWorkload} hrs/wk avg)`
-          : `Aligned with your normal pattern (${avgWorkload} hrs/wk avg)`,
-        sleepDelta: sleepDeltaFromPersonal,
-        sleepStatus: personalSleepStatus,
-        sleepLabel: sleepDeltaFromPersonal < 0
-          ? `${sleepDeltaFromPersonal} hrs/day below your normal rest (${avgSleep} hrs/day avg)`
-          : sleepDeltaFromPersonal > 0
-          ? `+${sleepDeltaFromPersonal} hrs/day above your normal rest (${avgSleep} hrs/day avg)`
-          : `Aligned with your normal rest pattern (${avgSleep} hrs/day avg)`,
-        pressureDelta: pressureDeltaFromPersonal
-      }
-    };
+    // Tasks 26 & 27: Compute authentic personal historical baseline
+    const personalBaseline = computePersonalBaseline(checkIns, checkIns.length - 1);
 
     const calcDelta = (currentVal, prevVal, isHigherRisk = true) => {
       if (currentVal === null || currentVal === undefined || prevVal === null || prevVal === undefined) {
@@ -328,15 +552,15 @@ const getWhatChanged = async (req, res, next) => {
       workload_hours: {
         title: 'Weekly Duty Hours',
         unit: 'hrs/wk',
-        personalBaselineAvg: avgWorkload,
-        deltaFromPersonalBaseline: workloadDeltaFromPersonal,
+        personalBaselineAvg: personalBaseline.avgWorkloadHours,
+        deltaFromPersonalBaseline: personalBaseline.comparison ? personalBaseline.comparison.workloadDelta : 0,
         ...calcDelta(currentCheckIn.workload_hours, previousCheckIn.workload_hours, true)
       },
       recovery_sleep_hours: {
         title: 'Daily Sleep & Recovery',
         unit: 'hrs/day',
-        personalBaselineAvg: avgSleep,
-        deltaFromPersonalBaseline: sleepDeltaFromPersonal,
+        personalBaselineAvg: personalBaseline.avgRecoverySleepHours,
+        deltaFromPersonalBaseline: personalBaseline.comparison ? personalBaseline.comparison.sleepDelta : 0,
         ...calcDelta(currentCheckIn.recovery_sleep_hours, previousCheckIn.recovery_sleep_hours, false)
       },
       work_pressure_rating: {
@@ -396,7 +620,6 @@ const getWhatChanged = async (req, res, next) => {
       }
     };
 
-
     // Formulate non-causal summary explanation
     const notableChanges = [];
     if (metrics.recovery_sleep_hours.direction === 'DECREASED') {
@@ -437,6 +660,7 @@ const getWhatChanged = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       hasComparison: true,
+      baselineEstablished: personalBaseline.baselineEstablished,
       selectedCompareId: previousCheckIn._id,
       previousDate: previousCheckIn.checkInDate || previousCheckIn.createdAt,
       currentDate: currentCheckIn.checkInDate || currentCheckIn.createdAt,
@@ -456,9 +680,23 @@ const getWhatChanged = async (req, res, next) => {
   }
 };
 
+const getPersonalBaseline = async (req, res, next) => {
+  try {
+    const checkIns = await db.CheckIns.find({ userId: req.user._id });
+    const baseline = computePersonalBaseline(checkIns);
+    return res.status(200).json({
+      success: true,
+      data: baseline
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getLatestPrediction,
   getPredictionHistory,
   getExplainability,
-  getWhatChanged
+  getWhatChanged,
+  getPersonalBaseline
 };

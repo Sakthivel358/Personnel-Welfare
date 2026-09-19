@@ -178,8 +178,8 @@
     async function loadExplainability() {
       try {
         const res = await api.getExplainability();
-        if (res && res.success && res.data && res.data.contributingFactors) {
-          const factors = res.data.contributingFactors;
+        if (res && res.success && res.data) {
+          const isUndet = res.data.concernLevel === 'UNDETERMINED' || res.data.evidenceStrength === 'INSUFFICIENT';
           const card = document.getElementById('evidence-sources-card');
           const dualBadges = document.getElementById('why-dual-badges');
           const pills = document.getElementById('why-evidence-pills');
@@ -188,7 +188,7 @@
             card.style.display = 'block';
             const concernBadge = Utils.getWelfareConcernDisplay(res.data.concernLevel);
             const evidenceBadge = Utils.getEvidenceStrengthDisplay(res.data.evidenceStrength);
-            const avCount = res.data.dataAvailableCount != null ? res.data.dataAvailableCount : (res.data.evidenceCount || 4);
+            const avCount = res.data.dataAvailableCount != null ? res.data.dataAvailableCount : (res.data.evidenceCount || 0);
             const dataAvailBadge = Utils.getDataAvailableDisplay(avCount, 5);
 
             dualBadges.innerHTML = `
@@ -211,18 +211,49 @@
             `).join('');
           }
 
+          if (isUndet || !res.data.contributingFactors || res.data.contributingFactors.length === 0) {
+            document.getElementById('factors-detailed-list').innerHTML = `
+              <div class="card text-center py-4" style="background:var(--bg-card-subtle); border-radius:8px;">
+                <div style="font-size:1.5rem; margin-bottom:0.4rem;">⚖️</div>
+                <div style="font-weight:700; color:var(--text-primary); margin-bottom:0.25rem;">Insufficient Evidence</div>
+                <div class="text-muted" style="font-size:0.85rem; max-width:420px; margin:0 auto 1rem;">
+                  Additional authorized data or a welfare check-in is required to calculate statistical factor attribution.
+                </div>
+                <div>
+                  <a href="/stress-checkin.html" class="btn btn-sm btn-primary">Submit Check-in</a>
+                </div>
+              </div>
+            `;
+            const tb = document.getElementById('factors-table-body');
+            if (tb) tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Evidence insufficient. Additional authorized data or a welfare check-in is required.</td></tr>`;
+            return;
+          }
+
+          const factors = res.data.contributingFactors;
           ChartsManager.renderRadarChart('factor-radar-chart', factors);
           renderDetailedList(factors);
           renderTable(factors);
         } else {
+          const card = document.getElementById('evidence-sources-card');
+          const dualBadges = document.getElementById('why-dual-badges');
+          if (card && dualBadges) {
+            card.style.display = 'block';
+            dualBadges.innerHTML = `
+              ${Utils.getWelfareConcernDisplay('UNDETERMINED')}
+              ${Utils.getEvidenceStrengthDisplay('INSUFFICIENT')}
+              ${Utils.getDataAvailableDisplay(0, 5)}
+            `;
+          }
 
           document.getElementById('factors-detailed-list').innerHTML = `
             <div class="text-center text-muted py-4">
-              Please submit a check-in first to generate model attribution breakdown.
+              <div style="font-size:1.5rem; margin-bottom:0.4rem;">⚖️</div>
+              <div style="font-weight:700; margin-bottom:0.25rem;">Baseline Not Established</div>
+              <div style="font-size:0.85rem;">Additional authorized data or a welfare check-in is required.</div>
             </div>
           `;
           const tb = document.getElementById('factors-table-body');
-          if (tb) tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">No factor parameters available yet. Complete a check-in to view.</td></tr>`;
+          if (tb) tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Additional authorized data or a welfare check-in is required.</td></tr>`;
         }
       } catch (err) {
         console.error('Error loading explainability:', err);

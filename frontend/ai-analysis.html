@@ -186,7 +186,43 @@
         const res = await api.getLatestPrediction();
         if (res && res.success && res.data && res.data.prediction) {
           const p = res.data.prediction;
-          
+          const isUndet = p.concernLevel === 'UNDETERMINED' || p.isUndetermined;
+
+          if (isUndet) {
+            document.getElementById('main-risk-circle').className = 'risk-circle UNDETERMINED';
+            document.getElementById('main-risk-score').textContent = 'N/A';
+            document.getElementById('concern-heading').textContent = 'WELFARE CONCERN — UNDETERMINED';
+            document.getElementById('concern-badge-top').innerHTML = `
+              <div class="d-flex gap-1 flex-wrap">
+                <span class="badge badge-neutral" style="font-weight:700;">WELFARE CONCERN — UNDETERMINED</span>
+                <span class="badge" style="font-weight:700; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
+              </div>
+            `;
+            document.getElementById('concern-desc').innerHTML = `
+              <strong style="color:var(--text-secondary);">Additional authorized data or a welfare check-in is required.</strong>
+            `;
+            document.getElementById('analysis-timestamp').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
+
+            // Clear probabilities from showing 0% / fake values to fill the screen
+            const probContainer = document.querySelector('.grid-2 > div:last-child');
+            if (probContainer) {
+              probContainer.innerHTML = `
+                <div class="card" style="background:var(--bg-card-subtle); padding:1.5rem; text-align:center;">
+                  <div style="font-size:1.5rem; margin-bottom:0.5rem;">⚖️</div>
+                  <h4 style="margin-bottom:0.5rem;">Evidence Insufficient</h4>
+                  <p class="text-muted" style="font-size:0.88rem; margin-bottom:1rem;">
+                    There is not enough authorized information to calculate model probabilities or evaluate risk contributors.
+                  </p>
+                  <div class="alert alert-neutral" style="font-size:0.85rem; font-weight:600; color:var(--text-secondary);">
+                    “Additional authorized data or a welfare check-in is required.”
+                  </div>
+                  <a href="/stress-checkin.html" class="btn btn-sm btn-primary mt-2">Submit Check-in</a>
+                </div>
+              `;
+            }
+            return;
+          }
+
           document.getElementById('main-risk-circle').className = `risk-circle ${p.concernLevel}`;
           document.getElementById('main-risk-score').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
           document.getElementById('concern-heading').textContent = `${p.concernLevel} Welfare Concern`;
@@ -222,10 +258,14 @@
           if (container) {
             container.innerHTML = `
               <div class="card text-center py-5" style="background:var(--bg-card); border: 1px dashed var(--border-color);">
-                <div style="font-size:2.5rem; margin-bottom:1rem;">🌲</div>
-                <h3>No AI Analysis Available Yet</h3>
-                <p class="text-muted" style="max-width:480px; margin:0.5rem auto 1.5rem;">
-                  You have not submitted any stress check-ins yet. Complete your first confidential check-in to generate your Random Forest risk inference.
+                <div style="font-size:2.5rem; margin-bottom:1rem;">⚖️</div>
+                <div class="d-flex justify-center gap-1 flex-wrap mb-3">
+                  <span class="badge badge-neutral" style="font-weight:700; font-size:0.85rem; padding:0.4rem 0.8rem;">WELFARE CONCERN — UNDETERMINED</span>
+                  <span class="badge" style="font-weight:700; font-size:0.85rem; padding:0.4rem 0.8rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
+                </div>
+                <h3 style="margin-bottom:0.5rem;">Baseline Not Established</h3>
+                <p class="text-muted" style="max-width:480px; margin:0.5rem auto 1.5rem; font-weight:600;">
+                  Additional authorized data or a welfare check-in is required.
                 </p>
                 <div>
                   <a href="/stress-checkin.html" class="btn btn-primary">Start Initial Check-in &rarr;</a>

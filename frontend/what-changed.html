@@ -83,42 +83,23 @@
           </div>
         </div>
 
-        <!-- Personal Historical Baseline (Tasks 13 & 14) -->
+        <!-- Personal Historical Baseline (Tasks 26 & 27) -->
         <div class="card mb-3" id="personal-baseline-card" style="border-left: 4px solid #3b82f6;">
           <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
             <div>
               <div class="d-flex align-center gap-1">
-                <h3 style="font-size: 1.05rem;">📊 Personal Historical Baseline (Your Normal Pattern)</h3>
-                <span class="badge badge-neutral" id="baseline-record-count">Baseline Active</span>
+                <h3 style="font-size: 1.05rem;">📊 Personal Historical Baseline</h3>
+                <span class="badge badge-neutral" id="baseline-record-count">Baseline Status</span>
               </div>
               <p class="text-muted" style="font-size:0.83rem; margin-top:0.2rem;">
-                Comparing current check-in metrics against your personal historical mean (not just population averages) to detect duty surges and sleep deficits.
+                Comparing YOUR NORMAL PATTERN vs CURRENT across authorized workload, rest, fatigue, and relevant stress indicators.
               </p>
             </div>
             <span class="badge badge-low" style="font-size:0.75rem;">Longitudinal Tracking</span>
           </div>
 
-          <div class="grid-4" id="personal-baseline-grid">
-            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
-              <div class="text-muted" style="font-size:0.75rem;">Normal Weekly Workload</div>
-              <div style="font-size:1.1rem; font-weight:700;" id="base-workload-val">-- hrs/wk</div>
-              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-workload-delta">Loading...</div>
-            </div>
-            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
-              <div class="text-muted" style="font-size:0.75rem;">Normal Rest & Sleep</div>
-              <div style="font-size:1.1rem; font-weight:700;" id="base-sleep-val">-- hrs/day</div>
-              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-sleep-delta">Loading...</div>
-            </div>
-            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
-              <div class="text-muted" style="font-size:0.75rem;">Normal Work Pressure</div>
-              <div style="font-size:1.1rem; font-weight:700;" id="base-pressure-val">-- / 10</div>
-              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-pressure-delta">Loading...</div>
-            </div>
-            <div class="card" style="background: var(--bg-card-subtle); padding: 0.75rem;">
-              <div class="text-muted" style="font-size:0.75rem;">Normal Rest Interval</div>
-              <div style="font-size:1.1rem; font-weight:700;" id="base-interval-val">-- hrs</div>
-              <div style="font-size:0.75rem; margin-top:0.25rem;" id="base-interval-delta">Loading...</div>
-            </div>
+          <div id="personal-baseline-content">
+            <div class="text-muted text-center py-3">Loading personal baseline...</div>
           </div>
         </div>
 
@@ -210,6 +191,9 @@
             `;
             const compareSelect = document.getElementById('compare-select');
             if (compareSelect) compareSelect.style.display = 'none';
+
+            // Render baseline status (Baseline not established yet)
+            renderPersonalBaseline(res.personalBaseline);
             return;
           }
 
@@ -245,90 +229,135 @@
             };
           }
 
-          if (res.personalBaseline) {
-            const pb = res.personalBaseline;
-            const card = document.getElementById('personal-baseline-card');
-            if (card) card.style.display = 'block';
-
-            const countEl = document.getElementById('baseline-record-count');
-            if (countEl) countEl.textContent = `Computed from ${pb.baselineCheckInCount || pb.totalCheckInCount || pb.recordCount || 2} check-ins`;
-
-            const workEl = document.getElementById('base-workload-val');
-            if (workEl) workEl.textContent = pb.avgWorkloadHours != null ? `${pb.avgWorkloadHours} hrs/wk` : '-- hrs/wk';
-
-            const sleepEl = document.getElementById('base-sleep-val');
-            if (sleepEl) sleepEl.textContent = pb.avgRecoverySleepHours != null ? `${pb.avgRecoverySleepHours} hrs/day` : '-- hrs/day';
-
-            const pressEl = document.getElementById('base-pressure-val');
-            if (pressEl) pressEl.textContent = pb.avgWorkPressure != null ? `${pb.avgWorkPressure} / 10` : '-- / 10';
-
-            const intEl = document.getElementById('base-interval-val');
-            if (intEl) intEl.textContent = pb.avgRestIntervalHours != null ? `${pb.avgRestIntervalHours} hrs` : '-- hrs';
-
-            if (pb.comparison) {
-              const comp = pb.comparison;
-              const wDeltaEl = document.getElementById('base-workload-delta');
-              if (wDeltaEl) {
-                if (comp.workloadDelta > 0) {
-                  wDeltaEl.innerHTML = `<span style="color:var(--risk-high); font-weight:600;">+${comp.workloadDelta} hrs</span> above normal`;
-                } else if (comp.workloadDelta < 0) {
-                  wDeltaEl.innerHTML = `<span style="color:var(--risk-low); font-weight:600;">${comp.workloadDelta} hrs</span> below normal`;
-                } else {
-                  wDeltaEl.innerHTML = `<span style="color:var(--accent); font-weight:600;">At normal baseline</span>`;
-                }
-              }
-
-              const sDeltaEl = document.getElementById('base-sleep-delta');
-              if (sDeltaEl) {
-                if (comp.sleepDelta < 0) {
-                  sDeltaEl.innerHTML = `<span style="color:var(--risk-high); font-weight:600;">${comp.sleepDelta} hrs</span> rest deficit`;
-                } else if (comp.sleepDelta > 0) {
-                  sDeltaEl.innerHTML = `<span style="color:var(--risk-low); font-weight:600;">+${comp.sleepDelta} hrs</span> surplus`;
-                } else {
-                  sDeltaEl.innerHTML = `<span style="color:var(--accent); font-weight:600;">At normal pattern</span>`;
-                }
-              }
-
-              const pDeltaEl = document.getElementById('base-pressure-delta');
-              if (pDeltaEl) {
-                pDeltaEl.innerHTML = `<span style="font-weight:600;">${comp.pressureDelta > 0 ? '+' : ''}${comp.pressureDelta}</span> vs typical pace`;
-              }
-
-              const iDeltaEl = document.getElementById('base-interval-delta');
-              if (iDeltaEl) {
-                iDeltaEl.innerHTML = `<span style="color:var(--text-muted); font-size:0.75rem;">Consecutive: ${pb.avgShiftContinuityDays != null ? pb.avgShiftContinuityDays : '--'}d avg</span>`;
-              }
-            }
-          }
+          // Render personal historical baseline: YOUR NORMAL PATTERN vs CURRENT (Tasks 26 & 27)
+          renderPersonalBaseline(res.personalBaseline);
 
           const metrics = res.metrics;
           const tbody = document.getElementById('comparison-table-body');
-          tbody.innerHTML = Object.keys(metrics).map(k => {
-            const m = metrics[k];
-            let deltaBadge = `<span class="badge badge-neutral">Stable (0)</span>`;
-            if (m.direction === 'INCREASED') {
-              deltaBadge = `<span class="badge ${m.welfareImpact === 'IMPROVING' ? 'badge-low' : 'badge-high'}">+${m.diff} ${m.unit}</span>`;
-            } else if (m.direction === 'DECREASED') {
-              deltaBadge = `<span class="badge ${m.welfareImpact === 'IMPROVING' ? 'badge-low' : 'badge-high'}">${m.diff} ${m.unit}</span>`;
-            }
+          if (tbody && metrics) {
+            tbody.innerHTML = Object.keys(metrics).map(k => {
+              const m = metrics[k];
+              let deltaBadge = `<span class="badge badge-neutral">Stable (0)</span>`;
+              if (m.direction === 'INCREASED') {
+                deltaBadge = `<span class="badge ${m.welfareImpact === 'IMPROVING' ? 'badge-low' : 'badge-high'}">+${m.diff} ${m.unit}</span>`;
+              } else if (m.direction === 'DECREASED') {
+                deltaBadge = `<span class="badge ${m.welfareImpact === 'IMPROVING' ? 'badge-low' : 'badge-high'}">${m.diff} ${m.unit}</span>`;
+              }
 
-            return `
-              <tr style="border-bottom: 1px solid var(--border-color);">
-                <td style="padding: 0.75rem;"><strong>${m.title}</strong></td>
-                <td style="padding: 0.75rem;">${m.previous} ${m.unit}</td>
-                <td style="padding: 0.75rem;"><strong>${m.current} ${m.unit}</strong></td>
-                <td style="padding: 0.75rem;">${deltaBadge}</td>
-                <td style="padding: 0.75rem;"><span style="font-weight:600;">${m.direction}</span></td>
-                <td style="padding: 0.75rem; font-size:0.8rem; color:var(--text-muted);">
-                  ${m.welfareImpact === 'IMPROVING' ? '🟢 Positive welfare direction' : m.welfareImpact === 'ELEVATING' ? '🔴 Increased operational strain' : '⚪ Consistent baseline'}
-                </td>
-              </tr>
-            `;
-          }).join('');
+              return `
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                  <td style="padding: 0.75rem;"><strong>${m.title}</strong></td>
+                  <td style="padding: 0.75rem;">${m.previous} ${m.unit}</td>
+                  <td style="padding: 0.75rem;"><strong>${m.current} ${m.unit}</strong></td>
+                  <td style="padding: 0.75rem;">${deltaBadge}</td>
+                  <td style="padding: 0.75rem;"><span style="font-weight:600;">${m.direction}</span></td>
+                  <td style="padding: 0.75rem; font-size:0.8rem; color:var(--text-muted);">
+                    ${m.welfareImpact === 'IMPROVING' ? '🟢 Positive welfare direction' : m.welfareImpact === 'ELEVATING' ? '🔴 Increased operational strain' : '⚪ Consistent baseline'}
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
         }
       } catch (err) {
         console.error('Error loading what changed:', err);
       }
+    }
+
+    function renderPersonalBaseline(pb) {
+      const container = document.getElementById('personal-baseline-content');
+      const countEl = document.getElementById('baseline-record-count');
+      if (!container) return;
+
+      if (!pb || !pb.baselineEstablished) {
+        if (countEl) {
+          countEl.textContent = 'Baseline not established yet';
+          countEl.className = 'badge badge-neutral';
+        }
+        container.innerHTML = `
+          <div class="text-center py-3 text-muted" style="padding:1.5rem 1rem; background:var(--bg-card-subtle); border-radius:8px;">
+            <div style="font-weight:700; font-size:1.05rem; color:var(--text-primary); margin-bottom:0.35rem;">Baseline not established yet.</div>
+            <div style="font-size:0.85rem; max-width:480px; margin:0 auto 1rem;">Additional authorized data or a welfare check-in is required to establish your personal normal pattern. (Requires at least 2 authorized check-ins).</div>
+            <a href="/stress-checkin.html" class="btn btn-sm btn-primary">+ Submit Check-in</a>
+          </div>
+        `;
+        return;
+      }
+
+      if (countEl) {
+        countEl.textContent = `Baseline Active (${pb.baselineCheckInCount || pb.totalCheckInCount} check-ins)`;
+        countEl.className = 'badge badge-low';
+      }
+
+      const cats = pb.comparisonCategories;
+      if (!cats) {
+        container.innerHTML = `<div class="text-muted text-center py-2">Baseline not established yet.</div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="grid-4" style="gap:0.75rem;">
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid var(--accent);">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Workload</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.workload.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:var(--accent);">${cats.workload.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.workload.directionalChange}
+            </div>
+          </div>
+
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #10b981;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Rest</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.rest.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#10b981;">${cats.rest.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.rest.directionalChange}
+            </div>
+          </div>
+
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #f59e0b;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Fatigue</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.fatigue.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#f59e0b;">${cats.fatigue.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.fatigue.directionalChange}
+            </div>
+          </div>
+
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #8b5cf6;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Relevant Stress Indicators</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.stressIndicators.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#8b5cf6;">${cats.stressIndicators.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.stressIndicators.directionalChange}
+            </div>
+          </div>
+        </div>
+      `;
     }
   </script>
 </body>

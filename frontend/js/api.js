@@ -163,6 +163,15 @@ class APIClient {
     return this.request('/prediction/explainability', { method: 'GET' });
   }
 
+  async getPersonalBaseline() {
+    return this.request('/prediction/personal-baseline', { method: 'GET' });
+  }
+
+  async getWhatChanged(id = null) {
+    const q = id ? `?id=${encodeURIComponent(id)}` : '';
+    return this.request(`/prediction/what-changed${q}`, { method: 'GET' });
+  }
+
   // Officer endpoints
   async getOfficerDashboard() {
     return this.request('/officer/dashboard', { method: 'GET' });

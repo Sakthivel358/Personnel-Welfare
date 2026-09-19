@@ -150,9 +150,12 @@
             </div>
 
             <div id="risk-empty" style="display:none;" class="text-center py-3">
-              <div style="font-size:2rem; margin-bottom:0.5rem;">📝</div>
-              <h4>No Check-in Completed Yet</h4>
-              <p class="text-muted" style="font-size:0.85rem; margin-bottom:1rem;">Complete your initial check-in to generate your Random Forest prediction.</p>
+              <div style="font-size:2rem; margin-bottom:0.5rem;">⚖️</div>
+              <div class="d-flex justify-center gap-1 flex-wrap mb-2">
+                <span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — UNDETERMINED</span>
+                <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
+              </div>
+              <p class="text-muted" style="font-size:0.88rem; font-weight:600; margin-bottom:1rem;">Additional authorized data or a welfare check-in is required.</p>
               <a href="/stress-checkin.html" class="btn btn-sm btn-primary">Start Initial Check-in</a>
             </div>
           </div>
@@ -181,6 +184,20 @@
                 Recommendations will be generated dynamically from your model factor analysis.
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Personal Baseline: YOUR NORMAL PATTERN vs CURRENT (Tasks 26 & 27) -->
+        <div class="card mb-3" id="dashboard-baseline-card">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h3 style="font-size: 1.05rem;">📊 Personal Historical Baseline</h3>
+              <p class="text-muted" style="font-size:0.82rem; margin-top:0.2rem;">Comparing YOUR NORMAL PATTERN vs CURRENT across authorized workload, rest, fatigue, and stress indicators.</p>
+            </div>
+            <a href="/what-changed.html" class="btn btn-sm btn-outline">Detailed Comparison &rarr;</a>
+          </div>
+          <div id="dashboard-baseline-content">
+            <div class="text-muted text-center py-3">Loading personal baseline...</div>
           </div>
         </div>
 
@@ -284,9 +301,10 @@
 
     async function loadDashboardData() {
       try {
-        const [latestRes, historyRes] = await Promise.all([
-          api.getLatestPrediction(),
-          api.getPredictionHistory()
+        const [latestRes, historyRes, baselineRes] = await Promise.all([
+          api.getLatestPrediction().catch(() => null),
+          api.getPredictionHistory().catch(() => null),
+          api.getPersonalBaseline().catch(() => null)
         ]);
 
         document.getElementById('risk-loading').style.display = 'none';
@@ -294,7 +312,7 @@
         if (latestRes && latestRes.success && latestRes.data && latestRes.data.prediction) {
           const { prediction, recommendations } = latestRes.data;
           renderRiskWidget(prediction);
-          renderFactors(prediction.contributingFactors);
+          renderFactors(prediction.contributingFactors, prediction.concernLevel);
           renderRecPreview(recommendations);
         } else {
           document.getElementById('risk-empty').style.display = 'block';
@@ -305,6 +323,8 @@
         } else {
           document.getElementById('trend-empty').style.display = 'block';
         }
+
+        renderDashboardBaseline(baselineRes);
       } catch (err) {
         console.error('Error loading dashboard data:', err);
         document.getElementById('risk-loading').style.display = 'none';
@@ -315,16 +335,24 @@
     function renderRiskWidget(p) {
       document.getElementById('risk-content').style.display = 'block';
       const circle = document.getElementById('risk-circle-indicator');
-      circle.className = `risk-circle ${p.concernLevel}`;
+      const isUndet = p.concernLevel === 'UNDETERMINED' || p.isUndetermined;
+
+      circle.className = `risk-circle ${isUndet ? 'UNDETERMINED' : p.concernLevel}`;
       
-      const scoreVal = p.compositeRiskScore != null ? `${Math.round(p.compositeRiskScore)}%` : 'N/A';
+      const scoreVal = (isUndet || p.compositeRiskScore == null) ? 'N/A' : `${Math.round(p.compositeRiskScore)}%`;
       document.getElementById('risk-score-val').textContent = scoreVal;
 
-      const concernBadgeHtml = Utils.getWelfareConcernDisplay(p.concernLevel);
-      const evLevel = p.evidenceStrength || (p.decisionLayer && p.decisionLayer.evidenceStrength ? p.decisionLayer.evidenceStrength.level : 'MODERATE');
+      const concernBadgeHtml = Utils.getWelfareConcernDisplay(isUndet ? 'UNDETERMINED' : p.concernLevel);
+      const evLevel = isUndet ? 'INSUFFICIENT' : (p.evidenceStrength || (p.decisionLayer && p.decisionLayer.evidenceStrength ? p.decisionLayer.evidenceStrength.level : 'MODERATE'));
       const evidenceBadgeHtml = Utils.getEvidenceStrengthDisplay(evLevel);
-      const avCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || (p.evidenceSources ? p.evidenceSources.length : 4));
+      const avCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || (p.evidenceSources ? p.evidenceSources.length : 0));
       const dataAvailHtml = Utils.getDataAvailableDisplay(avCount, 5);
+
+      const guidanceNotice = isUndet ? `
+        <div class="alert alert-neutral mt-2 text-center p-2" style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--text-secondary);">
+          Additional authorized data or a welfare check-in is required.
+        </div>
+      ` : '';
 
       document.getElementById('concern-badge-container').innerHTML = `
         <div class="d-flex flex-column align-center gap-1 w-100">
@@ -333,6 +361,7 @@
             ${evidenceBadgeHtml}
             ${dataAvailHtml}
           </div>
+          ${guidanceNotice}
         </div>
       `;
 
@@ -360,10 +389,94 @@
       }
     }
 
-    function renderFactors(factors) {
+    function renderDashboardBaseline(res) {
+      const container = document.getElementById('dashboard-baseline-content');
+      if (!container) return;
+
+      const data = (res && res.data) ? res.data : res;
+      if (!data || !data.baselineEstablished) {
+        container.innerHTML = `
+          <div class="text-center py-3 text-muted" style="padding:1.5rem 1rem;">
+            <div style="font-weight:700; font-size:1rem; color:var(--text-primary); margin-bottom:0.35rem;">Baseline not established yet.</div>
+            <div style="font-size:0.85rem; max-width:480px; margin:0 auto 1rem;">Additional authorized data or a welfare check-in is required to establish your personal normal pattern. (Requires at least 2 authorized check-ins).</div>
+            <a href="/stress-checkin.html" class="btn btn-sm btn-outline">+ Complete Next Check-in</a>
+          </div>
+        `;
+        return;
+      }
+
+      const cats = data.comparisonCategories;
+      if (!cats) return;
+
+      container.innerHTML = `
+        <div class="grid-4" style="gap:0.75rem;">
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid var(--accent);">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Workload</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.workload.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:var(--accent);">${cats.workload.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.workload.directionalChange}
+            </div>
+          </div>
+
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #10b981;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Rest</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.rest.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#10b981;">${cats.rest.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.rest.directionalChange}
+            </div>
+          </div>
+
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #f59e0b;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Fatigue</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.fatigue.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#f59e0b;">${cats.fatigue.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.fatigue.directionalChange}
+            </div>
+          </div>
+
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #8b5cf6;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Relevant Stress Indicators</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">YOUR NORMAL PATTERN:</span>
+              <strong>${cats.stressIndicators.normalPattern.label}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#8b5cf6;">${cats.stressIndicators.current.label}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${cats.stressIndicators.directionalChange}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderFactors(factors, concernLevel) {
       const container = document.getElementById('factors-container');
-      if (!factors || factors.length === 0) {
-        container.innerHTML = `<div class="text-muted text-center py-3">No elevated strain factors detected.</div>`;
+      if (concernLevel === 'UNDETERMINED' || !factors || factors.length === 0) {
+        container.innerHTML = `<div class="text-muted text-center py-3" style="font-size:0.88rem;">No factors evaluated. Additional authorized data or a welfare check-in is required.</div>`;
         return;
       }
 

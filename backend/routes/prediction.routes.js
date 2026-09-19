@@ -7,5 +7,6 @@ router.get('/latest', authenticate, predictionController.getLatestPrediction);
 router.get('/history', authenticate, predictionController.getPredictionHistory);
 router.get('/explainability', authenticate, predictionController.getExplainability);
 router.get('/what-changed', authenticate, predictionController.getWhatChanged);
+router.get('/personal-baseline', authenticate, predictionController.getPersonalBaseline);
 
 module.exports = router;
