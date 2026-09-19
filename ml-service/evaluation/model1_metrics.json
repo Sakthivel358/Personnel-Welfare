@@ -1,0 +1,59 @@
+{
+  "model_name": "RandomForestClassifier_Model1_Wearable_Operational",
+  "model_version": "v2.0.0-model1",
+  "trained_at": "2026-09-19T07:54:33.290152",
+  "dataset_type": "SYNTHETIC_WEARABLE_OPERATIONAL_DEMO",
+  "dataset_samples": 3500,
+  "train_samples": 2800,
+  "test_samples": 700,
+  "accuracy": 0.81,
+  "precision_macro": 0.7789755252328351,
+  "recall_macro": 0.8077392536108133,
+  "f1_macro": 0.7917976134571156,
+  "per_class": {
+    "LOW": {
+      "precision": 0.8533333333333334,
+      "recall": 0.8311688311688312,
+      "f1": 0.8421052631578947
+    },
+    "MODERATE": {
+      "precision": 0.7993827160493827,
+      "recall": 0.7920489296636085,
+      "f1": 0.7956989247311828
+    },
+    "HIGH": {
+      "precision": 0.6842105263157895,
+      "recall": 0.8,
+      "f1": 0.7375886524822695
+    }
+  },
+  "feature_importances": {
+    "fatigue_physical_strain": 0.16249980092252353,
+    "recovery_sleep_hours": 0.12518170078005858,
+    "workload_hours": 0.09249230014697307,
+    "hrv_ms": 0.08615747849819826,
+    "resting_heart_rate": 0.08462247549932422,
+    "recovery_pattern_score": 0.07931943729121803,
+    "pss_score": 0.05026802988507659,
+    "respiration_rate": 0.04534395454359224,
+    "deployment_demand_score": 0.04279713911970358,
+    "work_pressure_rating": 0.03874803914098287,
+    "rest_interval_hours": 0.033600294490229304,
+    "night_duty_hours": 0.029128542400381686,
+    "recent_trend_indicator": 0.023121438259166998,
+    "work_life_balance_rating": 0.02294487146948996,
+    "prolonged_duty_hours": 0.022626636782928408,
+    "social_support_rating": 0.021025743671898692,
+    "skin_temperature_c": 0.018621575355984216,
+    "shift_continuity_days": 0.011510402965547945,
+    "posture_inactivity_score": 0.0053931330468997805,
+    "activity_movement_score": 0.004597005729822026
+  },
+  "class_distribution": {
+    "LOW": 1541,
+    "MODERATE": 1634,
+    "HIGH": 325
+  },
+  "features_count": 20,
+  "disclaimer": "PROTOTYPE EVALUATION ON SYNTHETIC WEARABLE & OPERATIONAL DATA. NOT CLINICALLY VALIDATED."
+}

@@ -148,13 +148,20 @@ class MLClientService {
 
   async predictWelfareRisk(features) {
     try {
-      const response = await this.client.post('/predict', features);
+      const response = await this.client.post('/predict/model1', features);
       if (response.data && response.data.success) {
         return response.data.data;
       }
     } catch (err) {
-      // Gracefully fall back to the Embedded Random Forest Inference Engine
-      console.info('[ML Engine] Using Embedded Random Forest Engine (Local/Serverless Mode)');
+      try {
+        const response2 = await this.client.post('/predict', features);
+        if (response2.data && response2.data.success) {
+          return response2.data.data;
+        }
+      } catch (err2) {
+        // Gracefully fall back to the Embedded Random Forest Inference Engine
+        console.info('[ML Engine] Using Embedded Random Forest Engine (Local/Serverless Mode)');
+      }
     }
 
     return this.calculateEmbeddedPrediction(features);
@@ -340,10 +347,11 @@ class MLClientService {
       evidenceCount: evidenceSources.length,
       topDrivers: selectedTopDrivers,
       contributingFactors: contributingFactors,
-      modelVersion: 'v1.4.0',
+      modelUsed: 'MODEL_1_WEARABLE_OPERATIONAL',
+      modelVersion: 'v2.0.0-model1',
       trainedAt: new Date().toISOString(),
       analyzedAt: new Date().toISOString(),
-      disclaimer: 'AI-generated welfare decision-support signal based on authorized multi-source operational and biometric evidence.'
+      disclaimer: 'AI Model 1 (Wearable + Operational RF): Multi-source predictive signal based on biometric telemetry and operational duty data.'
     };
   }
 
@@ -363,29 +371,57 @@ class MLClientService {
     }
   }
 
-  async getModelEvaluation() {
+  async getModel1Evaluation() {
     try {
-      const response = await this.client.get('/evaluation', { timeout: 2000 });
+      const response = await this.client.get('/evaluation/model1', { timeout: 2000 });
       return response.data;
     } catch (err) {
       return null;
     }
   }
 
-  async getModelInfo() {
+  async getModel1Info() {
     try {
-      const response = await this.client.get('/model-info', { timeout: 2000 });
+      const response = await this.client.get('/model1-info', { timeout: 2000 });
       return response.data;
     } catch (err) {
-      return {
-        model_name: 'Random Forest Classifier',
-        framework: 'scikit-learn (with Embedded Production Runtime)',
-        model_version: 'v1.0',
-        n_estimators: 100,
-        features: Object.keys(FEATURE_METADATA),
-        class_names: ['LOW', 'MODERATE', 'HIGH'],
-        disclaimer: 'Decision-support AI model developed for Personnel Welfare & Resilience Monitoring.'
-      };
+      return null;
+    }
+  }
+
+  async getModelEvaluation() {
+    try {
+      const response = await this.client.get('/evaluation/model1', { timeout: 2000 });
+      return response.data;
+    } catch (err) {
+      try {
+        const response2 = await this.client.get('/evaluation', { timeout: 2000 });
+        return response2.data;
+      } catch (e) {
+        return null;
+      }
+    }
+  }
+
+  async getModelInfo() {
+    try {
+      const response = await this.client.get('/model1-info', { timeout: 2000 });
+      return response.data;
+    } catch (err) {
+      try {
+        const response2 = await this.client.get('/model-info', { timeout: 2000 });
+        return response2.data;
+      } catch (e) {
+        return {
+          model_name: 'Model 1 (Wearable + Operational RF)',
+          framework: 'scikit-learn (with Embedded Production Runtime)',
+          model_version: 'v2.0.0-model1',
+          n_estimators: 100,
+          features: Object.keys(FEATURE_METADATA),
+          class_names: ['LOW', 'MODERATE', 'HIGH'],
+          disclaimer: 'Decision-support AI model developed for Personnel Welfare & Resilience Monitoring.'
+        };
+      }
     }
   }
 }

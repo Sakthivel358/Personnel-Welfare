@@ -16,12 +16,12 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from predict import predict_welfare_risk, load_artifacts
+from predict import predict_welfare_risk, predict_model1_wearable_operational, load_artifacts, load_model1_artifacts
 
 app = FastAPI(
     title="SIH26186 Personnel Welfare ML Service",
-    description="Real Random Forest Inference and Explainability Service for Uniformed Forces Welfare Monitoring",
-    version="1.4.0"
+    description="Real Random Forest Inference and Explainability Service for Uniformed Forces Welfare Monitoring (Model 1: Wearable + Operational)",
+    version="2.0.0"
 )
 
 # CORS Middleware
@@ -37,6 +37,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 EVAL_DIR = os.path.join(BASE_DIR, "evaluation")
 METRICS_PATH = os.path.join(EVAL_DIR, "metrics.json")
 CONFUSION_MATRIX_PATH = os.path.join(EVAL_DIR, "confusion_matrix.json")
+MODEL1_METRICS_PATH = os.path.join(EVAL_DIR, "model1_metrics.json")
+MODEL1_CONFUSION_MATRIX_PATH = os.path.join(EVAL_DIR, "model1_confusion_matrix.json")
 
 class CheckInInput(BaseModel):
     # Source 4: Optional Self-Check / PSS-10
@@ -77,10 +79,15 @@ class CheckInInput(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     try:
-        load_artifacts()
-        print("ML Service: Model & Preprocessing artifacts loaded successfully.")
+        load_model1_artifacts()
+        print("ML Service: Model 1 (Wearable + Operational RF) loaded successfully.")
     except Exception as e:
-        print(f"ML Service Startup Warning: Artifacts not yet loaded ({e}).")
+        print(f"ML Service Startup Warning: Model 1 artifacts not yet loaded ({e}).")
+    try:
+        load_artifacts()
+        print("ML Service: Legacy Model artifacts loaded successfully.")
+    except Exception as e:
+        print(f"ML Service Startup Warning: Legacy artifacts not yet loaded ({e}).")
 
 @app.get("/health", tags=["Health"])
 async def health_check():
@@ -88,11 +95,26 @@ async def health_check():
     Genuine health check for the ML service, verifying model file accessibility and memory status.
     """
     model_loaded = False
+    model1_loaded = False
     details = {}
+    try:
+        m1, prep1 = load_model1_artifacts()
+        model1_loaded = True
+        details["model1"] = {
+            "model_name": prep1.get("model_name", "Model 1 (Wearable + Operational RF)"),
+            "model_type": type(m1).__name__,
+            "n_estimators": getattr(m1, "n_estimators", 100),
+            "features_count": len(prep1.get("feature_columns", [])),
+            "model_version": prep1.get("model_version", "v2.0.0-model1"),
+            "trained_at": prep1.get("trained_at")
+        }
+    except Exception as e1:
+        details["model1_error"] = str(e1)
+
     try:
         model, prep = load_artifacts()
         model_loaded = True
-        details = {
+        details["legacy_model"] = {
             "model_type": type(model).__name__,
             "n_estimators": getattr(model, "n_estimators", 100),
             "features_count": len(prep.get("feature_columns", [])),
@@ -100,13 +122,14 @@ async def health_check():
             "trained_at": prep.get("trained_at")
         }
     except Exception as e:
-        model_loaded = False
-        details["error"] = str(e)
+        details["legacy_model_error"] = str(e)
 
+    overall_loaded = model1_loaded or model_loaded
     return {
-        "status": "healthy" if model_loaded else "degraded",
+        "status": "healthy" if overall_loaded else "degraded",
         "service": "WelfareAI-FastAPI-ML-Engine",
-        "model_loaded": model_loaded,
+        "model_loaded": overall_loaded,
+        "model1_loaded": model1_loaded,
         "details": details,
         "timestamp": datetime.now().isoformat()
     }
@@ -140,6 +163,76 @@ async def predict(data: CheckInInput):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Inference processing failed: {str(e)}"
         )
+
+@app.post("/predict/model1", tags=["Model 1"])
+async def predict_model1(data: CheckInInput):
+    """
+    Executes dedicated Random Forest Model 1 for Wearable + Operational data.
+    """
+    try:
+        input_dict = data.dict()
+        result = predict_model1_wearable_operational(input_dict)
+        return {
+            "success": True,
+            "data": result
+        }
+    except FileNotFoundError as fe:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Model 1 artifacts not trained or found. Please ensure train_model1_wearable_operational.py has executed."
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Model 1 inference failed: {str(e)}"
+        )
+
+@app.get("/model1-info", tags=["Model 1"])
+async def get_model1_info():
+    """
+    Returns transparent metadata for Model 1 (Wearable + Operational RF).
+    """
+    try:
+        m1, prep1 = load_model1_artifacts()
+        return {
+            "model_name": prep1.get("model_name", "Model 1 (Wearable + Operational RF)"),
+            "framework": "scikit-learn",
+            "model_version": prep1.get("model_version", "v2.0.0-model1"),
+            "trained_at": prep1.get("trained_at"),
+            "n_estimators": getattr(m1, "n_estimators", 100),
+            "features_count": len(prep1.get("feature_columns", [])),
+            "features": prep1.get("feature_columns", []),
+            "class_names": prep1.get("class_names", []),
+            "baseline_statistics": prep1.get("baseline_stats", {}),
+            "disclaimer": "AI Model 1: Wearable + Operational Decision-Support Classifier."
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/evaluation/model1", tags=["Model 1"])
+async def get_model1_evaluation():
+    """
+    Returns actual test evaluation metrics for Model 1 (Accuracy, Precision, Recall, F1, Confusion Matrix).
+    """
+    if not os.path.exists(MODEL1_METRICS_PATH):
+        raise HTTPException(
+            status_code=404,
+            detail="Model 1 evaluation metrics not found. Run train_model1_wearable_operational.py first."
+        )
+
+    with open(MODEL1_METRICS_PATH, "r") as f:
+        metrics = json.load(f)
+
+    cm_data = {}
+    if os.path.exists(MODEL1_CONFUSION_MATRIX_PATH):
+        with open(MODEL1_CONFUSION_MATRIX_PATH, "r") as f:
+            cm_data = json.load(f)
+
+    return {
+        "model": "Model 1 (Wearable + Operational RF)",
+        "metrics": metrics,
+        "confusion_matrix": cm_data
+    }
 
 @app.get("/model-info", tags=["Transparency"])
 async def get_model_info():

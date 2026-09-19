@@ -262,6 +262,7 @@ const submitCheckIn = async (req, res, next) => {
       evidenceCount: (mlPrediction.evidenceSources || evidenceSources).length,
       topDrivers: mlPrediction.topDrivers,
       contributingFactors: mlPrediction.contributingFactors,
+      modelUsed: mlPrediction.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
       modelVersion: mlPrediction.modelVersion,
       analyzedAt: mlPrediction.analyzedAt,
       isAlertGenerated: mlPrediction.concernLevel === 'HIGH' || mlPrediction.compositeRiskScore >= 65

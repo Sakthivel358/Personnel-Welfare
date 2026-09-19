@@ -128,8 +128,58 @@ FEATURE_METADATA = {
         "high_is_risk": True,
         "unit": "hrs/wk",
         "healthy_range": "0 - 14"
+    },
+    "activity_movement_score": {
+        "title": "Activity & Movement Dynamics",
+        "description": "Smart Jacket tri-axial accelerometer mobility cadence",
+        "high_is_risk": True,
+        "unit": "level",
+        "healthy_range": "Normal Mobility"
+    },
+    "posture_inactivity_score": {
+        "title": "Posture & Immobility Stance",
+        "description": "Prolonged static posture and musculoskeletal vigilance",
+        "high_is_risk": True,
+        "unit": "level",
+        "healthy_range": "Balanced Posture"
+    },
+    "rest_interval_hours": {
+        "title": "Duty Rest Interval",
+        "description": "Continuous unbroken off-duty recuperation interval between shifts",
+        "high_is_risk": False,
+        "unit": "hrs",
+        "healthy_range": "8 - 16"
+    },
+    "recovery_pattern_score": {
+        "title": "Circadian Recovery Pattern",
+        "description": "Rest restorative quality and circadian cycle alignment",
+        "high_is_risk": True,
+        "unit": "index",
+        "healthy_range": "Circadian Balanced"
+    },
+    "deployment_demand_score": {
+        "title": "Deployment Sector & Post Demand",
+        "description": "Environmental and tactical operational intensity (altitude/remote post)",
+        "high_is_risk": True,
+        "unit": "index",
+        "healthy_range": "Standard Sector"
     }
 }
+
+MODEL1_PATH = os.path.join(BASE_DIR, "model1_wearable_operational.pkl")
+PREPROCESSING1_PATH = os.path.join(BASE_DIR, "model1_preprocessing.pkl")
+
+_model1 = None
+_preprocessing1 = None
+
+def load_model1_artifacts():
+    global _model1, _preprocessing1
+    if _model1 is None or _preprocessing1 is None:
+        if not os.path.exists(MODEL1_PATH) or not os.path.exists(PREPROCESSING1_PATH):
+            raise FileNotFoundError("Model 1 artifacts not found. Please run train_model1_wearable_operational.py first.")
+        _model1 = joblib.load(MODEL1_PATH)
+        _preprocessing1 = joblib.load(PREPROCESSING1_PATH)
+    return _model1, _preprocessing1
 
 def load_artifacts():
     global _model, _preprocessing
@@ -140,10 +190,205 @@ def load_artifacts():
         _preprocessing = joblib.load(PREPROCESSING_PATH)
     return _model, _preprocessing
 
-def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
+def predict_model1_wearable_operational(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Performs real ML inference and feature explainability attribution.
+    ML Model 1: Separately trained Random Forest Classifier for Wearable + Operational Welfare Data.
+    Consumes:
+      - Wearable inputs: HR, HRV, respiration, skin temp, activity, posture, fatigue/strain
+      - Operational inputs: duty duration, night duty, workload, rest/recovery, deployment/work patterns
+      - Optional self-check: PSS-10
+    Outputs:
+      - Low / Moderate / High Welfare Concern
+      - evidence information
+      - main contributing indicators
     """
+    model1, prep1 = load_model1_artifacts()
+    scaler = prep1["scaler"]
+    feature_cols = prep1["feature_columns"]
+    class_names = prep1["class_names"]
+    baseline_stats = prep1["baseline_stats"]
+    global_importances = {feat: float(imp) for feat, imp in zip(feature_cols, model1.feature_importances_)}
+
+    # 1. Map string / categorical inputs to numerical scores
+    act_str = str(checkin_data.get("activity_movement") or "").upper()
+    act_score = 1
+    if "EXTREME" in act_str:
+        act_score = 3
+    elif "HIGH" in act_str:
+        act_score = 2
+    elif "SEDENTARY" in act_str:
+        act_score = 0
+
+    posture_str = str(checkin_data.get("posture_inactivity") or "").upper()
+    posture_score = 0
+    if "EXTREME" in posture_str or "IMMOBILITY" in posture_str:
+        posture_score = 3
+    elif "STANDING" in posture_str or "VIGILANCE" in posture_str:
+        posture_score = 2
+    elif "STATIC" in posture_str or "PROLONGED" in posture_str:
+        posture_score = 1
+
+    rec_str = str(checkin_data.get("recovery_pattern") or "").upper()
+    rec_score = 0
+    if "DEFICIT" in rec_str or "DEBT" in rec_str:
+        rec_score = 3
+    elif "SHIFT_LAG" in rec_str or "LAG" in rec_str:
+        rec_score = 2
+    elif "INTERRUPTED" in rec_str or "FRAGMENTED" in rec_str:
+        rec_score = 1
+
+    zone_str = str(checkin_data.get("deploymentZone") or "").lower()
+    duty_str = str(checkin_data.get("duty_type") or "").lower()
+    dep_score = 0
+    if "high altitude" in zone_str or "remote border" in zone_str:
+        dep_score = 3
+    elif "quick reaction" in duty_str or "qrt" in duty_str:
+        dep_score = 2
+    elif "patrol" in duty_str or "convoy" in duty_str or "field" in zone_str:
+        dep_score = 1
+
+    raw_feature_map = {
+        "resting_heart_rate": checkin_data.get("resting_heart_rate"),
+        "hrv_ms": checkin_data.get("hrv_ms"),
+        "respiration_rate": checkin_data.get("respiration_rate"),
+        "skin_temperature_c": checkin_data.get("skin_temperature_c"),
+        "activity_movement_score": act_score,
+        "posture_inactivity_score": posture_score,
+        "fatigue_physical_strain": checkin_data.get("fatigue_physical_strain"),
+        "workload_hours": checkin_data.get("workload_hours", 48.0),
+        "work_pressure_rating": checkin_data.get("work_pressure_rating", 5.0),
+        "prolonged_duty_hours": checkin_data.get("prolonged_duty_hours", 8.0),
+        "shift_continuity_days": checkin_data.get("shift_continuity_days", 2.0),
+        "night_duty_hours": checkin_data.get("night_duty_hours", 0.0),
+        "recovery_sleep_hours": checkin_data.get("recovery_sleep_hours", 7.0),
+        "rest_interval_hours": checkin_data.get("rest_interval_hours", 10.0),
+        "recovery_pattern_score": rec_score,
+        "deployment_demand_score": dep_score,
+        "social_support_rating": checkin_data.get("social_support_rating", 6.0),
+        "work_life_balance_rating": checkin_data.get("work_life_balance_rating", 5.0),
+        "recent_trend_indicator": checkin_data.get("recent_trend_indicator", 0.0),
+        "pss_score": checkin_data.get("pss_score")
+    }
+
+    # Vectorize with baseline median imputation for any absent features
+    input_vector = []
+    for col in feature_cols:
+        val = raw_feature_map.get(col)
+        if val is None or (isinstance(val, float) and np.isnan(val)):
+            val = float(baseline_stats[col]["median"])
+        else:
+            val = float(val)
+        input_vector.append(val)
+
+    import pandas as pd
+    X_df = pd.DataFrame([input_vector], columns=feature_cols)
+    X_scaled = scaler.transform(X_df)
+
+    probabilities = model1.predict_proba(X_scaled)[0]
+    predicted_idx = int(model1.predict(X_scaled)[0])
+    concern_level = class_names[predicted_idx]
+
+    probability_map = {
+        class_names[i]: round(float(probabilities[i]), 4)
+        for i in range(len(class_names))
+    }
+    confidence = float(probabilities[predicted_idx])
+    composite_risk_score = round(float(probabilities[1] * 50.0 + probabilities[2] * 100.0), 1)
+
+    # Multi-source Evidence Information
+    evidence_sources = ["DUTY", "WORKLOAD", "REST_RECOVERY"]
+    has_wearable = bool(
+        checkin_data.get("wearable_synced") or
+        checkin_data.get("resting_heart_rate") is not None or
+        checkin_data.get("hrv_ms") is not None or
+        checkin_data.get("respiration_rate") is not None or
+        checkin_data.get("skin_temperature_c") is not None or
+        checkin_data.get("fatigue_physical_strain") is not None
+    )
+    if has_wearable:
+        evidence_sources.append("WEARABLE")
+    if checkin_data.get("pss_score") is not None:
+        evidence_sources.append("SELF_CHECK")
+
+    # Main Contributing Indicators & Feature Attribution
+    contributing_factors = []
+    for i, col in enumerate(feature_cols):
+        # Omit PSS if self-check was skipped
+        if col == "pss_score" and checkin_data.get("pss_score") is None:
+            continue
+        # Omit wearable features if telemetry was not synced
+        if col in ["resting_heart_rate", "hrv_ms", "respiration_rate", "skin_temperature_c", "fatigue_physical_strain"]:
+            if checkin_data.get(col) is None and not checkin_data.get("wearable_synced"):
+                continue
+
+        raw_val = input_vector[i]
+        meta = FEATURE_METADATA.get(col, {})
+        base_mean = baseline_stats[col]["mean"]
+        base_std = baseline_stats[col]["std"] if baseline_stats[col]["std"] > 0 else 1.0
+        g_imp = global_importances.get(col, 0.05)
+
+        z_score = (raw_val - base_mean) / base_std
+        stress_deviation = z_score if meta.get("high_is_risk", True) else -z_score
+        raw_contrib = max(0.0, stress_deviation + 1.2) * g_imp * 100.0
+
+        if stress_deviation > 0.8:
+            status = "Elevated Concern"
+            impact_level = "HIGH"
+        elif stress_deviation > 0.2:
+            status = "Moderate Strain"
+            impact_level = "MODERATE"
+        else:
+            status = "Within Baseline"
+            impact_level = "LOW"
+
+        contributing_factors.append({
+            "feature_key": col,
+            "title": meta.get("title", col.replace("_", " ").title()),
+            "description": meta.get("description", ""),
+            "user_value": round(raw_val, 1),
+            "unit": meta.get("unit", ""),
+            "healthy_range": meta.get("healthy_range", "Standard"),
+            "baseline_mean": round(base_mean, 1),
+            "importance_weight": round(g_imp, 4),
+            "contribution_score": round(float(raw_contrib), 2),
+            "impact_level": impact_level,
+            "status": status,
+            "is_risk_driver": stress_deviation > 0.3
+        })
+
+    contributing_factors.sort(key=lambda x: x["contribution_score"], reverse=True)
+    top_drivers = [f["title"] for f in contributing_factors if f["is_risk_driver"]]
+    if not top_drivers:
+        top_drivers = [f["title"] for f in contributing_factors[:2]]
+
+    return {
+        "concernLevel": concern_level,
+        "confidence": round(confidence, 4),
+        "compositeRiskScore": composite_risk_score,
+        "probabilities": probability_map,
+        "modelUsed": "MODEL_1_WEARABLE_OPERATIONAL",
+        "evidenceSources": evidence_sources,
+        "evidenceCount": len(evidence_sources),
+        "topDrivers": top_drivers[:3],
+        "contributingFactors": contributing_factors,
+        "modelVersion": prep1.get("model_version", "v2.0.0-model1"),
+        "trainedAt": prep1.get("trained_at"),
+        "analyzedAt": datetime.now().isoformat(),
+        "disclaimer": "AI Model 1 (Wearable + Operational RF): Multi-source predictive signal based on biometric telemetry and operational duty data."
+    }
+
+def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Primary inference router: Executes Model 1 (Wearable + Operational RF)
+    with graceful fallback to legacy model if Model 1 artifacts are missing.
+    """
+    try:
+        return predict_model1_wearable_operational(checkin_data)
+    except Exception as e:
+        print(f"Notice: Model 1 inference fallback to legacy pipeline ({e})")
+        return _predict_legacy_model(checkin_data)
+
+def _predict_legacy_model(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     model, preprocessing = load_artifacts()
     scaler = preprocessing["scaler"]
     feature_cols = preprocessing["feature_columns"]

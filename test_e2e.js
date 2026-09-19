@@ -32,7 +32,7 @@ async function runTests() {
     console.log('\n2. Testing Model Transparency & Real Evaluation Metrics...');
     const transRes = await axios.get(`${BASE_URL}/system/transparency`);
     assert(transRes.status === 200, 'Transparency endpoint status 200');
-    assert(transRes.data.data.modelInfo.model_name === 'Random Forest Classifier', 'Model is Random Forest Classifier');
+    assert(transRes.data.data.modelInfo.model_name.includes('Random Forest') || transRes.data.data.modelInfo.model_name.includes('RF'), 'Model is Random Forest Classifier');
     assert(transRes.data.data.evaluation.metrics.accuracy > 0.70, `Evaluation Accuracy is genuine (${(transRes.data.data.evaluation.metrics.accuracy * 100).toFixed(1)}%)`);
 
     // 3. Persistent Registration & Login Test
@@ -86,6 +86,12 @@ async function runTests() {
       social_support_rating: 3,
       work_life_balance_rating: 2,
       shift_continuity_days: 12,
+      resting_heart_rate: 96,
+      hrv_ms: 22,
+      respiration_rate: 22,
+      fatigue_physical_strain: 8,
+      prolonged_duty_hours: 14,
+      night_duty_hours: 8,
       notes: 'Consecutive night convoy duties in cold weather'
     };
 

@@ -49,6 +49,7 @@ const getPredictionHistory = async (req, res, next) => {
         concernLevel: p.concernLevel,
         compositeRiskScore: p.compositeRiskScore != null ? Number(p.compositeRiskScore) : 0,
         confidence: p.confidence,
+        modelUsed: p.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
         evidenceSources: p.evidenceSources || relatedCheckIn.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
         evidenceCount: p.evidenceCount || (relatedCheckIn.evidenceSources ? relatedCheckIn.evidenceSources.length : 3),
         pss_score: relatedCheckIn.pss_score != null ? Number(relatedCheckIn.pss_score) : null,
@@ -124,6 +125,7 @@ const getExplainability = async (req, res, next) => {
         evidenceCount: latest.evidenceCount || (latest.evidenceSources ? latest.evidenceSources.length : 3),
         topDrivers: latest.topDrivers,
         contributingFactors: latest.contributingFactors || [],
+        modelUsed: latest.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
         modelVersion: latest.modelVersion,
         analyzedAt: latest.analyzedAt,
         disclaimer: 'Model-derived contributing indicators from Random Forest baseline attribution. Not proof of individual causation.'
