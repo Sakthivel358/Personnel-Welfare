@@ -247,10 +247,10 @@ class RecommendationService {
 
     // Aggregate HR fields from hrData or personnel
     const leavePattern = hrData.leavePattern || personnel.leavePattern || {};
-    const deploymentHistory = hrData.deploymentHistory || personnel.deploymentHistory || [];
+    const deploymentHistory = Array.isArray(hrData.deploymentHistory) ? hrData.deploymentHistory : (Array.isArray(personnel.deploymentHistory) ? personnel.deploymentHistory : []);
     const dutySchedule = hrData.dutySchedule || personnel.dutySchedule || {};
     const transferFrequency = hrData.transferFrequency || personnel.transferFrequency || {};
-    const trainingCommitments = hrData.trainingCommitments || personnel.trainingCommitments || [];
+    const trainingCommitments = Array.isArray(hrData.trainingCommitments) ? hrData.trainingCommitments : (Array.isArray(personnel.trainingCommitments) ? personnel.trainingCommitments : []);
     const workloadTrends = hrData.workloadTrends || personnel.workloadTrends || {};
 
     const sleep = checkinData.recovery_sleep_hours != null ? Number(checkinData.recovery_sleep_hours) : (checkinData.sleep_hours_per_night != null ? Number(checkinData.sleep_hours_per_night) : 7.0);
@@ -411,7 +411,7 @@ class RecommendationService {
       referralPriority = 'HIGH';
       referralAction = 'Offer confidential voluntary referral to Regimental Medical Officer (RMO) or 24/7 MHA Psychological Support Desk.';
       referralEvidence = `Severe multi-factor operational strain index (${risk}%) indicates physiological fatigue and elevated subjective pressure.`;
-    } else if (concernLevel === 'MODERATE' || (trainingCommitments.some(t => t.status === 'In-Progress') && weeklyHours > 52)) {
+    } else if (concernLevel === 'MODERATE' || (Array.isArray(trainingCommitments) && trainingCommitments.some(t => t && t.status === 'In-Progress') && weeklyHours > 52)) {
       referralPriority = 'MEDIUM';
       referralAction = 'Highlight voluntary confidential tele-counseling (1800-180-4024) and family welfare center liaison.';
       referralEvidence = `Moderate strain or concurrent training commitments combined with operational duties.`;

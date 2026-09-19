@@ -34,6 +34,13 @@ const submitCheckIn = async (req, res, next) => {
       posture_inactivity,
       fatigue_physical_strain,
       wearable_synced,
+      // Wellness Information (Task 4)
+      wellnessInfo,
+      // Request Welfare Support (Task 4)
+      requestWelfareSupport,
+      welfareSupportType,
+      welfareSupportNotes,
+      welfareUrgency,
       // Idempotency & Offline Sync
       idempotencyKey
     } = req.body;
@@ -253,9 +260,54 @@ const submitCheckIn = async (req, res, next) => {
       wearable_synced: checkInPayload.wearable_synced,
       evidenceSources,
       evidenceCount: evidenceSources.length,
+      wellnessInfo: wellnessInfo || null,
       notes: notes || '',
       checkInDate: new Date().toISOString()
     });
+
+    // 2b. If requested, automatically create linked SupportRequest for Officer Review (Task 4)
+    let linkedSupportRequest = null;
+    if (requestWelfareSupport) {
+      const num = Math.floor(1000 + Math.random() * 9000);
+      const refId = `REQ-${num}`;
+      linkedSupportRequest = await db.SupportRequests.create({
+        referenceId: refId,
+        userId: req.user._id,
+        personnelId: req.user.personnelId,
+        requestType: welfareSupportType || 'GENERAL_INQUIRY',
+        urgency: welfareUrgency || 'ROUTINE',
+        preferredContactMethod: 'CONFIDENTIAL_IN_PERSON',
+        notes: welfareSupportNotes || (notes ? `Check-in note: ${notes}` : 'Welfare support check-in requested during self-check.'),
+        status: 'SUBMITTED',
+        personnelConcernLevel: mlPrediction.concernLevel || 'UNASSESSED',
+        isSelfRequested: true,
+        accessibleRegardlessOfConcern: true,
+        isCheckinLinked: true,
+        linkedCheckInId: newCheckIn._id,
+        statusHistory: [
+          {
+            status: 'SUBMITTED',
+            timestamp: new Date().toISOString(),
+            note: 'Request submitted via Personnel Self-Check-in portal.'
+          }
+        ]
+      });
+
+      await db.Notifications.create({
+        userId: req.user._id,
+        title: 'Support Request Linked to Check-in',
+        message: `Your confidential support request (${refId}) has been logged for Unit Welfare Officer review.`,
+        type: 'SUPPORT_UPDATE',
+        link: '/support.html'
+      });
+
+      await db.CheckIns.findByIdAndUpdate(newCheckIn._id, {
+        linkedSupportRequestId: linkedSupportRequest._id,
+        linkedSupportReferenceId: refId
+      });
+      newCheckIn.linkedSupportRequestId = linkedSupportRequest._id;
+      newCheckIn.linkedSupportReferenceId = refId;
+    }
 
     // 3. Persist StressPrediction Record
     const decisionLayer = mlPrediction.decisionLayer || null;
@@ -454,7 +506,10 @@ const submitCheckIn = async (req, res, next) => {
         dataAvailableTotal: 5,
         dataAvailableDisplay: newPrediction.dataAvailableDisplay,
         recommendations: newRecommendation,
-        alertGenerated: alertCreated
+        alertGenerated: alertCreated,
+        wellnessInfo: newCheckIn.wellnessInfo || wellnessInfo || null,
+        linkedSupportRequest: linkedSupportRequest || null,
+        linkedSupportRequestId: linkedSupportRequest ? linkedSupportRequest._id : null
       }
     });
 

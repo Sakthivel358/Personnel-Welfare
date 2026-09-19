@@ -63,6 +63,14 @@ const getSupportOptions = async (req, res, next) => {
           urgencyOptions: ['ROUTINE'],
           icon: '🛡️',
           badge: 'HQ Desk'
+        },
+        {
+          id: 'HUMAN_WELFARE_REVIEW',
+          title: 'Request Human Welfare Review & Officer Check-in',
+          description: 'Confidential request for a dedicated human-in-the-loop review session with the Unit Welfare Officer to review duty, rest, and personal wellbeing.',
+          urgencyOptions: ['ROUTINE', 'PRIORITY', 'URGENT'],
+          icon: '🩺',
+          badge: 'Direct Officer Review'
         }
       ]
     };
@@ -244,4 +252,120 @@ const updateRequestStatus = async (req, res, next) => {
   }
 };
 
-module.exports = { getSupportOptions, createSupportRequest, getMyRequests, getAllRequests, updateRequestStatus };
+const reviewSupportRequest = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const {
+      status,
+      supportActionTaken,
+      officerNotes,
+      scheduledFollowUpDate,
+      resolutionNotes
+    } = req.body;
+
+    const reqDoc = await db.SupportRequests.findById(id);
+    if (!reqDoc) {
+      return res.status(404).json({ success: false, message: 'Support request not found.' });
+    }
+
+    const determinedStatus = status || (scheduledFollowUpDate ? 'FOLLOW_UP_SCHEDULED' : (supportActionTaken ? 'ACTION_TAKEN' : 'UNDER_REVIEW'));
+    const finalNotes = officerNotes || resolutionNotes || `Support action recorded: ${supportActionTaken || determinedStatus}`;
+
+    const history = reqDoc.statusHistory || [];
+    history.push({
+      status: determinedStatus,
+      timestamp: new Date().toISOString(),
+      note: finalNotes,
+      supportActionTaken: supportActionTaken || null,
+      officerId: req.user._id,
+      officerName: req.user.fullName || 'Welfare Officer'
+    });
+
+    const updated = await db.SupportRequests.findByIdAndUpdate(id, {
+      status: determinedStatus,
+      supportActionTaken: supportActionTaken || reqDoc.supportActionTaken,
+      officerNotes: finalNotes,
+      resolutionNotes: finalNotes,
+      assignedOfficer: req.user._id,
+      reviewedBy: req.user._id,
+      reviewedAt: new Date().toISOString(),
+      statusHistory: history
+    });
+
+    // If follow-up session scheduled, create / update FollowUps record
+    let followUpRecord = null;
+    if (scheduledFollowUpDate) {
+      let existingFollowUp = await db.FollowUps.findOne({ supportRequestId: reqDoc._id });
+      if (!existingFollowUp) {
+        existingFollowUp = await db.FollowUps.findOne({ userId: reqDoc.userId, status: 'SCHEDULED' });
+      }
+
+      if (existingFollowUp) {
+        followUpRecord = await db.FollowUps.findByIdAndUpdate(existingFollowUp._id, {
+          scheduledDate: new Date(scheduledFollowUpDate).toISOString(),
+          status: 'SCHEDULED',
+          officerNotes: finalNotes,
+          supportRequestId: reqDoc._id,
+          assignedOfficerId: req.user._id
+        });
+      } else {
+        followUpRecord = await db.FollowUps.create({
+          userId: reqDoc.userId,
+          personnelId: reqDoc.personnelId,
+          supportRequestId: reqDoc._id,
+          scheduledDate: new Date(scheduledFollowUpDate).toISOString(),
+          status: 'SCHEDULED',
+          officerNotes: finalNotes,
+          initialRiskScore: reqDoc.personnelConcernLevel || 'UNASSESSED',
+          welfareDelta: 'PENDING_DATA',
+          assignedOfficerId: req.user._id
+        });
+      }
+    }
+
+    // Notify personnel of support action & scheduled follow-up
+    await db.Notifications.create({
+      userId: reqDoc.userId,
+      title: 'Support Review Action Recorded',
+      message: `Your Unit Welfare Officer has completed review for request (${reqDoc.referenceId || 'REQ'}). Action: ${(supportActionTaken || determinedStatus).replace(/_/g, ' ')}.${scheduledFollowUpDate ? ` Follow-up session scheduled on ${new Date(scheduledFollowUpDate).toLocaleDateString()}.` : ''}`,
+      type: 'SUPPORT_UPDATE',
+      link: '/support.html'
+    });
+
+    await auditService.log({
+      action: 'HUMAN_WELFARE_REVIEW_COMPLETED',
+      userId: req.user._id,
+      personnelId: reqDoc.personnelId,
+      targetResource: 'SupportRequests',
+      ipAddress: req.ip,
+      details: {
+        requestId: reqDoc._id,
+        referenceId: reqDoc.referenceId,
+        supportActionTaken,
+        status: determinedStatus,
+        followUpScheduled: Boolean(scheduledFollowUpDate)
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Human welfare review completed and support action recorded successfully.',
+      data: {
+        ...(updated || {}),
+        request: updated,
+        followUp: followUpRecord
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = {
+  getSupportOptions,
+  createSupportRequest,
+  getMyRequests,
+  getAllRequests,
+  updateRequestStatus,
+  reviewSupportRequest
+};

@@ -23,7 +23,42 @@ const getProfile = async (req, res, next) => {
         phone: (personnel && personnel.phone) || (user && user.phone) || '',
         profileImage: (personnel && personnel.profileImage) || (user && user.profileImage) || '',
         role: user ? user.role : (req.user.role || 'PERSONNEL'),
-        lastLogin: user ? user.lastLogin : null
+        lastLogin: user ? user.lastLogin : null,
+        leavePattern: {
+          daysEarned: (personnel && personnel.leavePattern && personnel.leavePattern.daysEarned != null) ? personnel.leavePattern.daysEarned : 60,
+          daysAvailed: (personnel && personnel.leavePattern && personnel.leavePattern.daysAvailed != null) ? personnel.leavePattern.daysAvailed : 15,
+          daysRemaining: (personnel && personnel.leavePattern && personnel.leavePattern.daysRemaining != null) ? personnel.leavePattern.daysRemaining : 45,
+          ...(personnel ? (personnel.leavePattern || {}) : {})
+        },
+        deploymentHistory: (personnel && Array.isArray(personnel.deploymentHistory) && personnel.deploymentHistory.length > 0)
+          ? personnel.deploymentHistory
+          : [
+            { location: 'Jammu & Kashmir Sector', duration: '18 months', role: 'Counter-Terrorism & Line-of-Control Guard', tier: 'High-Altitude Extreme' },
+            { location: 'Assam / Northeastern Border', duration: '24 months', role: 'Border Surveillance & Counter-Insurgency', tier: 'Hard Area Category-B' }
+          ],
+        dutySchedule: {
+          shiftType: (personnel && personnel.dutySchedule && personnel.dutySchedule.shiftType) || 'Rotational 3-Watch',
+          weeklyHoursNominal: (personnel && personnel.dutySchedule && personnel.dutySchedule.weeklyHoursNominal != null) ? personnel.dutySchedule.weeklyHoursNominal : 48,
+          nightShiftRatio: (personnel && personnel.dutySchedule && personnel.dutySchedule.nightShiftRatio != null) ? personnel.dutySchedule.nightShiftRatio : 0.25,
+          ...(personnel ? (personnel.dutySchedule || {}) : {})
+        },
+        transferFrequency: {
+          transfersCount: (personnel && personnel.transferFrequency && typeof personnel.transferFrequency.transfersCount === 'number') ? personnel.transferFrequency.transfersCount : 3,
+          averageTenureMonths: (personnel && personnel.transferFrequency && personnel.transferFrequency.averageTenureMonths != null) ? personnel.transferFrequency.averageTenureMonths : 22,
+          highMobilityFlag: (personnel && personnel.transferFrequency && personnel.transferFrequency.highMobilityFlag != null) ? personnel.transferFrequency.highMobilityFlag : false,
+          ...(personnel ? (personnel.transferFrequency || {}) : {})
+        },
+        trainingCommitments: (personnel && Array.isArray(personnel.trainingCommitments) && personnel.trainingCommitments.length > 0)
+          ? personnel.trainingCommitments
+          : [
+            { courseName: 'Operational Readiness & Field Craft (TAC-101)', status: 'Completed', year: 2022 },
+            { courseName: 'Forces Mental Health & Resilience Orientation (WEL-01)', status: 'In-Progress', year: 2024 }
+          ],
+        workloadTrends: {
+          averageWeeklyHours: (personnel && personnel.workloadTrends && typeof personnel.workloadTrends.averageWeeklyHours === 'number') ? personnel.workloadTrends.averageWeeklyHours : 52,
+          trajectory: (personnel && personnel.workloadTrends && personnel.workloadTrends.trajectory) || 'Stable',
+          ...(personnel ? (personnel.workloadTrends || {}) : {})
+        }
       }
     });
   } catch (err) {

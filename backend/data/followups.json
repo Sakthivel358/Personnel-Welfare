@@ -466,5 +466,51 @@
     "isNonPunitive": true,
     "createdAt": "2026-09-19T18:07:07.747Z",
     "updatedAt": "2026-09-19T18:07:07.747Z"
+  },
+  {
+    "_id": "3b908b4058a19a32fcbb469e",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "supportRequestId": "6f5423ccc52db20ddbac4c80",
+    "scheduledDate": "2026-09-24T00:00:00.000Z",
+    "status": "CHECKIN_COMPLETED",
+    "officerNotes": "Conducted confidential 1-on-1 welfare dialogue. Authorized 48-hour restorative downtime and assigned peer mentor support.",
+    "initialRiskScore": "UNDETERMINED",
+    "welfareDelta": "STABLE",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "createdAt": "2026-09-19T18:41:34.126Z",
+    "updatedAt": "2026-09-19T18:52:58.935Z",
+    "reAnalyzedRiskScore": 86.6,
+    "completedAt": "2026-09-19T18:52:58.935Z"
+  },
+  {
+    "_id": "ab1bb049bfd83a0f700e74f7",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "supportRequestId": "ad8b8822dab0fc2d178417f0",
+    "scheduledDate": "2026-09-24T00:00:00.000Z",
+    "status": "SCHEDULED",
+    "officerNotes": "Conducted confidential 1-on-1 welfare dialogue. Authorized 48-hour restorative downtime and assigned peer mentor support.",
+    "initialRiskScore": "UNDETERMINED",
+    "welfareDelta": "PENDING_DATA",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "createdAt": "2026-09-19T18:54:11.513Z",
+    "updatedAt": "2026-09-19T18:54:11.513Z"
+  },
+  {
+    "_id": "71d4303fba8d309f07d58189",
+    "alertId": "ac86c5ea2fc1c029b2802695",
+    "userId": "e78861dbe9160addb03ec756",
+    "personnelId": "PERS_FIN_928680",
+    "assignedOfficerId": "5a8f7db75ab7c8922f505741",
+    "status": "SCHEDULED",
+    "scheduledDate": "2026-09-20T18:54:17.397Z",
+    "initialRiskScore": 90.6,
+    "reAnalyzedRiskScore": null,
+    "welfareDelta": "PENDING_DATA",
+    "officerNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-19T18:54:17.406Z",
+    "updatedAt": "2026-09-19T18:54:17.406Z"
   }
 ]

@@ -13,7 +13,7 @@
     "isEnrolledInWelfare": true,
     "emergencyContact": {},
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T18:06:42.035Z",
+    "updatedAt": "2026-09-19T18:54:11.489Z",
     "workSchedule": "Standard Rotation",
     "recoveryTargetHours": 7,
     "careerGoals": "Specialized Technical & Operations Training",
@@ -41,34 +41,43 @@
     "welfareContactPreference": "Welfare Officer In-Person",
     "accessibilityPreference": "Standard Display",
     "leavePattern": {
-      "daysEarned": 60,
-      "daysAvailed": 12,
-      "daysRemaining": 48,
-      "lastLeaveDate": "2026-02-14",
-      "leaveDeficitWarning": false
+      "accruedLeaveDays": 60,
+      "consumedLeaveDays": 42,
+      "pendingLeaveBalance": 18,
+      "lastLeaveDate": "2026-04-10",
+      "consecutiveDutyDays": 4,
+      "overdueLeaveDeficit": true
     },
-    "deploymentHistory": [
-      {
-        "mission": "Op Rakshak - Sector North",
-        "zone": "Northern Sector (High Altitude)",
-        "durationMonths": 16,
-        "terrainType": "Glacial Mountain / High Altitude",
-        "completedAt": "2025-11-20"
-      },
-      {
-        "mission": "Counter-Insurgency & Security Grid",
-        "zone": "Central Operational Sector",
-        "durationMonths": 18,
-        "terrainType": "Dense Forest / Rough Terrain",
-        "completedAt": "2024-04-15"
-      }
-    ],
+    "deploymentHistory": {
+      "tenureMonths": 14,
+      "hardshipClassification": "CATEGORY_B_HARDSHIP",
+      "highAltitudePosting": false,
+      "previousDeployments": [
+        {
+          "posting": "J&K Counter-Insurgency Sector",
+          "from": "2018-05",
+          "to": "2021-06",
+          "hardship": "HIGH"
+        },
+        {
+          "posting": "Chhattisgarh LWE Area",
+          "from": "2021-07",
+          "to": "2024-02",
+          "hardship": "VERY_HIGH"
+        },
+        {
+          "posting": "114 Bn RAF Base",
+          "from": "2024-03",
+          "to": "Present",
+          "hardship": "MODERATE"
+        }
+      ]
+    },
     "dutySchedule": {
-      "shiftType": "QRT High-Alert Standby",
-      "rotationCycle": "12h Standby / 12h Rest",
-      "weeklyHoursNominal": 56,
-      "nightShiftRatio": 0.35,
-      "timing": "08:00 - 20:00 / 20:00 - 08:00"
+      "shiftPattern": "06:00 - 14:00 (Rotational)",
+      "watchHoursPerDay": 8,
+      "nightShiftFrequency": "8 shifts/mo",
+      "lastRosterChange": "2026-09-18T00:00:00.000Z"
     },
     "transferFrequency": {
       "transfersCount": 4,
@@ -76,25 +85,26 @@
       "lastTransferDate": "2025-07-10",
       "highMobilityFlag": true
     },
-    "trainingCommitments": [
-      {
-        "program": "High Altitude Tactical Conditioning & Cold Survival",
-        "status": "Completed",
-        "mandatoryHours": 40,
-        "completedHours": 40
-      },
-      {
-        "program": "Night Vision, Sensor Operations & Electronic Vigilance",
-        "status": "In-Progress",
-        "mandatoryHours": 24,
-        "completedHours": 14
-      }
-    ],
+    "trainingCommitments": {
+      "upcomingCourses": [],
+      "mandatoryReadinessCourses": [
+        "Close Quarter Battle & Urban Tactics",
+        "Counter-IED & Mine Awareness",
+        "Combat Life Support & First Responder",
+        "Forces Psycho-Social Welfare & Peer Mentorship"
+      ],
+      "trainingFatigueIndex": "MODERATE"
+    },
     "workloadTrends": {
-      "averageWeeklyHours": 54,
-      "peakWeeklyHours": 66,
-      "surgeWeeksCount": 2,
-      "trajectory": "Stable"
+      "averageWeeklyHours": 55,
+      "recentHoursHistory": [
+        52,
+        56,
+        54,
+        58
+      ],
+      "workloadTrajectory": "STABLE",
+      "highWorkloadConsecutiveWeeks": 1
     }
   },
   {
@@ -14013,5 +14023,167 @@
     },
     "createdAt": "2026-09-19T18:07:07.119Z",
     "updatedAt": "2026-09-19T18:07:07.119Z"
+  },
+  {
+    "_id": "4a84e9d5879b92951e3ae6cd",
+    "userId": "e78861dbe9160addb03ec756",
+    "personnelId": "PERS_FIN_928680",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T18:54:16.815Z",
+    "updatedAt": "2026-09-19T18:54:17.146Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display",
+    "leavePattern": {
+      "daysEarned": 60,
+      "daysAvailed": 15,
+      "daysRemaining": 45,
+      "lastLeaveDate": "2026-03-10",
+      "leaveDeficitWarning": false,
+      "annualEntitlement": 60
+    },
+    "deploymentHistory": [
+      {
+        "mission": "Op Rakshak - Sector North",
+        "zone": "High Altitude Eastern Sector",
+        "durationMonths": 14,
+        "terrainType": "Glacial Mountain / High Altitude",
+        "completedAt": "2025-11-20"
+      }
+    ],
+    "dutySchedule": {
+      "shiftType": "Rotational 3-Watch",
+      "rotationCycle": "8h Watch / 16h Rest",
+      "weeklyHoursNominal": 48,
+      "nightShiftRatio": 0.25,
+      "timing": "06:00 - 14:00 / 14:00 - 22:00 / 22:00 - 06:00"
+    },
+    "transferFrequency": {
+      "transfersCount": 3,
+      "averageTenureMonths": 22,
+      "lastTransferDate": "2025-06-15",
+      "highMobilityFlag": false
+    },
+    "trainingCommitments": [
+      {
+        "program": "High Altitude Tactical Conditioning & Cold Survival",
+        "status": "Completed",
+        "mandatoryHours": 40,
+        "completedHours": 40
+      }
+    ],
+    "workloadTrends": {
+      "averageWeeklyHours": 52,
+      "peakWeeklyHours": 68,
+      "surgeWeeksCount": 3,
+      "trajectory": "Increasing"
+    }
+  },
+  {
+    "_id": "f2deb7b2264ad35b6de95fb1",
+    "userId": "5a8f7db75ab7c8922f505741",
+    "personnelId": "TEST_WO_928680",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T18:54:16.888Z",
+    "updatedAt": "2026-09-19T18:54:16.888Z"
+  },
+  {
+    "_id": "eaa8f58215606c0ed046511e",
+    "userId": "a6c8833be9dd58953dbd3828",
+    "personnelId": "ADM_FIN_928680",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T18:54:16.964Z",
+    "updatedAt": "2026-09-19T18:54:16.964Z"
+  },
+  {
+    "_id": "315df840eef067244e625528",
+    "userId": "2142b18034f274b802013967",
+    "personnelId": "TEMP_LO_928680",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T18:54:17.105Z",
+    "updatedAt": "2026-09-19T18:54:17.105Z"
   }
 ]

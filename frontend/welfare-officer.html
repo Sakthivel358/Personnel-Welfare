@@ -432,14 +432,34 @@
 
         <!-- TAB 5: Support Requests -->
         <div id="tab-support" class="officer-tab-content" style="display:none;">
-          <div class="card">
-            <div class="card-header">
-              <h3>Personnel Support Requests Queue</h3>
-              <span class="badge badge-low">Confidential</span>
+          <div class="card mb-3" style="border-left: 4px solid var(--accent); background: rgba(59, 130, 246, 0.04);">
+            <div class="d-flex justify-between align-center flex-wrap gap-2">
+              <div class="d-flex align-center gap-2">
+                <span style="font-size: 1.8rem;">🩺</span>
+                <div>
+                  <h3 style="margin-bottom: 0.15rem;">Human Welfare Review & Support Queue</h3>
+                  <p class="text-muted" style="margin: 0; font-size: 0.85rem;">
+                    Personnel can request welfare support and officer check-ins unconditionally, regardless of AI concern level. Review requests, record supportive interventions, and schedule follow-ups.
+                  </p>
+                </div>
+              </div>
+              <div class="d-flex gap-2 align-center">
+                <span class="badge badge-low" id="support-queue-badge">0 Open Requests</span>
+              </div>
             </div>
-            <div id="officer-support-requests-list">
-              <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
-            </div>
+          </div>
+
+          <!-- Status Filters -->
+          <div class="d-flex gap-1 mb-3 flex-wrap">
+            <button class="btn btn-sm btn-secondary filter-support-btn active" onclick="filterSupportQueue('ALL', this)">All Requests</button>
+            <button class="btn btn-sm btn-secondary filter-support-btn" onclick="filterSupportQueue('SUBMITTED', this)">Pending Review</button>
+            <button class="btn btn-sm btn-secondary filter-support-btn" onclick="filterSupportQueue('ACTION_TAKEN', this)">Action Recorded</button>
+            <button class="btn btn-sm btn-secondary filter-support-btn" onclick="filterSupportQueue('FOLLOW_UP_SCHEDULED', this)">Follow-up Scheduled</button>
+            <button class="btn btn-sm btn-secondary filter-support-btn" onclick="filterSupportQueue('RESOLVED', this)">Resolved</button>
+          </div>
+
+          <div id="officer-support-requests-list">
+            <div class="spinner spinner-primary" style="margin:2rem auto;"></div>
           </div>
         </div>
 
@@ -732,6 +752,79 @@
     </div>
   </div>
 
+  <!-- Officer Support Request Review Modal (Task 6) -->
+  <div id="officer-support-review-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:1rem;">
+    <div class="card" style="max-width: 720px; width:100%; max-height:92vh; overflow-y:auto; box-shadow:var(--shadow-xl); border:1px solid var(--border-color);">
+      <div class="d-flex justify-between align-center mb-2 pb-2" style="border-bottom:1px solid var(--border-color);">
+        <div class="d-flex align-center gap-1">
+          <span style="font-size:1.5rem;">🩺</span>
+          <div>
+            <h3 style="margin:0; font-size:1.15rem;">Human Welfare Review & Support Action</h3>
+            <span class="text-muted" style="font-size:0.75rem;">Support is non-punitive and accessible regardless of AI scores</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeSupportReviewModal()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted);">✕</button>
+      </div>
+
+      <!-- Personnel & Request Summary Card -->
+      <div id="support-review-summary-container" class="card mb-3 p-3" style="background:var(--bg-card-subtle);"></div>
+
+      <form id="officer-support-review-form" onsubmit="event.preventDefault(); submitSupportReview();">
+        <input type="hidden" id="support_review_id">
+
+        <div class="card mb-3 p-3" style="background:var(--bg-card); border:1px solid var(--border-color);">
+          <h4 style="font-size:0.95rem; margin-bottom:0.75rem;">Record Supportive Intervention & Follow-up</h4>
+
+          <div class="grid-2 gap-2 mb-2">
+            <div class="form-group mb-0">
+              <label class="form-label" for="support_action_select" style="font-size:0.82rem; font-weight:700;">Support Action Taken *</label>
+              <select id="support_action_select" class="form-select" required>
+                <option value="REST_ROTATION">Authorize 48h Restorative Downtime / Shift Rotation</option>
+                <option value="DUTY_PACING">Operational Duty Pacing (Limit high-intensity watches)</option>
+                <option value="PEER_SUPPORT">Assign Peer Buddy & Unit Mentorship Connection</option>
+                <option value="COUNSELING_REFERRAL">Voluntary Psychological Tele-Counseling Liaison</option>
+                <option value="FAMILY_LIAISON">Family & Dependent Welfare Cell Liaison</option>
+                <option value="OFFICER_CONSULTATION">Conduct Confidential 1-on-1 Dialogue</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-0">
+              <label class="form-label" for="support_status_select" style="font-size:0.82rem; font-weight:700;">Update Status</label>
+              <select id="support_status_select" class="form-select">
+                <option value="ACTION_TAKEN">Action Taken & In Progress</option>
+                <option value="FOLLOW_UP_SCHEDULED">Follow-Up Scheduled</option>
+                <option value="UNDER_REVIEW">Under Review / Monitoring</option>
+                <option value="RESOLVED">Resolved & Stabilized</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group mb-2">
+            <label class="form-label" for="support_officer_notes" style="font-size:0.82rem; font-weight:700;">Supportive Welfare / Clinical Notes (Non-Punitive) *</label>
+            <textarea id="support_officer_notes" class="form-control" rows="3" required placeholder="e.g. Conducted confidential welfare dialogue. Personnel reported high cumulative fatigue from border night watches. Authorized 48h rest rotation and paired with unit peer mentor."></textarea>
+          </div>
+
+          <!-- Schedule Follow-Up Session -->
+          <div class="card p-2" style="background:var(--bg-card-subtle); border-left:3px solid var(--accent);">
+            <label class="d-flex align-center gap-2" style="cursor:pointer; font-weight:600; font-size:0.85rem; margin-bottom:0.4rem;">
+              <input type="checkbox" id="support_schedule_followup_toggle" onchange="toggleSupportFollowUpDate(this.checked)">
+              <span>Schedule Follow-Up Consultation Session</span>
+            </label>
+            <div id="support-followup-date-box" style="display:none; padding-top:0.35rem;">
+              <label class="form-label mb-1" for="support_followup_date" style="font-size:0.78rem;">Follow-up Date</label>
+              <input type="date" id="support_followup_date" class="form-control form-control-sm" style="max-width:240px;">
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-between align-center">
+          <button type="button" class="btn btn-secondary" onclick="closeSupportReviewModal()">Cancel</button>
+          <button type="submit" id="btn-submit-support-review" class="btn btn-primary">Record Support Action & Dispatch</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="/js/api.js"></script>
   <script src="/js/utils.js"></script>
   <script src="/js/auth.js"></script>
@@ -903,50 +996,241 @@
       }
     }
 
+    let allSupportRequests = [];
+    let activeSupportFilter = 'ALL';
+    let selectedSupportRequest = null;
+
     async function loadSupportQueue() {
       const container = document.getElementById('officer-support-requests-list');
+      if (!container) return;
       try {
         const res = await api.getAllSupportRequests();
         if (res && res.success) {
-          const list = res.data;
-          if (list.length === 0) {
-            container.innerHTML = `<div class="text-center text-muted py-4">No pending personnel support requests.</div>`;
-            return;
+          allSupportRequests = res.data || [];
+
+          // Update open requests badge
+          const openCount = allSupportRequests.filter(r => r.status !== 'RESOLVED').length;
+          const badgeEl = document.getElementById('support-queue-badge');
+          if (badgeEl) {
+            badgeEl.textContent = `${openCount} Open Request${openCount === 1 ? '' : 's'}`;
+            badgeEl.className = openCount > 0 ? 'badge badge-moderate' : 'badge badge-low';
           }
-          container.innerHTML = list.map(r => `
-            <div class="card mb-2" style="background:var(--bg-card-subtle); padding:1.25rem;">
-              <div class="d-flex justify-between align-center mb-1">
-                <div>
-                  <strong>${r.personnelName || 'Personnel Member'} (${r.personnelId || r.referenceId || ''})</strong> • <span class="text-muted">${r.rank || 'Constable'} • ${r.unit || 'Unit 104'}</span>
-                </div>
-                ${Utils.getStatusBadge(r.status)}
-              </div>
-              <div class="mb-2" style="font-size:0.9rem;"><strong>Category:</strong> ${r.requestType.replace(/_/g, ' ')} | <strong>Urgency:</strong> ${Utils.getPriorityBadge(r.urgency)}</div>
-              ${r.notes || r.description ? `<div class="alert alert-info mb-2" style="font-size:0.85rem;">"${r.notes || r.description}"</div>` : ''}
-              <div class="d-flex justify-between align-center">
-                <span class="text-muted" style="font-size:0.75rem;">Submitted: ${Utils.formatDate(r.createdAt)}</span>
-                <button class="btn btn-sm btn-primary" onclick="resolveSupportModal('${r._id}')">Update / Respond</button>
-              </div>
-            </div>
-          `).join('');
+
+          renderSupportQueueList();
         }
       } catch (err) {
         console.error('Error loading support queue:', err);
+        container.innerHTML = `<div class="alert alert-danger">Failed to load support requests: ${err.message}</div>`;
       }
     }
 
-    async function resolveSupportModal(id) {
-      const resolution = prompt('Enter officer resolution or response notes to personnel:');
-      if (resolution) {
-        try {
-          await api.updateSupportRequest(id, { status: 'RESOLVED', resolutionNotes: resolution });
-          Utils.showToast('Support request resolved and notification sent to personnel.', 'success');
-          loadSupportQueue();
-        } catch (err) {
-          Utils.showToast('Error updating support request: ' + err.message, 'danger');
+    function filterSupportQueue(status, btn) {
+      activeSupportFilter = status;
+      document.querySelectorAll('.filter-support-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderSupportQueueList();
+    }
+
+    function renderSupportQueueList() {
+      const container = document.getElementById('officer-support-requests-list');
+      if (!container) return;
+
+      let filtered = allSupportRequests;
+      if (activeSupportFilter !== 'ALL') {
+        filtered = allSupportRequests.filter(r => r.status === activeSupportFilter);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="card text-center p-4 text-muted" style="background:var(--bg-card-subtle);">
+            <span style="font-size:2rem; display:block; margin-bottom:0.5rem;">📋</span>
+            <strong>No requests match filter "${activeSupportFilter.replace(/_/g, ' ')}"</strong>
+            <p class="mb-0 text-muted" style="font-size:0.85rem; margin-top:0.25rem;">
+              Personnel support requests will appear here confidentially for human officer review.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(r => {
+        const typeLabel = (r.requestType || 'GENERAL_WELFARE').replace(/_/g, ' ');
+        const concernBadge = r.personnelConcernLevel
+          ? Utils.getWelfareConcernDisplay(r.personnelConcernLevel)
+          : '<span class="badge badge-low">Unrestricted Access</span>';
+
+        return `
+          <div class="card mb-3 p-3" style="background:var(--bg-card-subtle); border-left:4px solid ${r.urgency === 'IMMEDIATE' ? 'var(--risk-high)' : (r.urgency === 'URGENT' ? 'var(--risk-moderate)' : 'var(--accent)')};">
+            <div class="d-flex justify-between align-center flex-wrap gap-2 mb-2">
+              <div>
+                <div class="d-flex align-center gap-2 flex-wrap">
+                  <strong style="font-size:1.05rem;">${Utils.sanitize(r.personnelName || 'Personnel Member')}</strong>
+                  <span class="text-muted" style="font-size:0.85rem;">(${Utils.sanitize(r.personnelId || r.referenceId || '--')})</span>
+                  <span class="badge" style="background:var(--bg-card); border:1px solid var(--border-color);">${Utils.sanitize(r.rank || 'Member')} • ${Utils.sanitize(r.unit || 'Force Unit')}</span>
+                </div>
+                <div class="text-muted" style="font-size:0.78rem; margin-top:0.2rem;">
+                  Ref: <strong>${r.referenceId || r._id}</strong> • Submitted: ${Utils.formatDate(r.createdAt)}
+                </div>
+              </div>
+              <div class="d-flex align-center gap-1 flex-wrap">
+                ${Utils.getPriorityBadge(r.urgency || 'ROUTINE')}
+                ${Utils.getStatusBadge(r.status)}
+              </div>
+            </div>
+
+            <!-- Request Details & Concern Level Context -->
+            <div class="grid-3 gap-2 mb-2 p-2" style="background:var(--bg-card); border-radius:6px; font-size:0.83rem;">
+              <div>
+                <span class="text-muted">Request Category:</span><br>
+                <strong>${typeLabel}</strong>
+              </div>
+              <div>
+                <span class="text-muted">Contact Preference:</span><br>
+                <strong>${(r.preferredContactMethod || 'Confidential In-Person').replace(/_/g, ' ')} (${(r.preferredTime || 'Anytime').toLowerCase()})</strong>
+              </div>
+              <div>
+                <span class="text-muted">Welfare Context:</span><br>
+                <div class="mt-1">${concernBadge}</div>
+              </div>
+            </div>
+
+            ${r.notes || r.description ? `
+              <div class="alert alert-info mb-2 p-2" style="font-size:0.85rem; background:rgba(59, 130, 246, 0.08); border-left:3px solid var(--accent);">
+                <strong>Personnel Note / Request Reason:</strong>
+                <p class="mb-0 mt-1" style="white-space:pre-wrap;">"${Utils.sanitize(r.notes || r.description)}"</p>
+              </div>
+            ` : ''}
+
+            ${r.supportActionTaken ? `
+              <div class="alert mb-2 p-2" style="background:rgba(16, 185, 129, 0.08); border-left:3px solid var(--risk-low); font-size:0.82rem;">
+                <strong>Action Recorded:</strong> ${(r.supportActionTaken || '').replace(/_/g, ' ')}
+                ${r.officerNotes ? `<div class="text-muted mt-1"><em>Notes: ${Utils.sanitize(r.officerNotes)}</em></div>` : ''}
+              </div>
+            ` : ''}
+
+            <div class="d-flex justify-between align-center flex-wrap gap-2 pt-2" style="border-top:1px solid var(--border-color);">
+              <div class="text-muted" style="font-size:0.75rem;">
+                🛡️ <em>Non-punitive human review guaranteed regardless of ML risk classification.</em>
+              </div>
+              <div class="d-flex gap-1">
+                <button class="btn btn-sm btn-primary" onclick="openSupportReviewModal('${r._id}')">
+                  🩺 Review &amp; Record Action
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openSupportReviewModal(reqId) {
+      selectedSupportRequest = allSupportRequests.find(r => String(r._id) === String(reqId));
+      if (!selectedSupportRequest) return;
+
+      const modal = document.getElementById('officer-support-review-modal');
+      const container = document.getElementById('support-review-summary-container');
+      const idInput = document.getElementById('support_review_id');
+      const actionSelect = document.getElementById('support_action_select');
+      const statusSelect = document.getElementById('support_status_select');
+      const notesInput = document.getElementById('support_officer_notes');
+      const followupToggle = document.getElementById('support_schedule_followup_toggle');
+      const followupDateBox = document.getElementById('support-followup-date-box');
+      const followupDateInput = document.getElementById('support_followup_date');
+
+      if (!modal) return;
+
+      idInput.value = selectedSupportRequest._id;
+      if (actionSelect) actionSelect.value = selectedSupportRequest.supportActionTaken || 'REST_ROTATION';
+      if (statusSelect) statusSelect.value = selectedSupportRequest.status === 'SUBMITTED' ? 'ACTION_TAKEN' : selectedSupportRequest.status;
+      if (notesInput) notesInput.value = selectedSupportRequest.officerNotes || '';
+
+      if (followupToggle) followupToggle.checked = false;
+      if (followupDateBox) followupDateBox.style.display = 'none';
+      if (followupDateInput) {
+        const nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        followupDateInput.value = nextWeek.toISOString().split('T')[0];
+      }
+
+      if (container) {
+        container.innerHTML = `
+          <div class="d-flex justify-between align-center mb-2">
+            <div>
+              <strong style="font-size:1.05rem;">${Utils.sanitize(selectedSupportRequest.personnelName || 'Member')}</strong>
+              <span class="text-muted">(${selectedSupportRequest.personnelId || '--'})</span>
+              <div class="text-muted" style="font-size:0.8rem;">${selectedSupportRequest.rank || 'Member'} • ${selectedSupportRequest.unit || 'Unit'}</div>
+            </div>
+            <div>
+              ${Utils.getPriorityBadge(selectedSupportRequest.urgency || 'ROUTINE')}
+            </div>
+          </div>
+          <div style="font-size:0.85rem; line-height:1.4;">
+            <strong>Request Type:</strong> ${(selectedSupportRequest.requestType || '').replace(/_/g, ' ')}<br>
+            ${selectedSupportRequest.notes ? `<strong>Personnel Statement:</strong> <em>"${Utils.sanitize(selectedSupportRequest.notes)}"</em>` : ''}
+          </div>
+        `;
+      }
+
+      modal.style.display = 'flex';
+    }
+
+    function closeSupportReviewModal() {
+      const modal = document.getElementById('officer-support-review-modal');
+      if (modal) modal.style.display = 'none';
+      selectedSupportRequest = null;
+    }
+
+    function toggleSupportFollowUpDate(checked) {
+      const box = document.getElementById('support-followup-date-box');
+      if (box) box.style.display = checked ? 'block' : 'none';
+    }
+
+    async function submitSupportReview() {
+      const id = document.getElementById('support_review_id')?.value;
+      if (!id) return;
+
+      const supportActionTaken = document.getElementById('support_action_select')?.value;
+      const status = document.getElementById('support_status_select')?.value;
+      const officerNotes = document.getElementById('support_officer_notes')?.value;
+      const followupChecked = document.getElementById('support_schedule_followup_toggle')?.checked;
+      const scheduledFollowUpDate = followupChecked ? document.getElementById('support_followup_date')?.value : null;
+
+      const submitBtn = document.getElementById('btn-submit-support-review');
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const payload = {
+          supportActionTaken,
+          status: followupChecked ? 'FOLLOW_UP_SCHEDULED' : status,
+          officerNotes,
+          scheduledFollowUpDate
+        };
+
+        const res = await api.reviewSupportRequest(id, payload);
+        if (res && res.success) {
+          Utils.showToast('Human welfare review recorded and supportive actions dispatched successfully!', 'success');
+          closeSupportReviewModal();
+          await loadSupportQueue();
+          if (typeof loadFollowUps === 'function') {
+            loadFollowUps();
+          }
+        } else {
+          throw new Error(res?.message || 'Failed to submit review');
         }
+      } catch (err) {
+        console.error('Error submitting support review:', err);
+        Utils.showToast('Error recording review: ' + err.message, 'danger');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
     }
+
+    window.loadSupportQueue = loadSupportQueue;
+    window.filterSupportQueue = filterSupportQueue;
+    window.openSupportReviewModal = openSupportReviewModal;
+    window.closeSupportReviewModal = closeSupportReviewModal;
+    window.toggleSupportFollowUpDate = toggleSupportFollowUpDate;
+    window.submitSupportReview = submitSupportReview;
 
     async function loadRosterOptimization() {
       const container = document.getElementById('optimizer-proposals-container');

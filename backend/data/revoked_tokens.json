@@ -198,5 +198,13 @@
     "revokedAt": "2026-09-19T18:07:07.129Z",
     "createdAt": "2026-09-19T18:07:07.129Z",
     "updatedAt": "2026-09-19T18:07:07.129Z"
+  },
+  {
+    "_id": "04e7e5c4acdd9a2c4b03b809",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxNDJiMTgwMzRmMjc0YjgwMjAxMzk2NyIsInBlcnNvbm5lbElkIjoiVEVNUF9MT185Mjg2ODAiLCJlbWFpbCI6InRlbXBfbG9fOTI4NjgwQHdlbGZhcmUubWlsLmluIiwicm9sZSI6IlBFUlNPTk5FTCIsImp0aSI6ImI5YzI4NWQ4NTY5YTc1ZTRmM2FkOWM2Yzg2NWNhZTIzIiwiaWF0IjoxNzg5ODQ0MDU3LCJleHAiOjE3ODk5MzA0NTd9.W-iO1DL6UugTEKUPMgx8Pz3DBDa_DTknTJrCzpRklgg",
+    "userId": "2142b18034f274b802013967",
+    "revokedAt": "2026-09-19T18:54:17.117Z",
+    "createdAt": "2026-09-19T18:54:17.117Z",
+    "updatedAt": "2026-09-19T18:54:17.117Z"
   }
 ]

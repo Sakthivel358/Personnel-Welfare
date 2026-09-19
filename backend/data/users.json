@@ -9,9 +9,9 @@
     "unit": "CRPF Battalion 104",
     "rank": "Havildar (GD)",
     "isActive": true,
-    "lastLogin": "2026-09-19T18:06:57.641Z",
+    "lastLogin": "2026-09-19T18:54:11.354Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-19T18:06:57.641Z"
+    "updatedAt": "2026-09-19T18:54:11.355Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T18:06:57.739Z",
+    "lastLogin": "2026-09-19T18:54:11.285Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T18:06:57.739Z"
+    "updatedAt": "2026-09-19T18:54:11.285Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -2375,5 +2375,62 @@
     "createdAt": "2026-09-19T18:07:07.117Z",
     "updatedAt": "2026-09-19T18:07:07.130Z",
     "lastLogout": "2026-09-19T18:07:07.130Z"
+  },
+  {
+    "_id": "e78861dbe9160addb03ec756",
+    "personnelId": "PERS_FIN_928680",
+    "email": "pers_fin_928680@welfare.mil.in",
+    "password": "$2a$10$9JwYmj1waNbo8tuig.1wD.MHe/RsS74a0Lxlf6ohu53EyBBucA5T6",
+    "fullName": "Subedar Major Vikram Singh",
+    "unit": "12th Assam Rifles",
+    "rank": "Subedar Major",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T18:54:17.695Z",
+    "createdAt": "2026-09-19T18:54:16.814Z",
+    "updatedAt": "2026-09-19T18:54:17.695Z"
+  },
+  {
+    "_id": "5a8f7db75ab7c8922f505741",
+    "personnelId": "TEST_WO_928680",
+    "email": "wo_fin_928680@welfare.mil.in",
+    "password": "$2a$10$mYdxrkAs3WG42Nff1iZn8uQhY.lFrxw1rxRDDDOnRKEl0zmmmn9IS",
+    "fullName": "Capt. Ananya Sen",
+    "unit": "Operational Unit",
+    "rank": "Welfare Officer",
+    "role": "WELFARE_OFFICER",
+    "isActive": true,
+    "lastLogin": "2026-09-19T18:54:16.886Z",
+    "createdAt": "2026-09-19T18:54:16.887Z",
+    "updatedAt": "2026-09-19T18:54:16.887Z"
+  },
+  {
+    "_id": "a6c8833be9dd58953dbd3828",
+    "personnelId": "ADM_FIN_928680",
+    "email": "adm_fin_928680@welfare.mil.in",
+    "password": "$2a$10$mynRd6vHGUguEBXKBWlLeO79Z3SgAgRYQarOdvWM0VnELYzebIeX2",
+    "fullName": "Col. R. K. Nair",
+    "unit": "Operational Unit",
+    "rank": "System Administrator",
+    "role": "ADMIN",
+    "isActive": true,
+    "lastLogin": "2026-09-19T18:54:16.963Z",
+    "createdAt": "2026-09-19T18:54:16.964Z",
+    "updatedAt": "2026-09-19T18:54:16.964Z"
+  },
+  {
+    "_id": "2142b18034f274b802013967",
+    "personnelId": "TEMP_LO_928680",
+    "email": "temp_lo_928680@welfare.mil.in",
+    "password": "$2a$10$tT3j6wCNIQblCeuIK8D1Z.fvlEzcHlO4zgo6dO/3mMJM6Kr2NZE7u",
+    "fullName": "Temp Logout User",
+    "unit": "Operational Unit",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T18:54:17.103Z",
+    "createdAt": "2026-09-19T18:54:17.104Z",
+    "updatedAt": "2026-09-19T18:54:17.118Z",
+    "lastLogout": "2026-09-19T18:54:17.118Z"
   }
 ]

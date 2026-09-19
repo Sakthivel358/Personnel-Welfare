@@ -104,7 +104,7 @@ function renderPSSQuestions() {
       <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 0.75rem;">
         <span style="color: var(--accent); margin-right: 0.5rem;">Q${idx + 1}.</span> ${q}
       </div>
-      <div class="d-flex justify-between flex-wrap gap-1" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem;">
+      <div class="pss-options-grid">
         <label class="pss-radio-label">
           <input type="radio" name="pss_q_${idx}" value="0" onchange="onPssOptionSelected()">
           <span>Never (0)</span>
@@ -178,7 +178,10 @@ function setupRangeSliders() {
     { id: 'hrv_ms', display: 'val_hrv' },
     { id: 'respiration_rate', display: 'val_resp' },
     { id: 'skin_temperature_c', display: 'val_temp' },
-    { id: 'fatigue_physical_strain', display: 'val_strain' }
+    { id: 'fatigue_physical_strain', display: 'val_strain' },
+    { id: 'wellness_energy', display: 'val_energy' },
+    { id: 'wellness_morale', display: 'val_morale' },
+    { id: 'wellness_tension', display: 'val_tension' }
   ];
 
   sliders.forEach(s => {
@@ -652,6 +655,9 @@ function populateReviewSummary() {
       <span class="badge ${wearableEnabled ? 'badge-primary' : 'badge-neutral'}">
         🦺 5. Smart Jacket: ${wearableEnabled ? `${rhr} BPM / ${hrv} ms / ${strain}% strain` : 'Standby'}
       </span>
+      <span class="badge badge-low">
+        🌱 Wellness (Energy ${document.getElementById('wellness_energy')?.value || 7}/10, Morale ${document.getElementById('wellness_morale')?.value || 7}/10)
+      </span>
     `;
   }
 
@@ -815,6 +821,32 @@ function setupFormSubmit() {
         work_life_balance_rating: parseFloat(document.getElementById('work_life_balance_rating').value),
         notes: document.getElementById('checkin_notes')?.value || ''
       };
+
+      // Multi-dimensional Wellness Information (Task 4)
+      const energyEl = document.getElementById('wellness_energy');
+      const moraleEl = document.getElementById('wellness_morale');
+      const tensionEl = document.getElementById('wellness_tension');
+      const nutritionEl = document.getElementById('wellness_nutrition');
+      const wellnessNotesEl = document.getElementById('wellness_notes');
+
+      if (energyEl || moraleEl || tensionEl || nutritionEl || wellnessNotesEl) {
+        payload.wellnessInfo = {
+          energy_level: energyEl ? parseFloat(energyEl.value) : 7,
+          morale_rating: moraleEl ? parseFloat(moraleEl.value) : 7,
+          physical_tension: tensionEl ? parseFloat(tensionEl.value) : 3,
+          nutrition_hydration: nutritionEl ? nutritionEl.value : 'BALANCED',
+          wellness_notes: wellnessNotesEl ? wellnessNotesEl.value.trim() : ''
+        };
+      }
+
+      // Optional Welfare Support Request Integration (Task 4 & 6)
+      const reqSupportChecked = document.getElementById('checkin_request_support_toggle')?.checked;
+      if (reqSupportChecked) {
+        payload.requestWelfareSupport = true;
+        payload.welfareSupportType = document.getElementById('checkin_support_type')?.value || 'HUMAN_WELFARE_REVIEW';
+        payload.welfareUrgency = document.getElementById('checkin_support_urgency')?.value || 'ROUTINE';
+        payload.welfareSupportNotes = document.getElementById('checkin_support_notes')?.value?.trim() || '';
+      }
 
       // Handle optional PSS-10
       if (!pssSkipped && pssData.answeredCount > 0) {
@@ -1205,6 +1237,54 @@ async function syncTacticalWearable(isRealBluetooth = false) {
 
       Utils.showToast('Smart Jacket continuous biometric stream connected and calibrated.', 'success');
     }, 600);
+  }
+}
+
+function toggleCheckinSupportFields(checked) {
+  const fields = document.getElementById('checkin-support-fields');
+  if (fields) fields.style.display = checked ? 'block' : 'none';
+}
+
+function openQuickSupportModal() {
+  const modal = document.getElementById('quick-support-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeQuickSupportModal() {
+  const modal = document.getElementById('quick-support-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function submitQuickSupportRequest() {
+  const btn = document.getElementById('btn-quick-support-submit');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+  }
+
+  const payload = {
+    requestType: document.getElementById('quick_req_type')?.value || 'HUMAN_WELFARE_REVIEW',
+    urgency: document.getElementById('quick_req_urgency')?.value || 'ROUTINE',
+    preferredContactMethod: document.getElementById('quick_req_contact')?.value || 'CONFIDENTIAL_IN_PERSON',
+    notes: document.getElementById('quick_req_notes')?.value?.trim() || '',
+    description: document.getElementById('quick_req_notes')?.value?.trim() || ''
+  };
+
+  try {
+    const res = await api.createSupportRequest(payload);
+    if (res && res.success) {
+      Utils.showToast(`Confidential request (${res.data?.referenceId || 'REQ'}) submitted! Unit Welfare Officer notified.`, 'success', 4500);
+      closeQuickSupportModal();
+    } else {
+      Utils.showToast(res.message || 'Failed to submit support request.', 'error');
+    }
+  } catch (err) {
+    Utils.showToast(err.message || 'Error submitting support request.', 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Submit Confidential Request';
+    }
   }
 }
 

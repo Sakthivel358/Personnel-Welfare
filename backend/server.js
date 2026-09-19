@@ -28,6 +28,7 @@ const adminRoutes = require('./routes/admin.routes');
 const systemRoutes = require('./routes/system.routes');
 const wearableRoutes = require('./routes/wearable.routes');
 const privacyRoutes = require('./routes/privacy.routes');
+const hrmsRoutes = require('./routes/hrms.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -79,6 +80,7 @@ app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/system', systemRoutes);
 app.use('/api/v1/privacy', privacyRoutes);
+app.use('/api/v1/hrms', hrmsRoutes);
 
 
 // Health check alias

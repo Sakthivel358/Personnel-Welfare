@@ -6228,5 +6228,330 @@
     "link": "/recovery-journey.html",
     "createdAt": "2026-09-19T18:07:07.747Z",
     "updatedAt": "2026-09-19T18:07:07.747Z"
+  },
+  {
+    "_id": "bc3336085c8e763fa835529e",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: UNDETERMINED concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:41:34.030Z",
+    "updatedAt": "2026-09-19T18:41:34.030Z"
+  },
+  {
+    "_id": "8cb1e8b99fdd2d62b3672981",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Linked to Check-in",
+    "message": "Your confidential support request (REQ-3527) has been logged for Unit Welfare Officer review.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:41:34.047Z",
+    "updatedAt": "2026-09-19T18:41:34.047Z"
+  },
+  {
+    "_id": "8ab3e379430708a75bdf5e2c",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: UNDETERMINED concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:41:34.082Z",
+    "updatedAt": "2026-09-19T18:41:34.082Z"
+  },
+  {
+    "_id": "21b9c783cb7ac5bf831eb0b2",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Received",
+    "message": "Your request (REQ-3910) for \"HUMAN WELFARE REVIEW\" is logged. An authorized welfare officer will review it confidentially.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:41:34.113Z",
+    "updatedAt": "2026-09-19T18:41:34.113Z"
+  },
+  {
+    "_id": "934cafa85600ba501e148642",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Review Action Recorded",
+    "message": "Your Unit Welfare Officer has completed review for request (REQ-3910). Action: REST ROTATION. Follow-up session scheduled on 24/9/2026.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:41:34.141Z",
+    "updatedAt": "2026-09-19T18:41:34.141Z"
+  },
+  {
+    "_id": "8d46b2c2598a530c34056882",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Linked to Check-in",
+    "message": "Your confidential support request (REQ-9961) has been logged for Unit Welfare Officer review.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:43:47.887Z",
+    "updatedAt": "2026-09-19T18:43:47.887Z"
+  },
+  {
+    "_id": "80bea6c83077a16180e34605",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Received",
+    "message": "Your request (REQ-3026) for \"HUMAN WELFARE REVIEW\" is logged. An authorized welfare officer will review it confidentially.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:43:47.952Z",
+    "updatedAt": "2026-09-19T18:43:47.952Z"
+  },
+  {
+    "_id": "32ebbbcadab88ab5b263e33c",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Review Action Recorded",
+    "message": "Your Unit Welfare Officer has completed review for request (REQ-3026). Action: REST ROTATION. Follow-up session scheduled on 24/9/2026.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:43:47.993Z",
+    "updatedAt": "2026-09-19T18:43:47.993Z"
+  },
+  {
+    "_id": "3dc68bba0bb0a9f13643f9bf",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Linked to Check-in",
+    "message": "Your confidential support request (REQ-6595) has been logged for Unit Welfare Officer review.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:50:39.946Z",
+    "updatedAt": "2026-09-19T18:50:39.946Z"
+  },
+  {
+    "_id": "b0ffc579b216eefa445ff6ef",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Received",
+    "message": "Your request (REQ-8616) for \"HUMAN WELFARE REVIEW\" is logged. An authorized welfare officer will review it confidentially.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:50:40.047Z",
+    "updatedAt": "2026-09-19T18:50:40.047Z"
+  },
+  {
+    "_id": "4369ad682331d323e849c75f",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Review Action Recorded",
+    "message": "Your Unit Welfare Officer has completed review for request (REQ-8616). Action: REST ROTATION. Follow-up session scheduled on 24/9/2026.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:50:40.092Z",
+    "updatedAt": "2026-09-19T18:50:40.092Z"
+  },
+  {
+    "_id": "9c1b34592d27fc0d9aca99d3",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: UNDETERMINED concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:52:48.253Z",
+    "updatedAt": "2026-09-19T18:52:48.253Z"
+  },
+  {
+    "_id": "937ceda12f960bcea87c1cc6",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Linked to Check-in",
+    "message": "Your confidential support request (REQ-4352) has been logged for Unit Welfare Officer review.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:52:48.264Z",
+    "updatedAt": "2026-09-19T18:52:48.264Z"
+  },
+  {
+    "_id": "0196d94ad7d1479b06034861",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: UNDETERMINED concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:52:48.296Z",
+    "updatedAt": "2026-09-19T18:52:48.296Z"
+  },
+  {
+    "_id": "2061c4e4e16e7f7089fb8440",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Received",
+    "message": "Your request (REQ-6327) for \"HUMAN WELFARE REVIEW\" is logged. An authorized welfare officer will review it confidentially.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:52:48.327Z",
+    "updatedAt": "2026-09-19T18:52:48.327Z"
+  },
+  {
+    "_id": "76bd6f95820fbed66ce9d941",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Review Action Recorded",
+    "message": "Your Unit Welfare Officer has completed review for request (REQ-6327). Action: REST ROTATION. Follow-up session scheduled on 24/9/2026.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:52:48.355Z",
+    "updatedAt": "2026-09-19T18:52:48.355Z"
+  },
+  {
+    "_id": "8e0bb59e0a13d42cabbf26b7",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (↑ Perceived Stress, ↓ Rest, ↑ Workload, ↓ Rest Interval). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:52:58.933Z",
+    "updatedAt": "2026-09-19T18:52:58.933Z"
+  },
+  {
+    "_id": "3d01ca1112d74d4775d5d331",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (↑ Perceived Stress, ↓ Rest, ↑ Workload, ↓ Rest Interval). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:53:59.496Z",
+    "updatedAt": "2026-09-19T18:53:59.496Z"
+  },
+  {
+    "_id": "d0091ea078200a0761b06b1a",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: UNDETERMINED concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:11.399Z",
+    "updatedAt": "2026-09-19T18:54:11.399Z"
+  },
+  {
+    "_id": "4aa333695ceec4d66493164b",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Linked to Check-in",
+    "message": "Your confidential support request (REQ-9731) has been logged for Unit Welfare Officer review.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:54:11.414Z",
+    "updatedAt": "2026-09-19T18:54:11.414Z"
+  },
+  {
+    "_id": "f82a4d6cde6133100f47dbd5",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: UNDETERMINED concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:11.460Z",
+    "updatedAt": "2026-09-19T18:54:11.460Z"
+  },
+  {
+    "_id": "a15a9b3f8b4331995c509781",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Request Received",
+    "message": "Your request (REQ-8696) for \"HUMAN WELFARE REVIEW\" is logged. An authorized welfare officer will review it confidentially.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:54:11.496Z",
+    "updatedAt": "2026-09-19T18:54:11.496Z"
+  },
+  {
+    "_id": "357c4314b1fd6d5e08fd54e9",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Support Review Action Recorded",
+    "message": "Your Unit Welfare Officer has completed review for request (REQ-8696). Action: REST ROTATION. Follow-up session scheduled on 24/9/2026.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/support.html",
+    "createdAt": "2026-09-19T18:54:11.525Z",
+    "updatedAt": "2026-09-19T18:54:11.525Z"
+  },
+  {
+    "_id": "d0a10911d92b019e580334b4",
+    "userId": "e78861dbe9160addb03ec756",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:16.816Z",
+    "updatedAt": "2026-09-19T18:54:16.816Z"
+  },
+  {
+    "_id": "3ed596f3ffc5454a327bee5e",
+    "userId": "5a8f7db75ab7c8922f505741",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:16.890Z",
+    "updatedAt": "2026-09-19T18:54:16.890Z"
+  },
+  {
+    "_id": "0f26e0018d542641af0b44e4",
+    "userId": "a6c8833be9dd58953dbd3828",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:16.966Z",
+    "updatedAt": "2026-09-19T18:54:16.966Z"
+  },
+  {
+    "_id": "12c346397d7ef2a8a1124f5a",
+    "userId": "2142b18034f274b802013967",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:17.106Z",
+    "updatedAt": "2026-09-19T18:54:17.106Z"
+  },
+  {
+    "_id": "c479c7a323a71ad57fce7c27",
+    "userId": "e78861dbe9160addb03ec756",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (↑ Fatigue indicators, ↓ Rest, ↓ Heart Rate Variability, ↓ Rest Interval). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:17.230Z",
+    "updatedAt": "2026-09-19T18:54:17.230Z"
+  },
+  {
+    "_id": "07859c9dac2680decdef943f",
+    "userId": "e78861dbe9160addb03ec756",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: LOW concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:17.287Z",
+    "updatedAt": "2026-09-19T18:54:17.287Z"
+  },
+  {
+    "_id": "a4bb34422d06e154911186c8",
+    "userId": "e78861dbe9160addb03ec756",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: UNDETERMINED concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T18:54:17.375Z",
+    "updatedAt": "2026-09-19T18:54:17.375Z"
+  },
+  {
+    "_id": "55565d0cce1c4fd27faf57c9",
+    "userId": "e78861dbe9160addb03ec756",
+    "title": "Welfare Follow-up Scheduled",
+    "message": "Your Unit Welfare Officer has scheduled a supportive follow-up session. Please check your schedule.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/recovery-journey.html",
+    "createdAt": "2026-09-19T18:54:17.406Z",
+    "updatedAt": "2026-09-19T18:54:17.406Z"
   }
 ]

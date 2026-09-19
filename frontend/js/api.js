@@ -261,6 +261,32 @@ class APIClient {
     return this.request(`/support/${id}`, { method: 'PUT', body: JSON.stringify(data) });
   }
 
+  async reviewSupportRequest(id, data) {
+    return this.request(`/support/${id}/review`, { method: 'POST', body: JSON.stringify(data) });
+  }
+
+  // HRMS Integration endpoints (Simulated Prototype Gateway)
+  async getHRMSStatus() {
+    return this.request('/hrms/status', { method: 'GET' });
+  }
+
+  async getMyHRMSRecord() {
+    return this.request('/hrms/my-record', { method: 'GET' });
+  }
+
+  async getHRMSRecord(personnelId) {
+    return this.request(`/hrms/personnel/${encodeURIComponent(personnelId)}`, { method: 'GET' });
+  }
+
+  async getHRMSCategory(category, personnelId) {
+    const qs = personnelId ? `?personnelId=${encodeURIComponent(personnelId)}` : '';
+    return this.request(`/hrms/category/${encodeURIComponent(category)}${qs}`, { method: 'GET' });
+  }
+
+  async syncHRMSData(personnelId) {
+    return this.request('/hrms/sync', { method: 'POST', body: JSON.stringify({ personnelId }) });
+  }
+
   // Notification endpoints
   async getNotifications() {
     return this.request('/notifications', { method: 'GET' });

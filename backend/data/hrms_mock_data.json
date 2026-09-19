@@ -1,0 +1,180 @@
+{
+  "_meta": {
+    "isSimulated": true,
+    "system": "Armed Forces & CAPF Unified HRMS Gateway (Simulated Adapter)",
+    "disclaimer": "PROTOTYPE SIMULATION ONLY: This API layer simulates integration with military/CAPF Human Resource Management Systems (e.g. ARPAN / BSF HRMS / ITBP e-HRMS). It contains synthetic mock data for demonstration purposes and does NOT connect to live government servers.",
+    "version": "v1.4.0-mock-adapter",
+    "supportedDomains": ["personnel", "duty", "leave", "deployment", "training", "workload"]
+  },
+  "records": {
+    "CRPF-9042": {
+      "personnelId": "CRPF-9042",
+      "isSimulated": true,
+      "personnel": {
+        "serviceNumber": "CRPF-9042-ALPHA",
+        "fullName": "Havildar Rajesh Kumar",
+        "rank": "Havildar",
+        "force": "CRPF",
+        "unit": "114 Bn Rapid Action Force",
+        "company": "Bravo Coy",
+        "platoon": "No. 2 Platoon",
+        "trade": "General Duty / Tactical Ops",
+        "dateOfJoining": "2015-08-12",
+        "dateOfAttestation": "2016-02-28",
+        "dateOfBirth": "1992-06-14",
+        "bloodGroup": "B+",
+        "medicalCategory": "SHAPE-1 (Fit for High Hardship Operations)",
+        "heightCm": 178,
+        "weightKg": 74,
+        "nextOfKin": {
+          "name": "Sunita Devi",
+          "relationship": "Spouse",
+          "emergencyContact": "+91-98765-43210"
+        }
+      },
+      "duty": {
+        "currentRoster": "Bravo Coy Tactical Shift Schedule",
+        "watchRole": "Patrol & Active Security Duty",
+        "shiftTiming": "06:00 - 14:00 (Rotational)",
+        "dutyPost": "Sector-4 Perimeter Watch Post",
+        "guardCommander": "Subedar V. Sharma",
+        "companyCommander": "Major A. Saxena",
+        "currentStatus": "ON_ACTIVE_DUTY",
+        "lastRosterUpdate": "2026-09-18T00:00:00.000Z"
+      },
+      "leave": {
+        "annualLeave": {
+          "entitlementDays": 60,
+          "availedDays": 42,
+          "balanceDays": 18
+        },
+        "casualLeave": {
+          "entitlementDays": 15,
+          "availedDays": 10,
+          "balanceDays": 5
+        },
+        "overdueDeficit": true,
+        "overdueDeficitDays": 14,
+        "lastLeaveAvailedDate": "2026-04-10",
+        "nextEligibleLeaveDate": "2026-09-25",
+        "pendingLeaveApplications": []
+      },
+      "deployment": {
+        "currentZone": "Field Sector - High Hardship",
+        "hardshipTier": "CATEGORY_B_HARDSHIP",
+        "altitudeCategory": "Semi-Arid / Border Outpost",
+        "monthsInCurrentPosting": 14,
+        "deploymentHistory": [
+          { "posting": "J&K Counter-Insurgency Sector", "from": "2018-05", "to": "2021-06", "hardship": "HIGH" },
+          { "posting": "Chhattisgarh LWE Area", "from": "2021-07", "to": "2024-02", "hardship": "VERY_HIGH" },
+          { "posting": "114 Bn RAF Base", "from": "2024-03", "to": "Present", "hardship": "MODERATE" }
+        ]
+      },
+      "training": {
+        "completedCourses": [
+          { "courseCode": "CQB-201", "courseName": "Close Quarter Battle & Urban Tactics", "year": 2021, "grade": "AX" },
+          { "courseCode": "IED-104", "courseName": "Counter-IED & Mine Awareness", "year": 2022, "grade": "AY" },
+          { "courseCode": "TAC-MED-02", "courseName": "Combat Life Support & First Responder", "year": 2023, "grade": "AY" },
+          { "courseCode": "WEL-PSY-10", "courseName": "Forces Psycho-Social Welfare & Peer Mentorship", "year": 2025, "grade": "AX" }
+        ],
+        "annualFiringClassification": "Marksman (First Class)",
+        "lastBPETDate": "2026-07-15",
+        "bpetScore": "EXCELLENT",
+        "welfareOrientationStatus": "COMPLETED"
+      },
+      "workload": {
+        "weeklyDutyHoursLogged": [52, 56, 54, 58],
+        "averageWeeklyHours": 55,
+        "nightShiftsPastMonth": 8,
+        "continuousDutyDaysCurrent": 4,
+        "standbyHoursPastMonth": 36,
+        "restDaysMandatory": 4,
+        "restDaysGranted": 3,
+        "complianceIndex": "88% (Pacing Review Advised)"
+      }
+    },
+    "BSF-4410": {
+      "personnelId": "BSF-4410",
+      "isSimulated": true,
+      "personnel": {
+        "serviceNumber": "BSF-4410-BRAVO",
+        "fullName": "Constable Manoj Singh",
+        "rank": "Constable",
+        "force": "BSF",
+        "unit": "78 Bn Border Outpost",
+        "company": "Delta Coy",
+        "platoon": "No. 1 Platoon",
+        "trade": "Border Surveillance / Infantry",
+        "dateOfJoining": "2018-03-20",
+        "dateOfAttestation": "2018-11-15",
+        "dateOfBirth": "1996-11-04",
+        "bloodGroup": "O+",
+        "medicalCategory": "SHAPE-1",
+        "heightCm": 175,
+        "weightKg": 70,
+        "nextOfKin": {
+          "name": "Kamla Devi",
+          "relationship": "Mother",
+          "emergencyContact": "+91-98111-22334"
+        }
+      },
+      "duty": {
+        "currentRoster": "BOP Delta Border Watch",
+        "watchRole": "Static Outpost & Perimeter Guard",
+        "shiftTiming": "22:00 - 06:00 (Night Watch)",
+        "dutyPost": "Tower-7 Zero-Line Observation",
+        "guardCommander": "Head Constable S. Yadav",
+        "companyCommander": "Assistant Commandant R. Sen",
+        "currentStatus": "ON_ACTIVE_DUTY",
+        "lastRosterUpdate": "2026-09-17T00:00:00.000Z"
+      },
+      "leave": {
+        "annualLeave": {
+          "entitlementDays": 60,
+          "availedDays": 30,
+          "balanceDays": 30
+        },
+        "casualLeave": {
+          "entitlementDays": 15,
+          "availedDays": 8,
+          "balanceDays": 7
+        },
+        "overdueDeficit": false,
+        "overdueDeficitDays": 0,
+        "lastLeaveAvailedDate": "2026-06-15",
+        "nextEligibleLeaveDate": "2026-11-01",
+        "pendingLeaveApplications": []
+      },
+      "deployment": {
+        "currentZone": "Border Outpost (Extreme Weather)",
+        "hardshipTier": "CATEGORY_A_EXTREME",
+        "altitudeCategory": "Riverine / High Fog Belt",
+        "monthsInCurrentPosting": 18,
+        "deploymentHistory": [
+          { "posting": "Western Sector Border Outpost", "from": "2019-01", "to": "2022-04", "hardship": "HIGH" },
+          { "posting": "Eastern Border Sector", "from": "2022-05", "to": "Present", "hardship": "HIGH" }
+        ]
+      },
+      "training": {
+        "completedCourses": [
+          { "courseCode": "BDR-SURV-101", "courseName": "Night Vision & Thermal Surveillance", "year": 2020, "grade": "AX" },
+          { "courseCode": "WEAP-78", "courseName": "Standard Force Armaments Refresher", "year": 2023, "grade": "AX" }
+        ],
+        "annualFiringClassification": "First Class",
+        "lastBPETDate": "2026-05-10",
+        "bpetScore": "GOOD",
+        "welfareOrientationStatus": "COMPLETED"
+      },
+      "workload": {
+        "weeklyDutyHoursLogged": [60, 64, 62, 66],
+        "averageWeeklyHours": 63,
+        "nightShiftsPastMonth": 16,
+        "continuousDutyDaysCurrent": 8,
+        "standbyHoursPastMonth": 48,
+        "restDaysMandatory": 4,
+        "restDaysGranted": 2,
+        "complianceIndex": "72% (Critical Shift Pacing Required)"
+      }
+    }
+  }
+}

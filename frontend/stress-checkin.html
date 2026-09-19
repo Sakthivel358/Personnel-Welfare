@@ -6,6 +6,111 @@
   <title>Personnel Stress Check-in — WelfareAI</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/dashboard.css">
+  <style>
+    /* Mobile-First Check-in Enhancements (Task 4) */
+    .wizard-steps-container {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      padding-bottom: 0.35rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+    .wizard-step-pill {
+      flex: 0 0 auto;
+      white-space: nowrap;
+      cursor: pointer;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .pss-options-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+    .pss-radio-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0.5rem;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: center;
+      font-size: 0.8rem;
+      transition: all 0.15s ease;
+    }
+    .pss-radio-label:hover {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.05);
+    }
+    .pss-radio-label:has(input[type="radio"]:checked),
+    .pss-radio-label.selected {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.12);
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .mobile-support-strip {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .touch-range-slider {
+      width: 100%;
+      height: 36px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 640px) {
+      .pss-options-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+      .pss-options-grid label:last-child {
+        grid-column: span 2;
+      }
+      .pss-radio-label {
+        min-height: 44px;
+        flex-direction: row;
+        gap: 0.5rem;
+        justify-content: flex-start;
+        padding: 0.6rem 0.85rem;
+        font-size: 0.84rem;
+      }
+      .page-container {
+        padding: 0.75rem 0.5rem;
+      }
+      .card {
+        padding: 1rem 0.85rem;
+      }
+      .wizard-action-bar {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+      }
+      .wizard-action-bar button {
+        width: 100%;
+        min-height: 44px;
+        justify-content: center;
+      }
+      .mobile-hide {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -72,18 +177,34 @@
 
       <div class="page-container">
         <div class="card" style="max-width: 900px; margin: 0 auto;">
+          <!-- Voluntary & Confidential Welfare Support Banner (Task 4 & 6) -->
+          <div class="mobile-support-strip">
+            <div class="d-flex align-center gap-2">
+              <span style="font-size: 1.5rem;">🛡️</span>
+              <div>
+                <strong style="font-size: 0.92rem; color: var(--text-main);">Need Voluntary Welfare Support or Human Check-in?</strong>
+                <div class="text-muted" style="font-size: 0.8rem;">Accessible unconditionally regardless of AI scores. Strictly confidential and non-punitive.</div>
+              </div>
+            </div>
+            <div class="d-flex gap-1 align-center">
+              <button type="button" class="btn btn-sm btn-primary" onclick="openQuickSupportModal()">
+                🩺 Request Welfare Support
+              </button>
+            </div>
+          </div>
+
           <!-- Wizard Steps Header -->
           <div class="d-flex justify-between align-center mb-3 pb-2" style="border-bottom: 1px solid var(--border-color); flex-wrap:wrap; gap:0.5rem;">
             <div>
               <h2>5-Source Welfare Check-in</h2>
               <p class="text-muted" style="font-size: 0.85rem;">Fuses Duty, Workload, Rest/Recovery, optional Self-Check, and Smart Jacket telemetry.</p>
             </div>
-            <div class="d-flex gap-1 flex-wrap">
-              <span id="step-badge-1" class="badge badge-primary">1. Duty & Workload</span>
-              <span id="step-badge-2" class="badge badge-neutral">2. Rest & Recovery</span>
-              <span id="step-badge-3" class="badge badge-neutral">3. Self-Check (Optional)</span>
-              <span id="step-badge-4" class="badge badge-neutral">4. Smart Jacket</span>
-              <span id="step-badge-5" class="badge badge-neutral">5. Review & Submit</span>
+            <div class="wizard-steps-container">
+              <span id="step-badge-1" class="badge badge-primary wizard-step-pill">1. Duty & Workload</span>
+              <span id="step-badge-2" class="badge badge-neutral wizard-step-pill">2. Rest & Recovery</span>
+              <span id="step-badge-3" class="badge badge-neutral wizard-step-pill">3. Self-Check (Optional)</span>
+              <span id="step-badge-4" class="badge badge-neutral wizard-step-pill">4. Smart Jacket</span>
+              <span id="step-badge-5" class="badge badge-neutral wizard-step-pill">5. Review & Submit</span>
             </div>
           </div>
 
@@ -98,6 +219,7 @@
                 Sync Buffered Vault
               </button>
             </div>
+          </div>
           <!-- Evaluation & Clinical Scenario Presets Toolbar -->
           <div class="card mb-3" style="background: var(--bg-card-subtle); border: 1px solid var(--border-color); padding: 0.85rem 1.15rem;">
             <div class="d-flex justify-between align-center flex-wrap gap-1 mb-2">
@@ -320,6 +442,80 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Multi-dimensional Wellness Information Assessment (Task 4) -->
+              <div class="card mb-3" style="background: var(--bg-card); border-left: 4px solid var(--risk-low);">
+                <div class="d-flex justify-between align-center mb-1 flex-wrap gap-1">
+                  <div>
+                    <strong style="font-size: 0.95rem; color: var(--text-primary);">🌱 Daily Wellness & Vitality Information</strong>
+                    <div class="text-muted" style="font-size: 0.78rem;">Self-perceived energy, morale, and physical readiness indicators.</div>
+                  </div>
+                  <span class="badge badge-low" style="font-size: 0.72rem;">Wellness Pillar</span>
+                </div>
+
+                <div class="grid-3 mt-2">
+                  <!-- Energy & Vitality Level -->
+                  <div class="card mb-2" style="background: var(--bg-card-subtle);">
+                    <div class="d-flex justify-between align-center mb-1">
+                      <label class="form-label mb-0" for="wellness_energy" style="font-size:0.82rem;">Energy & Vitality</label>
+                      <span class="badge badge-neutral" style="font-size:0.8rem;"><span id="val_energy">7</span> / 10</span>
+                    </div>
+                    <input type="range" id="wellness_energy" min="1" max="10" step="1" value="7" class="form-control touch-range-slider">
+                    <div class="d-flex justify-between text-muted" style="font-size:0.7rem;">
+                      <span>1 (Drained)</span>
+                      <span>7 (Good)</span>
+                      <span>10 (Peak)</span>
+                    </div>
+                  </div>
+
+                  <!-- Mental Morale & Calm -->
+                  <div class="card mb-2" style="background: var(--bg-card-subtle);">
+                    <div class="d-flex justify-between align-center mb-1">
+                      <label class="form-label mb-0" for="wellness_morale" style="font-size:0.82rem;">Mental Morale & Focus</label>
+                      <span class="badge badge-neutral" style="font-size:0.8rem;"><span id="val_morale">7</span> / 10</span>
+                    </div>
+                    <input type="range" id="wellness_morale" min="1" max="10" step="1" value="7" class="form-control touch-range-slider">
+                    <div class="d-flex justify-between text-muted" style="font-size:0.7rem;">
+                      <span>1 (Low Morale)</span>
+                      <span>7 (Positive)</span>
+                      <span>10 (Resilient)</span>
+                    </div>
+                  </div>
+
+                  <!-- Physical Tension / Soreness -->
+                  <div class="card mb-2" style="background: var(--bg-card-subtle);">
+                    <div class="d-flex justify-between align-center mb-1">
+                      <label class="form-label mb-0" for="wellness_tension" style="font-size:0.82rem;">Physical Tension / Pain</label>
+                      <span class="badge badge-neutral" style="font-size:0.8rem;"><span id="val_tension">3</span> / 10</span>
+                    </div>
+                    <input type="range" id="wellness_tension" min="1" max="10" step="1" value="3" class="form-control touch-range-slider">
+                    <div class="d-flex justify-between text-muted" style="font-size:0.7rem;">
+                      <span>1 (Relaxed)</span>
+                      <span>3 (Mild)</span>
+                      <span>10 (Severe)</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="grid-2 mt-2">
+                  <!-- Hydration & Nutritional Balance -->
+                  <div>
+                    <label class="form-label mb-1" for="wellness_nutrition" style="font-size:0.82rem;">Hydration & Nutrition Intake</label>
+                    <select id="wellness_nutrition" class="form-control form-control-sm" style="font-size:0.82rem;">
+                      <option value="BALANCED">Balanced Nutrition & Regular Hydration</option>
+                      <option value="ADEQUATE">Adequate Ration Intake, Minor Delays</option>
+                      <option value="IRREGULAR_OPS">Irregular Meals Due to Operational Tempo</option>
+                      <option value="DEHYDRATION_FATIGUE">Heat / Arid Exposure & Fluid Deficit</option>
+                    </select>
+                  </div>
+
+                  <!-- Personal Observations -->
+                  <div>
+                    <label class="form-label mb-1" for="wellness_notes" style="font-size:0.82rem;">Personal Wellness Notes (Optional)</label>
+                    <input type="text" id="wellness_notes" class="form-control form-control-sm" placeholder="e.g. Mild headache post-convoy; feeling refreshed after sleep.">
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Step 3: Self-Check: PSS-10 Inventory (Evidence Source 4 - OPTIONAL) -->
@@ -510,6 +706,55 @@
                 </div>
               </div>
 
+              <!-- Optional Welfare Officer Review & Support Request (Task 4 & 6) -->
+              <div class="card mb-3" style="background: rgba(59, 130, 246, 0.05); border: 1.5px solid var(--accent);">
+                <div class="d-flex justify-between align-center mb-2 flex-wrap gap-1">
+                  <div class="d-flex align-center gap-2">
+                    <span style="font-size: 1.4rem;">🩺</span>
+                    <div>
+                      <strong style="font-size: 0.95rem;">Request Officer Follow-up & Support Session</strong>
+                      <div class="text-muted" style="font-size: 0.78rem;">Optional human review. Accessible unconditionally regardless of AI risk score.</div>
+                    </div>
+                  </div>
+                  <span class="badge badge-primary">Confidential</span>
+                </div>
+
+                <div class="p-2" style="background: var(--bg-card); border-radius: 6px;">
+                  <label class="d-flex align-center gap-2" style="cursor: pointer; font-size: 0.88rem; font-weight: 600; margin-bottom: 0.5rem;">
+                    <input type="checkbox" id="checkin_request_support_toggle" onchange="toggleCheckinSupportFields(this.checked)" style="width: 17px; height: 17px; cursor: pointer;">
+                    <span>Also request a confidential Welfare Officer review / check-in alongside this check-in</span>
+                  </label>
+
+                  <div id="checkin-support-fields" style="display: none; padding-top: 0.5rem; border-top: 1px dashed var(--border-color);">
+                    <div class="grid-2 gap-2 mb-2">
+                      <div>
+                        <label class="form-label" for="checkin_support_type" style="font-size: 0.8rem; font-weight: 600;">Support / Review Category</label>
+                        <select id="checkin_support_type" class="form-control form-control-sm">
+                          <option value="HUMAN_WELFARE_REVIEW">Human Welfare Review & Officer Check-in</option>
+                          <option value="WORKLOAD_REVIEW">Duty Schedule & Rest Rotation Review</option>
+                          <option value="CONFIDENTIAL_COUNSELING">Confidential Psychological Counseling</option>
+                          <option value="FATIGUE_MITIGATION">Fatigue Management & Physical Recovery</option>
+                          <option value="FAMILY_SUPPORT">Family & Dependent Welfare Liaison</option>
+                          <option value="PEER_SUPPORT">Peer Buddy & Mentorship Connection</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="form-label" for="checkin_support_urgency" style="font-size: 0.8rem; font-weight: 600;">Urgency</label>
+                        <select id="checkin_support_urgency" class="form-control form-control-sm">
+                          <option value="ROUTINE">Routine (Review within 48h)</option>
+                          <option value="PRIORITY">Priority (Review within 24h)</option>
+                          <option value="URGENT">Urgent (Immediate Notification)</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label" for="checkin_support_notes" style="font-size: 0.8rem; font-weight: 600;">Support Context / Notes for Welfare Officer (Optional)</label>
+                      <textarea id="checkin_support_notes" class="form-control form-control-sm" rows="2" placeholder="Describe any fatigue, family circumstances, or duty pacing concerns you would like the officer to review."></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="card mb-3" style="border: 2px dashed var(--accent); background: var(--primary-light);">
                 <h4>Ready to Run Real Multi-Source Inference</h4>
                 <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
@@ -519,7 +764,7 @@
             </div>
 
             <!-- Wizard Navigation Buttons -->
-            <div class="d-flex justify-between align-center mt-3 pt-2" style="border-top: 1px solid var(--border-color);">
+            <div class="d-flex justify-between align-center mt-3 pt-2 wizard-action-bar" style="border-top: 1px solid var(--border-color);">
               <button type="button" id="wizard-prev-btn" class="btn btn-secondary" style="display:none;">&larr; Previous Step</button>
               <div></div>
               <button type="button" id="wizard-next-btn" class="btn btn-primary">Proceed to Next Step &rarr;</button>
@@ -527,6 +772,70 @@
             </div>
           </form>
 
+        </div>
+      </div>
+
+      <!-- Quick Support In-Page Modal (Task 4 & 6) -->
+      <div id="quick-support-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:1rem;">
+        <div class="card" style="max-width: 580px; width:100%; max-height:92vh; overflow-y:auto; box-shadow:var(--shadow-xl); border:1px solid var(--border-color);">
+          <div class="d-flex justify-between align-center mb-2 pb-2" style="border-bottom:1px solid var(--border-color);">
+            <div class="d-flex align-center gap-1">
+              <span style="font-size:1.4rem;">🛡️</span>
+              <div>
+                <h3 style="margin:0; font-size:1.1rem;">Request Welfare Support</h3>
+                <span class="text-muted" style="font-size:0.75rem;">Strictly confidential, voluntary, and non-disciplinary</span>
+              </div>
+            </div>
+            <button type="button" onclick="closeQuickSupportModal()" style="background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--text-muted);">✕</button>
+          </div>
+
+          <form id="quick-support-form" onsubmit="event.preventDefault(); submitQuickSupportRequest();">
+            <div class="form-group mb-2">
+              <label class="form-label" for="quick_req_type" style="font-size:0.82rem; font-weight:700;">Support Service Type *</label>
+              <select id="quick_req_type" class="form-select" required>
+                <option value="HUMAN_WELFARE_REVIEW">Request Human Welfare Review & Officer Check-in</option>
+                <option value="CONFIDENTIAL_COUNSELING">Confidential Psychological Counseling</option>
+                <option value="WORKLOAD_REVIEW">Duty Schedule & Rest Rotation Review</option>
+                <option value="PEER_SUPPORT">Peer Buddy & Mentorship Connection</option>
+                <option value="FATIGUE_MITIGATION">Fatigue Management & Physical Recovery</option>
+                <option value="FAMILY_SUPPORT">Family & Dependent Welfare Liaison</option>
+                <option value="GENERAL_INQUIRY">General Welfare Consultation</option>
+              </select>
+            </div>
+
+            <div class="grid-2 gap-2 mb-2">
+              <div class="form-group mb-0">
+                <label class="form-label" for="quick_req_urgency" style="font-size:0.82rem; font-weight:700;">Urgency</label>
+                <select id="quick_req_urgency" class="form-select">
+                  <option value="ROUTINE">Routine (Review within 48h)</option>
+                  <option value="PRIORITY">Priority (Review within 24h)</option>
+                  <option value="URGENT">Urgent (Immediate Notification)</option>
+                </select>
+              </div>
+
+              <div class="form-group mb-0">
+                <label class="form-label" for="quick_req_contact" style="font-size:0.82rem; font-weight:700;">Preferred Contact</label>
+                <select id="quick_req_contact" class="form-select">
+                  <option value="CONFIDENTIAL_IN_PERSON">Confidential In-Person Meeting</option>
+                  <option value="SECURE_TELEPHONE">Secure Battalion Telephone</option>
+                  <option value="DUTY_OFFICER_DESK">Duty Officer Private Room</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="form-label" for="quick_req_notes" style="font-size:0.82rem; font-weight:700;">Notes & Context (Optional)</label>
+              <textarea id="quick_req_notes" class="form-control" rows="3" placeholder="Briefly describe what support you are requesting. Accessible regardless of AI concern scores."></textarea>
+            </div>
+
+            <div class="d-flex justify-between align-center flex-wrap gap-1">
+              <a href="/support.html" class="btn btn-sm btn-secondary">Open Full Welfare Support Hub &rarr;</a>
+              <div class="d-flex gap-1">
+                <button type="button" class="btn btn-sm btn-outline" onclick="closeQuickSupportModal()">Cancel</button>
+                <button type="submit" id="btn-quick-support-submit" class="btn btn-sm btn-primary">Submit Confidential Request</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </main>

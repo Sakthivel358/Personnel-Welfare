@@ -11,5 +11,7 @@ router.get('/my', authenticate, supportController.getMyRequests);
 router.get('/my-requests', authenticate, supportController.getMyRequests);
 router.get('/all', authenticate, authorizeRoles('WELFARE_OFFICER', 'ADMIN'), supportController.getAllRequests);
 router.put('/:id', authenticate, authorizeRoles('WELFARE_OFFICER', 'ADMIN'), supportController.updateRequestStatus);
+router.post('/:id/review', authenticate, authorizeRoles('WELFARE_OFFICER', 'ADMIN'), supportController.reviewSupportRequest);
+router.put('/:id/review', authenticate, authorizeRoles('WELFARE_OFFICER', 'ADMIN'), supportController.reviewSupportRequest);
 
 module.exports = router;

@@ -9,6 +9,16 @@ and model health checks.
 """
 
 import os
+import sys
+import types
+try:
+    import scipy.spatial.distance._hausdorff
+except Exception:
+    m = types.ModuleType('_hausdorff')
+    m.directed_hausdorff = lambda *a, **k: (0.0, 0, 0)
+    sys.modules['scipy.spatial._hausdorff'] = m
+    sys.modules['scipy.spatial.distance._hausdorff'] = m
+
 import json
 from datetime import datetime
 from typing import Optional, Dict, Any, List
