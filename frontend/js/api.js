@@ -182,6 +182,10 @@ class APIClient {
     return this.request(`/officer/alerts?${qs}`, { method: 'GET' });
   }
 
+  async getAlertWorkflow(alertId) {
+    return this.request(`/officer/alerts/${alertId}/workflow`, { method: 'GET' });
+  }
+
   async reviewAlert(alertId, reviewData) {
     return this.request(`/officer/alerts/${alertId}/review`, { method: 'PUT', body: JSON.stringify(reviewData) });
   }
@@ -208,6 +212,10 @@ class APIClient {
   }
 
   // Support endpoints
+  async getSupportOptions() {
+    return this.request('/support/options', { method: 'GET' });
+  }
+
   async submitSupportRequest(data) {
     return this.request('/support', { method: 'POST', body: JSON.stringify(data) });
   }

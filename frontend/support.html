@@ -3,9 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welfare Support & Officer Connect — WelfareAI</title>
+  <title>Welfare Support & Resources — WelfareAI</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/dashboard.css">
+  <style>
+    .support-opt-card {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .support-opt-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    .support-opt-card.selected {
+      border-color: var(--accent);
+      background: rgba(59, 130, 246, 0.08);
+    }
+    .status-timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-top: 0.75rem;
+      border-left: 2px solid var(--border-color);
+    }
+    .timeline-node {
+      position: relative;
+      margin-bottom: 0.6rem;
+    }
+    .timeline-node::before {
+      content: '';
+      position: absolute;
+      left: -1.85rem;
+      top: 0.25rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg-card);
+    }
+  </style>
 </head>
 <body>
 
@@ -29,7 +72,7 @@
           <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
         </div>
       </div>
-            <ul class="sidebar-menu">
+      <ul class="sidebar-menu">
         <li class="menu-category">Welfare Analytics</li>
         <li class="menu-item "><a href="/dashboard.html"><span class="menu-icon"><svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Dashboard</a></li>
         <li class="menu-item "><a href="/profile.html"><span class="menu-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> My Profile</a></li>
@@ -71,6 +114,21 @@
       </header>
 
       <div class="page-container">
+        <!-- Unconditional Welfare Access Banner -->
+        <div class="card mb-3" style="border-left: 5px solid var(--accent); background: rgba(59, 130, 246, 0.05);">
+          <div class="d-flex align-center gap-2">
+            <span style="font-size: 2rem;">🛡️</span>
+            <div>
+              <div style="font-weight: 700; font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.25rem;">
+                Confidential Welfare Access For All Personnel
+              </div>
+              <p class="text-muted" style="margin: 0; font-size: 0.88rem; line-height: 1.5;">
+                <strong>Support is unconditionally available to all personnel at all times</strong>, even if the ML model does not classify you as high concern (e.g., Low, Moderate, or Undetermined). Submitting a support request is strictly voluntary, confidential, and protected from administrative or disciplinary action.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <!-- Direct Helpline Cards -->
         <div class="grid-3 mb-3">
           <div class="card" style="border-top: 4px solid var(--risk-low);">
@@ -104,11 +162,25 @@
           </div>
         </div>
 
+        <!-- Available Support Options Catalogue -->
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h3>Authorized Welfare Support Options</h3>
+              <span class="text-muted" style="font-size:0.8rem;">Select an authorized service below to pre-fill your confidential request</span>
+            </div>
+            <span class="badge badge-neutral" id="support-policy-badge">Accessible to All Personnel</span>
+          </div>
+          <div id="support-options-grid" class="grid-3 mt-2">
+            <div class="spinner spinner-primary" style="margin: 1.5rem auto; grid-column: span 3;"></div>
+          </div>
+        </div>
+
         <!-- Welfare Resource Directory & Search -->
         <div class="card mb-3">
           <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
             <div>
-              <h3>Welfare Resource Directory</h3>
+              <h3>Welfare Facility & Contact Directory</h3>
               <span class="text-muted" style="font-size:0.8rem;">Browse official welfare facilities, support desks, and peer networks</span>
             </div>
             <div style="width: 250px;">
@@ -134,18 +206,22 @@
           <!-- Request Form -->
           <div class="card">
             <div class="card-header">
-              <h3>Submit Confidential Support Request</h3>
+              <div>
+                <h3>Submit Confidential Support Request</h3>
+                <div class="text-muted" style="font-size:0.8rem;">Open regardless of ML welfare concern rating</div>
+              </div>
               <span class="badge badge-low">Confidential</span>
             </div>
             
             <form id="support-request-form">
               <div class="form-group">
-                <label class="form-label" for="req_type">Request Category *</label>
+                <label class="form-label" for="req_type">Support Service *</label>
                 <select id="req_type" class="form-select" required>
                   <option value="CONFIDENTIAL_COUNSELING">Confidential Psychological Counseling</option>
                   <option value="WORKLOAD_REVIEW">Duty Schedule & Rest Rotation Review</option>
                   <option value="PEER_SUPPORT">Peer Buddy & Mentorship Connection</option>
-                  <option value="MEDICAL_LIAISON">Medical Liaison & Physical Recovery</option>
+                  <option value="FATIGUE_MITIGATION">Fatigue Management & Physical Recovery</option>
+                  <option value="FAMILY_SUPPORT">Family & Dependent Welfare Liaison</option>
                   <option value="GENERAL_INQUIRY">General Welfare Consultation</option>
                 </select>
               </div>
@@ -160,8 +236,17 @@
               </div>
 
               <div class="form-group">
+                <label class="form-label" for="req_contact">Preferred Contact Method</label>
+                <select id="req_contact" class="form-select">
+                  <option value="CONFIDENTIAL_IN_PERSON">Confidential In-Person Meeting</option>
+                  <option value="SECURE_TELEPHONE">Secure Battalion Telephone</option>
+                  <option value="DUTY_OFFICER_DESK">Duty Officer Private Room</option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <label class="form-label" for="req_notes">Details & Context (Optional)</label>
-                <textarea id="req_notes" class="form-control" rows="4" placeholder="Describe how the welfare team can best assist you. Sensitive details are protected."></textarea>
+                <textarea id="req_notes" class="form-control" rows="4" placeholder="Describe how the welfare team can best assist you. Sensitive details are protected under force privacy regulations."></textarea>
               </div>
 
               <button type="submit" id="submit-support-btn" class="btn btn-primary w-100">
@@ -173,11 +258,14 @@
           <!-- My Requests History -->
           <div class="card">
             <div class="card-header">
-              <h3>My Support Requests & Lifecycle</h3>
+              <div>
+                <h3>My Support Requests & Lifecycle</h3>
+                <div class="text-muted" style="font-size:0.8rem;">Real-time officer assignment, actions, and follow-up tracking</div>
+              </div>
               <span class="badge badge-neutral">Track Status</span>
             </div>
             
-            <div id="my-requests-container" style="max-height: 420px; overflow-y: auto;">
+            <div id="my-requests-container" style="max-height: 480px; overflow-y: auto;">
               <div class="spinner spinner-primary" style="margin: 2rem auto;"></div>
             </div>
           </div>
@@ -190,7 +278,7 @@
   <script src="/js/utils.js"></script>
   <script src="/js/auth.js"></script>
   <script>
-    const resourcesData = [
+    const fallbackResources = [
       {
         id: 'res-1',
         title: 'Forces Tele-Counseling Line',
@@ -251,11 +339,53 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       await checkAuth('PERSONNEL');
+      loadSupportOptions();
       renderResourceCatalog();
       loadMyRequests();
 
       document.getElementById('support-request-form').addEventListener('submit', handleSupportSubmit);
     });
+
+    async function loadSupportOptions() {
+      const container = document.getElementById('support-options-grid');
+      try {
+        const res = await api.getSupportOptions();
+        if (res && res.success && res.data && res.data.categories) {
+          const cats = res.data.categories;
+          container.innerHTML = cats.map(c => `
+            <div class="support-opt-card" onclick="selectSupportCategory('${c.id}')">
+              <div>
+                <div class="d-flex justify-between align-center mb-1">
+                  <span style="font-size:1.6rem;">${c.icon || '🛡️'}</span>
+                  <span class="badge badge-neutral" style="font-size:0.75rem;">${c.badge || 'Available'}</span>
+                </div>
+                <h4 style="font-size:0.95rem; margin:0.35rem 0 0.4rem; color:var(--text-main);">${c.title}</h4>
+                <p class="text-muted" style="font-size:0.8rem; line-height:1.45; margin:0;">${c.description}</p>
+              </div>
+              <div class="d-flex justify-between align-center mt-3 pt-2" style="border-top:1px solid var(--border-color);">
+                <span class="text-muted" style="font-size:0.75rem;">Click to Request</span>
+                <span style="color:var(--accent); font-weight:700; font-size:0.85rem;">Select &rarr;</span>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          container.innerHTML = `<div class="text-muted py-3" style="grid-column:span 3;">Support categories loaded.</div>`;
+        }
+      } catch (err) {
+        console.warn('Could not fetch support options, using defaults:', err);
+        container.innerHTML = `<div class="text-muted py-2" style="grid-column:span 3;">Standard support options ready below.</div>`;
+      }
+    }
+
+    function selectSupportCategory(categoryId) {
+      const sel = document.getElementById('req_type');
+      if (sel) {
+        sel.value = categoryId;
+        sel.focus();
+        Utils.showToast(`Selected category: ${sel.options[sel.selectedIndex]?.text || categoryId}`, 'info', 2500);
+      }
+      document.getElementById('support-request-form')?.scrollIntoView({ behavior: 'smooth' });
+    }
 
     function setResourceCategory(cat, btn) {
       selectedCategory = cat;
@@ -272,7 +402,7 @@
       const q = (document.getElementById('resource-search').value || '').toLowerCase().trim();
       const grid = document.getElementById('resource-catalog-grid');
 
-      const filtered = resourcesData.filter(r => {
+      const filtered = fallbackResources.filter(r => {
         const matchCat = (selectedCategory === 'ALL') || (r.category === selectedCategory);
         const matchQuery = !q || r.title.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || r.location.toLowerCase().includes(q);
         return matchCat && matchQuery;
@@ -319,29 +449,52 @@
         const container = document.getElementById('my-requests-container');
         
         if (res && res.success && res.data && res.data.length > 0) {
-          container.innerHTML = res.data.map(req => `
-            <div class="card mb-2" style="background:var(--bg-card-subtle); padding:1rem; border:1px solid var(--border-color);">
-              <div class="d-flex justify-between align-center mb-1">
-                <div class="d-flex align-center gap-1">
-                  <strong style="font-size:0.85rem; color:var(--accent);">${req.referenceId || 'REQ-#' + req._id.substring(req._id.length - 6)}</strong>
-                  <span class="badge badge-${req.urgency === 'URGENT' ? 'high' : (req.urgency === 'PRIORITY' ? 'mod' : 'neutral')}">${req.urgency}</span>
+          container.innerHTML = res.data.map(req => {
+            const statusBadge = req.status === 'RESOLVED' ? 'low' : (req.status === 'UNDER_REVIEW' || req.status === 'IN_PROGRESS' ? 'mod' : 'neutral');
+            const urgencyBadge = req.urgency === 'URGENT' ? 'high' : (req.urgency === 'PRIORITY' ? 'mod' : 'neutral');
+            
+            return `
+              <div class="card mb-2" style="background:var(--bg-card-subtle); padding:1rem; border:1px solid var(--border-color);">
+                <div class="d-flex justify-between align-center mb-1">
+                  <div class="d-flex align-center gap-1">
+                    <strong style="font-size:0.85rem; color:var(--accent);">${req.referenceId || 'REQ-#' + req._id.substring(req._id.length - 6)}</strong>
+                    <span class="badge badge-${urgencyBadge}">${req.urgency}</span>
+                  </div>
+                  <span class="badge badge-${statusBadge}">${(req.status || 'SUBMITTED').replace(/_/g, ' ')}</span>
                 </div>
-                <span class="badge badge-${req.status === 'RESOLVED' ? 'low' : 'primary'}">${req.status.replace('_', ' ')}</span>
+                
+                <div style="font-weight:600; font-size:0.9rem; margin-bottom:0.25rem; color:var(--text-main);">
+                  ${(req.requestType || '').replace(/_/g, ' ')}
+                </div>
+                
+                ${req.notes || req.description ? `<p class="text-muted" style="font-size:0.8rem; margin-bottom:0.5rem;">${req.notes || req.description}</p>` : ''}
+                
+                <div class="d-flex justify-between align-center flex-wrap gap-1 mt-2 pt-2 text-muted" style="border-top:1px solid var(--border-color); font-size:0.75rem;">
+                  <span>👤 Officer: <strong>${req.assignedOfficerName || 'Awaiting Assignment'}</strong></span>
+                  <span>📅 ${Utils.formatDate(req.createdAt)}</span>
+                </div>
+
+                ${req.linkedFollowUp ? `
+                  <div class="mt-2 p-2" style="background:rgba(59, 130, 246, 0.08); border-radius:4px; font-size:0.78rem;">
+                    <strong>Follow-up Scheduled:</strong> ${Utils.formatDate(req.linkedFollowUp.scheduledDate)}
+                    <span class="badge badge-neutral ml-1">${req.linkedFollowUp.status}</span>
+                  </div>
+                ` : ''}
+
+                ${req.resolutionNotes ? `
+                  <div class="alert alert-success mt-2 mb-0" style="font-size:0.78rem; padding:0.4rem 0.6rem;">
+                    <strong>Officer Note:</strong> ${req.resolutionNotes}
+                  </div>
+                ` : ''}
               </div>
-              <div style="font-weight:600; font-size:0.9rem; margin-bottom:0.25rem;">${req.requestType.replace('_', ' ')}</div>
-              ${req.description ? `<p class="text-muted" style="font-size:0.8rem; margin-bottom:0.5rem;">${req.description}</p>` : ''}
-              ${req.resolutionNotes ? `<div class="alert alert-success mt-2 mb-2" style="font-size:0.8rem; padding:0.5rem 0.75rem;"><strong>Officer Resolution:</strong> ${req.resolutionNotes}</div>` : ''}
-              <div class="d-flex justify-between text-muted" style="font-size:0.75rem;">
-                <span>Submitted: ${Utils.formatDate(req.createdAt)}</span>
-                <span>${req.assignedTo ? 'Officer Assigned' : 'Awaiting Assignment'}</span>
-              </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         } else {
           container.innerHTML = `
             <div class="text-center text-muted py-4">
               <div style="font-size:1.5rem; margin-bottom:0.5rem;">📋</div>
               <div>No support requests submitted yet.</div>
+              <div style="font-size:0.8rem; margin-top:0.25rem;">You can submit a request anytime regardless of your AI assessment.</div>
             </div>
           `;
         }
@@ -359,12 +512,13 @@
       const payload = {
         requestType: document.getElementById('req_type').value,
         urgency: document.getElementById('req_urgency').value,
+        preferredContactMethod: document.getElementById('req_contact').value,
         notes: document.getElementById('req_notes').value.trim(),
         description: document.getElementById('req_notes').value.trim()
       };
 
       try {
-        const res = api.submitSupportRequest ? await api.submitSupportRequest(payload) : await api.createSupportRequest(payload);
+        const res = await api.createSupportRequest(payload);
         if (res && res.success) {
           Utils.showToast(`Support request ${res.data && res.data.referenceId ? res.data.referenceId : ''} submitted successfully!`, 'success');
           document.getElementById('req_notes').value = '';

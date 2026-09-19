@@ -302,5 +302,21 @@
     "createdAt": "2026-09-19T06:54:43.943Z",
     "updatedAt": "2026-09-19T06:54:44.011Z",
     "completedAt": "2026-09-19T06:54:44.011Z"
+  },
+  {
+    "_id": "283a8e8d62dfbdd04c283363",
+    "alertId": "1ca48f611f74ba05aeaa9b90",
+    "userId": "b5368fcd0a0752480f001f32",
+    "personnelId": "PERS-DEC-3797",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "status": "SCHEDULED",
+    "scheduledDate": "2026-09-22T15:51:05.510Z",
+    "initialRiskScore": 88,
+    "reAnalyzedRiskScore": null,
+    "welfareDelta": "PENDING_DATA",
+    "officerNotes": "Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-19T15:51:05.516Z",
+    "updatedAt": "2026-09-19T15:51:05.516Z"
   }
 ]

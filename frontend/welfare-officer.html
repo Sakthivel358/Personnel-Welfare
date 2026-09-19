@@ -527,46 +527,104 @@
     </div>
   </div>
 
-  <!-- Human-in-the-Loop Review Modal -->
-  <div id="review-alert-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; padding:1.5rem;">
-    <div class="card" style="max-width: 600px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow-xl);">
-      <div class="d-flex justify-between align-center mb-3 pb-2" style="border-bottom:1px solid var(--border-color);">
-        <h3>🩺 Human-in-the-Loop Welfare Review</h3>
-        <button onclick="closeReviewModal()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;color:var(--text-muted);">✕</button>
+  <!-- 7-Stage Welfare Officer Workflow Modal (Task 32) -->
+  <div id="review-alert-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:1rem;">
+    <div class="card" style="max-width: 900px; width:100%; max-height:94vh; overflow-y:auto; box-shadow:var(--shadow-xl); border:1px solid var(--border-color);">
+      <div class="d-flex justify-between align-center mb-2 pb-2" style="border-bottom:1px solid var(--border-color);">
+        <div class="d-flex align-center gap-1">
+          <span style="font-size:1.5rem;">🩺</span>
+          <div>
+            <h3 style="margin:0; font-size:1.15rem;">Welfare Officer Triage & Support Workflow</h3>
+            <span class="text-muted" style="font-size:0.75rem;">Human-in-the-Loop 7-Stage Non-Punitive Pathway</span>
+          </div>
+        </div>
+        <button onclick="closeReviewModal()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted);">✕</button>
       </div>
 
-      <div id="modal-alert-details"></div>
-
-      <form onsubmit="event.preventDefault(); submitAlertReview();">
-        <div class="form-group">
-          <label class="form-label" for="modal_officer_status">Officer Review Decision *</label>
-          <select id="modal_officer_status" class="form-select" required>
-            <option value="ACKNOWLEDGED">Acknowledge & Mark Under Supervision</option>
-            <option value="FOLLOW_UP_ASSIGNED">Assign Structured Follow-Up Session</option>
-            <option value="MONITORING">Continue Observational Monitoring</option>
-            <option value="RESOLVED">Resolve / No Action Needed</option>
-          </select>
+      <!-- Non-punitive Standard Banner -->
+      <div class="alert alert-info mb-3 d-flex align-center gap-1" style="background:rgba(59,130,246,0.08); border-left:4px solid #3b82f6; padding:0.6rem 1rem; border-radius:6px; font-size:0.82rem;">
+        <span style="font-size:1.2rem;">🛡️</span>
+        <div>
+          <strong style="color:var(--text-primary);">Non-Punitive Standard:</strong>
+          <span style="color:var(--text-secondary);"> This triage workflow is strictly supportive, voluntary, and non-disciplinary. Action plans focus exclusively on restorative downtime, fatigue mitigation, and health resilience.</span>
         </div>
+      </div>
 
-        <div class="form-group">
-          <label class="form-label" for="modal_officer_notes">Officer Clinical / Supportive Notes</label>
-          <textarea id="modal_officer_notes" class="form-control" rows="3" placeholder="e.g. Discussed duty schedule with personnel. Advised 48h rest rotation before next convoy assignment."></textarea>
-        </div>
+      <!-- 7-Step Workflow Stepper Navigation Header -->
+      <div class="d-flex justify-between mb-3 p-2 flex-wrap gap-1 align-center" style="background:var(--bg-card-subtle); border-radius:8px; font-size:0.72rem; font-weight:700;">
+        <span class="badge badge-primary">1. Alert</span>
+        <span class="text-muted">&rarr;</span>
+        <span class="badge" style="background:rgba(59,130,246,0.15); color:#3b82f6;">2. Evidence</span>
+        <span class="text-muted">&rarr;</span>
+        <span class="badge" style="background:rgba(239,68,68,0.15); color:#ef4444;">3. Contributors</span>
+        <span class="text-muted">&rarr;</span>
+        <span class="badge" style="background:rgba(16,185,129,0.15); color:#10b981;">4. What Changed</span>
+        <span class="text-muted">&rarr;</span>
+        <span class="badge" style="background:rgba(245,158,11,0.15); color:#f59e0b;">5. Officer Review</span>
+        <span class="text-muted">&rarr;</span>
+        <span class="badge" style="background:rgba(99,102,241,0.15); color:#818cf8;">6. Support Action</span>
+        <span class="text-muted">&rarr;</span>
+        <span class="badge" style="background:rgba(20,184,166,0.15); color:#14b8a6;">7. Follow-up</span>
+      </div>
 
-        <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1rem;">
-          <label class="d-flex align-center gap-1" style="cursor:pointer; font-weight:600;">
-            <input type="checkbox" id="modal_assign_followup" onchange="toggleFollowUpSchedule(this.checked)">
-            <span>Create & Schedule Automated Follow-up Tracking</span>
-          </label>
-          <div id="followup-schedule-container" style="display:none; margin-top:0.75rem;">
-            <label class="form-label" for="modal_scheduled_date">Follow-up Target Date</label>
-            <input type="date" id="modal_scheduled_date" class="form-control">
+      <!-- Dynamic Hydrated Workflow Content (Stages 1-4 & Context) -->
+      <div id="modal-alert-details">
+        <div class="text-center py-4"><div class="spinner spinner-primary"></div><div class="text-muted mt-2" style="font-size:0.85rem;">Hydrating full 7-stage workflow dossier...</div></div>
+      </div>
+
+      <!-- Action Form (Stages 5, 6, & 7) -->
+      <form id="officer-workflow-form" onsubmit="event.preventDefault(); submitAlertReview();">
+        <div class="card mb-3 p-3" style="background:var(--bg-card-subtle); border:1px solid var(--border-color);">
+          <h4 class="mb-2" style="font-size:0.95rem;">Officer Decision, Restorative Action & Follow-Up (Stages 5 - 7)</h4>
+          <div class="grid-2 gap-2 mb-2">
+            <div class="form-group mb-0">
+              <label class="form-label" for="modal_officer_status" style="font-size:0.82rem; font-weight:700;">Stage 5: Officer Review Decision *</label>
+              <select id="modal_officer_status" class="form-select" required>
+                <option value="ACKNOWLEDGED">Acknowledge & Mark Under Active Observation</option>
+                <option value="SUPPORT_SESSION">Conduct Supportive 1-on-1 Consultation</option>
+                <option value="REST_ROTATION">Authorize 48h Restorative Downtime / Shift Rotation</option>
+                <option value="FATIGUE_PROTOCOL">Activate Fatigue Mitigation & Recovery Protocol</option>
+                <option value="ROSTER_ADJUSTMENT">Adjust Tactical Deployment & Limit Prolonged Duty</option>
+                <option value="MEDICAL_REFERRAL">Voluntary Medical / Psychological Referral</option>
+                <option value="RESOLVED">Resolve / Mark Conditions Stabilized</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-0">
+              <label class="form-label" for="modal_support_action" style="font-size:0.82rem; font-weight:700;">Stage 6: Dispatch Support Action</label>
+              <select id="modal_support_action" class="form-select">
+                <option value="">-- No Direct Support Action Required --</option>
+                <option value="REST_RECOVERY">Rest & Sleep Restoration (48h protected downtime)</option>
+                <option value="PEER_SUPPORT">Peer Buddy Connect (Pair with unit wellness mentor)</option>
+                <option value="DUTY_ADJUSTMENT">Operational Duty Pacing (Transition to light/day duty)</option>
+                <option value="COUNSELING_LIAISON">Confidential Counseling Liaison (Tele-counseling connect)</option>
+                <option value="FAMILY_SUPPORT">Family & Domestic Liaison (Emergency leave / assistance)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group mt-2">
+            <label class="form-label" for="modal_officer_notes" style="font-size:0.82rem; font-weight:700;">Officer Clinical / Supportive Notes (Non-Punitive)</label>
+            <textarea id="modal_officer_notes" class="form-control" rows="2" placeholder="e.g. Conducted supportive welfare check-in. Personnel reported severe night patrol fatigue and sleep fragmentation. Authorized 48h restorative rotation."></textarea>
+          </div>
+
+          <!-- Stage 7: Follow-up -->
+          <div class="card mt-2 p-2" style="background:var(--bg-card); border-left:3px solid var(--accent);">
+            <div class="d-flex justify-between align-center flex-wrap gap-1">
+              <label class="d-flex align-center gap-1" style="cursor:pointer; font-weight:600; font-size:0.85rem;">
+                <input type="checkbox" id="modal_assign_followup" onchange="toggleFollowUpSchedule(this.checked)">
+                <span>Stage 7: Schedule Automated Follow-up Re-Analysis Session</span>
+              </label>
+              <div id="followup-schedule-container" style="display:none; width:220px;">
+                <input type="date" id="modal_scheduled_date" class="form-control form-control-sm">
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="d-flex justify-between align-center">
           <button type="button" class="btn btn-secondary" onclick="closeReviewModal()">Cancel</button>
-          <button type="submit" id="modal-submit-review-btn" class="btn btn-primary">Confirm Officer Action</button>
+          <button type="submit" id="modal-submit-review-btn" class="btn btn-primary">Complete Officer Review & Dispatch Support</button>
         </div>
       </form>
     </div>

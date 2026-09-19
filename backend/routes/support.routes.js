@@ -4,6 +4,7 @@ const supportController = require('../controllers/support.controller');
 const { authenticate } = require('../middleware/auth.middleware');
 const { authorizeRoles } = require('../middleware/rbac.middleware');
 
+router.get('/options', authenticate, supportController.getSupportOptions);
 router.post('/', authenticate, supportController.createSupportRequest);
 router.post('/request', authenticate, supportController.createSupportRequest);
 router.get('/my', authenticate, supportController.getMyRequests);

@@ -124,10 +124,10 @@
 
         <!-- Dashboard Metrics Grid -->
         <div class="grid-3 mb-3">
-          <!-- Card 1: Latest AI Welfare Signal -->
-          <div class="card risk-meter-card">
+          <!-- Card 1: Welfare Concern Assessment (Task 31) -->
+          <div class="card welfare-concern-card" style="display:flex; flex-direction:column; justify-content:space-between;">
             <div class="card-header">
-              <h3 style="font-size: 1.05rem;">Welfare Concern Signal</h3>
+              <h3 style="font-size: 1.05rem;">Welfare Concern Assessment</h3>
               <span class="badge badge-neutral" id="model-version-tag">Random Forest Classifier</span>
             </div>
             
@@ -137,13 +137,42 @@
             </div>
 
             <div id="risk-content" style="display:none;">
-              <div class="risk-circle" id="risk-circle-indicator">
-                <div class="risk-score-big" id="risk-score-val">--%</div>
-                <div class="risk-score-label">Risk Index</div>
+              <!-- 1. Welfare Concern, 2. Evidence, 3. Data Available -->
+              <div class="d-flex flex-column gap-2 mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);" id="welfare-5elements-badges">
+                <div class="d-flex justify-between align-center flex-wrap gap-1">
+                  <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Welfare Concern:</span>
+                  <div id="welfare-concern-item"></div>
+                </div>
+                <div class="d-flex justify-between align-center flex-wrap gap-1">
+                  <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Evidence:</span>
+                  <div id="evidence-strength-item"></div>
+                </div>
+                <div class="d-flex justify-between align-center flex-wrap gap-1">
+                  <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Data Available:</span>
+                  <div id="data-available-item"></div>
+                </div>
               </div>
-              <div class="mb-2" id="concern-badge-container"></div>
-              <div class="text-muted" style="font-size:0.8rem;" id="last-analyzed-time">Last Check-in: --</div>
+
+              <!-- 4. Main Contributors -->
+              <div class="mb-3">
+                <div class="d-flex justify-between align-center mb-1">
+                  <strong style="font-size:0.82rem; color:var(--text-primary);">Main Contributors:</strong>
+                  <a href="/why-result.html" style="font-size:0.75rem;">Why This Result? &rarr;</a>
+                </div>
+                <div id="welfare-contributors-preview" class="d-flex flex-wrap gap-1">
+                  <!-- Rendered via JS -->
+                </div>
+              </div>
+
+              <!-- 5. Recommended Next Action -->
+              <div class="mb-2 p-2" style="background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; border-radius:6px;" id="welfare-action-box">
+                <div style="font-size:0.75rem; font-weight:700; color:#3b82f6; text-transform:uppercase; letter-spacing:0.5px;">Recommended Next Action:</div>
+                <div id="recommended-next-action-text" style="font-size:0.84rem; font-weight:600; color:var(--text-primary); margin-top:0.25rem;">--</div>
+              </div>
+
               <div class="mt-2 text-muted" style="font-size:0.75rem;">🛡️ <em>The model identifies welfare-risk patterns/concerns, not a medical diagnosis.</em></div>
+              <div class="text-muted mt-1" style="font-size:0.75rem;" id="last-analyzed-time">Last Check-in: --</div>
+
               <div class="mt-3 grid-2" style="gap:0.5rem;">
                 <a href="/ai-analysis.html" class="btn btn-sm btn-outline">Full AI Analysis</a>
                 <a href="/why-result.html" class="btn btn-sm btn-primary">Why This Result?</a>
@@ -156,7 +185,10 @@
                 <span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — UNDETERMINED</span>
                 <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
               </div>
-              <p class="text-muted" style="font-size:0.88rem; font-weight:600; margin-bottom:1rem;">Additional authorized data or a welfare check-in is required.</p>
+              <p class="text-muted" style="font-size:0.88rem; font-weight:600; margin-bottom:0.5rem;">Additional authorized data or a welfare check-in is required.</p>
+              <div class="p-2 mb-3" style="background:var(--bg-card-subtle); border-radius:6px; font-size:0.8rem; color:var(--text-secondary);">
+                <strong>Recommended next action:</strong> Complete your daily stress check-in to establish authorized evidence.
+              </div>
               <a href="/stress-checkin.html" class="btn btn-sm btn-primary">Start Initial Check-in</a>
             </div>
           </div>
@@ -335,36 +367,44 @@
 
     function renderRiskWidget(p) {
       document.getElementById('risk-content').style.display = 'block';
-      const circle = document.getElementById('risk-circle-indicator');
       const isUndet = p.concernLevel === 'UNDETERMINED' || p.isUndetermined;
 
-      circle.className = `risk-circle ${isUndet ? 'UNDETERMINED' : p.concernLevel}`;
-      
-      const scoreVal = (isUndet || p.compositeRiskScore == null) ? 'N/A' : `${Math.round(p.compositeRiskScore)}%`;
-      document.getElementById('risk-score-val').textContent = scoreVal;
-
+      // 1. Welfare Concern Display
       const concernBadgeHtml = Utils.getWelfareConcernDisplay(isUndet ? 'UNDETERMINED' : p.concernLevel);
+      const concernItem = document.getElementById('welfare-concern-item');
+      if (concernItem) concernItem.innerHTML = concernBadgeHtml;
+
+      // 2. Evidence Strength Display
       const evLevel = isUndet ? 'INSUFFICIENT' : (p.evidenceStrength || (p.decisionLayer && p.decisionLayer.evidenceStrength ? p.decisionLayer.evidenceStrength.level : 'MODERATE'));
       const evidenceBadgeHtml = Utils.getEvidenceStrengthDisplay(evLevel);
+      const evItem = document.getElementById('evidence-strength-item');
+      if (evItem) evItem.innerHTML = evidenceBadgeHtml;
+
+      // 3. Data Available Display
       const avCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || (p.evidenceSources ? p.evidenceSources.length : 0));
       const dataAvailHtml = Utils.getDataAvailableDisplay(avCount, 5);
+      const availItem = document.getElementById('data-available-item');
+      if (availItem) availItem.innerHTML = dataAvailHtml;
 
-      const guidanceNotice = isUndet ? `
-        <div class="alert alert-neutral mt-2 text-center p-2" style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:6px; font-size:0.82rem; font-weight:600; color:var(--text-secondary);">
-          Additional authorized data or a welfare check-in is required.
-        </div>
-      ` : '';
+      // 4. Main Contributors Display
+      const contributorsEl = document.getElementById('welfare-contributors-preview');
+      if (contributorsEl) {
+        const rawContribs = p.mainContributors || (p.decisionLayer && p.decisionLayer.mainContributors) || p.topDrivers || [];
+        if (isUndet || rawContribs.length === 0) {
+          contributorsEl.innerHTML = `<span class="text-muted" style="font-size:0.8rem; font-style:italic;">${isUndet ? 'Awaiting authorized evidence' : 'Operating within standard baseline ranges'}</span>`;
+        } else {
+          contributorsEl.innerHTML = rawContribs.slice(0, 4).map(c => {
+            const label = typeof c === 'string' ? c : (c.directionalTitle || c.title || c.factor || 'Operational Strain');
+            const isDriver = typeof c === 'object' ? (c.isRiskDriver || c.impactLevel === 'HIGH' || c.direction === 'UP') : true;
+            return `<span class="badge" style="background:${isDriver ? 'rgba(239,68,68,0.1)' : 'rgba(59,130,246,0.1)'}; color:${isDriver ? '#ef4444' : '#3b82f6'}; border:1px solid ${isDriver ? 'rgba(239,68,68,0.25)' : 'rgba(59,130,246,0.25)'}; font-size:0.75rem; padding:2px 8px; font-weight:600;">${label}</span>`;
+          }).join('');
+        }
+      }
 
-      document.getElementById('concern-badge-container').innerHTML = `
-        <div class="d-flex flex-column align-center gap-1 w-100">
-          <div>${concernBadgeHtml}</div>
-          <div class="d-flex justify-center gap-1 flex-wrap mt-1">
-            ${evidenceBadgeHtml}
-            ${dataAvailHtml}
-          </div>
-          ${guidanceNotice}
-        </div>
-      `;
+      // 5. Recommended Next Action Display
+      const actionText = p.recommendedNextAction || p.recommendedAction || p.guidanceText || (isUndet ? 'Additional authorized data or a welfare check-in is required.' : 'Continue standard restorative routines and submit daily check-in.');
+      const actionEl = document.getElementById('recommended-next-action-text');
+      if (actionEl) actionEl.textContent = actionText;
 
       document.getElementById('last-analyzed-time').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
       if (p.modelVersion) {

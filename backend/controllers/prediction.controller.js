@@ -14,23 +14,33 @@ const getLatestPrediction = async (req, res, next) => {
         message: 'Additional authorized data or a welfare check-in is required.',
         data: {
           concernLevel: 'UNDETERMINED',
+          welfareConcern: 'UNDETERMINED',
           evidenceStrength: 'INSUFFICIENT',
+          evidence: 'INSUFFICIENT',
           welfareConcernDisplay: 'WELFARE CONCERN — UNDETERMINED',
           evidenceDisplay: 'EVIDENCE — INSUFFICIENT',
           guidanceText: 'Additional authorized data or a welfare check-in is required.',
+          recommendedNextAction: 'Additional authorized data or a welfare check-in is required.',
+          recommendedAction: 'Additional authorized data or a welfare check-in is required.',
           dataAvailableCount: 0,
           dataAvailableTotal: 5,
           dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
+          mainContributors: [],
           prediction: {
             concernLevel: 'UNDETERMINED',
+            welfareConcern: 'UNDETERMINED',
             welfareConcernDisplay: 'WELFARE CONCERN — UNDETERMINED',
             evidenceStrength: 'INSUFFICIENT',
+            evidence: 'INSUFFICIENT',
             evidenceDisplay: 'EVIDENCE — INSUFFICIENT',
             compositeRiskScore: null,
             dataAvailableCount: 0,
             dataAvailableTotal: 5,
             dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
-            guidanceText: 'Additional authorized data or a welfare check-in is required.'
+            mainContributors: [],
+            guidanceText: 'Additional authorized data or a welfare check-in is required.',
+            recommendedNextAction: 'Additional authorized data or a welfare check-in is required.',
+            recommendedAction: 'Additional authorized data or a welfare check-in is required.'
           },
           recommendations: {
             primaryAction: 'Additional authorized data or a welfare check-in is required.'
@@ -51,11 +61,32 @@ const getLatestPrediction = async (req, res, next) => {
     const medicalStatement = 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.';
     const prototypeNotice = 'Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.';
 
+    let nextAction = 'Continue standard restorative routines and submit daily check-in.';
+    if (isUndet) {
+      nextAction = 'Additional authorized data or a welfare check-in is required.';
+    } else if (recommendations && recommendations.primaryAction) {
+      nextAction = recommendations.primaryAction;
+    } else if (latest.decisionLayer && latest.decisionLayer.humanWelfareReview && latest.decisionLayer.humanWelfareReview.recommendedOfficerAction) {
+      nextAction = latest.decisionLayer.humanWelfareReview.recommendedOfficerAction;
+    } else if (latest.concernLevel === 'HIGH') {
+      nextAction = 'Prioritize restorative rest, limit continuous high-intensity exertion, and consult unit welfare officer.';
+    } else if (latest.concernLevel === 'MODERATE') {
+      nextAction = 'Observe active fatigue signs, maintain balanced sleep intervals, and schedule brief recovery period.';
+    }
+
     return res.status(200).json({
       success: true,
       hasPrediction: true,
       welfareConcernDisplay: concernDisplay,
+      welfareConcern: isUndet ? 'UNDETERMINED' : latest.concernLevel,
       evidenceDisplay: evDisplay,
+      evidence: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
+      dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
+      dataAvailableCount: count,
+      dataAvailableTotal: 5,
+      mainContributors: (latest.decisionLayer && latest.decisionLayer.mainContributors) || [],
+      recommendedNextAction: nextAction,
+      recommendedAction: nextAction,
       guidanceText: guidance,
       statement: medicalStatement,
       medicalDisclaimer: medicalStatement,
@@ -66,6 +97,18 @@ const getLatestPrediction = async (req, res, next) => {
       datasetType: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA',
       data: {
         concernLevel: isUndet ? 'UNDETERMINED' : latest.concernLevel,
+        welfareConcern: isUndet ? 'UNDETERMINED' : latest.concernLevel,
+        evidenceStrength: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
+        evidence: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
+        welfareConcernDisplay: concernDisplay,
+        evidenceDisplay: evDisplay,
+        guidanceText: guidance,
+        recommendedNextAction: nextAction,
+        recommendedAction: nextAction,
+        dataAvailableCount: count,
+        dataAvailableTotal: 5,
+        dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
+        mainContributors: (latest.decisionLayer && latest.decisionLayer.mainContributors) || [],
         statement: medicalStatement,
         medicalDisclaimer: medicalStatement,
         notMedicalDiagnosis: true,
@@ -76,9 +119,18 @@ const getLatestPrediction = async (req, res, next) => {
         prediction: {
           ...latest,
           concernLevel: isUndet ? 'UNDETERMINED' : latest.concernLevel,
+          welfareConcern: isUndet ? 'UNDETERMINED' : latest.concernLevel,
+          evidenceStrength: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
+          evidence: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
           welfareConcernDisplay: concernDisplay,
           evidenceDisplay: evDisplay,
           guidanceText: guidance,
+          recommendedNextAction: nextAction,
+          recommendedAction: nextAction,
+          dataAvailableCount: count,
+          dataAvailableTotal: 5,
+          dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
+          mainContributors: (latest.decisionLayer && latest.decisionLayer.mainContributors) || [],
           statement: medicalStatement,
           medicalDisclaimer: medicalStatement,
           notMedicalDiagnosis: true,
@@ -88,14 +140,6 @@ const getLatestPrediction = async (req, res, next) => {
           datasetType: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA'
         },
         decisionLayer: latest.decisionLayer || null,
-        mainContributors: (latest.decisionLayer && latest.decisionLayer.mainContributors) || [],
-        evidenceStrength: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
-        welfareConcernDisplay: concernDisplay,
-        evidenceDisplay: evDisplay,
-        guidanceText: guidance,
-        dataAvailableCount: count,
-        dataAvailableTotal: 5,
-        dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
         recommendations,
         checkIn
       }
@@ -205,11 +249,13 @@ const getExplainability = async (req, res, next) => {
       data: {
         predictionId: latest._id,
         concernLevel: latest.concernLevel,
+        welfareConcern: latest.isUndetermined ? 'UNDETERMINED' : latest.concernLevel,
         welfareConcernDisplay: latest.welfareConcernDisplay || (latest.isUndetermined ? 'WELFARE CONCERN — UNDETERMINED' : `WELFARE CONCERN — ${latest.concernLevel}`),
         compositeRiskScore: latest.compositeRiskScore,
         evidenceSources: latest.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
         evidenceCount: latest.evidenceCount || (latest.evidenceSources ? latest.evidenceSources.length : 3),
         evidenceStrength: latest.evidenceStrength || (latest.decisionLayer ? latest.decisionLayer.evidenceStrength.level : 'MODERATE'),
+        evidence: latest.evidenceStrength || (latest.decisionLayer ? latest.decisionLayer.evidenceStrength.level : 'MODERATE'),
         evidenceDisplay: latest.evidenceDisplay || `EVIDENCE — ${latest.evidenceStrength || 'MODERATE'}`,
         dataAvailableCount: count,
         dataAvailableTotal: 5,
@@ -217,6 +263,8 @@ const getExplainability = async (req, res, next) => {
         decisionLayer: latest.decisionLayer || null,
         mainContributors: (latest.decisionLayer && latest.decisionLayer.mainContributors) || [],
         contributingIndicators: (latest.decisionLayer && latest.decisionLayer.mainContributors) || latest.contributingFactors || [],
+        recommendedNextAction: latest.isUndetermined ? 'Additional authorized data or a welfare check-in is required.' : (latest.decisionLayer && latest.decisionLayer.humanWelfareReview ? latest.decisionLayer.humanWelfareReview.recommendedOfficerAction : 'Continue standard restorative routines and submit daily check-in.'),
+        recommendedAction: latest.isUndetermined ? 'Additional authorized data or a welfare check-in is required.' : (latest.decisionLayer && latest.decisionLayer.humanWelfareReview ? latest.decisionLayer.humanWelfareReview.recommendedOfficerAction : 'Continue standard restorative routines and submit daily check-in.'),
         topDrivers: latest.topDrivers,
         contributingFactors: latest.contributingFactors || [],
         modelUsed: latest.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
@@ -729,5 +777,6 @@ module.exports = {
   getPredictionHistory,
   getExplainability,
   getWhatChanged,
-  getPersonalBaseline
+  getPersonalBaseline,
+  computePersonalBaseline
 };

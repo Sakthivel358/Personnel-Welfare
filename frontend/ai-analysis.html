@@ -234,10 +234,22 @@
             return;
           }
 
+          const concernBadgeHtml = Utils.getWelfareConcernDisplay(p.concernLevel);
+          const evLevel = p.evidenceStrength || (p.decisionLayer && p.decisionLayer.evidenceStrength ? p.decisionLayer.evidenceStrength.level : 'MODERATE');
+          const evidenceBadgeHtml = Utils.getEvidenceStrengthDisplay(evLevel);
+          const avCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || (p.evidenceSources ? p.evidenceSources.length : 4));
+          const dataAvailHtml = Utils.getDataAvailableDisplay(avCount, 5);
+
           document.getElementById('main-risk-circle').className = `risk-circle ${p.concernLevel}`;
           document.getElementById('main-risk-score').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
           document.getElementById('concern-heading').textContent = `${p.concernLevel} Welfare Concern`;
-          document.getElementById('concern-badge-top').innerHTML = Utils.getConcernBadge(p.concernLevel);
+          document.getElementById('concern-badge-top').innerHTML = `
+            <div class="d-flex gap-1 flex-wrap align-center">
+              ${concernBadgeHtml}
+              ${evidenceBadgeHtml}
+              ${dataAvailHtml}
+            </div>
+          `;
           document.getElementById('analysis-timestamp').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
 
           if (p.modelVersion) {
@@ -259,10 +271,29 @@
             document.getElementById('bar-prob-high').style.width = `${pHigh}%`;
           }
 
-          if (p.topDrivers && p.topDrivers.length > 0) {
-            document.getElementById('top-drivers-list').innerHTML = p.topDrivers.map(d => `• <strong>${d}</strong>`).join('<br>');
+          const rawContribs = p.mainContributors || (p.decisionLayer && p.decisionLayer.mainContributors) || p.topDrivers || [];
+          if (rawContribs && rawContribs.length > 0) {
+            document.getElementById('top-drivers-list').innerHTML = rawContribs.map(c => {
+              const label = typeof c === 'string' ? c : (c.directionalTitle || c.title || c.factor || 'Operational Strain');
+              return `• <strong>${label}</strong>`;
+            }).join('<br>');
           } else {
             document.getElementById('top-drivers-list').textContent = 'All operational variables are within standard healthy thresholds.';
+          }
+
+          // Render Recommended Next Action
+          const nextAction = p.recommendedNextAction || p.recommendedAction || 'Continue standard restorative routines and submit daily check-in.';
+          const driversCard = document.getElementById('top-drivers-list').parentElement;
+          if (driversCard && !document.getElementById('ai-rec-action-box')) {
+            const actBox = document.createElement('div');
+            actBox.id = 'ai-rec-action-box';
+            actBox.className = 'mt-3 p-2';
+            actBox.style.cssText = 'background:rgba(59,130,246,0.08); border-left:3px solid #3b82f6; border-radius:6px;';
+            actBox.innerHTML = `
+              <div style="font-size:0.75rem; font-weight:700; color:#3b82f6; text-transform:uppercase; letter-spacing:0.5px;">Recommended Next Action:</div>
+              <div style="font-size:0.85rem; font-weight:600; color:var(--text-primary); margin-top:0.25rem;">${nextAction}</div>
+            `;
+            driversCard.appendChild(actBox);
           }
         } else {
           const container = document.querySelector('.page-container');
