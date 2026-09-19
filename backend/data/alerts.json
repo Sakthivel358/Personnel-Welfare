@@ -798,5 +798,79 @@
     "officerNotes": "",
     "createdAt": "2026-09-19T02:41:31.431Z",
     "updatedAt": "2026-09-19T02:41:31.431Z"
+  },
+  {
+    "_id": "81a9cc60ea644d017b710a88",
+    "personnelId": "CRPF-M2-4625",
+    "userId": "5774157dfd36393f3347640d",
+    "predictionId": "c809672d818d2ce6e78fe708",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 87.6,
+    "topDrivers": [
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery",
+      "Weekly Workload & Duty Hours"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:51:04.777Z",
+    "updatedAt": "2026-09-19T02:51:04.778Z"
+  },
+  {
+    "_id": "a136c01fabc3164a68019995",
+    "personnelId": "CRPF-T17-2086",
+    "userId": "aef44e98e1823be20b542d98",
+    "predictionId": "67df9dc3b26c43ba1bae8601",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 93.3,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:51:12.206Z",
+    "updatedAt": "2026-09-19T02:51:12.206Z"
+  },
+  {
+    "_id": "7aa91acc7a373aaca3f8362f",
+    "personnelId": "CRPF-1789786291641",
+    "userId": "67c7d88d325e136d22542246",
+    "predictionId": "622771069ede451ab5c09f5a",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 93.4,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:51:31.743Z",
+    "updatedAt": "2026-09-19T02:51:31.743Z"
+  },
+  {
+    "_id": "eba6230f46a0ed17e03e01e9",
+    "personnelId": "CRPF-TEST-9180",
+    "userId": "e2cf0fb33a3a23190e0c8a6e",
+    "predictionId": "799fe40cd7a8a4d98cbcec40",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 70.4,
+    "topDrivers": [
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)",
+      "Resting Heart Rate (RHR)"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-19T02:51:39.361Z",
+    "updatedAt": "2026-09-19T02:51:39.523Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-19T02:51:39.523Z"
   }
 ]

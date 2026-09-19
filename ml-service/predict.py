@@ -168,9 +168,13 @@ FEATURE_METADATA = {
 
 MODEL1_PATH = os.path.join(BASE_DIR, "model1_wearable_operational.pkl")
 PREPROCESSING1_PATH = os.path.join(BASE_DIR, "model1_preprocessing.pkl")
+MODEL2_PATH = os.path.join(BASE_DIR, "model2_pss_operational.pkl")
+PREPROCESSING2_PATH = os.path.join(BASE_DIR, "model2_preprocessing.pkl")
 
 _model1 = None
 _preprocessing1 = None
+_model2 = None
+_preprocessing2 = None
 
 def load_model1_artifacts():
     global _model1, _preprocessing1
@@ -180,6 +184,15 @@ def load_model1_artifacts():
         _model1 = joblib.load(MODEL1_PATH)
         _preprocessing1 = joblib.load(PREPROCESSING1_PATH)
     return _model1, _preprocessing1
+
+def load_model2_artifacts():
+    global _model2, _preprocessing2
+    if _model2 is None or _preprocessing2 is None:
+        if not os.path.exists(MODEL2_PATH) or not os.path.exists(PREPROCESSING2_PATH):
+            raise FileNotFoundError("Model 2 artifacts not found. Please run train_model2_pss_operational.py first.")
+        _model2 = joblib.load(MODEL2_PATH)
+        _preprocessing2 = joblib.load(PREPROCESSING2_PATH)
+    return _model2, _preprocessing2
 
 def load_artifacts():
     global _model, _preprocessing
@@ -403,11 +416,181 @@ def predict_model1_wearable_operational(checkin_data: Dict[str, Any]) -> Dict[st
         "disclaimer": "PROTOTYPE MODEL 1 (Wearable + Operational RF): Multi-source predictive signal trained on synthetic prototype benchmark data. Does NOT represent real-world clinical or operational validated performance."
     }
 
+def predict_model2_pss_operational(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    ML Model 2: Separately trained Random Forest Classifier for PSS-10 + Operational Welfare Data.
+    Designated fallback pathway when sufficient wearable evidence is unavailable.
+    Consumes:
+      - PSS-10 / self-check: pss_score
+      - Duty indicators: prolonged_duty_hours, shift_continuity_days, night_duty_hours, deployment_demand_score
+      - Operational data: workload_hours, work_pressure_rating, recovery_sleep_hours, rest_interval_hours,
+        recovery_pattern_score, social_support_rating, work_life_balance_rating, recent_trend_indicator
+    Outputs:
+      - Low / Moderate / High Welfare Concern
+      - evidence information
+      - main contributing indicators
+    """
+    model2, prep2 = load_model2_artifacts()
+    scaler = prep2["scaler"]
+    feature_cols = prep2["feature_columns"]
+    class_names = prep2["class_names"]
+    baseline_stats = prep2["baseline_stats"]
+    global_importances = {feat: float(imp) for feat, imp in zip(feature_cols, model2.feature_importances_)}
+
+    # Map recovery pattern
+    if checkin_data.get("recovery_pattern_score") is not None:
+        try:
+            rec_score = int(checkin_data.get("recovery_pattern_score"))
+        except (ValueError, TypeError):
+            rec_score = 0
+    else:
+        rec_str = str(checkin_data.get("recovery_pattern") or "").upper()
+        rec_score = 0
+        if "DEFICIT" in rec_str or "DEBT" in rec_str:
+            rec_score = 3
+        elif "SHIFT_LAG" in rec_str or "LAG" in rec_str:
+            rec_score = 2
+        elif "INTERRUPTED" in rec_str or "FRAGMENTED" in rec_str:
+            rec_score = 1
+
+    # Map deployment demand
+    if checkin_data.get("deployment_demand_score") is not None:
+        try:
+            dep_score = int(checkin_data.get("deployment_demand_score"))
+        except (ValueError, TypeError):
+            dep_score = 0
+    else:
+        zone_str = str(checkin_data.get("deploymentZone") or "").lower()
+        duty_str = str(checkin_data.get("duty_type") or "").lower()
+        dep_score = 0
+        if "high altitude" in zone_str or "remote border" in zone_str:
+            dep_score = 3
+        elif "quick reaction" in duty_str or "qrt" in duty_str:
+            dep_score = 2
+        elif "patrol" in duty_str or "convoy" in duty_str or "field" in zone_str:
+            dep_score = 1
+
+    raw_feature_map = {
+        "pss_score": checkin_data.get("pss_score"),
+        "workload_hours": checkin_data.get("workload_hours", 48.0),
+        "work_pressure_rating": checkin_data.get("work_pressure_rating", 5.0),
+        "prolonged_duty_hours": checkin_data.get("prolonged_duty_hours", 8.0),
+        "shift_continuity_days": checkin_data.get("shift_continuity_days", 2.0),
+        "night_duty_hours": checkin_data.get("night_duty_hours", 0.0),
+        "recovery_sleep_hours": checkin_data.get("recovery_sleep_hours", 7.0),
+        "rest_interval_hours": checkin_data.get("rest_interval_hours", 10.0),
+        "recovery_pattern_score": rec_score,
+        "deployment_demand_score": dep_score,
+        "social_support_rating": checkin_data.get("social_support_rating", 6.0),
+        "work_life_balance_rating": checkin_data.get("work_life_balance_rating", 5.0),
+        "recent_trend_indicator": checkin_data.get("recent_trend_indicator", 0.0)
+    }
+
+    # Vectorize with median baseline imputation for any missing features
+    input_vector = []
+    for col in feature_cols:
+        val = raw_feature_map.get(col)
+        if val is None or (isinstance(val, float) and np.isnan(val)):
+            val = float(baseline_stats[col]["median"])
+        else:
+            val = float(val)
+        input_vector.append(val)
+
+    import pandas as pd
+    X_df = pd.DataFrame([input_vector], columns=feature_cols)
+    X_scaled = scaler.transform(X_df)
+
+    probabilities = model2.predict_proba(X_scaled)[0]
+    predicted_idx = int(model2.predict(X_scaled)[0])
+    concern_level = class_names[predicted_idx]
+
+    probability_map = {
+        class_names[i]: round(float(probabilities[i]), 4)
+        for i in range(len(class_names))
+    }
+    confidence = float(probabilities[predicted_idx])
+    composite_risk_score = round(float(probabilities[1] * 50.0 + probabilities[2] * 100.0), 1)
+
+    # Multi-source Evidence Information (Non-wearable fallback)
+    evidence_sources = ["DUTY", "WORKLOAD", "REST_RECOVERY"]
+    if checkin_data.get("pss_score") is not None:
+        evidence_sources.append("SELF_CHECK")
+
+    contributing_factors = []
+    for i, col in enumerate(feature_cols):
+        # Omit PSS if self-check was skipped
+        if col == "pss_score" and checkin_data.get("pss_score") is None:
+            continue
+
+        raw_val = float(input_vector[i])
+        b_mean = float(baseline_stats[col]["mean"])
+        b_std = float(baseline_stats[col]["std"]) if float(baseline_stats[col]["std"]) > 0 else 1.0
+
+        meta = FEATURE_METADATA.get(col, {
+            "title": col.replace("_", " ").title(),
+            "description": f"Operational indicator for {col.replace('_', ' ')}",
+            "high_is_risk": True,
+            "unit": "",
+            "healthy_range": "Normal"
+        })
+
+        z_score = (raw_val - b_mean) / b_std
+        stress_deviation = z_score if meta.get("high_is_risk", True) else -z_score
+        importance = global_importances.get(col, 0.05)
+        contribution = max(0.0, stress_deviation + 1.0) * importance * 100.0
+
+        impact_level = "LOW"
+        status = "Within Baseline"
+        if stress_deviation > 0.8:
+            impact_level = "HIGH"
+            status = "Elevated Concern"
+        elif stress_deviation > 0.2:
+            impact_level = "MODERATE"
+            status = "Moderate Strain"
+
+        contributing_factors.append({
+            "feature_key": col,
+            "title": meta.get("title", col.replace("_", " ").title()),
+            "description": meta.get("description", ""),
+            "user_value": round(raw_val, 2),
+            "unit": meta.get("unit", ""),
+            "healthy_range": meta.get("healthy_range", ""),
+            "baseline_mean": round(b_mean, 2),
+            "importance_weight": round(importance, 4),
+            "contribution_score": round(contribution, 2),
+            "impact_level": impact_level,
+            "status": status,
+            "is_risk_driver": stress_deviation > 0.3
+        })
+
+    contributing_factors.sort(key=lambda x: x["contribution_score"], reverse=True)
+    top_drivers = [f["title"] for f in contributing_factors if f["is_risk_driver"]]
+    if not top_drivers:
+        top_drivers = [f["title"] for f in contributing_factors[:2]]
+
+    return {
+        "concernLevel": concern_level,
+        "confidence": round(confidence, 4),
+        "compositeRiskScore": composite_risk_score,
+        "probabilities": probability_map,
+        "modelUsed": "MODEL_2_PSS_OPERATIONAL",
+        "isSyntheticPrototype": True,
+        "realWorldValidated": False,
+        "evidenceSources": evidence_sources,
+        "evidenceCount": len(evidence_sources),
+        "topDrivers": top_drivers[:3],
+        "contributingFactors": contributing_factors,
+        "modelVersion": prep2.get("model_version", "v2.0.0-model2-prototype"),
+        "trainedAt": prep2.get("trained_at"),
+        "analyzedAt": datetime.now().isoformat(),
+        "disclaimer": "PROTOTYPE MODEL 2 (PSS + Operational Fallback RF): Designated fallback pathway when wearable telemetry is unavailable. Multi-source predictive signal based on duty, workload, rest, and self-check data."
+    }
+
 def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Primary inference router: Executes Model 1 (Wearable + Operational RF).
-    NOTE (Task 17): If sensor / wearable data is present, prediction MUST strictly
-    use Model 1 and NEVER fall back to the existing PSS-10-trained legacy model.
+    Primary inference router:
+    - If wearable biometrics are present: strictly executes Model 1 (Wearable + Operational RF).
+    - If wearable biometrics are absent / insufficient: strictly executes Model 2 (PSS + Operational Fallback RF).
     """
     has_wearable = bool(
         checkin_data.get("wearable_synced") or
@@ -420,14 +603,10 @@ def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
 
     if has_wearable:
         # Sensor prediction MUST strictly use Model 1 (Wearable + Operational RF)
-        # Under NO circumstances should sensor data be routed to the legacy PSS-10 model
         return predict_model1_wearable_operational(checkin_data)
-
-    try:
-        return predict_model1_wearable_operational(checkin_data)
-    except Exception as e:
-        print(f"Notice: Model 1 inference fallback to legacy survey pipeline for non-sensor check-in ({e})")
-        return _predict_legacy_model(checkin_data)
+    else:
+        # Fallback pathway when wearable evidence is unavailable: Model 2 (PSS + Operational RF)
+        return predict_model2_pss_operational(checkin_data)
 
 def _predict_legacy_model(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     has_wearable = bool(

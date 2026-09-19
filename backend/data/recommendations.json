@@ -7294,5 +7294,263 @@
     ],
     "createdAt": "2026-09-19T02:41:31.430Z",
     "updatedAt": "2026-09-19T02:41:31.430Z"
+  },
+  {
+    "_id": "148df51f59768bca053b50f7",
+    "userId": "5774157dfd36393f3347640d",
+    "predictionId": "c809672d818d2ce6e78fe708",
+    "concernLevel": "HIGH",
+    "primaryAction": "Elevated welfare strain detected. We recommend connecting with a designated Unit Welfare Officer for proactive support.",
+    "compositeRiskScore": 87.6,
+    "actionItems": [
+      {
+        "category": "Recovery & Rest",
+        "title": "Rest & Sleep Optimization",
+        "description": "Average sleep recorded at 5.5 hrs/day. Prioritize non-interrupted sleep blocks between duties and practice tactical wind-down protocols.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Operational Duty",
+        "title": "Workload & Rest Rotation Consultation",
+        "description": "High weekly duty exposure (58 hrs, 5 consecutive days). Coordinate with unit welfare officer for rest cycle rotation.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Stress Regulation",
+        "title": "Tactical De-escalation & Mental Reset",
+        "description": "Elevated perceived pressure signals detected. Utilize guided 4-7-8 breathing techniques, brief structured physical decompressions, and peer debriefing.",
+        "priority": "MEDIUM"
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-19T02:51:04.776Z",
+    "updatedAt": "2026-09-19T02:51:04.776Z"
+  },
+  {
+    "_id": "b2f874917a1bba69937b4e2c",
+    "userId": "aef44e98e1823be20b542d98",
+    "predictionId": "67df9dc3b26c43ba1bae8601",
+    "concernLevel": "HIGH",
+    "primaryAction": "Elevated welfare strain detected. We recommend connecting with a designated Unit Welfare Officer for proactive support.",
+    "compositeRiskScore": 93.3,
+    "actionItems": [
+      {
+        "category": "Recovery & Rest",
+        "title": "Rest & Sleep Optimization",
+        "description": "Average sleep recorded at 4.2 hrs/day. Prioritize non-interrupted sleep blocks between duties and practice tactical wind-down protocols.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Operational Duty",
+        "title": "Workload & Rest Rotation Consultation",
+        "description": "High weekly duty exposure (68 hrs, 10 consecutive days). Coordinate with unit welfare officer for rest cycle rotation.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Stress Regulation",
+        "title": "Tactical De-escalation & Mental Reset",
+        "description": "Elevated perceived pressure signals detected. Utilize guided 4-7-8 breathing techniques, brief structured physical decompressions, and peer debriefing.",
+        "priority": "MEDIUM"
+      },
+      {
+        "category": "Physiological Strain & Autonomic Recovery",
+        "title": "Tactical Respiration & Physical De-escalation",
+        "description": "Smart Jacket biometrics indicate elevated physiological load (RHR: 94 BPM, HRV: 24 ms, Strain: 78/100). Implement 4-4-4-4 tactical box breathing and scheduled physical cool-down.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Operational Duty & Rest Rotation",
+        "title": "Continuous Deployment Duty Relief",
+        "description": "Continuous duty deployment reaching 14 hours. Request tactical duty relief and take mandatory hydration and restorative break.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Circadian Rhythm & Night Duty",
+        "title": "Nocturnal Shift Recovery Protocol",
+        "description": "Extended nocturnal operational exposure (16 night duty hours). Prioritize quiet dark-room rest post-shift and maintain minimum 8-hour recovery interval.",
+        "priority": "MEDIUM"
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-19T02:51:12.201Z",
+    "updatedAt": "2026-09-19T02:51:12.201Z"
+  },
+  {
+    "_id": "067e34a81ef506e137689d8d",
+    "userId": "67c7d88d325e136d22542246",
+    "predictionId": "622771069ede451ab5c09f5a",
+    "concernLevel": "HIGH",
+    "primaryAction": "Elevated welfare strain detected. We recommend connecting with a designated Unit Welfare Officer for proactive support.",
+    "compositeRiskScore": 93.4,
+    "actionItems": [
+      {
+        "category": "Recovery & Rest",
+        "title": "Rest & Sleep Optimization",
+        "description": "Average sleep recorded at 5.5 hrs/day. Prioritize non-interrupted sleep blocks between duties and practice tactical wind-down protocols.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Operational Duty",
+        "title": "Workload & Rest Rotation Consultation",
+        "description": "High weekly duty exposure (58 hrs, 5 consecutive days). Coordinate with unit welfare officer for rest cycle rotation.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Operational Duty & Rest Rotation",
+        "title": "Continuous Deployment Duty Relief",
+        "description": "Continuous duty deployment reaching 12 hours. Request tactical duty relief and take mandatory hydration and restorative break.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Circadian Rhythm & Night Duty",
+        "title": "Nocturnal Shift Recovery Protocol",
+        "description": "Extended nocturnal operational exposure (16 night duty hours). Prioritize quiet dark-room rest post-shift and maintain minimum 8-hour recovery interval.",
+        "priority": "MEDIUM"
+      },
+      {
+        "category": "Tactical Readiness Pacing",
+        "title": "QRT High-Alert Standby Rotation",
+        "description": "Sustained Quick Reaction standby over 5 consecutive days induces sympathetic hyper-vigilance. Coordinate with Adjutant for scheduled 24-hour non-readiness respite.",
+        "priority": "HIGH"
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-19T02:51:31.742Z",
+    "updatedAt": "2026-09-19T02:51:31.742Z"
+  },
+  {
+    "_id": "2e29ec52a36b1916dc3abd65",
+    "userId": "e2cf0fb33a3a23190e0c8a6e",
+    "predictionId": "799fe40cd7a8a4d98cbcec40",
+    "concernLevel": "HIGH",
+    "primaryAction": "Elevated welfare strain detected. We recommend connecting with a designated Unit Welfare Officer for proactive support.",
+    "compositeRiskScore": 70.4,
+    "actionItems": [
+      {
+        "category": "Recovery & Rest",
+        "title": "Rest & Sleep Optimization",
+        "description": "Average sleep recorded at 4 hrs/day. Prioritize non-interrupted sleep blocks between duties and practice tactical wind-down protocols.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Operational Duty",
+        "title": "Workload & Rest Rotation Consultation",
+        "description": "High weekly duty exposure (66 hrs, 12 consecutive days). Coordinate with unit welfare officer for rest cycle rotation.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Stress Regulation",
+        "title": "Tactical De-escalation & Mental Reset",
+        "description": "Elevated perceived pressure signals detected. Utilize guided 4-7-8 breathing techniques, brief structured physical decompressions, and peer debriefing.",
+        "priority": "MEDIUM"
+      },
+      {
+        "category": "Social Support",
+        "title": "Peer & Family Engagement",
+        "description": "Lower social connection indicator noted. Schedule regular check-ins with family, trusted colleagues, or unit peer mentors.",
+        "priority": "MEDIUM"
+      },
+      {
+        "category": "Work-Life Balance",
+        "title": "Downtime Boundary Establishment",
+        "description": "Establish clear separation between operational readiness and personal recuperation time when off-duty.",
+        "priority": "LOW"
+      },
+      {
+        "category": "Physiological Strain & Autonomic Recovery",
+        "title": "Tactical Respiration & Physical De-escalation",
+        "description": "Smart Jacket biometrics indicate elevated physiological load (RHR: 96 BPM, HRV: 22 ms, Strain: 8/100). Implement 4-4-4-4 tactical box breathing and scheduled physical cool-down.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Operational Duty & Rest Rotation",
+        "title": "Continuous Deployment Duty Relief",
+        "description": "Continuous duty deployment reaching 14 hours. Request tactical duty relief and take mandatory hydration and restorative break.",
+        "priority": "HIGH"
+      },
+      {
+        "category": "Extreme Terrain Adaptation",
+        "title": "High-Altitude Hypoxia & Cold Mitigation",
+        "description": "Deployed in Northern Sector / High-Altitude terrain with active duty load. Adhere to acclimatization hydration rules, monitor peripheral SpO2, and request heated bunker rest.",
+        "priority": "HIGH"
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-19T02:51:39.359Z",
+    "updatedAt": "2026-09-19T02:51:39.359Z"
+  },
+  {
+    "_id": "1615540bd13cc4a416596936",
+    "userId": "e2cf0fb33a3a23190e0c8a6e",
+    "predictionId": "994977987ca99bf7cfb96abd",
+    "concernLevel": "LOW",
+    "primaryAction": "Maintain current healthy routine and continue regular check-ins.",
+    "compositeRiskScore": 19.8,
+    "actionItems": [
+      {
+        "category": "Wellness Maintenance",
+        "title": "Maintain Healthy Operational Baseline",
+        "description": "Your check-in indicators are balanced. Continue consistent sleep schedules, physical conditioning, and social connectivity.",
+        "priority": "LOW"
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-19T02:51:39.555Z",
+    "updatedAt": "2026-09-19T02:51:39.555Z"
   }
 ]

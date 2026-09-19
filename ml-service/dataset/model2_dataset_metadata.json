@@ -1,0 +1,32 @@
+{
+  "dataset_name": "synthetic_prototype_model2_pss_operational_dataset.csv",
+  "dataset_version": "v2.0.0-model2-prototype",
+  "created_at": "2026-09-19T08:17:41.129169",
+  "samples_count": 3500,
+  "provenance": "SYNTHETIC_PROTOTYPE_DATA",
+  "real_world_validated": false,
+  "real_world_claim": false,
+  "feature_columns": [
+    "pss_score",
+    "workload_hours",
+    "work_pressure_rating",
+    "prolonged_duty_hours",
+    "shift_continuity_days",
+    "night_duty_hours",
+    "recovery_sleep_hours",
+    "rest_interval_hours",
+    "recovery_pattern_score",
+    "deployment_demand_score",
+    "social_support_rating",
+    "work_life_balance_rating",
+    "recent_trend_indicator"
+  ],
+  "target_column": "welfare_concern_level",
+  "class_distribution": {
+    "LOW": 1807,
+    "MODERATE": 1449,
+    "HIGH": 244
+  },
+  "description": "Clearly labelled synthetic prototype dataset for Model 2 (PSS-10 + Operational duty data fallback).",
+  "disclaimer": "PROTOTYPE DATA: This synthetic dataset was algorithmically generated to verify fallback schemas and pipelines. Model accuracy derived from this dataset DO NOT represent real-world clinical or operational validated performance."
+}

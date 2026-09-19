@@ -16,11 +16,18 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from predict import predict_welfare_risk, predict_model1_wearable_operational, load_artifacts, load_model1_artifacts
+from predict import (
+    predict_welfare_risk,
+    predict_model1_wearable_operational,
+    predict_model2_pss_operational,
+    load_artifacts,
+    load_model1_artifacts,
+    load_model2_artifacts
+)
 
 app = FastAPI(
     title="SIH26186 Personnel Welfare ML Service",
-    description="Real Random Forest Inference and Explainability Service for Uniformed Forces Welfare Monitoring (Model 1: Wearable + Operational)",
+    description="Real Random Forest Inference and Explainability Service for Uniformed Forces Welfare Monitoring (Model 1: Wearable + Operational, Model 2: PSS + Operational Fallback)",
     version="2.0.0"
 )
 
@@ -39,6 +46,8 @@ METRICS_PATH = os.path.join(EVAL_DIR, "metrics.json")
 CONFUSION_MATRIX_PATH = os.path.join(EVAL_DIR, "confusion_matrix.json")
 MODEL1_METRICS_PATH = os.path.join(EVAL_DIR, "model1_metrics.json")
 MODEL1_CONFUSION_MATRIX_PATH = os.path.join(EVAL_DIR, "model1_confusion_matrix.json")
+MODEL2_METRICS_PATH = os.path.join(EVAL_DIR, "model2_metrics.json")
+MODEL2_CONFUSION_MATRIX_PATH = os.path.join(EVAL_DIR, "model2_confusion_matrix.json")
 
 class CheckInInput(BaseModel):
     # Source 4: Optional Self-Check / PSS-10
@@ -84,6 +93,11 @@ async def startup_event():
     except Exception as e:
         print(f"ML Service Startup Warning: Model 1 artifacts not yet loaded ({e}).")
     try:
+        load_model2_artifacts()
+        print("ML Service: Model 2 (PSS + Operational Fallback RF) loaded successfully.")
+    except Exception as e:
+        print(f"ML Service Startup Warning: Model 2 artifacts not yet loaded ({e}).")
+    try:
         load_artifacts()
         print("ML Service: Legacy Model artifacts loaded successfully.")
     except Exception as e:
@@ -96,6 +110,7 @@ async def health_check():
     """
     model_loaded = False
     model1_loaded = False
+    model2_loaded = False
     details = {}
     try:
         m1, prep1 = load_model1_artifacts()
@@ -112,6 +127,20 @@ async def health_check():
         details["model1_error"] = str(e1)
 
     try:
+        m2, prep2 = load_model2_artifacts()
+        model2_loaded = True
+        details["model2"] = {
+            "model_name": prep2.get("model_name", "Model 2 (PSS + Operational Fallback RF)"),
+            "model_type": type(m2).__name__,
+            "n_estimators": getattr(m2, "n_estimators", 100),
+            "features_count": len(prep2.get("feature_columns", [])),
+            "model_version": prep2.get("model_version", "v2.0.0-model2-prototype"),
+            "trained_at": prep2.get("trained_at")
+        }
+    except Exception as e2:
+        details["model2_error"] = str(e2)
+
+    try:
         model, prep = load_artifacts()
         model_loaded = True
         details["legacy_model"] = {
@@ -124,12 +153,13 @@ async def health_check():
     except Exception as e:
         details["legacy_model_error"] = str(e)
 
-    overall_loaded = model1_loaded or model_loaded
+    overall_loaded = model1_loaded or model2_loaded or model_loaded
     return {
         "status": "healthy" if overall_loaded else "degraded",
         "service": "WelfareAI-FastAPI-ML-Engine",
         "model_loaded": overall_loaded,
         "model1_loaded": model1_loaded,
+        "model2_loaded": model2_loaded,
         "details": details,
         "timestamp": datetime.now().isoformat()
     }
@@ -239,6 +269,83 @@ async def get_model1_evaluation():
         "metrics": metrics,
         "confusion_matrix": cm_data,
         "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL: Evaluated on synthetic prototype benchmark data. Accuracy does NOT represent real-world clinical or operational validated performance.")
+    }
+
+@app.post("/predict/model2", tags=["Model 2"])
+async def predict_model2(data: CheckInInput):
+    """
+    Executes dedicated Random Forest Model 2 for PSS-10 + Operational fallback data.
+    """
+    try:
+        input_dict = data.dict()
+        result = predict_model2_pss_operational(input_dict)
+        return {
+            "success": True,
+            "data": result
+        }
+    except FileNotFoundError as fe:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Model 2 artifacts not trained or found. Please ensure train_model2_pss_operational.py has executed."
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Model 2 inference failed: {str(e)}"
+        )
+
+@app.get("/model2-info", tags=["Model 2"])
+async def get_model2_info():
+    """
+    Returns transparent metadata for Model 2 (PSS + Operational Fallback RF Prototype).
+    """
+    try:
+        m2, prep2 = load_model2_artifacts()
+        return {
+            "model_name": prep2.get("model_name", "Model 2 (PSS + Operational Fallback Random Forest Prototype)"),
+            "framework": "scikit-learn",
+            "model_version": prep2.get("model_version", "v2.0.0-model2-prototype"),
+            "trained_at": prep2.get("trained_at"),
+            "is_synthetic_prototype": True,
+            "real_world_validated": False,
+            "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+            "n_estimators": getattr(m2, "n_estimators", 100),
+            "features_count": len(prep2.get("feature_columns", [])),
+            "features": prep2.get("feature_columns", []),
+            "class_names": prep2.get("class_names", []),
+            "baseline_statistics": prep2.get("baseline_stats", {}),
+            "disclaimer": prep2.get("disclaimer", "PROTOTYPE MODEL 2: Designated fallback pathway when wearable telemetry is unavailable. Accuracy does NOT represent real-world clinical or operational validated performance.")
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/evaluation/model2", tags=["Model 2"])
+async def get_model2_evaluation():
+    """
+    Returns actual test evaluation metrics for Model 2 (Accuracy, Precision, Recall, F1, Confusion Matrix).
+    """
+    if not os.path.exists(MODEL2_METRICS_PATH):
+        raise HTTPException(
+            status_code=404,
+            detail="Model 2 evaluation metrics not found. Run train_model2_pss_operational.py first."
+        )
+
+    with open(MODEL2_METRICS_PATH, "r") as f:
+        metrics = json.load(f)
+
+    cm_data = {}
+    if os.path.exists(MODEL2_CONFUSION_MATRIX_PATH):
+        with open(MODEL2_CONFUSION_MATRIX_PATH, "r") as f:
+            cm_data = json.load(f)
+
+    return {
+        "model": "Model 2 (PSS + Operational Fallback Random Forest Prototype)",
+        "is_synthetic_prototype": True,
+        "real_world_validated": False,
+        "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+        "metrics": metrics,
+        "confusion_matrix": cm_data,
+        "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL 2: Evaluated on synthetic prototype benchmark data for fallback verification. Accuracy does NOT represent real-world clinical or operational validated performance.")
     }
 
 @app.get("/model-info", tags=["Transparency"])

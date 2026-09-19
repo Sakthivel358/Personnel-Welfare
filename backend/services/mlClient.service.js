@@ -171,22 +171,15 @@ class MLClientService {
       return this.calculateEmbeddedPrediction(features);
     }
 
-    // For non-sensor check-ins, try Model 1 first, then legacy /predict, then embedded engine
+    // For non-sensor check-ins (when wearable evidence is unavailable):
+    // Task 18: Fallback pathway is strictly Model 2 (PSS + Operational RF)
     try {
-      const response = await this.client.post('/predict/model1', features);
+      const response = await this.client.post('/predict/model2', features);
       if (response.data && response.data.success) {
         return response.data.data;
       }
     } catch (err) {
-      try {
-        const response2 = await this.client.post('/predict', features);
-        if (response2.data && response2.data.success) {
-          return response2.data.data;
-        }
-      } catch (err2) {
-        // Gracefully fall back to the Embedded Random Forest Inference Engine
-        console.info('[ML Engine] Using Embedded Random Forest Engine (Local/Serverless Mode)');
-      }
+      console.warn('[ML Client] Remote Model 2 call failed. Using Embedded Model 2 Engine. Error:', err.message);
     }
 
     return this.calculateEmbeddedPrediction(features);
@@ -372,13 +365,15 @@ class MLClientService {
       evidenceCount: evidenceSources.length,
       topDrivers: selectedTopDrivers,
       contributingFactors: contributingFactors,
-      modelUsed: 'MODEL_1_WEARABLE_OPERATIONAL',
+      modelUsed: hasWearable ? 'MODEL_1_WEARABLE_OPERATIONAL' : 'MODEL_2_PSS_OPERATIONAL',
       isSyntheticPrototype: true,
       realWorldValidated: false,
-      modelVersion: 'v2.0.0-model1-prototype',
+      modelVersion: hasWearable ? 'v2.0.0-model1-prototype' : 'v2.0.0-model2-prototype',
       trainedAt: new Date().toISOString(),
       analyzedAt: new Date().toISOString(),
-      disclaimer: 'PROTOTYPE MODEL 1 (Wearable + Operational RF): Multi-source predictive signal based on synthetic prototype benchmark. Does NOT represent real-world clinical or operational validated performance.'
+      disclaimer: hasWearable
+        ? 'PROTOTYPE MODEL 1 (Wearable + Operational RF): Multi-source predictive signal based on synthetic prototype benchmark. Does NOT represent real-world clinical or operational validated performance.'
+        : 'PROTOTYPE MODEL 2 (PSS + Operational Fallback RF): Multi-source predictive signal based on synthetic prototype benchmark. Designated fallback pathway when wearable telemetry is unavailable.'
     };
   }
 
@@ -410,6 +405,24 @@ class MLClientService {
   async getModel1Info() {
     try {
       const response = await this.client.get('/model1-info', { timeout: 2000 });
+      return response.data;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async getModel2Evaluation() {
+    try {
+      const response = await this.client.get('/evaluation/model2', { timeout: 2000 });
+      return response.data;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  async getModel2Info() {
+    try {
+      const response = await this.client.get('/model2-info', { timeout: 2000 });
       return response.data;
     } catch (err) {
       return null;

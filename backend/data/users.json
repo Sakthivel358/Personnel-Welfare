@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T02:41:24.153Z",
+    "lastLogin": "2026-09-19T02:51:39.512Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T02:41:24.154Z"
+    "updatedAt": "2026-09-19T02:51:39.513Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,9 +37,9 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-19T02:41:24.064Z",
+    "lastLogin": "2026-09-19T02:51:39.636Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-19T02:41:24.064Z"
+    "updatedAt": "2026-09-19T02:51:39.637Z"
   },
   {
     "_id": "351cc70fa4ab2222abc5f216",
@@ -512,5 +512,62 @@
     "lastLogin": "2026-09-19T02:41:31.392Z",
     "createdAt": "2026-09-19T02:41:31.392Z",
     "updatedAt": "2026-09-19T02:41:31.392Z"
+  },
+  {
+    "_id": "5774157dfd36393f3347640d",
+    "personnelId": "CRPF-M2-4625",
+    "email": "model2.1789786264625@crpf.gov.in",
+    "password": "$2a$10$s/e7DZmmrP010nrDdoZvU.i75YIry6m6vU6JEJKUTSHQLRtb8mEQu",
+    "fullName": "Constable Rajesh Rao",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T02:51:04.714Z",
+    "createdAt": "2026-09-19T02:51:04.715Z",
+    "updatedAt": "2026-09-19T02:51:04.715Z"
+  },
+  {
+    "_id": "aef44e98e1823be20b542d98",
+    "personnelId": "CRPF-T17-2086",
+    "email": "task17.1789786272086@crpf.gov.in",
+    "password": "$2a$10$RJMVJaILuMJi3aqkuAygU.huFJ0xGT03H/v9atb/LgSNkIYxV13xi",
+    "fullName": "Naik Sandeep Singh",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T02:51:12.155Z",
+    "createdAt": "2026-09-19T02:51:12.155Z",
+    "updatedAt": "2026-09-19T02:51:12.155Z"
+  },
+  {
+    "_id": "67c7d88d325e136d22542246",
+    "personnelId": "CRPF-1789786291641",
+    "email": "m1_test_1789786291641@welfare.gov.in",
+    "password": "$2a$10$bi0fmeBQk8RxxLfdCI8fi.9i38irgNyt88VdVd1Y7elJGRGhaQiI.",
+    "fullName": "Model 1 Test Personnel",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T02:51:31.702Z",
+    "createdAt": "2026-09-19T02:51:31.702Z",
+    "updatedAt": "2026-09-19T02:51:31.702Z"
+  },
+  {
+    "_id": "e2cf0fb33a3a23190e0c8a6e",
+    "personnelId": "CRPF-TEST-9180",
+    "email": "test.1789786299180@crpf.gov.in",
+    "password": "$2a$10$w4XJsgabruXm85J7HW6XHOWe7mRtrSyuwewNQxVLZYZGSmZSxZJ72",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T02:51:39.444Z",
+    "createdAt": "2026-09-19T02:51:39.242Z",
+    "updatedAt": "2026-09-19T02:51:39.444Z",
+    "lastLogout": "2026-09-19T02:51:39.381Z"
   }
 ]

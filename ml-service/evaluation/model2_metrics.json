@@ -1,0 +1,55 @@
+{
+  "model_name": "Model 2 (PSS + Operational Fallback Random Forest Prototype)",
+  "model_version": "v2.0.0-model2-prototype",
+  "trained_at": "2026-09-19T08:17:41.625416",
+  "is_synthetic_prototype": true,
+  "real_world_validated": false,
+  "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+  "dataset_name": "synthetic_prototype_model2_pss_operational_dataset.csv",
+  "dataset_samples": 3500,
+  "train_samples": 2800,
+  "test_samples": 700,
+  "accuracy": 0.8014285714285714,
+  "precision_macro": 0.7460636973060527,
+  "recall_macro": 0.7796227020753855,
+  "f1_macro": 0.7608525320893782,
+  "per_class": {
+    "LOW": {
+      "precision": 0.8685714285714285,
+      "recall": 0.8421052631578947,
+      "f1": 0.8551336146272855
+    },
+    "MODERATE": {
+      "precision": 0.7594501718213058,
+      "recall": 0.7620689655172413,
+      "f1": 0.7607573149741824
+    },
+    "HIGH": {
+      "precision": 0.6101694915254238,
+      "recall": 0.7346938775510204,
+      "f1": 0.6666666666666666
+    }
+  },
+  "feature_importances": {
+    "pss_score": 0.3228241767462332,
+    "recovery_sleep_hours": 0.13839014394932458,
+    "workload_hours": 0.11065194805425524,
+    "work_pressure_rating": 0.06677891803270913,
+    "deployment_demand_score": 0.0629755474534427,
+    "recovery_pattern_score": 0.055532543827614494,
+    "prolonged_duty_hours": 0.04634270787520283,
+    "rest_interval_hours": 0.04200970540031863,
+    "social_support_rating": 0.035812176596690316,
+    "night_duty_hours": 0.03456646425576849,
+    "recent_trend_indicator": 0.032358600536998246,
+    "work_life_balance_rating": 0.03176312119111432,
+    "shift_continuity_days": 0.019993946080327694
+  },
+  "class_distribution": {
+    "LOW": 1807,
+    "MODERATE": 1449,
+    "HIGH": 244
+  },
+  "features_count": 13,
+  "disclaimer": "PROTOTYPE MODEL: Trained and evaluated on synthetic prototype benchmark data for system architecture and integration verification. Model accuracy and evaluation metrics DO NOT represent real-world clinical, medical, or operational validated performance."
+}

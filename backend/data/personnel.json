@@ -1126,5 +1126,123 @@
     },
     "createdAt": "2026-09-19T02:41:31.393Z",
     "updatedAt": "2026-09-19T02:41:31.393Z"
+  },
+  {
+    "_id": "05dc65585c9e7079ef5ff492",
+    "userId": "5774157dfd36393f3347640d",
+    "personnelId": "CRPF-M2-4625",
+    "fullName": "Constable Rajesh Rao",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:51:04.716Z",
+    "updatedAt": "2026-09-19T02:51:04.716Z"
+  },
+  {
+    "_id": "339e4aa69bb9f60bfb4ad2a6",
+    "userId": "aef44e98e1823be20b542d98",
+    "personnelId": "CRPF-T17-2086",
+    "fullName": "Naik Sandeep Singh",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:51:12.156Z",
+    "updatedAt": "2026-09-19T02:51:12.156Z"
+  },
+  {
+    "_id": "ec20c10310cfe14e1ccbecde",
+    "userId": "67c7d88d325e136d22542246",
+    "personnelId": "CRPF-1789786291641",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:51:31.703Z",
+    "updatedAt": "2026-09-19T02:51:31.703Z"
+  },
+  {
+    "_id": "249d1aa17e1f357fba7ce531",
+    "userId": "e2cf0fb33a3a23190e0c8a6e",
+    "personnelId": "CRPF-TEST-9180",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:51:39.243Z",
+    "updatedAt": "2026-09-19T02:51:39.320Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
   }
 ]
