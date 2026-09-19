@@ -210,42 +210,66 @@ def predict_model1_wearable_operational(checkin_data: Dict[str, Any]) -> Dict[st
     global_importances = {feat: float(imp) for feat, imp in zip(feature_cols, model1.feature_importances_)}
 
     # 1. Map string / categorical inputs to numerical scores
-    act_str = str(checkin_data.get("activity_movement") or "").upper()
-    act_score = 1
-    if "EXTREME" in act_str:
-        act_score = 3
-    elif "HIGH" in act_str:
-        act_score = 2
-    elif "SEDENTARY" in act_str:
-        act_score = 0
+    if checkin_data.get("activity_movement_score") is not None:
+        try:
+            act_score = int(checkin_data.get("activity_movement_score"))
+        except (ValueError, TypeError):
+            act_score = 1
+    else:
+        act_str = str(checkin_data.get("activity_movement") or "").upper()
+        act_score = 1
+        if "EXTREME" in act_str:
+            act_score = 3
+        elif "HIGH" in act_str:
+            act_score = 2
+        elif "SEDENTARY" in act_str:
+            act_score = 0
 
-    posture_str = str(checkin_data.get("posture_inactivity") or "").upper()
-    posture_score = 0
-    if "EXTREME" in posture_str or "IMMOBILITY" in posture_str:
-        posture_score = 3
-    elif "STANDING" in posture_str or "VIGILANCE" in posture_str:
-        posture_score = 2
-    elif "STATIC" in posture_str or "PROLONGED" in posture_str:
-        posture_score = 1
+    if checkin_data.get("posture_inactivity_score") is not None:
+        try:
+            posture_score = int(checkin_data.get("posture_inactivity_score"))
+        except (ValueError, TypeError):
+            posture_score = 0
+    else:
+        posture_str = str(checkin_data.get("posture_inactivity") or "").upper()
+        posture_score = 0
+        if "EXTREME" in posture_str or "IMMOBILITY" in posture_str:
+            posture_score = 3
+        elif "STANDING" in posture_str or "VIGILANCE" in posture_str:
+            posture_score = 2
+        elif "STATIC" in posture_str or "PROLONGED" in posture_str:
+            posture_score = 1
 
-    rec_str = str(checkin_data.get("recovery_pattern") or "").upper()
-    rec_score = 0
-    if "DEFICIT" in rec_str or "DEBT" in rec_str:
-        rec_score = 3
-    elif "SHIFT_LAG" in rec_str or "LAG" in rec_str:
-        rec_score = 2
-    elif "INTERRUPTED" in rec_str or "FRAGMENTED" in rec_str:
-        rec_score = 1
+    if checkin_data.get("recovery_pattern_score") is not None:
+        try:
+            rec_score = int(checkin_data.get("recovery_pattern_score"))
+        except (ValueError, TypeError):
+            rec_score = 0
+    else:
+        rec_str = str(checkin_data.get("recovery_pattern") or "").upper()
+        rec_score = 0
+        if "DEFICIT" in rec_str or "DEBT" in rec_str:
+            rec_score = 3
+        elif "SHIFT_LAG" in rec_str or "LAG" in rec_str:
+            rec_score = 2
+        elif "INTERRUPTED" in rec_str or "FRAGMENTED" in rec_str:
+            rec_score = 1
 
-    zone_str = str(checkin_data.get("deploymentZone") or "").lower()
-    duty_str = str(checkin_data.get("duty_type") or "").lower()
-    dep_score = 0
-    if "high altitude" in zone_str or "remote border" in zone_str:
-        dep_score = 3
-    elif "quick reaction" in duty_str or "qrt" in duty_str:
-        dep_score = 2
-    elif "patrol" in duty_str or "convoy" in duty_str or "field" in zone_str:
-        dep_score = 1
+    if checkin_data.get("deployment_demand_score") is not None:
+        try:
+            dep_score = int(checkin_data.get("deployment_demand_score"))
+        except (ValueError, TypeError):
+            dep_score = 0
+    else:
+        zone_str = str(checkin_data.get("deploymentZone") or "").lower()
+        duty_str = str(checkin_data.get("duty_type") or "").lower()
+        dep_score = 0
+        if "high altitude" in zone_str or "remote border" in zone_str:
+            dep_score = 3
+        elif "quick reaction" in duty_str or "qrt" in duty_str:
+            dep_score = 2
+        elif "patrol" in duty_str or "convoy" in duty_str or "field" in zone_str:
+            dep_score = 1
 
     raw_feature_map = {
         "resting_heart_rate": checkin_data.get("resting_heart_rate"),
@@ -367,28 +391,56 @@ def predict_model1_wearable_operational(checkin_data: Dict[str, Any]) -> Dict[st
         "compositeRiskScore": composite_risk_score,
         "probabilities": probability_map,
         "modelUsed": "MODEL_1_WEARABLE_OPERATIONAL",
+        "isSyntheticPrototype": True,
+        "realWorldValidated": False,
         "evidenceSources": evidence_sources,
         "evidenceCount": len(evidence_sources),
         "topDrivers": top_drivers[:3],
         "contributingFactors": contributing_factors,
-        "modelVersion": prep1.get("model_version", "v2.0.0-model1"),
+        "modelVersion": prep1.get("model_version", "v2.0.0-model1-prototype"),
         "trainedAt": prep1.get("trained_at"),
         "analyzedAt": datetime.now().isoformat(),
-        "disclaimer": "AI Model 1 (Wearable + Operational RF): Multi-source predictive signal based on biometric telemetry and operational duty data."
+        "disclaimer": "PROTOTYPE MODEL 1 (Wearable + Operational RF): Multi-source predictive signal trained on synthetic prototype benchmark data. Does NOT represent real-world clinical or operational validated performance."
     }
 
 def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Primary inference router: Executes Model 1 (Wearable + Operational RF)
-    with graceful fallback to legacy model if Model 1 artifacts are missing.
+    Primary inference router: Executes Model 1 (Wearable + Operational RF).
+    NOTE (Task 17): If sensor / wearable data is present, prediction MUST strictly
+    use Model 1 and NEVER fall back to the existing PSS-10-trained legacy model.
     """
+    has_wearable = bool(
+        checkin_data.get("wearable_synced") or
+        checkin_data.get("resting_heart_rate") is not None or
+        checkin_data.get("hrv_ms") is not None or
+        checkin_data.get("respiration_rate") is not None or
+        checkin_data.get("skin_temperature_c") is not None or
+        checkin_data.get("fatigue_physical_strain") is not None
+    )
+
+    if has_wearable:
+        # Sensor prediction MUST strictly use Model 1 (Wearable + Operational RF)
+        # Under NO circumstances should sensor data be routed to the legacy PSS-10 model
+        return predict_model1_wearable_operational(checkin_data)
+
     try:
         return predict_model1_wearable_operational(checkin_data)
     except Exception as e:
-        print(f"Notice: Model 1 inference fallback to legacy pipeline ({e})")
+        print(f"Notice: Model 1 inference fallback to legacy survey pipeline for non-sensor check-in ({e})")
         return _predict_legacy_model(checkin_data)
 
 def _predict_legacy_model(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
+    has_wearable = bool(
+        checkin_data.get("wearable_synced") or
+        checkin_data.get("resting_heart_rate") is not None or
+        checkin_data.get("hrv_ms") is not None or
+        checkin_data.get("respiration_rate") is not None or
+        checkin_data.get("skin_temperature_c") is not None or
+        checkin_data.get("fatigue_physical_strain") is not None
+    )
+    if has_wearable:
+        raise ValueError("Do NOT use the existing PSS-10-trained model for sensor prediction. Sensor prediction must strictly use Model 1 (Wearable + Operational).")
+
     model, preprocessing = load_artifacts()
     scaler = preprocessing["scaler"]
     feature_cols = preprocessing["feature_columns"]
@@ -400,17 +452,6 @@ def _predict_legacy_model(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     evidence_sources = ["DUTY", "WORKLOAD", "REST_RECOVERY"]
     if checkin_data.get("pss_score") is not None:
         evidence_sources.append("SELF_CHECK")
-
-    has_wearable = bool(
-        checkin_data.get("wearable_synced") or
-        checkin_data.get("resting_heart_rate") is not None or
-        checkin_data.get("hrv_ms") is not None or
-        checkin_data.get("respiration_rate") is not None or
-        checkin_data.get("skin_temperature_c") is not None or
-        checkin_data.get("fatigue_physical_strain") is not None
-    )
-    if has_wearable:
-        evidence_sources.append("WEARABLE")
 
     # Build input feature array with clean imputation for optional PSS-10
     input_values = []

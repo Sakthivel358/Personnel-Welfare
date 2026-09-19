@@ -1,0 +1,39 @@
+{
+  "dataset_name": "synthetic_prototype_sensor_operational_dataset.csv",
+  "dataset_version": "v2.0.0-prototype",
+  "created_at": "2026-09-19T08:08:01.639045",
+  "samples_count": 3500,
+  "provenance": "SYNTHETIC_PROTOTYPE_DATA",
+  "real_world_validated": false,
+  "real_world_claim": false,
+  "feature_columns": [
+    "resting_heart_rate",
+    "hrv_ms",
+    "respiration_rate",
+    "skin_temperature_c",
+    "activity_movement_score",
+    "posture_inactivity_score",
+    "fatigue_physical_strain",
+    "workload_hours",
+    "work_pressure_rating",
+    "prolonged_duty_hours",
+    "shift_continuity_days",
+    "night_duty_hours",
+    "recovery_sleep_hours",
+    "rest_interval_hours",
+    "recovery_pattern_score",
+    "deployment_demand_score",
+    "social_support_rating",
+    "work_life_balance_rating",
+    "recent_trend_indicator",
+    "pss_score"
+  ],
+  "target_column": "welfare_concern_level",
+  "class_distribution": {
+    "LOW": 1541,
+    "MODERATE": 1634,
+    "HIGH": 325
+  },
+  "description": "Clearly labelled synthetic prototype dataset for wearable sensor and operational duty stress prediction. Real authorized sensor data is unavailable.",
+  "disclaimer": "PROTOTYPE DATA: This synthetic dataset was algorithmically generated to verify data schemas, physiological ranges, and integration pipelines. Model accuracy derived from this dataset DO NOT represent real-world clinical or operational validated performance."
+}

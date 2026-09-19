@@ -36,7 +36,9 @@ EVAL_DIR = os.path.join(BASE_DIR, "evaluation")
 os.makedirs(DATASET_DIR, exist_ok=True)
 os.makedirs(EVAL_DIR, exist_ok=True)
 
-DATASET_PATH = os.path.join(DATASET_DIR, "synthetic_model1_wearable_operational_dataset.csv")
+DATASET_PATH = os.path.join(DATASET_DIR, "synthetic_prototype_sensor_operational_dataset.csv")
+LEGACY_DATASET_PATH = os.path.join(DATASET_DIR, "synthetic_model1_wearable_operational_dataset.csv")
+DATASET_METADATA_PATH = os.path.join(DATASET_DIR, "dataset_metadata.json")
 MODEL_PATH = os.path.join(BASE_DIR, "model1_wearable_operational.pkl")
 PREPROCESSING_PATH = os.path.join(BASE_DIR, "model1_preprocessing.pkl")
 METRICS_PATH = os.path.join(EVAL_DIR, "model1_metrics.json")
@@ -187,22 +189,47 @@ def generate_synthetic_dataset(n_samples: int = 3500, random_state: int = 42) ->
         "recent_trend_indicator": np.round(recent_trend, 1),
         "pss_score": np.round(pss_scores, 1),
         TARGET_COLUMN: labels,
-        "data_label": "DEMO / SYNTHETIC DATA — NOT REAL PERSONNEL DATA"
+        "dataset_type": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+        "provenance": "SYNTHETIC_PROTOTYPE_DATA_NOT_REAL_PERSONNEL_DATA",
+        "data_label": "DEMO / SYNTHETIC DATA — NOT REAL PERSONNEL OR SENSOR DATA"
     })
 
     return df
 
 def train_and_evaluate_model1():
     print("==================================================================", flush=True)
-    print("SIH26186 — Training ML Model 1 (Wearable + Operational RF)", flush=True)
+    print("SIH26186 — Training ML Model 1 (Wearable + Operational RF Prototype)", flush=True)
     print("==================================================================", flush=True)
-    print(f"[{datetime.now().isoformat()}] Generating synthetic dataset (N=3500)...", flush=True)
+    print(f"[{datetime.now().isoformat()}] Generating synthetic prototype dataset (N=3500)...", flush=True)
     df = generate_synthetic_dataset(n_samples=3500, random_state=42)
     df.to_csv(DATASET_PATH, index=False)
+    df.to_csv(LEGACY_DATASET_PATH, index=False)
     print(f"Dataset saved to: {DATASET_PATH} (Shape: {df.shape})", flush=True)
 
     X = df[FEATURE_COLUMNS]
     y = df[TARGET_COLUMN]
+
+    dataset_metadata = {
+        "dataset_name": "synthetic_prototype_sensor_operational_dataset.csv",
+        "dataset_version": "v2.0.0-prototype",
+        "created_at": datetime.now().isoformat(),
+        "samples_count": int(len(df)),
+        "provenance": "SYNTHETIC_PROTOTYPE_DATA",
+        "real_world_validated": False,
+        "real_world_claim": False,
+        "feature_columns": FEATURE_COLUMNS,
+        "target_column": TARGET_COLUMN,
+        "class_distribution": {
+            "LOW": int((y == 0).sum()),
+            "MODERATE": int((y == 1).sum()),
+            "HIGH": int((y == 2).sum())
+        },
+        "description": "Clearly labelled synthetic prototype dataset for wearable sensor and operational duty stress prediction. Real authorized sensor data is unavailable.",
+        "disclaimer": "PROTOTYPE DATA: This synthetic dataset was algorithmically generated to verify data schemas, physiological ranges, and integration pipelines. Model accuracy derived from this dataset DO NOT represent real-world clinical or operational validated performance."
+    }
+    with open(DATASET_METADATA_PATH, "w") as f:
+        json.dump(dataset_metadata, f, indent=2)
+    print(f"Dataset metadata saved to: {DATASET_METADATA_PATH}", flush=True)
 
     baseline_stats = {
         col: {
@@ -257,7 +284,7 @@ def train_and_evaluate_model1():
     }
     sorted_importances = dict(sorted(feature_importance_dict.items(), key=lambda item: item[1], reverse=True))
 
-    print("\n--- Model 1 Evaluation Results ---", flush=True)
+    print("\n--- Model 1 Prototype Evaluation Results ---", flush=True)
     print(f"Overall Accuracy:  {acc * 100:.2f}%", flush=True)
     print(f"Macro Precision:   {prec_macro * 100:.2f}%", flush=True)
     print(f"Macro Recall:      {rec_macro * 100:.2f}%", flush=True)
@@ -268,10 +295,13 @@ def train_and_evaluate_model1():
         print(f"  - {feat:25s}: {val * 100:.2f}%", flush=True)
 
     metrics_data = {
-        "model_name": "RandomForestClassifier_Model1_Wearable_Operational",
-        "model_version": "v2.0.0-model1",
+        "model_name": "Model 1 (Wearable + Operational Random Forest Prototype)",
+        "model_version": "v2.0.0-model1-prototype",
         "trained_at": datetime.now().isoformat(),
-        "dataset_type": "SYNTHETIC_WEARABLE_OPERATIONAL_DEMO",
+        "is_synthetic_prototype": True,
+        "real_world_validated": False,
+        "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+        "dataset_name": "synthetic_prototype_sensor_operational_dataset.csv",
         "dataset_samples": int(len(df)),
         "train_samples": int(len(X_train)),
         "test_samples": int(len(X_test)),
@@ -291,7 +321,7 @@ def train_and_evaluate_model1():
             "HIGH": int((y == 2).sum())
         },
         "features_count": len(FEATURE_COLUMNS),
-        "disclaimer": "PROTOTYPE EVALUATION ON SYNTHETIC WEARABLE & OPERATIONAL DATA. NOT CLINICALLY VALIDATED."
+        "disclaimer": "PROTOTYPE MODEL: Trained and evaluated on synthetic prototype benchmark data for system architecture and integration verification. Model accuracy and evaluation metrics DO NOT represent real-world clinical, medical, or operational validated performance."
     }
 
     with open(METRICS_PATH, "w") as f:
@@ -307,8 +337,12 @@ def train_and_evaluate_model1():
         "feature_columns": FEATURE_COLUMNS,
         "class_names": CLASS_NAMES,
         "baseline_stats": baseline_stats,
-        "model_version": "v2.0.0-model1",
-        "model_name": "Model 1 (Wearable + Operational RF)",
+        "model_version": "v2.0.0-model1-prototype",
+        "model_name": "Model 1 (Wearable + Operational Random Forest Prototype)",
+        "is_synthetic_prototype": True,
+        "real_world_validated": False,
+        "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+        "disclaimer": "PROTOTYPE MODEL: Trained on synthetic prototype data for integration testing. Does NOT represent real-world validated performance.",
         "trained_at": datetime.now().isoformat()
     }, PREPROCESSING_PATH)
 

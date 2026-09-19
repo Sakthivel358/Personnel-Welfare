@@ -17,7 +17,7 @@
       "phone": "+91-9876500000"
     },
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T02:28:15.132Z",
+    "updatedAt": "2026-09-19T02:41:04.509Z",
     "workSchedule": "Standard Rotation",
     "recoveryTargetHours": 7,
     "careerGoals": "Specialized Technical & Operations Training",
@@ -930,5 +930,201 @@
     },
     "createdAt": "2026-09-19T02:31:05.943Z",
     "updatedAt": "2026-09-19T02:31:05.943Z"
+  },
+  {
+    "_id": "4644487f3ed017f32a98e082",
+    "userId": "a708281e52318c5d64162a6b",
+    "personnelId": "CRPF-T17-5049",
+    "fullName": "Naik Sandeep Singh",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:40:15.167Z",
+    "updatedAt": "2026-09-19T02:40:15.167Z"
+  },
+  {
+    "_id": "e8f5e725392a0b6647a3961a",
+    "userId": "2dd9b6193638f2b03c3f2333",
+    "personnelId": "CRPF-1789785627330",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:40:27.419Z",
+    "updatedAt": "2026-09-19T02:40:27.419Z"
+  },
+  {
+    "_id": "e3b9ad7ea7a5dc53b0d9587f",
+    "userId": "c435bd0ece619f2522b26c0a",
+    "personnelId": "CRPF-1789785643475",
+    "fullName": "Model 1 Test Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:40:43.545Z",
+    "updatedAt": "2026-09-19T02:40:43.545Z"
+  },
+  {
+    "_id": "2cda9b89befa6a0e480bf5c5",
+    "userId": "e3f8caf9f0b3b61b192f30d4",
+    "personnelId": "CRPF-TEST-0669",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:40:50.742Z",
+    "updatedAt": "2026-09-19T02:40:50.825Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "194a9039ef73e0b432583082",
+    "userId": "371ff538a8401ccb9176781d",
+    "personnelId": "CRPF-1789785658636",
+    "fullName": "Baseline Test Constable",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:40:58.727Z",
+    "updatedAt": "2026-09-19T02:40:58.727Z"
+  },
+  {
+    "_id": "1ae96d712e651533371e40bf",
+    "userId": "9e1cb6d06b1aff1657f1a747",
+    "personnelId": "CRPF-LOGIC-4158",
+    "fullName": "Logic Tester 4158",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:41:24.241Z",
+    "updatedAt": "2026-09-19T02:41:24.241Z"
+  },
+  {
+    "_id": "7ed2b99ba2546fd356449d1a",
+    "userId": "f515fd293e51b222229d608b",
+    "personnelId": "CRPF-T17-1324",
+    "fullName": "Naik Sandeep Singh",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T02:41:31.393Z",
+    "updatedAt": "2026-09-19T02:41:31.393Z"
   }
 ]

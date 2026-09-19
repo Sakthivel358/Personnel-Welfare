@@ -1,8 +1,11 @@
 {
-  "model_name": "RandomForestClassifier_Model1_Wearable_Operational",
-  "model_version": "v2.0.0-model1",
-  "trained_at": "2026-09-19T07:54:33.290152",
-  "dataset_type": "SYNTHETIC_WEARABLE_OPERATIONAL_DEMO",
+  "model_name": "Model 1 (Wearable + Operational Random Forest Prototype)",
+  "model_version": "v2.0.0-model1-prototype",
+  "trained_at": "2026-09-19T08:08:02.271046",
+  "is_synthetic_prototype": true,
+  "real_world_validated": false,
+  "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+  "dataset_name": "synthetic_prototype_sensor_operational_dataset.csv",
   "dataset_samples": 3500,
   "train_samples": 2800,
   "test_samples": 700,
@@ -55,5 +58,5 @@
     "HIGH": 325
   },
   "features_count": 20,
-  "disclaimer": "PROTOTYPE EVALUATION ON SYNTHETIC WEARABLE & OPERATIONAL DATA. NOT CLINICALLY VALIDATED."
+  "disclaimer": "PROTOTYPE MODEL: Trained and evaluated on synthetic prototype benchmark data for system architecture and integration verification. Model accuracy and evaluation metrics DO NOT represent real-world clinical, medical, or operational validated performance."
 }

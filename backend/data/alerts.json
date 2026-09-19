@@ -652,5 +652,151 @@
     "officerNotes": "",
     "createdAt": "2026-09-19T02:31:05.981Z",
     "updatedAt": "2026-09-19T02:31:05.981Z"
+  },
+  {
+    "_id": "b68450f350f50bb7c3d8dc83",
+    "personnelId": "CRPF-T17-5049",
+    "userId": "a708281e52318c5d64162a6b",
+    "predictionId": "1ef53f29e6e4373f7da76abf",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 93.3,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:40:15.226Z",
+    "updatedAt": "2026-09-19T02:40:15.226Z"
+  },
+  {
+    "_id": "d4e82514dabbca9ae8be1db3",
+    "personnelId": "CRPF-1789785627330",
+    "userId": "2dd9b6193638f2b03c3f2333",
+    "predictionId": "17402d47424346dfa3aefe59",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 93.4,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:40:27.469Z",
+    "updatedAt": "2026-09-19T02:40:27.469Z"
+  },
+  {
+    "_id": "fe5dcd8a9d9939ac26ad4e1c",
+    "personnelId": "CRPF-1789785643475",
+    "userId": "c435bd0ece619f2522b26c0a",
+    "predictionId": "d280c742e0ac931b61b6bb6f",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 93.4,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:40:43.588Z",
+    "updatedAt": "2026-09-19T02:40:43.588Z"
+  },
+  {
+    "_id": "29b93a87958052853bc4cb6c",
+    "personnelId": "CRPF-TEST-0669",
+    "userId": "e3f8caf9f0b3b61b192f30d4",
+    "predictionId": "f1c62bb6692d9ca349df22d7",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 70.4,
+    "topDrivers": [
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)",
+      "Resting Heart Rate (RHR)"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-19T02:40:50.873Z",
+    "updatedAt": "2026-09-19T02:40:51.053Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-19T02:40:51.053Z"
+  },
+  {
+    "_id": "b767a7c93332c5c48a0ab8c7",
+    "personnelId": "CRPF-1789785658636",
+    "userId": "371ff538a8401ccb9176781d",
+    "predictionId": "c79c346c5c71421b03968604",
+    "priority": "HIGH",
+    "concernLevel": "MODERATE",
+    "compositeRiskScore": 67.5,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Heart Rate Variability (HRV)",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:40:58.906Z",
+    "updatedAt": "2026-09-19T02:40:58.906Z"
+  },
+  {
+    "_id": "02ebd7dc9fa933135fb693dd",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "b4e99250823b675fbdd5b50e",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 95.5,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:41:18.386Z",
+    "updatedAt": "2026-09-19T02:41:18.386Z"
+  },
+  {
+    "_id": "8fe821bf78dab66905bc8f7b",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "7347520fba38cdfb1c51399f",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 97.2,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:41:18.432Z",
+    "updatedAt": "2026-09-19T02:41:18.432Z"
+  },
+  {
+    "_id": "d313dcc6de7ebb4ce5950b26",
+    "personnelId": "CRPF-T17-1324",
+    "userId": "f515fd293e51b222229d608b",
+    "predictionId": "6bb790c8292bc850f3321346",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 93.3,
+    "topDrivers": [
+      "Physical Fatigue & Strain",
+      "Rest & Sleep Recovery",
+      "Heart Rate Variability (HRV)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T02:41:31.431Z",
+    "updatedAt": "2026-09-19T02:41:31.431Z"
   }
 ]

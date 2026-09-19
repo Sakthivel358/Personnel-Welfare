@@ -190,21 +190,24 @@ async def predict_model1(data: CheckInInput):
 @app.get("/model1-info", tags=["Model 1"])
 async def get_model1_info():
     """
-    Returns transparent metadata for Model 1 (Wearable + Operational RF).
+    Returns transparent metadata for Model 1 (Wearable + Operational RF Prototype).
     """
     try:
         m1, prep1 = load_model1_artifacts()
         return {
-            "model_name": prep1.get("model_name", "Model 1 (Wearable + Operational RF)"),
+            "model_name": prep1.get("model_name", "Model 1 (Wearable + Operational Random Forest Prototype)"),
             "framework": "scikit-learn",
-            "model_version": prep1.get("model_version", "v2.0.0-model1"),
+            "model_version": prep1.get("model_version", "v2.0.0-model1-prototype"),
             "trained_at": prep1.get("trained_at"),
+            "is_synthetic_prototype": True,
+            "real_world_validated": False,
+            "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
             "n_estimators": getattr(m1, "n_estimators", 100),
             "features_count": len(prep1.get("feature_columns", [])),
             "features": prep1.get("feature_columns", []),
             "class_names": prep1.get("class_names", []),
             "baseline_statistics": prep1.get("baseline_stats", {}),
-            "disclaimer": "AI Model 1: Wearable + Operational Decision-Support Classifier."
+            "disclaimer": prep1.get("disclaimer", "PROTOTYPE MODEL: Trained on synthetic prototype benchmark data for system integration verification. Accuracy does NOT represent real-world clinical or operational validated performance.")
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -229,9 +232,13 @@ async def get_model1_evaluation():
             cm_data = json.load(f)
 
     return {
-        "model": "Model 1 (Wearable + Operational RF)",
+        "model": "Model 1 (Wearable + Operational Random Forest Prototype)",
+        "is_synthetic_prototype": True,
+        "real_world_validated": False,
+        "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
         "metrics": metrics,
-        "confusion_matrix": cm_data
+        "confusion_matrix": cm_data,
+        "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL: Evaluated on synthetic prototype benchmark data. Accuracy does NOT represent real-world clinical or operational validated performance.")
     }
 
 @app.get("/model-info", tags=["Transparency"])

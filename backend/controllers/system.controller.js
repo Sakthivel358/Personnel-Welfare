@@ -38,13 +38,22 @@ const getModelTransparency = async (req, res, next) => {
       success: true,
       data: {
         modelInfo: modelInfo || {
-          model_name: 'Random Forest Classifier',
+          model_name: 'Model 1 (Wearable + Operational Random Forest Prototype)',
           framework: 'scikit-learn',
-          model_version: 'v1.4.0',
-          n_estimators: 60,
-          disclaimer: 'Decision-support model for personnel welfare and resilience monitoring.'
+          model_version: 'v2.0.0-model1-prototype',
+          n_estimators: 100,
+          is_synthetic_prototype: true,
+          real_world_validated: false,
+          disclaimer: 'PROTOTYPE MODEL: Trained on synthetic prototype benchmark data for system integration verification. Accuracy does NOT represent real-world clinical or operational validated performance.'
         },
         evaluation: evaluation || null,
+        datasetInfo: {
+          dataset_name: 'synthetic_prototype_sensor_operational_dataset.csv',
+          provenance: 'SYNTHETIC_PROTOTYPE_DATA',
+          label: 'DEMO / SYNTHETIC DATA — NOT REAL PERSONNEL OR SENSOR DATA',
+          real_world_claim: false,
+          disclaimer: 'Trained on clearly labelled synthetic prototype benchmark data. Accuracy metrics reflect synthetic prototype validation and do NOT represent real-world clinical or operational validated performance.'
+        },
         pipeline: {
           step1: 'Personnel Check-In Form (Front-end)',
           step2: 'Data Validation & Normalization (Node.js/Express)',

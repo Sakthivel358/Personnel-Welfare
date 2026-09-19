@@ -74,7 +74,7 @@ async function runTests() {
 
   assert(m1InfoRes.status === 200, 'GET /model1-info returns 200 OK');
   const m1Info = m1InfoRes.data;
-  assert(m1Info.model_name === 'Model 1 (Wearable + Operational RF)', `Model name is Model 1 (got: ${m1Info.model_name})`);
+  assert(m1Info.model_name.includes('Model 1') && m1Info.model_name.includes('Wearable + Operational'), `Model name is Model 1 (got: ${m1Info.model_name})`);
   assert(m1Info.n_estimators === 100, 'Model 1 utilizes 100 ensemble decision trees');
   assert(m1Info.features_count === 20, `Model 1 feature count is 20 (got: ${m1Info.features_count})`);
 

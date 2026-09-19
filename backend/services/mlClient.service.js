@@ -147,6 +147,31 @@ class MLClientService {
   }
 
   async predictWelfareRisk(features) {
+    const hasWearable = Boolean(
+      features.wearable_synced ||
+      features.resting_heart_rate != null ||
+      features.hrv_ms != null ||
+      features.respiration_rate != null ||
+      features.skin_temperature_c != null ||
+      features.fatigue_physical_strain != null
+    );
+
+    if (hasWearable) {
+      // Task 17: Sensor prediction MUST strictly use Model 1 (Wearable + Operational RF).
+      // Under NO circumstances should sensor data be routed to the legacy PSS-10-trained model.
+      try {
+        const response = await this.client.post('/predict/model1', features);
+        if (response.data && response.data.success) {
+          return response.data.data;
+        }
+      } catch (err) {
+        console.warn('[ML Client] Remote Model 1 call failed for sensor checkin. Using Embedded Model 1 Engine. Error:', err.message);
+      }
+      // Strictly fall back to Embedded Model 1 (Wearable + Operational), NEVER the legacy PSS-10 model!
+      return this.calculateEmbeddedPrediction(features);
+    }
+
+    // For non-sensor check-ins, try Model 1 first, then legacy /predict, then embedded engine
     try {
       const response = await this.client.post('/predict/model1', features);
       if (response.data && response.data.success) {
@@ -348,10 +373,12 @@ class MLClientService {
       topDrivers: selectedTopDrivers,
       contributingFactors: contributingFactors,
       modelUsed: 'MODEL_1_WEARABLE_OPERATIONAL',
-      modelVersion: 'v2.0.0-model1',
+      isSyntheticPrototype: true,
+      realWorldValidated: false,
+      modelVersion: 'v2.0.0-model1-prototype',
       trainedAt: new Date().toISOString(),
       analyzedAt: new Date().toISOString(),
-      disclaimer: 'AI Model 1 (Wearable + Operational RF): Multi-source predictive signal based on biometric telemetry and operational duty data.'
+      disclaimer: 'PROTOTYPE MODEL 1 (Wearable + Operational RF): Multi-source predictive signal based on synthetic prototype benchmark. Does NOT represent real-world clinical or operational validated performance.'
     };
   }
 
@@ -413,13 +440,15 @@ class MLClientService {
         return response2.data;
       } catch (e) {
         return {
-          model_name: 'Model 1 (Wearable + Operational RF)',
+          model_name: 'Model 1 (Wearable + Operational Random Forest Prototype)',
           framework: 'scikit-learn (with Embedded Production Runtime)',
-          model_version: 'v2.0.0-model1',
+          model_version: 'v2.0.0-model1-prototype',
           n_estimators: 100,
+          is_synthetic_prototype: true,
+          real_world_validated: false,
           features: Object.keys(FEATURE_METADATA),
           class_names: ['LOW', 'MODERATE', 'HIGH'],
-          disclaimer: 'Decision-support AI model developed for Personnel Welfare & Resilience Monitoring.'
+          disclaimer: 'PROTOTYPE MODEL: Trained on synthetic prototype benchmark data for integration testing. Accuracy does NOT represent real-world clinical or operational validated performance.'
         };
       }
     }
