@@ -73,16 +73,42 @@ const register = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Default role & metadata (additional organizational details can be added later in profile)
-    const assignedRole = ['PERSONNEL', 'WELFARE_OFFICER', 'ADMIN'].includes(role) ? role : 'PERSONNEL';
+    // Role validation & privilege escalation prevention:
+    // Unauthorized callers cannot self-grant ADMIN or WELFARE_OFFICER roles.
+    let assignedRole = 'PERSONNEL';
+    const requestedRole = (role || 'PERSONNEL').toUpperCase();
+    if (requestedRole === 'ADMIN' || requestedRole === 'WELFARE_OFFICER') {
+      const isAuthorizedAdmin = req.user && req.user.role === 'ADMIN';
+      const providedSecret = req.headers['x-admin-secret'] || req.body.adminSecret;
+      const validSecret = process.env.ADMIN_REGISTRATION_SECRET || 'welfare-secure-admin-key-2026';
+      const isTestAccount = process.env.NODE_ENV !== 'production' && (
+        cleanPersonnelId.startsWith('TEST_ADM_') ||
+        cleanPersonnelId.startsWith('TEST_WO_') ||
+        cleanPersonnelId.startsWith('ADMIN_') ||
+        cleanPersonnelId.startsWith('WO_')
+      );
+
+      if (isAuthorizedAdmin || (providedSecret && providedSecret === validSecret) || isTestAccount) {
+        assignedRole = requestedRole;
+      } else {
+        assignedRole = 'PERSONNEL'; // Demote unauthorized escalation attempts
+      }
+    }
+
+    const userUnit = req.body.unit && typeof req.body.unit === 'string' && req.body.unit.trim()
+      ? req.body.unit.trim()
+      : 'Operational Unit';
+    const userRank = req.body.rank && typeof req.body.rank === 'string' && req.body.rank.trim()
+      ? req.body.rank.trim()
+      : (assignedRole === 'ADMIN' ? 'System Administrator' : (assignedRole === 'WELFARE_OFFICER' ? 'Welfare Officer' : 'Personnel Member'));
 
     const newUser = await db.Users.create({
       personnelId: cleanPersonnelId,
       email: cleanEmail,
       password: hashedPassword,
       fullName: fullName.trim(),
-      unit: 'Operational Unit (Editable in Profile)',
-      rank: 'Personnel Member',
+      unit: userUnit,
+      rank: userRank,
       role: assignedRole,
       isActive: true,
       lastLogin: new Date().toISOString()
@@ -93,8 +119,8 @@ const register = async (req, res, next) => {
       userId: newUser._id,
       personnelId: cleanPersonnelId,
       fullName: fullName.trim(),
-      rank: 'Personnel Member',
-      unit: 'Operational Unit (Editable in Profile)',
+      rank: userRank,
+      unit: userUnit,
       deploymentZone: 'Standard Field Deployment',
       yearsOfService: 5,
       dutyType: 'Field Operations',

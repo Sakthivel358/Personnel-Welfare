@@ -35,11 +35,11 @@ const userSchema = new mongoose.Schema(
     },
     unit: {
       type: String,
-      default: 'CRPF Battalion 104'
+      default: 'Operational Unit'
     },
     rank: {
       type: String,
-      default: 'Head Constable'
+      default: 'Personnel Member'
     },
     isActive: {
       type: Boolean,

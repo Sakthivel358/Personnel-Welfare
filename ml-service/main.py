@@ -32,10 +32,13 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# CORS Middleware
+# CORS Middleware: explicitly whitelist trusted origins for credentials support
+cors_origins_env = os.environ.get("CORS_ORIGIN", "http://localhost:5000,http://127.0.0.1:5000,http://localhost:8000,http://127.0.0.1:8000")
+allowed_origins = [o.strip() for o in cors_origins_env.split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

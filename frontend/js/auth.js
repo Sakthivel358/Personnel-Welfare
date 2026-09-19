@@ -87,7 +87,7 @@ function updateUserUI(user) {
   nameEls.forEach(el => el.textContent = user.fullName || user.personnelId || 'Personnel Member');
   const roleText = (user.role || 'PERSONNEL').replace(/_/g, ' ');
   roleEls.forEach(el => el.textContent = `${user.rank || 'Personnel'} • ${roleText}`);
-  unitEls.forEach(el => el.textContent = user.unit || 'CRPF Battalion 104');
+  unitEls.forEach(el => el.textContent = user.unit || 'Operational Unit');
   
   const avatarVal = user.profileImage || (typeof localStorage !== 'undefined' && localStorage.getItem('sih_user_avatar'));
   if (avatarVal) {
