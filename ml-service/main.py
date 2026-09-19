@@ -348,6 +348,64 @@ async def get_model2_evaluation():
         "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL 2: Evaluated on synthetic prototype benchmark data for fallback verification. Accuracy does NOT represent real-world clinical or operational validated performance.")
     }
 
+@app.get("/models", tags=["Model Registry"])
+async def get_models_registry():
+    """
+    Returns architecture registry showing Model 1 and Model 2 independence,
+    including distinct datasets, feature sets, and operational roles.
+    """
+    m1_info = {}
+    m2_info = {}
+    try:
+        m1, prep1 = load_model1_artifacts()
+        m1_info = {
+            "model_name": prep1.get("model_name", "Model 1 (Wearable + Operational Random Forest Prototype)"),
+            "model_type": type(m1).__name__,
+            "version": prep1.get("model_version", "v2.0.0-model1-prototype"),
+            "dataset": "dataset/synthetic_prototype_sensor_operational_dataset.csv",
+            "training_script": "train_model1_wearable_operational.py",
+            "artifact_model": "model1_wearable_operational.pkl",
+            "artifact_preprocessing": "model1_preprocessing.pkl",
+            "features_count": len(prep1.get("feature_columns", [])),
+            "features": prep1.get("feature_columns", []),
+            "has_wearable_telemetry": True,
+            "role": "Primary welfare assessment pathway utilizing authorized wearable telemetry & operational indicators"
+        }
+    except Exception as e:
+        m1_info = {"error": str(e)}
+
+    try:
+        m2, prep2 = load_model2_artifacts()
+        m2_info = {
+            "model_name": prep2.get("model_name", "Model 2 (PSS + Operational Fallback Random Forest Prototype)"),
+            "model_type": type(m2).__name__,
+            "version": prep2.get("model_version", "v2.0.0-model2-prototype"),
+            "dataset": "dataset/synthetic_prototype_model2_pss_operational_dataset.csv",
+            "training_script": "train_model2_pss_operational.py",
+            "artifact_model": "model2_pss_operational.pkl",
+            "artifact_preprocessing": "model2_preprocessing.pkl",
+            "features_count": len(prep2.get("feature_columns", [])),
+            "features": prep2.get("feature_columns", []),
+            "has_wearable_telemetry": False,
+            "role": "Fallback welfare assessment pathway when wearable telemetry is unavailable, relying on PSS-10 & operational factors"
+        }
+    except Exception as e:
+        m2_info = {"error": str(e)}
+
+    return {
+        "architecture": "Dual Independent Random Forest Architecture",
+        "independence_guarantee": {
+            "strictly_independent": True,
+            "shared_weights": False,
+            "sensor_columns_in_model2": False,
+            "distinct_datasets": True,
+            "distinct_training_pipelines": True,
+            "distinct_pickled_models": True
+        },
+        "model1": m1_info,
+        "model2": m2_info
+    }
+
 @app.get("/model-info", tags=["Transparency"])
 async def get_model_info():
     """

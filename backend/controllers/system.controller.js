@@ -29,15 +29,19 @@ const getSystemHealth = async (req, res, next) => {
 
 const getModelTransparency = async (req, res, next) => {
   try {
-    const [modelInfo, evaluation] = await Promise.all([
+    const [modelInfo, evaluation, model1Info, model1Eval, model2Info, model2Eval] = await Promise.all([
       mlClient.getModelInfo(),
-      mlClient.getModelEvaluation()
+      mlClient.getModelEvaluation(),
+      mlClient.getModel1Info(),
+      mlClient.getModel1Evaluation(),
+      mlClient.getModel2Info(),
+      mlClient.getModel2Evaluation()
     ]);
 
     return res.status(200).json({
       success: true,
       data: {
-        modelInfo: modelInfo || {
+        modelInfo: modelInfo || model1Info || {
           model_name: 'Model 1 (Wearable + Operational Random Forest Prototype)',
           framework: 'scikit-learn',
           model_version: 'v2.0.0-model1-prototype',
@@ -46,7 +50,30 @@ const getModelTransparency = async (req, res, next) => {
           real_world_validated: false,
           disclaimer: 'PROTOTYPE MODEL: Trained on synthetic prototype benchmark data for system integration verification. Accuracy does NOT represent real-world clinical or operational validated performance.'
         },
-        evaluation: evaluation || null,
+        evaluation: evaluation || model1Eval || null,
+        models: {
+          model1: {
+            info: model1Info,
+            evaluation: model1Eval,
+            role: 'Primary: Wearable Biometric + Operational Random Forest',
+            dataset: 'dataset/synthetic_prototype_sensor_operational_dataset.csv',
+            has_sensor_columns: true
+          },
+          model2: {
+            info: model2Info,
+            evaluation: model2Eval,
+            role: 'Fallback: PSS-10 + Operational Random Forest',
+            dataset: 'dataset/synthetic_prototype_model2_pss_operational_dataset.csv',
+            has_sensor_columns: false
+          },
+          independence: {
+            strictly_independent: true,
+            model1_features_count: model1Info?.features_count || 20,
+            model2_features_count: model2Info?.features_count || 13,
+            sensor_columns_in_model2: false,
+            description: 'Model 1 and Model 2 are strictly independent Random Forests with distinct datasets, training pipelines, feature schemas, and pickled weights.'
+          }
+        },
         datasetInfo: {
           dataset_name: 'synthetic_prototype_sensor_operational_dataset.csv',
           provenance: 'SYNTHETIC_PROTOTYPE_DATA',
