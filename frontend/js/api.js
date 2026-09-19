@@ -107,6 +107,10 @@ class APIClient {
     return this.request('/auth/me', { method: 'GET' });
   }
 
+  async verifyPassword(password) {
+    return this.request('/auth/verify-password', { method: 'POST', body: JSON.stringify({ password }) });
+  }
+
   async changePassword(currentPassword, newPassword) {
     return this.request('/auth/change-password', { method: 'POST', body: JSON.stringify({ currentPassword, newPassword }) });
   }

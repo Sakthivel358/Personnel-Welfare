@@ -9,10 +9,10 @@
 </head>
 <body>
 
-  <div class="demo-banner">
+  <div class="system-banner" style="background:var(--bg-card-subtle); border-bottom:1px solid var(--border-color); padding:0.6rem 1.5rem; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;">
     <div class="d-flex align-center gap-1">
-      <span class="demo-tag">ADMIN & TRANSPARENCY</span>
-      <span>System health checks, Random Forest evaluation metrics, and immutable audit logs.</span>
+      <span class="badge badge-primary" style="font-size:0.75rem; font-weight:700;">SYSTEM ADMINISTRATION</span>
+      <span>Authorized infrastructure health, Random Forest model governance, and immutable audit ledger.</span>
     </div>
     <div class="d-flex align-center gap-1">
       <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
@@ -102,16 +102,20 @@
             </div>
           </div>
 
-          <!-- Component Counts Summary -->
+          <!-- Component Counts Summary from Database -->
           <div class="card mb-3">
             <div class="card-header">
-              <h3>System Records Volume</h3>
-              <span class="badge badge-neutral">MongoDB Datastore</span>
+              <h3>Authorized Database Records Volume</h3>
+              <span class="badge badge-neutral">Live Database Queries</span>
             </div>
-            <div class="grid-4 text-center">
+            <div class="grid-4 text-center mb-3">
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">Registered Accounts</div>
                 <h2 id="cnt-users" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
+              </div>
+              <div class="card" style="background:var(--bg-card-subtle);">
+                <div class="text-muted" style="font-size:0.8rem;">Monitored Personnel</div>
+                <h2 id="cnt-personnel" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
               </div>
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">Submitted Check-ins</div>
@@ -120,6 +124,20 @@
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">ML Predictions Generated</div>
                 <h2 id="cnt-predictions" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
+              </div>
+            </div>
+            <div class="grid-4 text-center">
+              <div class="card" style="background:var(--bg-card-subtle);">
+                <div class="text-muted" style="font-size:0.8rem;">Active Alerts</div>
+                <h2 id="cnt-alerts" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
+              </div>
+              <div class="card" style="background:var(--bg-card-subtle);">
+                <div class="text-muted" style="font-size:0.8rem;">Support Requests</div>
+                <h2 id="cnt-support" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
+              </div>
+              <div class="card" style="background:var(--bg-card-subtle);">
+                <div class="text-muted" style="font-size:0.8rem;">Follow-up Sessions</div>
+                <h2 id="cnt-followups" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
               </div>
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">Audit Trail Logs</div>
@@ -135,27 +153,27 @@
             <div class="card-header">
               <div>
                 <h2>Random Forest Model Architecture & Performance</h2>
-                <p class="text-muted" style="font-size:0.85rem;">Genuine Scikit-Learn evaluation on synthetic training and holdout test set.</p>
+                <p class="text-muted" style="font-size:0.85rem;">Authentic Scikit-Learn evaluation dynamically retrieved from ML service.</p>
               </div>
-              <span class="badge badge-low" id="adm-model-ver">Random Forest Classifier</span>
+              <span class="badge badge-low" id="adm-model-ver">Loading Model...</span>
             </div>
 
             <div class="grid-4 text-center mb-3">
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">Overall Accuracy</div>
-                <h2 id="ev-acc" style="font-size:1.75rem; margin-top:0.25rem; color:var(--accent);">81.5%</h2>
+                <h2 id="ev-acc" style="font-size:1.75rem; margin-top:0.25rem; color:var(--accent);">--</h2>
               </div>
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">Macro Precision</div>
-                <h2 id="ev-prec" style="font-size:1.75rem; margin-top:0.25rem;">54.9%</h2>
+                <h2 id="ev-prec" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
               </div>
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">Macro Recall</div>
-                <h2 id="ev-rec" style="font-size:1.75rem; margin-top:0.25rem;">54.7%</h2>
+                <h2 id="ev-rec" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
               </div>
               <div class="card" style="background:var(--bg-card-subtle);">
                 <div class="text-muted" style="font-size:0.8rem;">Macro F1-Score</div>
-                <h2 id="ev-f1" style="font-size:1.75rem; margin-top:0.25rem;">54.8%</h2>
+                <h2 id="ev-f1" style="font-size:1.75rem; margin-top:0.25rem;">--</h2>
               </div>
             </div>
 
@@ -163,9 +181,7 @@
               <div class="card" style="background:var(--bg-card-subtle);">
                 <h4 class="mb-2">Confusion Matrix (Holdout Test Set)</h4>
                 <div id="confusion-matrix-display" style="font-family:monospace; font-size:0.9rem; line-height:1.6;">
-                  [126, 32, 0] (Low)<br>
-                  [31, 200, 6] (Moderate)<br>
-                  [0, 5, 0] (High)
+                  <span class="text-muted">Loading verified confusion matrix from model evaluation...</span>
                 </div>
               </div>
               <div class="card" style="background:var(--bg-card-subtle);">
@@ -275,10 +291,14 @@
         if (res && res.success && res.data) {
           const { systemStatus, counts } = res.data;
 
-          document.getElementById('cnt-users').textContent = counts.users || 0;
-          document.getElementById('cnt-checkins').textContent = counts.checkIns || 0;
-          document.getElementById('cnt-predictions').textContent = counts.predictions || 0;
-          document.getElementById('cnt-audits').textContent = counts.auditLogs || 0;
+          document.getElementById('cnt-users').textContent = counts.users != null ? counts.users : 0;
+          if (document.getElementById('cnt-personnel')) document.getElementById('cnt-personnel').textContent = counts.personnel != null ? counts.personnel : 0;
+          document.getElementById('cnt-checkins').textContent = counts.checkIns != null ? counts.checkIns : 0;
+          document.getElementById('cnt-predictions').textContent = counts.predictions != null ? counts.predictions : 0;
+          if (document.getElementById('cnt-alerts')) document.getElementById('cnt-alerts').textContent = counts.alerts != null ? counts.alerts : 0;
+          if (document.getElementById('cnt-support')) document.getElementById('cnt-support').textContent = counts.supportRequests != null ? counts.supportRequests : 0;
+          if (document.getElementById('cnt-followups')) document.getElementById('cnt-followups').textContent = counts.followUps != null ? counts.followUps : 0;
+          document.getElementById('cnt-audits').textContent = counts.auditLogs != null ? counts.auditLogs : 0;
 
           if (systemStatus.database) {
             document.getElementById('db-status-badge').textContent = systemStatus.database.status;
@@ -309,10 +329,25 @@
           }
           if (evaluation && evaluation.metrics) {
             const m = evaluation.metrics;
-            document.getElementById('ev-acc').textContent = `${((m.accuracy || 0.815) * 100).toFixed(1)}%`;
-            document.getElementById('ev-prec').textContent = `${((m.precision_macro || 0.548) * 100).toFixed(1)}%`;
-            document.getElementById('ev-rec').textContent = `${((m.recall_macro || 0.547) * 100).toFixed(1)}%`;
-            document.getElementById('ev-f1').textContent = `${((m.f1_macro || 0.548) * 100).toFixed(1)}%`;
+            document.getElementById('ev-acc').textContent = m.accuracy != null ? `${(m.accuracy * 100).toFixed(1)}%` : '--';
+            document.getElementById('ev-prec').textContent = m.precision_macro != null ? `${(m.precision_macro * 100).toFixed(1)}%` : '--';
+            document.getElementById('ev-rec').textContent = m.recall_macro != null ? `${(m.recall_macro * 100).toFixed(1)}%` : '--';
+            document.getElementById('ev-f1').textContent = m.f1_macro != null ? `${(m.f1_macro * 100).toFixed(1)}%` : '--';
+          }
+          const cmEl = document.getElementById('confusion-matrix-display');
+          if (cmEl) {
+            if (evaluation && evaluation.confusion_matrix && Array.isArray(evaluation.confusion_matrix)) {
+              const cm = evaluation.confusion_matrix;
+              cmEl.innerHTML = `
+                <div style="background:var(--bg-surface); padding:0.75rem; border-radius:6px; font-family:monospace; line-height:1.8;">
+                  <div>[${cm[0] ? cm[0].join(', ') : '0, 0, 0'}] &nbsp;<em>(Low Strain Cohort)</em></div>
+                  <div>[${cm[1] ? cm[1].join(', ') : '0, 0, 0'}] &nbsp;<em>(Moderate Strain Cohort)</em></div>
+                  <div>[${cm[2] ? cm[2].join(', ') : '0, 0, 0'}] &nbsp;<em>(High Welfare Concern)</em></div>
+                </div>
+              `;
+            } else {
+              cmEl.innerHTML = `<span class="text-muted">Awaiting model evaluation data.</span>`;
+            }
           }
         }
       } catch (err) {

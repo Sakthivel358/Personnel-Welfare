@@ -9,9 +9,9 @@
     "unit": "CRPF Battalion 104",
     "rank": "Havildar (GD)",
     "isActive": true,
-    "lastLogin": "2026-09-19T16:00:32.373Z",
+    "lastLogin": "2026-09-19T16:16:09.830Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-19T16:00:32.373Z"
+    "updatedAt": "2026-09-19T16:16:09.830Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T16:01:18.355Z",
+    "lastLogin": "2026-09-19T16:16:41.192Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T16:01:18.355Z"
+    "updatedAt": "2026-09-19T16:16:41.192Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -1356,5 +1356,103 @@
     "lastLogin": "2026-09-19T16:01:18.104Z",
     "createdAt": "2026-09-19T16:01:18.105Z",
     "updatedAt": "2026-09-19T16:01:18.105Z"
+  },
+  {
+    "_id": "8db37a613fe6c429eef1896f",
+    "personnelId": "TEST_P_1197",
+    "email": "test_p_1197@welfare.mil.in",
+    "password": "$2a$10$QPB0Vxm0.eSLDB1H3LF2uO8QWXmGrjhvQrdVjcjovVLTVQXZqWGw.",
+    "fullName": "Test Personnel 1197",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:13:14.175Z",
+    "createdAt": "2026-09-19T16:13:14.177Z",
+    "updatedAt": "2026-09-19T16:13:14.909Z"
+  },
+  {
+    "_id": "8d96964a18068a6c58f254bb",
+    "personnelId": "TEST_ADM_1197",
+    "email": "test_adm_1197@welfare.mil.in",
+    "password": "$2a$10$nUNdx3lhR2eW9/4V3ElIzOyuv.d1EOaXbFg6oSYz8ZggoFZNs7K5O",
+    "fullName": "Test Admin 1197",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "ADMIN",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:13:14.305Z",
+    "createdAt": "2026-09-19T16:13:14.305Z",
+    "updatedAt": "2026-09-19T16:13:14.305Z"
+  },
+  {
+    "_id": "363456efdd12d0f4cb200058",
+    "personnelId": "TEST_WO_1197",
+    "email": "test_wo_1197@welfare.mil.in",
+    "password": "$2a$10$lry.WGUbvHxOJ.dRO7qpTO7r.zl9TW2vdF0.yPKJrWRFmkPnSpUYS",
+    "fullName": "Test Officer 1197",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "WELFARE_OFFICER",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:13:14.403Z",
+    "createdAt": "2026-09-19T16:13:14.403Z",
+    "updatedAt": "2026-09-19T16:13:14.403Z"
+  },
+  {
+    "_id": "122af2b204c08459d47177ef",
+    "personnelId": "EXP579897",
+    "email": "explain_test_1789834579897@defence.gov.in",
+    "password": "$2a$10$IFJ66Sg0ZxQQlT0f9xi6TOZolDaZnidsDIIw0ZUh2yHy6rv5V.KzO",
+    "fullName": "Subedar Explainability Spec",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:16:20.096Z",
+    "createdAt": "2026-09-19T16:16:20.096Z",
+    "updatedAt": "2026-09-19T16:16:20.096Z"
+  },
+  {
+    "_id": "df263cdbdbfc3252c6a67310",
+    "personnelId": "ZERO591713",
+    "email": "baseline_zero_1789834591713@defence.gov.in",
+    "password": "$2a$10$tEoHvDvHCfddNip4aHvi8.8xhfIE7T4fQoZBF4s.z.Nj9CSFcw7vy",
+    "fullName": "Havildar Zero Checkins",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:16:31.857Z",
+    "createdAt": "2026-09-19T16:16:31.857Z",
+    "updatedAt": "2026-09-19T16:16:31.857Z"
+  },
+  {
+    "_id": "104300c86347fb5e38610db3",
+    "personnelId": "INSUF591713",
+    "email": "insufficient_user_1789834591713@defence.gov.in",
+    "password": "$2a$10$PptY/pPHqtp5RsfZscgfy.kHbK622A5SHejHYlwEnp8beGQC9vCv.",
+    "fullName": "Subedar Insufficient Tester",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:16:32.277Z",
+    "createdAt": "2026-09-19T16:16:32.277Z",
+    "updatedAt": "2026-09-19T16:16:32.277Z"
+  },
+  {
+    "_id": "07f09ea28fdd4eb79fe3f774",
+    "personnelId": "PERS-EV-0794",
+    "email": "evidence_test_1789834600794@forces.gov.in",
+    "password": "$2a$10$SMSWNY8UJiQaiz0QgTAPNe3im44Rle1khGqdEUfn8Qqz17cE55qMq",
+    "fullName": "Subedar Evidence Tester",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T16:16:40.936Z",
+    "createdAt": "2026-09-19T16:16:40.937Z",
+    "updatedAt": "2026-09-19T16:16:40.937Z"
   }
 ]

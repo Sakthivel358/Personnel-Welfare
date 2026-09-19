@@ -10,9 +10,9 @@
 </head>
 <body>
 
-  <div class="demo-banner">
+  <div class="system-banner" style="background:var(--bg-card-subtle); border-bottom:1px solid var(--border-color); padding:0.6rem 1.5rem; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;">
     <div class="d-flex align-center gap-1">
-      <span class="demo-tag">WELFARE OFFICER PORTAL</span>
+      <span class="badge badge-primary" style="font-size:0.75rem; font-weight:700;">WELFARE OFFICER PORTAL</span>
       <span>Human-in-the-loop decision-support and proactive follow-up for authorized personnel officers.</span>
     </div>
     <div class="d-flex align-center gap-1">
@@ -502,8 +502,8 @@
 
       <div id="pdf-report-content" style="font-family: var(--font-family); color:#0f172a;">
         <div class="grid-3 mb-3" style="background:#f1f5f9; padding:0.75rem; border-radius:8px; font-size:0.85rem;">
-          <div><strong>Battalion Unit:</strong> CRPF Battalion 104</div>
-          <div><strong>Sector:</strong> North High Altitude</div>
+          <div><strong>Battalion Unit:</strong> <span id="pdf-report-unit">Authorized Unit Roster</span></div>
+          <div><strong>Sector:</strong> <span id="pdf-report-sector">Assigned Operational Sector</span></div>
           <div><strong>Report Generated:</strong> <span id="pdf-report-date">--</span></div>
         </div>
 
@@ -511,25 +511,25 @@
         <div class="grid-4 mb-3" style="text-align:center;">
           <div style="background:#ecfdf5; border:1px solid #10b981; padding:0.6rem; border-radius:6px;">
             <div style="font-size:0.75rem; color:#065f46;">Low / Stable Risk</div>
-            <strong style="font-size:1.3rem; color:#065f46;" id="pdf-cnt-low">68%</strong>
+            <strong style="font-size:1.3rem; color:#065f46;" id="pdf-cnt-low">--</strong>
           </div>
           <div style="background:#fffbeb; border:1px solid #f59e0b; padding:0.6rem; border-radius:6px;">
             <div style="font-size:0.75rem; color:#92400e;">Moderate Strain</div>
-            <strong style="font-size:1.3rem; color:#92400e;" id="pdf-cnt-mod">24%</strong>
+            <strong style="font-size:1.3rem; color:#92400e;" id="pdf-cnt-mod">--</strong>
           </div>
           <div style="background:#fef2f2; border:1px solid #ef4444; padding:0.6rem; border-radius:6px;">
             <div style="font-size:0.75rem; color:#991b1b;">High Welfare Triage</div>
-            <strong style="font-size:1.3rem; color:#991b1b;" id="pdf-cnt-high">8%</strong>
+            <strong style="font-size:1.3rem; color:#991b1b;" id="pdf-cnt-high">--</strong>
           </div>
           <div style="background:#eff6ff; border:1px solid #2563eb; padding:0.6rem; border-radius:6px;">
-            <div style="font-size:0.75rem; color:#1e40af;">Intervention Success</div>
-            <strong style="font-size:1.3rem; color:#1e40af;" id="pdf-cnt-success">91.4%</strong>
+            <div style="font-size:0.75rem; color:#1e40af;">Intervention Coverage</div>
+            <strong style="font-size:1.3rem; color:#1e40af;" id="pdf-cnt-success">--</strong>
           </div>
         </div>
 
         <h4 style="color:#1e3a8a; border-bottom:1px solid #cbd5e1; padding-bottom:0.25rem; margin-bottom:0.5rem;">2. Predictive Stress Factor Decomposition</h4>
-        <p style="font-size:0.85rem; color:#334155; line-height:1.5; margin-bottom:0.75rem;">
-          Ensemble Random Forest evaluation identified <strong>Watch Duty Duration (&gt;54h/wk)</strong> and <strong>Sleep Deficit (&lt;5.5h/night)</strong> as primary operational drivers accounting for 74% of elevated risk signals.
+        <p style="font-size:0.85rem; color:#334155; line-height:1.5; margin-bottom:0.75rem;" id="pdf-stress-decomposition-text">
+          Evaluating authorized check-ins and active operational telemetry...
         </p>
 
         <h4 style="color:#1e3a8a; border-bottom:1px solid #cbd5e1; padding-bottom:0.25rem; margin-bottom:0.5rem;">3. Tactical Mitigation & Actionable Directives</h4>
@@ -950,7 +950,7 @@
       }
     }
 
-    function openExecutivePDFModal() {
+    async function openExecutivePDFModal() {
       const modal = document.getElementById('executive-pdf-modal');
       const dateEl = document.getElementById('pdf-report-date');
       if (dateEl) {
@@ -962,6 +962,61 @@
           minute: '2-digit'
         });
       }
+
+      try {
+        const user = JSON.parse(localStorage.getItem('sih_user') || '{}');
+        if (document.getElementById('pdf-report-unit')) {
+          document.getElementById('pdf-report-unit').textContent = user.unit || 'Authorized Unit Roster';
+        }
+        if (document.getElementById('pdf-report-sector')) {
+          document.getElementById('pdf-report-sector').textContent = user.deploymentZone || 'Operational Sector Command';
+        }
+
+        const res = await api.getOfficerDashboard();
+        if (res && res.success && res.data) {
+          const d = res.data;
+          const total = d.totalMonitoredPersonnel || 0;
+          const dist = d.riskDistribution || {};
+
+          const lowCount = dist.LOW || 0;
+          const modCount = dist.MODERATE || 0;
+          const highCount = dist.HIGH || 0;
+
+          const lowPct = total > 0 ? Math.round((lowCount / total) * 100) : 0;
+          const modPct = total > 0 ? Math.round((modCount / total) * 100) : 0;
+          const highPct = total > 0 ? Math.round((highCount / total) * 100) : 0;
+
+          document.getElementById('pdf-cnt-low').textContent = total > 0 ? `${lowPct}% (${lowCount})` : '0%';
+          document.getElementById('pdf-cnt-mod').textContent = total > 0 ? `${modPct}% (${modCount})` : '0%';
+          document.getElementById('pdf-cnt-high').textContent = total > 0 ? `${highPct}% (${highCount})` : '0%';
+
+          const followUpsResolved = d.followUpsCount?.resolved || 0;
+          const followUpsTotal = d.followUpsCount?.total || 0;
+          const coveragePct = followUpsTotal > 0 ? Math.round((followUpsResolved / followUpsTotal) * 100) : 100;
+          document.getElementById('pdf-cnt-success').textContent = `${coveragePct}%`;
+        }
+
+        const alertsRes = await api.getOfficerAlerts();
+        const decompEl = document.getElementById('pdf-stress-decomposition-text');
+        if (decompEl && alertsRes && alertsRes.success) {
+          const alerts = alertsRes.data || [];
+          if (alerts.length === 0) {
+            decompEl.textContent = 'All unit personnel currently operating within normal operational baselines with no active alerts.';
+          } else {
+            const driversCount = {};
+            alerts.forEach(a => {
+              (a.topDrivers || []).forEach(drv => {
+                driversCount[drv] = (driversCount[drv] || 0) + 1;
+              });
+            });
+            const top = Object.entries(driversCount).sort((a, b) => b[1] - a[1]).slice(0, 2).map(e => e[0]);
+            decompEl.innerHTML = `Analysis of <strong>${alerts.length} active welfare alerts</strong> identified primary contributing factors: <strong>${top.join('</strong> and <strong>') || 'Prolonged duty strain'}</strong>.`;
+          }
+        }
+      } catch (e) {
+        console.error('Error populating executive PDF report:', e);
+      }
+
       if (modal) modal.style.display = 'flex';
     }
 
@@ -987,10 +1042,10 @@
               p.fullName,
               p.rank,
               p.unit,
-              p.deploymentZone || 'Sector North',
-              p.yearsOfService || 6,
+              p.deploymentZone || 'Operational Sector',
+              p.yearsOfService != null ? p.yearsOfService : '--',
               p.latestConcernLevel || 'UNASSESSED',
-              p.latestRiskScore || 0,
+              p.latestRiskScore != null ? p.latestRiskScore : 0,
               p.lastAnalyzedAt ? Utils.formatDate(p.lastAnalyzedAt) : 'None'
             ]);
           });

@@ -71,157 +71,406 @@
       </header>
 
       <div class="page-container" style="max-width: 1000px;">
+      </ul>
+      <div class="sidebar-footer">
+        <div class="user-mini-card">
+          <div class="user-avatar"></div>
+          <div class="user-info-text">
+            <div class="user-name" data-user="name">Personnel Member</div>
+            <div class="user-role-badge" data-user="role">Personnel</div>
+          </div>
+          <button class="logout-btn" title="Sign Out" style="background:none;border:none;color:#94a3b8;cursor:pointer;">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle">☰</button>
+          <div class="page-title">Frequently Asked Questions & User Guide</div>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
+          <button class="theme-toggle topbar-btn">🌙</button>
+        </div>
+      </header>
+
+      <div class="page-container" style="max-width: 1000px;">
         <div class="card mb-3">
           <h2>WelfareAI Knowledge Base & Frequently Asked Questions</h2>
           <p class="text-muted" style="margin-top:0.25rem;">
             Comprehensive operational guide covering AI stress modeling, explainability, data privacy, welfare triage, and support workflows for uniformed personnel and officers.
           </p>
 
-          <div class="mt-3">
-            <input type="text" id="faq-search-input" class="form-control" placeholder="🔍 Search questions (e.g., PSS-10, Random Forest, privacy, officer review, duty hours)..." oninput="searchFAQs()">
+          <!-- 14-Category Navigation Pills -->
+          <div class="faq-filter-pills mt-3 mb-3 d-flex flex-wrap gap-1" style="overflow-x:auto; padding-bottom:0.5rem;">
+            <button class="btn btn-sm btn-primary active-pill" onclick="filterFaqCategory('all', this)">All Categories</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('general', this)">General</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('personnel', this)">Personnel</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('officer', this)">Welfare Officer</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('admin', this)">Admin</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('ml', this)">ML</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('wearables', this)">Wearables</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('pss10', this)">PSS-10</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('privacy', this)">Privacy</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('security', this)">Security</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('offline', this)">Offline mode</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('data', this)">Data</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('alerts', this)">Alerts</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('support', this)">Welfare Support</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterFaqCategory('ethics', this)">Ethics</button>
+          </div>
+
+          <div class="mt-2">
+            <input type="text" id="faq-search-input" class="form-control" placeholder="🔍 Search across all 14 FAQ categories (e.g., PSS-10, Random Forest, privacy, offline mode, non-disciplinary)..." oninput="searchFAQs()">
           </div>
 
           <div id="faq-content-area" class="mt-4">
-            <!-- Section 1: AI Model & Explainability -->
-            <div class="faq-category mb-4">
-              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🤖 AI Model, Architecture & Predictive Analytics</h3>
+            <!-- 1. General -->
+            <div class="faq-category mb-4" data-category="general">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🌐 General</h3>
               
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: How does the AI model evaluate stress and where is it computed?</h4>
+                <h4>Q: What is WelfareAI and who is it designed for?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: The platform runs a dual-layer architecture. When you submit a check-in, inputs are transmitted securely to our FastAPI Python ML microservice running on port 8000. A trained <strong>Random Forest Classifier (60 estimators, balanced class weights)</strong> evaluates multi-variable operational patterns against baseline statistical distributions to compute your composite welfare risk index (0–100%) and feature attribution breakdown.
+                  A: WelfareAI is an evidence-based, human-in-the-loop decision-support platform engineered specifically for armed forces and Central Armed Police Forces (CAPF) personnel and welfare officers. It monitors operational strain, workload velocity, and recovery indicators to prevent chronic burnout and promote force resilience.
                 </p>
               </div>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: What are the 8 key operational stress factors evaluated?</h4>
+                <h4>Q: Is WelfareAI a clinical diagnostic or psychiatric platform?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: The model evaluates: <strong>1. Weekly Workload / Duty Hours</strong>, <strong>2. Daily Sleep & Recovery Hours</strong>, <strong>3. Subjective Work Pressure Rating (1–10)</strong>, <strong>4. Perceived Stress Scale (PSS-10)</strong>, <strong>5. Social & Family Support Rating (1–10)</strong>, <strong>6. Work-Life Balance Rating (1–10)</strong>, <strong>7. Shift Continuity & High-Intensity Days</strong>, and <strong>8. Longitudinal Trend Velocity Delta</strong>.
+                  A: <strong>No.</strong> WelfareAI explicitly identifies welfare-risk patterns and operational stress strain. It is strictly non-clinical, does not deliver a medical diagnosis, and does not replace certified military medical or psychological personnel.
                 </p>
               </div>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: Why does the system explain which factors contributed most to my score?</h4>
+                <h4>Q: What is the core non-disciplinary doctrine of the platform?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: To eliminate "black box" AI decisions. In high-stakes uniformed forces environments, personnel and officers must understand the exact operational drivers behind every flag (e.g. <em>"62h duty + 4.5h sleep drove 72% of the elevated risk index"</em>) so actionable adjustments can be made immediately.
-                </p>
-              </div>
-
-              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: What is the difference between Low, Moderate, and High concern levels?</h4>
-                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: <strong>Low / Balanced (0–30%):</strong> Operational variables within healthy baseline tolerances. Standard self-care recommended.<br>
-                  <strong>Moderate Strain (31–70%):</strong> Noticeable workload or sleep deficit. Tailored pacing and proactive rest suggested.<br>
-                  <strong>High Concern (&gt;70%):</strong> Compounding fatigue indicators requiring confidential welfare officer review and rest rotation.
+                  A: Under the Force Welfare Directive, <strong>an ML prediction must never automatically become a disciplinary action.</strong> Check-in results and welfare flags are legally and procedurally prohibited from being used in Annual Confidential Reports (ACR), promotion evaluations, or disciplinary inquiries.
                 </p>
               </div>
             </div>
 
-            <!-- Section 2: PSS-10 and Check-in Procedure -->
-            <div class="faq-category mb-4">
-              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">📝 Stress Check-In & PSS-10 Questionnaire</h3>
+            <!-- 2. Personnel -->
+            <div class="faq-category mb-4" data-category="personnel">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">👤 Personnel</h3>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: What is the PSS-10 and why is it used?</h4>
+                <h4>Q: How do I complete my regular stress check-in?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: The <strong>Perceived Stress Scale (PSS-10)</strong> is the globally validated 10-item psychometric instrument developed by Dr. Sheldon Cohen. It assesses how unpredictable, uncontrollable, and overloaded personnel feel during their recent operational duties. Items 4, 5, 7, and 8 use reverse scoring for psychometric validity.
+                  A: Navigate to the <strong>Stress Check-in</strong> tab, enter your weekly duty hours, sleep hours, subjective work pressure rating, and the 10-item PSS-10 questionnaire. The process takes less than 3 minutes and immediately computes your personal welfare score.
                 </p>
               </div>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: How frequently should I complete a stress check-in?</h4>
+                <h4>Q: How frequently should I submit a check-in?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: Standard recommended frequency is <strong>weekly or bi-weekly</strong> during routine deployments, or at the conclusion of intense operations, high-altitude patrols, or prolonged shift rotations.
+                  A: Standard recommended frequency is once per week, or immediately following intense field operations, prolonged night shifts, or high-altitude patrols.
                 </p>
               </div>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: Can I edit my answers after submitting a check-in?</h4>
+                <h4>Q: Can I view my personal historical baseline and what changed?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: Each submitted check-in represents an immutable timestamped assessment in your historical trajectory. If you made an error, you can submit an updated check-in immediately; the platform automatically compares the latest two check-ins.
-                </p>
-              </div>
-            </div>
-
-            <!-- Section 3: Privacy, Non-Punitive Doctrine & Security -->
-            <div class="faq-category mb-4">
-              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🔒 Privacy, Data Security & Ethical Charter</h3>
-
-              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: Can my Commanding Officer see my check-in responses or use this against my career?</h4>
-                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: <strong>Strictly NO.</strong> WelfareAI operates under an absolute non-punitive doctrine. Disciplinary authorities, court-martial bodies, and promotion boards are barred by software RBAC and ethical charter from accessing individual check-ins. Individual responses are strictly confidential.
+                  A: Yes. The <strong>What Changed?</strong> view compares <em>Your Normal Pattern</em> vs <em>Current</em> across workload, rest, fatigue, and stress indicators. If you have fewer than 2 check-ins, the system clearly shows: <em>Baseline not established yet</em>.
                 </p>
               </div>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: Is WelfareAI a psychiatric or clinical diagnostic tool?</h4>
+                <h4>Q: Can I request welfare support if my score is low or moderate?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: <strong>No.</strong> WelfareAI is a preventive, non-clinical decision-support tool. It does not diagnose psychiatric illness, prescribe medication, or replace qualified medical officers.
-                </p>
-              </div>
-
-              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: How is my authentication and health data secured?</h4>
-                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: All passwords use <strong>Bcrypt salting (10 rounds)</strong>. Sessions use signed HttpOnly JWT cookies with Strict SameSite protection, and every critical transaction is recorded in an append-only audit trail.
+                  A: <strong>Yes, absolutely.</strong> Personnel can request confidential welfare support at any time via the Welfare Support page, regardless of whether the ML model classified them as high concern or not.
                 </p>
               </div>
             </div>
 
-            <!-- Section 4: Longitudinal Trajectory & What Changed? -->
-            <div class="faq-category mb-4">
-              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">📈 Trajectory, 'What Changed?' & Recovery Journey</h3>
+            <!-- 3. Welfare Officer -->
+            <div class="faq-category mb-4" data-category="officer">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🩺 Welfare Officer</h3>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: What is the 'What Changed?' feature and how does it help?</h4>
+                <h4>Q: What is the 7-stage Welfare Officer review workflow?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: The <strong>What Changed?</strong> module computes exact mathematical deltas between your current check-in and immediately preceding check-in (e.g., <em>+1.5h sleep/night, -8 duty hours/week, -4 PSS points</em>) to visually correlate rest interventions with stress index reductions.
+                  A: The non-punitive review workflow follows a strict 7-stage pathway:<br>
+                  <strong>1. Alert</strong> &rarr; <strong>2. Evidence</strong> &rarr; <strong>3. Contributors</strong> &rarr; <strong>4. What Changed</strong> &rarr; <strong>5. Officer Review</strong> &rarr; <strong>6. Support Action</strong> &rarr; <strong>7. Follow-up</strong>.
                 </p>
               </div>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: Why does the Recovery Journey show 'Human-in-the-Loop' and 'Follow-up' as Pending?</h4>
+                <h4>Q: How does the AI Shift Pacing & Rest Rotation Optimizer work?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: In live deployment, high-strain flags are queued for the Unit Welfare Officer to review confidentially and schedule a consultation. In this evaluation portal, you can click the <strong>"⚡ Simulate Officer Review & Follow-Up"</strong> button to immediately advance the 6-stage lifecycle!
+                  A: The optimizer analyzes fatigue velocity and consecutive shifts to suggest rest rotations (e.g. 48h decompression cycle or daylight administrative duty) for high-strain watch standers to preempt exhaustion before it compromises health.
                 </p>
               </div>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: How do I export my historical trend records?</h4>
+                <h4>Q: How do follow-up re-analysis and trajectory tracking work?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: Navigate to the <strong>Longitudinal Trajectory</strong> page (`trends.html`) and click the <strong>"📥 Export CSV"</strong> button above the historical log table.
-                </p>
-              </div>
-            </div>
-
-            <!-- Section 5: Welfare Officer & Early-Warning Center -->
-            <div class="faq-category mb-4">
-              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🩺 Welfare Officer Triage & Early-Warning Center</h3>
-
-              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: How does the Early-Warning Center detect emerging strain?</h4>
-                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: It classifies signals into 4 dynamic quadrants: <strong>New Signals</strong> (first elevated flag), <strong>Rising Signals</strong> (risk increased &ge; +6%), <strong>Persistent Signals</strong> (elevated across &ge; 2 cycles), and <strong>Improving Signals</strong> (risk reduced &le; -6%), enabling proactive support before burnout occurs.
-                </p>
-              </div>
-
-              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: What role does the Unit Welfare Officer play?</h4>
-                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: Welfare Officers act as confidential human advocates. They review incoming welfare signals, conduct supportive one-on-one sessions, coordinate with unit leadership for rest pacing, and log intervention outcomes without punitive repercussions.
+                  A: When a personnel member submits subsequent check-ins after an officer support consultation, the system re-evaluates their welfare risk index against the initial assessment, categorizing the observed change as <em>Improved</em>, <em>Stable</em>, or <em>Elevated</em>.
                 </p>
               </div>
             </div>
 
-            <!-- Section 6: Helplines & Emergency Support -->
-            <div class="faq-category mb-4">
-              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🚨 Emergency Contacts & Helplines</h3>
+            <!-- 4. Admin -->
+            <div class="faq-category mb-4" data-category="admin">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">⚙️ Admin</h3>
 
               <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
-                <h4>Q: Who do I contact in case of immediate acute emotional distress?</h4>
+                <h4>Q: What system metrics and infrastructure health can administrators monitor?</h4>
                 <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
-                  A: Call the Forces 24/7 Psychological Support Toll-Free Helpline at <strong>1800-180-4024</strong> (Toll-Free, 24/7) or contact the Battalion HQ Welfare Desk at Extension <strong>#304</strong>. For family dependent assistance, call the Family Welfare Board at <strong>1800-112-9900</strong>.
+                  A: Administrators monitor live Node.js/Express API status, MongoDB database connectivity, FastAPI ML microservice health, and authentic datastore volume counts (users, personnel, check-ins, predictions, alerts, support requests, follow-ups).
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How are user accounts and roles governed?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Administrators govern role-based access control (RBAC) across three distinct roles: `PERSONNEL`, `WELFARE_OFFICER`, and `ADMIN`. Admins have zero access to private individual questionnaire responses.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How are immutable security audit logs maintained?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: All authentication events, alert reviews, pacing approvals, and password changes are recorded into an append-only audit collection containing timestamps, personnel IDs, target resources, and client IP addresses.
+                </p>
+              </div>
+            </div>
+
+            <!-- 5. ML (Machine Learning) -->
+            <div class="faq-category mb-4" data-category="ml">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🤖 ML (Machine Learning)</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What machine learning model is utilized and what is its architecture?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: The platform utilizes a Python Scikit-Learn <strong>RandomForestClassifier</strong> with 60 ensemble estimators, balanced class weights, and maximum tree depth of 8, served asynchronously via a FastAPI microservice on port 8000.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How is ML explainability and feature attribution computed?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Every prediction extracts individual decision path weights and feature attribution percentages from the ensemble trees, showing understandable contributing indicators (e.g. <em>Weekly duty hours &gt; 60h contributed +32% to risk score</em>).
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How are the models evaluated (train/test validation)?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Models are evaluated using holdout 80/20 train/test splits with verified multi-class metrics including overall accuracy, macro-precision, macro-recall, macro-F1, and full confusion matrices without artificial inflation.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What is the synthetic dataset transparency policy?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Synthetic training data is clearly labeled as <strong>Synthetic Prototype Training Data</strong>. Prototype accuracy is explicitly distinguished from real-world field-validated accuracy.
+                </p>
+              </div>
+            </div>
+
+            <!-- 6. Wearables -->
+            <div class="faq-category mb-4" data-category="wearables">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">⌚ Wearables</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What wearable biometric telemetry does WelfareAI support?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: The system ingests Heart Rate Variability (HRV rmssd in ms), Resting Heart Rate (RHR in bpm), daily step counts, and deep sleep recovery hours from authorized defense-grade smart bands.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: Is continuous wearable monitoring mandatory or voluntary?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: <strong>Completely voluntary.</strong> Personnel can choose whether to link wearable telemetry. When wearable data is absent, the system functions seamlessly using authorized operational and self-check data.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How does wearable data correlate with subjective check-ins?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Wearable telemetry provides objective physiological confirmation (e.g. low HRV indicating autonomic sympathetic overdrive) that strengthens the evidence basis of self-reported strain.
+                </p>
+              </div>
+            </div>
+
+            <!-- 7. PSS-10 -->
+            <div class="faq-category mb-4" data-category="pss10">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">📋 PSS-10</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What is the Perceived Stress Scale (PSS-10)?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: The PSS-10 is the globally recognized 10-item psychometric instrument developed by Dr. Sheldon Cohen to measure the degree to which situations in a person's life are appraised as unpredictable, uncontrollable, and overwhelming.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: Which items in the PSS-10 are reverse-scored and why?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: <strong>Items 4, 5, 7, and 8</strong> are positively worded (e.g., feeling confident about handling personal problems) and are reverse-scored (0 &rarr; 4, 1 &rarr; 3, 2 &rarr; 2, 3 &rarr; 1, 4 &rarr; 0) to ensure psychometric validity.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What do the PSS-10 total scores indicate?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Scores range from 0 to 40:<br>
+                  • <strong>0–13:</strong> Low perceived operational stress.<br>
+                  • <strong>14–26:</strong> Moderate perceived stress (routine coping and pacing recommended).<br>
+                  • <strong>27–40:</strong> High perceived stress (proactive rest and welfare check-in recommended).
+                </p>
+              </div>
+            </div>
+
+            <!-- 8. Privacy -->
+            <div class="faq-category mb-4" data-category="privacy">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🛡️ Privacy</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How are personal identities separated from welfare analytics?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Under Task 36 privacy protection, personal identity information (name, service ID, contact number) is isolated from analytical telemetry using cryptographic pseudonymization, coarse age bucketing, and regional unit clustering.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What is the Privacy Sandbox?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: The <strong>Privacy Sandbox</strong> (`privacy-sandbox.html`) demonstrates the exact before & after transformation:<br>
+                  <em>Name: Ravi Kumar / Service ID: CRPF10452 / Age: 27</em> &rarr; <em>User Token: USR_7F29A / Age Group: 25–30 / Unit Group / Workload / Stress Index</em>.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What data masking is applied?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Service identifiers are masked in officer triage views (e.g. `CRPF-***52`) and phone numbers are masked (`******4024`) to enforce data minimization.
+                </p>
+              </div>
+            </div>
+
+            <!-- 9. Security -->
+            <div class="faq-category mb-4" data-category="security">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🔐 Security</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How are credentials and sessions secured?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Passwords are encrypted using <strong>Bcrypt with 10 salt rounds</strong>. Sessions use signed HttpOnly JWT cookies with Strict SameSite protection, preventing XSS and CSRF token extraction.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: Why is there a two-stage confirmation screen for Change Password?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: In accordance with Task 40 security requirements, the password-change inputs are hidden behind a secure re-authentication gate to prevent shoulder-surfing and unauthorized password changes on unattended military workstations.
+                </p>
+              </div>
+            </div>
+
+            <!-- 10. Offline mode -->
+            <div class="faq-category mb-4" data-category="offline">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">📡 Offline mode</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How does WelfareAI operate in remote border posts without internet?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: The client application stores submitted check-ins locally in an encrypted IndexedDB / LocalStorage queue when network connectivity is lost.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How and when are offline records synchronized?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: As soon as a network connection or base intranet link is detected, the browser automatically batches queued check-ins to `POST /api/v1/checkin/sync`, preserving original submission timestamps.
+                </p>
+              </div>
+            </div>
+
+            <!-- 11. Data -->
+            <div class="faq-category mb-4" data-category="data">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">💾 Data</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What operational and physiological data streams are collected?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Authorized data streams include: <strong>DUTY</strong> (shift length, night watch), <strong>WORKLOAD</strong> (weekly duty hours), <strong>REST_RECOVERY</strong> (sleep duration), <strong>SELF_CHECK</strong> (PSS-10, subjective pressure), and optional <strong>WEARABLE</strong> (HRV, RHR).
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: Can personnel export their complete longitudinal welfare data?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Yes. Personnel can export their complete check-in history as JSON or CSV files directly from the Settings and Longitudinal Trajectory pages.
+                </p>
+              </div>
+            </div>
+
+            <!-- 12. Alerts -->
+            <div class="faq-category mb-4" data-category="alerts">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🚨 Alerts</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: How are evidence-based alerts generated?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Alerts are generated exclusively when verified data streams cross validated strain thresholds (e.g. cumulative duty &gt; 68h/wk, sleep &lt; 5h, or PSS-10 &gt; 28). Every alert provides a structured explanation (`whyAlertGenerated`) listing the exact triggering factors.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What does 'EVIDENCE — INSUFFICIENT' mean when data is sparse?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: In accordance with Task 25, if fewer than 2 authorized data streams exist, the system will NOT display High/Moderate/Low simply to fill the screen. It displays <strong>WELFARE CONCERN — UNDETERMINED</strong> and <strong>EVIDENCE — INSUFFICIENT</strong>.
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: Why does every alert explicitly declare non-disciplinary protection?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: To prevent administrative misuse. Alerts are strictly supportive triage signals for fatigue mitigation, restorative downtime, and voluntary counseling liaison.
+                </p>
+              </div>
+            </div>
+
+            <!-- 13. Welfare Support -->
+            <div class="faq-category mb-4" data-category="support">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">🤝 Welfare Support</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What voluntary support options are available in the Welfare Support portal?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Support options include: 1. Rest & Sleep Restoration (48–72h downtime), 2. Peer Mentorship Connect, 3. Duty Pacing & Shift Adjustment, 4. Confidential Counseling Liaison, and 5. 24/7 Tele-Counseling Helplines (1800-180-4024).
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What is the status tracking lifecycle for support requests?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: Requests progress through 4 clear states: <em>SUBMITTED &rarr; UNDER_OFFICER_REVIEW &rarr; ACTION_DISPATCHED &rarr; RESOLVED</em>, with timestamped notes visible to the personnel member.
+                </p>
+              </div>
+            </div>
+
+            <!-- 14. Ethics -->
+            <div class="faq-category mb-4" data-category="ethics">
+              <h3 class="mb-2" style="font-size: 1.15rem; color: var(--accent);">⚖️ Ethics</h3>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: What is the core Ethical AI Charter governing WelfareAI?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: WelfareAI is founded on three ethical pillars: <strong>1. Absolute Non-Punitive Doctrine</strong>, <strong>2. Human-in-the-Loop Oversight</strong> (no autonomous administrative actions), and <strong>3. Zero Clandestine Surveillance</strong> (no GPS tracking, keylogging, or microphone access).
+                </p>
+              </div>
+
+              <div class="card mb-2 faq-item" style="background: var(--bg-card-subtle);">
+                <h4>Q: Can machine learning predictions replace human judgment?</h4>
+                <p class="text-muted mt-1" style="font-size: 0.9rem; line-height: 1.5;">
+                  A: <strong>Never.</strong> The AI model functions solely as an observational decision-support tool. All care interventions, schedule adjustments, and welfare consults require empathetic human officer review.
                 </p>
               </div>
             </div>
@@ -238,6 +487,22 @@
     document.addEventListener('DOMContentLoaded', async () => {
       await checkAuth();
     });
+
+    function filterFaqCategory(category, btn) {
+      document.querySelectorAll('.faq-filter-pills button').forEach(b => {
+        b.className = 'btn btn-sm btn-secondary';
+      });
+      if (btn) btn.className = 'btn btn-sm btn-primary active-pill';
+
+      const categories = document.querySelectorAll('.faq-category');
+      categories.forEach(cat => {
+        if (category === 'all' || cat.dataset.category === category) {
+          cat.style.display = 'block';
+        } else {
+          cat.style.display = 'none';
+        }
+      });
+    }
 
     function searchFAQs() {
       const q = (document.getElementById('faq-search-input').value || '').toLowerCase().trim();

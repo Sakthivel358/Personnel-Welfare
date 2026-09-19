@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Account Settings & Security — WelfareAI</title>
+  <title>Settings & Preferences — WelfareAI</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/dashboard.css">
   <style>
@@ -18,7 +18,7 @@
       overflow-x: auto;
     }
     .settings-tab-btn {
-      padding: 0.6rem 1.1rem;
+      padding: 0.65rem 1.15rem;
       border: none;
       background: transparent;
       color: var(--text-muted);
@@ -45,15 +45,30 @@
     .settings-pane.active {
       display: block;
     }
-
+    .theme-card {
+      background: var(--bg-card-subtle);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .theme-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .theme-card.active-theme {
+      border-color: var(--accent);
+      background: rgba(37, 99, 235, 0.05);
+    }
   </style>
 </head>
 <body>
 
-  <div class="demo-banner">
+  <div class="system-banner" style="background:var(--bg-card-subtle); border-bottom:1px solid var(--border-color); padding:0.6rem 1.5rem; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem;">
     <div class="d-flex align-center gap-1">
-      <span class="demo-tag">SETTINGS</span>
-      <span>Password updates update your secure Bcrypt hash in the database.</span>
+      <span class="badge badge-primary" style="font-size:0.75rem; font-weight:700;">SETTINGS & PREFERENCES</span>
+      <span>Configure operational preferences, notification alerts, visual themes, privacy controls, credentials, and profile.</span>
     </div>
     <div class="d-flex align-center gap-1">
       <button class="theme-toggle btn btn-sm btn-secondary" style="padding:0.2rem 0.6rem;">🌙</button>
@@ -70,7 +85,7 @@
           <div class="sidebar-brand-sub">Uniformed Forces Platform</div>
         </div>
       </div>
-            <ul class="sidebar-menu">
+      <ul class="sidebar-menu">
         <li class="menu-category">Welfare Analytics</li>
         <li class="menu-item "><a href="/dashboard.html"><span class="menu-icon"><svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Dashboard</a></li>
         <li class="menu-item "><a href="/profile.html"><span class="menu-icon"><svg class="svg-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> My Profile</a></li>
@@ -103,7 +118,7 @@
       <header class="app-topbar">
         <div class="topbar-left">
           <button class="mobile-toggle">☰</button>
-          <div class="page-title">Account & Platform Settings</div>
+          <div class="page-title">Platform & Account Settings</div>
         </div>
         <div class="topbar-right">
           <button class="topbar-btn" title="Notifications" onclick="Utils.openNotificationCenter()">🔔</button>
@@ -111,46 +126,299 @@
         </div>
       </header>
 
-      <div class="page-container" style="max-width: 900px;">
-        <!-- Settings Tabs -->
+      <div class="page-container" style="max-width: 950px;">
+        <!-- 6 Functional Settings Tabs (Task 40) -->
         <div class="settings-tabs">
-          <button class="settings-tab-btn active" onclick="switchSettingsTab('security', this)">🔐 Security & Password</button>
-          <button class="settings-tab-btn" onclick="switchSettingsTab('avatar', this)">👤 Profile Photo & Avatar</button>
-          <button class="settings-tab-btn" onclick="switchSettingsTab('appearance', this)">🎨 Appearance & Theme</button>
-          <button class="settings-tab-btn" onclick="switchSettingsTab('notifications', this)">🔔 Notifications</button>
-          <button class="settings-tab-btn" onclick="switchSettingsTab('data', this)">💾 Data & Export</button>
+          <button class="settings-tab-btn active" id="tab-btn-general" onclick="switchSettingsTab('general', this)">⚙️ General</button>
+          <button class="settings-tab-btn" id="tab-btn-notifications" onclick="switchSettingsTab('notifications', this)">🔔 Notifications</button>
+          <button class="settings-tab-btn" id="tab-btn-appearance" onclick="switchSettingsTab('appearance', this)">🎨 Appearance / Themes</button>
+          <button class="settings-tab-btn" id="tab-btn-privacy" onclick="switchSettingsTab('privacy', this)">🛡️ Privacy</button>
+          <button class="settings-tab-btn" id="tab-btn-security" onclick="switchSettingsTab('security', this)">🔐 Security</button>
+          <button class="settings-tab-btn" id="tab-btn-account" onclick="switchSettingsTab('account', this)">👤 Account Settings</button>
         </div>
 
-        <!-- 1. Security Pane -->
-        <div id="set-pane-security" class="settings-pane active">
+        <!-- 1. GENERAL PANE -->
+        <div id="set-pane-general" class="settings-pane active">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3>Operational Environment & Localization</h3>
+              <span class="badge badge-neutral">General Preferences</span>
+            </div>
+            
+            <div class="grid-2 mb-3">
+              <div class="form-group">
+                <label class="form-label" for="gen-lang"><strong>Preferred Interface Language</strong></label>
+                <select id="gen-lang" class="form-select">
+                  <option value="en" selected>English (Official)</option>
+                  <option value="hi">हिन्दी (Hindi)</option>
+                  <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                  <option value="bn">বাংলা (Bengali)</option>
+                  <option value="ta">தமிழ் (Tamil)</option>
+                  <option value="te">తెలుగు (Telugu)</option>
+                  <option value="mr">मराठी (Marathi)</option>
+                </select>
+                <small class="text-muted">Primary language for check-in prompts, reports, and recommendations.</small>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="gen-autologout"><strong>Auto-Logout Inactivity Duration</strong></label>
+                <select id="gen-autologout" class="form-select">
+                  <option value="15">15 Minutes (High Security)</option>
+                  <option value="30" selected>30 Minutes (Recommended)</option>
+                  <option value="60">60 Minutes</option>
+                  <option value="480">8 Hours (Full Operational Shift)</option>
+                </select>
+                <small class="text-muted">Automatically terminates active session on unattended devices.</small>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="gen-military-time" checked style="transform:scale(1.2);">
+                <span><strong>Use 24-Hour Military Format for Duty Schedules & Timestamps (e.g. 1930 hrs)</strong></span>
+              </label>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="gen-offline-caching" checked style="transform:scale(1.2);">
+                <span><strong>Enable Offline Field Check-In Storage (IndexedDB Local Caching)</strong></span>
+              </label>
+              <small class="text-muted" style="margin-left:1.6rem; display:block;">Caches submitted check-ins when remote border networks are unavailable and automatically synchronizes when connection is restored.</small>
+            </div>
+
+            <div class="d-flex justify-between align-center pt-2" style="border-top:1px solid var(--border-color);">
+              <span class="text-muted" style="font-size:0.8rem;">Preferences stored locally in device profile</span>
+              <button class="btn btn-primary" onclick="saveGeneralSettings()">Save General Settings</button>
+            </div>
+          </div>
+
+          <!-- Data Portability Card inside General -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Welfare Data Portability & Export</h3>
+              <span class="badge badge-neutral">Self-Service</span>
+            </div>
+            <p class="text-muted" style="font-size:0.88rem; line-height:1.5; margin-bottom:1.25rem;">
+              You have the right to export your complete longitudinal check-in trajectory and profile context at any time for personal welfare records.
+            </p>
+            <div class="d-flex gap-1 flex-wrap">
+              <button class="btn btn-secondary" onclick="exportDataJSON()">📥 Export Full JSON Dump</button>
+              <button class="btn btn-secondary" onclick="exportDataCSV()">📊 Export Check-ins (CSV)</button>
+              <button class="btn btn-primary" onclick="window.print()">🖨️ Print Welfare Summary</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. NOTIFICATIONS PANE -->
+        <div id="set-pane-notifications" class="settings-pane">
+          <div class="card">
+            <div class="card-header">
+              <h3>Notification & Reminder Preferences</h3>
+              <span class="badge badge-neutral">Configurable Alerts</span>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="notif_checkin_remind" checked style="transform:scale(1.2);">
+                <span><strong>Weekly Welfare Check-in Reminders</strong></span>
+              </label>
+              <small class="text-muted" style="margin-left:1.6rem; display:block;">Receive a prompt every 7 days to record your operational check-in.</small>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="notif_officer_alerts" checked style="transform:scale(1.2);">
+                <span><strong>Welfare Officer Consultation Notices</strong></span>
+              </label>
+              <small class="text-muted" style="margin-left:1.6rem; display:block;">Notifies you when your assigned Welfare Officer schedules a supportive follow-up session.</small>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="notif_support_updates" checked style="transform:scale(1.2);">
+                <span><strong>Support Request Status Updates</strong></span>
+              </label>
+              <small class="text-muted" style="margin-left:1.6rem; display:block;">Alerts you when an officer responds to or resolves your confidential support request.</small>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="notif_quiet_hours" checked style="transform:scale(1.2);">
+                <span><strong>Quiet Hours (Suppress non-critical alerts between 2200 and 0600 hrs)</strong></span>
+              </label>
+              <small class="text-muted" style="margin-left:1.6rem; display:block;">Guarantees undisturbed rest during restorative recovery cycles.</small>
+            </div>
+
+            <div class="d-flex justify-between align-center pt-2" style="border-top:1px solid var(--border-color);">
+              <span class="text-muted" style="font-size:0.8rem;">Notification delivery: In-App Center & Banner</span>
+              <button class="btn btn-primary" onclick="saveNotificationPreferences()">Save Notification Preferences</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. APPEARANCE / THEMES PANE -->
+        <div id="set-pane-appearance" class="settings-pane">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3>Display Themes & Operational Palettes</h3>
+              <span class="badge badge-neutral">User Interface</span>
+            </div>
+            
+            <div class="grid-3 mb-3">
+              <div class="theme-card" id="theme-card-light" onclick="setThemeDirect('light')">
+                <div class="d-flex justify-between align-center mb-1">
+                  <strong>☀️ Light Theme</strong>
+                  <span class="badge badge-neutral">Daylight</span>
+                </div>
+                <p class="text-muted" style="font-size:0.8rem; margin:0;">Clean crisp slate background optimized for daylight and operational office use.</p>
+              </div>
+
+              <div class="theme-card" id="theme-card-dark" onclick="setThemeDirect('dark')">
+                <div class="d-flex justify-between align-center mb-1">
+                  <strong>🌙 Dark Theme</strong>
+                  <span class="badge badge-neutral">Night Watch</span>
+                </div>
+                <p class="text-muted" style="font-size:0.8rem; margin:0;">Deep navy interface designed to minimize eye strain and glare during night duty.</p>
+              </div>
+
+              <div class="theme-card" id="theme-card-tactical" onclick="setThemeDirect('tactical')">
+                <div class="d-flex justify-between align-center mb-1">
+                  <strong>🛡️ Tactical Contrast</strong>
+                  <span class="badge badge-neutral">High Contrast</span>
+                </div>
+                <p class="text-muted" style="font-size:0.8rem; margin:0;">OLED deep black with high-contrast text for extreme field conditions.</p>
+              </div>
+            </div>
+
+            <div class="form-group mb-2">
+              <label class="form-label" for="ui-text-scale"><strong>Text Scaling & Font Size</strong></label>
+              <select id="ui-text-scale" class="form-select" onchange="changeTextScale(this.value)">
+                <option value="100" selected>Standard (100% Default)</option>
+                <option value="90">Compact (90% - Higher Density)</option>
+                <option value="115">Accessible Large (115% - Higher Readability)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. PRIVACY PANE -->
+        <div id="set-pane-privacy" class="settings-pane">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3>Data Privacy & Minimization Controls</h3>
+              <span class="badge badge-low">Task 36 Protected</span>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="priv_pseudonymize_toggle" checked style="transform:scale(1.2);">
+                <span><strong>Default to Pseudonymized Token Mode (`USR_...`) across Analytical Views</strong></span>
+              </label>
+              <small class="text-muted" style="margin-left:1.6rem; display:block;">Separates your real name and service ID from telemetry displays unless authorized welfare triage is actively performed.</small>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="form-label"><strong>Telemetry Granularity Sharing Level</strong></label>
+              <div class="d-flex flex-column gap-1 mt-1">
+                <label class="d-flex align-center gap-1" style="font-size:0.88rem;">
+                  <input type="radio" name="telemetry_level" value="FULL" checked>
+                  <span><strong>Complete Telemetry:</strong> Workload, sleep hours, subjective ratings, and PSS-10 item responses.</span>
+                </label>
+                <label class="d-flex align-center gap-1" style="font-size:0.88rem;">
+                  <input type="radio" name="telemetry_level" value="COARSE">
+                  <span><strong>Coarse Aggregation:</strong> Workload brackets and overall composite risk score only.</span>
+                </label>
+                <label class="d-flex align-center gap-1" style="font-size:0.88rem;">
+                  <input type="radio" name="telemetry_level" value="MINIMAL">
+                  <span><strong>Minimal Welfare Only:</strong> Only flags when strain enters High Concern category.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Privacy Sandbox Interactive Showcase Link -->
+            <div class="card mb-3" style="background:linear-gradient(135deg, rgba(59,130,246,0.06), rgba(16,185,129,0.06)); border:1px solid rgba(59,130,246,0.25);">
+              <div class="d-flex justify-between align-center flex-wrap gap-1">
+                <div>
+                  <strong>🧪 Interactive Privacy Sandbox Available</strong>
+                  <div class="text-muted" style="font-size:0.82rem;">Inspect real-time Before & After pseudonymization, data minimization, and K-anonymity bucketing.</div>
+                </div>
+                <a href="/privacy-sandbox.html" class="btn btn-sm btn-primary">Open Privacy Sandbox &rarr;</a>
+              </div>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="d-flex align-center gap-1">
+                <input type="checkbox" id="priv_anonymous_stats" checked style="transform:scale(1.2);">
+                <span><strong>Contribute Anonymized Aggregated Statistics to Force Resilience Research</strong></span>
+              </label>
+            </div>
+
+            <div class="d-flex justify-between align-center pt-2" style="border-top:1px solid var(--border-color);">
+              <button class="btn btn-secondary btn-sm" onclick="clearLocalTelemetryCache()">🗑️ Clear Local Device Cache</button>
+              <button class="btn btn-primary" onclick="savePrivacyPreferences()">Save Privacy Preferences</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. SECURITY PANE (With Task 40 Two-Stage Change Password Flow) -->
+        <div id="set-pane-security" class="settings-pane">
           <div class="grid-2">
-            <!-- Change Password -->
+            <!-- Change Password: Stage 1 (Confirmation) & Stage 2 (Fields) -->
             <div class="card">
               <div class="card-header">
                 <h3>Change Password</h3>
-                <span class="badge badge-low">Bcrypt (10 Rounds)</span>
+                <span class="badge badge-neutral" id="pwd-stage-badge">Security Gate</span>
               </div>
-              
-              <form id="change-password-form">
-                <div class="form-group">
-                  <label class="form-label" for="currentPassword">Current Password</label>
-                  <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password" required>
+
+              <!-- STAGE 1: Secure Confirmation / Action Screen (Task 40) -->
+              <div id="pwd-stage-1-confirm" style="display:block;">
+                <div class="alert alert-info mb-3" style="background:rgba(59,130,246,0.08); border-left:4px solid #3b82f6; font-size:0.85rem; line-height:1.5;">
+                  <strong>🔐 Security Verification Required:</strong>
+                  <div class="text-muted mt-1">To protect operational account integrity, please confirm your current credentials. Once verified, the password-change input fields will be securely displayed.</div>
                 </div>
 
-                <div class="form-group">
-                  <label class="form-label" for="newPassword">New Password (Min. 6 chars)</label>
-                  <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" required minlength="6">
+                <form id="verify-current-pwd-form" onsubmit="event.preventDefault(); handleVerifyCurrentPassword();">
+                  <div class="form-group mb-3">
+                    <label class="form-label" for="verify_current_password"><strong>Enter Current Password to Proceed</strong></label>
+                    <input type="password" id="verify_current_password" class="form-control" placeholder="Enter your current account password" required autocomplete="current-password">
+                    <small class="text-muted">Two-stage re-authentication protects against unauthorized credential alterations on shared terminals.</small>
+                  </div>
+
+                  <button type="submit" id="btn-verify-current-pwd" class="btn btn-primary w-100">
+                    🔐 Verify Identity & Unlock Password Change
+                  </button>
+                </form>
+              </div>
+
+              <!-- STAGE 2: Password Change Fields (Unlocked only upon successful verification) -->
+              <div id="pwd-stage-2-change" style="display:none;">
+                <div class="alert alert-success mb-3" style="background:rgba(16,185,129,0.08); border-left:4px solid #10b981; font-size:0.85rem; line-height:1.5;">
+                  <strong>✓ Identity Confirmed:</strong>
+                  <div class="text-muted mt-1">Your current password was validated. You may now specify a new strong password below.</div>
                 </div>
 
-                <div class="form-group">
-                  <label class="form-label" for="confirmNewPassword">Confirm New Password</label>
-                  <input type="password" id="confirmNewPassword" class="form-control" placeholder="Re-enter new password" required minlength="6">
-                </div>
+                <form id="change-password-form" onsubmit="event.preventDefault(); handleSubmitNewPassword();">
+                  <div class="form-group mb-2">
+                    <label class="form-label" for="newPassword">New Password (Min. 6 chars)</label>
+                    <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" required minlength="6" autocomplete="new-password">
+                  </div>
 
-                <button type="submit" id="change-pwd-btn" class="btn btn-primary w-100">
-                  Update Password Hash
-                </button>
-              </form>
+                  <div class="form-group mb-3">
+                    <label class="form-label" for="confirmNewPassword">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" class="form-control" placeholder="Re-enter new password" required minlength="6" autocomplete="new-password">
+                  </div>
+
+                  <div class="d-flex gap-1">
+                    <button type="submit" id="change-pwd-btn" class="btn btn-primary flex-1">
+                      Update Password Hash
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="lockPasswordChangeStage()">
+                      Cancel / Lock
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
 
             <!-- Session & Governance -->
@@ -161,7 +429,7 @@
                   <span class="badge badge-low">HttpOnly JWT</span>
                 </div>
                 <p class="text-muted" style="font-size:0.85rem; line-height: 1.5; margin-bottom:1rem;">
-                  Your session is authenticated via signed JWT cookies and 100% persistent backend database records. Logging out clears the session token safely.
+                  Your session is authenticated via signed JWT cookies and persistent database records with 10-round Bcrypt salting. Logging out terminates the session securely.
                 </p>
                 <div class="d-flex justify-between align-center">
                   <span class="text-muted" style="font-size:0.8rem;">Database Storage: Persistent</span>
@@ -171,93 +439,21 @@
 
               <div class="card">
                 <div class="card-header">
-                  <h3>Ethical AI Governance</h3>
-                  <span class="badge badge-low">Voluntary</span>
+                  <h3>Multi-Factor Authentication</h3>
+                  <span class="badge badge-low">In-Force Protocol</span>
                 </div>
                 <p class="text-muted" style="font-size:0.85rem; line-height:1.5;">
-                  All welfare data is strictly non-disciplinary. Check-ins are never visible to promotion or disciplinary boards.
+                  Operational account access is tied to authorized official credentials and role-governed authentication directives.
                 </p>
-                <a href="/privacy.html" class="btn btn-sm btn-outline mt-2">View Privacy Policy &rarr;</a>
+                <a href="/privacy.html" class="btn btn-sm btn-outline mt-2">View Ethical Charter &rarr;</a>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 2. Appearance Pane -->
-        <div id="set-pane-appearance" class="settings-pane">
-          <div class="card">
-            <div class="card-header">
-              <h3>Display & Color Theme</h3>
-              <span class="badge badge-neutral">User Interface</span>
-            </div>
-            <div class="grid-2 mb-3">
-              <div class="card" style="background:var(--bg-card-subtle); padding:1rem; cursor:pointer;" onclick="setThemeDirect('light')">
-                <div class="d-flex justify-between align-center mb-1">
-                  <strong>☀️ Light Theme</strong>
-                  <span class="badge badge-neutral">Default</span>
-                </div>
-                <p class="text-muted" style="font-size:0.8rem;">Clean crisp slate background optimized for daylight and operational office use.</p>
-              </div>
-
-              <div class="card" style="background:var(--bg-card-subtle); padding:1rem; cursor:pointer;" onclick="setThemeDirect('dark')">
-                <div class="d-flex justify-between align-center mb-1">
-                  <strong>🌙 Dark Theme</strong>
-                  <span class="badge badge-neutral">Night Watch</span>
-                </div>
-                <p class="text-muted" style="font-size:0.8rem;">Deep navy interface designed to minimize glare during night operations.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. Notifications Pane -->
-        <div id="set-pane-notifications" class="settings-pane">
-          <div class="card">
-            <div class="card-header">
-              <h3>Notification & Reminder Preferences</h3>
-              <span class="badge badge-neutral">Configurable</span>
-            </div>
-            <div class="form-group mb-3">
-              <label class="d-flex align-center gap-1">
-                <input type="checkbox" id="notif_checkin_remind" checked style="transform:scale(1.2);">
-                <span><strong>Weekly Welfare Check-in Reminders</strong></span>
-              </label>
-              <small class="text-muted" style="margin-left:1.6rem; display:block;">Receive a gentle prompt every 7 days to record your operational check-in.</small>
-            </div>
-
-            <div class="form-group mb-3">
-              <label class="d-flex align-center gap-1">
-                <input type="checkbox" id="notif_officer_alerts" checked style="transform:scale(1.2);">
-                <span><strong>Officer Follow-up Dispatch Notices</strong></span>
-              </label>
-              <small class="text-muted" style="margin-left:1.6rem; display:block;">Notifies you when your assigned Welfare Officer schedules an informal check-in.</small>
-            </div>
-
-            <button type="button" class="btn btn-primary" onclick="Utils.showToast('Notification preferences updated.', 'success')">Save Preferences</button>
-          </div>
-        </div>
-
-        <!-- 4. Data & Export Pane -->
-        <div id="set-pane-data" class="settings-pane">
-          <div class="card">
-            <div class="card-header">
-              <h3>Welfare Data Portability & Export</h3>
-              <span class="badge badge-neutral">Self-Service</span>
-            </div>
-            <p class="text-muted" style="font-size:0.88rem; line-height:1.5; margin-bottom:1.25rem;">
-              You have the right to export your complete longitudinal check-in trajectory and profile context at any time for your personal welfare records.
-            </p>
-            <div class="d-flex gap-1 flex-wrap">
-              <button class="btn btn-secondary" onclick="exportDataJSON()">📥 Export Full JSON Dump</button>
-              <button class="btn btn-secondary" onclick="exportDataCSV()">📊 Export Check-ins (CSV)</button>
-              <button class="btn btn-primary" onclick="window.print()">🖨️ Print Welfare Summary</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 5. Avatar & Profile Photo Pane -->
-        <div id="set-pane-avatar" class="settings-pane">
-          <div class="card">
+        <!-- 6. ACCOUNT SETTINGS PANE -->
+        <div id="set-pane-account" class="settings-pane">
+          <div class="card mb-3">
             <div class="card-header">
               <div>
                 <h3 style="margin:0;">Profile Photo & Service Avatar</h3>
@@ -268,23 +464,6 @@
 
             <div class="d-flex align-center gap-2 flex-wrap mb-3 p-3" style="background:var(--bg-card-subtle); border-radius:var(--radius-md); border:1px solid var(--border-color);">
               <div id="settings-avatar-preview-box" class="user-avatar" style="width:88px; height:88px; border-radius:50%; overflow:hidden; border:3px solid var(--accent); background:var(--bg-surface); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:700; font-size:1.7rem; color:var(--text-primary); box-shadow:0 4px 12px rgba(0,0,0,0.12);"></div>
-              <script>
-                (function() {
-                  try {
-                    const box = document.getElementById('settings-avatar-preview-box');
-                    const saved = localStorage.getItem('sih_user_avatar');
-                    const u = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
-                    const name = u.fullName || '';
-                    const initials = name ? name.split(' ').map(n=>n[0]).filter(Boolean).join('').substring(0,2).toUpperCase() : 'ME';
-                    if (saved) {
-                      const content = (saved.startsWith('<svg') || saved.includes('<svg')) ? saved : '<img src="' + saved + '" alt="Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
-                      if (box) box.innerHTML = content;
-                    } else if (box) {
-                      box.textContent = initials;
-                    }
-                  } catch(e) {}
-                })();
-              </script>
               <div style="flex:1; min-width:260px;">
                 <div class="d-flex align-center gap-1 mb-1">
                   <strong style="font-size:0.95rem;">Service Avatar & Profile Photo</strong>
@@ -308,8 +487,83 @@
 
             <div class="d-flex justify-between align-center pt-2" style="border-top:1px solid var(--border-color);">
               <span class="text-muted" style="font-size:0.8rem;">Synchronized across all displays & database</span>
-              <button type="button" id="save-settings-avatar-btn" class="btn btn-primary" onclick="saveSettingsAvatar()">Save Avatar Selection</button>
+              <button type="button" id="save-settings-avatar-btn" class="btn btn-primary btn-sm" onclick="saveSettingsAvatar()">Save Avatar Selection</button>
             </div>
+          </div>
+
+          <!-- Official Personnel Details Form -->
+          <div class="card">
+            <div class="card-header">
+              <h3>Authorized Personnel Account Record</h3>
+              <span class="badge badge-neutral">Profile Management</span>
+            </div>
+
+            <form id="account-profile-form" onsubmit="event.preventDefault(); saveAccountProfile();">
+              <div class="grid-2 mb-2">
+                <div class="form-group">
+                  <label class="form-label" for="acc_personnel_id">Personnel Service ID</label>
+                  <input type="text" id="acc_personnel_id" class="form-control" readonly style="background:var(--bg-card-subtle); cursor:not-allowed; font-weight:700;">
+                  <small class="text-muted">Assigned military / CAPF service identifier.</small>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="acc_full_name">Full Name</label>
+                  <input type="text" id="acc_full_name" class="form-control" required>
+                </div>
+              </div>
+
+              <div class="grid-2 mb-2">
+                <div class="form-group">
+                  <label class="form-label" for="acc_email">Official Email Address</label>
+                  <input type="email" id="acc_email" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="acc_role">Assigned System Role</label>
+                  <input type="text" id="acc_role" class="form-control" readonly style="background:var(--bg-card-subtle); cursor:not-allowed;">
+                </div>
+              </div>
+
+              <div class="grid-3 mb-3">
+                <div class="form-group">
+                  <label class="form-label" for="acc_unit">Assigned Unit</label>
+                  <input type="text" id="acc_unit" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="acc_rank">Rank / Designation</label>
+                  <input type="text" id="acc_rank" class="form-control">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="acc_zone">Deployment Zone</label>
+                  <input type="text" id="acc_zone" class="form-control">
+                </div>
+              </div>
+
+              <h4 class="mb-2" style="font-size:0.95rem; border-top:1px solid var(--border-color); padding-top:1rem;">Emergency Contact / Buddy Liaison</h4>
+              <div class="grid-3 mb-3">
+                <div class="form-group">
+                  <label class="form-label" for="acc_em_name">Contact Name</label>
+                  <input type="text" id="acc_em_name" class="form-control" placeholder="Contact or Buddy Name">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="acc_em_rel">Relationship</label>
+                  <input type="text" id="acc_em_rel" class="form-control" placeholder="e.g. Spouse, Parent, Unit Peer">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="acc_em_phone">Phone Number</label>
+                  <input type="text" id="acc_em_phone" class="form-control" placeholder="e.g. 9876543210">
+                </div>
+              </div>
+
+              <div class="d-flex justify-between align-center pt-2" style="border-top:1px solid var(--border-color);">
+                <span class="text-muted" style="font-size:0.8rem;">Changes update live Mongoose database records</span>
+                <button type="submit" id="save-account-profile-btn" class="btn btn-primary">Save Account Profile</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -321,90 +575,275 @@
   <script src="/js/auth.js?v=20260908e"></script>
   <script>
     let currentSettingsAvatar = '';
+    let verifiedCurrentPassword = '';
 
     function switchSettingsTab(tab, btn) {
       document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.settings-pane').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
       const target = document.getElementById(`set-pane-${tab}`);
       if (target) target.classList.add('active');
     }
 
+    // 1. General Preferences
+    function saveGeneralSettings() {
+      const lang = document.getElementById('gen-lang').value;
+      const autoLogout = document.getElementById('gen-autologout').value;
+      const militaryTime = document.getElementById('gen-military-time').checked;
+      const offlineCaching = document.getElementById('gen-offline-caching').checked;
+
+      localStorage.setItem('sih_pref_lang', lang);
+      localStorage.setItem('sih_pref_autologout', autoLogout);
+      localStorage.setItem('sih_pref_military_time', militaryTime);
+      localStorage.setItem('sih_pref_offline_caching', offlineCaching);
+
+      Utils.showToast('General preferences saved successfully.', 'success');
+    }
+
+    // 2. Notification Preferences
+    function saveNotificationPreferences() {
+      const checkinRemind = document.getElementById('notif_checkin_remind').checked;
+      const officerAlerts = document.getElementById('notif_officer_alerts').checked;
+      const supportUpdates = document.getElementById('notif_support_updates').checked;
+      const quietHours = document.getElementById('notif_quiet_hours').checked;
+
+      localStorage.setItem('sih_notif_checkin', checkinRemind);
+      localStorage.setItem('sih_notif_officer', officerAlerts);
+      localStorage.setItem('sih_notif_support', supportUpdates);
+      localStorage.setItem('sih_notif_quiet', quietHours);
+
+      Utils.showToast('Notification preferences updated.', 'success');
+    }
+
+    // 3. Appearance & Themes
     function setThemeDirect(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       localStorage.setItem('sih_welfare_theme', theme);
-      document.querySelectorAll('.theme-toggle').forEach(b => b.innerHTML = theme === 'dark' ? '☀️' : '🌙');
+      document.querySelectorAll('.theme-toggle').forEach(b => b.innerHTML = theme === 'dark' || theme === 'tactical' ? '☀️' : '🌙');
+
+      document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('active-theme'));
+      const activeCard = document.getElementById(`theme-card-${theme}`);
+      if (activeCard) activeCard.classList.add('active-theme');
+
       Utils.showToast(`Theme switched to ${theme.toUpperCase()} mode.`, 'info', 2000);
     }
 
+    function changeTextScale(scaleVal) {
+      document.documentElement.style.fontSize = scaleVal === '90' ? '14px' : scaleVal === '115' ? '18px' : '16px';
+      localStorage.setItem('sih_text_scale', scaleVal);
+      Utils.showToast(`Text scale set to ${scaleVal}%.`, 'info', 1500);
+    }
+
+    // 4. Privacy Preferences
+    function savePrivacyPreferences() {
+      const pseudo = document.getElementById('priv_pseudonymize_toggle').checked;
+      const anon = document.getElementById('priv_anonymous_stats').checked;
+      const telLevel = document.querySelector('input[name="telemetry_level"]:checked')?.value || 'FULL';
+
+      localStorage.setItem('sih_priv_pseudonymize', pseudo);
+      localStorage.setItem('sih_priv_anon', anon);
+      localStorage.setItem('sih_priv_telemetry', telLevel);
+
+      Utils.showToast('Privacy preferences recorded.', 'success');
+    }
+
+    function clearLocalTelemetryCache() {
+      if (confirm('Clear local offline telemetry cache? Remote database records will remain secure.')) {
+        try {
+          localStorage.removeItem('sih_offline_checkins');
+          localStorage.removeItem('sih_offline_wearables');
+          Utils.showToast('Local telemetry cache cleared.', 'success');
+        } catch (e) {}
+      }
+    }
+
+    // 5. Security: Two-Stage Change Password (Task 40)
+    async function handleVerifyCurrentPassword() {
+      const pwdInput = document.getElementById('verify_current_password');
+      const pwd = pwdInput ? pwdInput.value : '';
+      if (!pwd) {
+        Utils.showToast('Please enter your current password.', 'warning');
+        return;
+      }
+
+      const btn = document.getElementById('btn-verify-current-pwd');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner spinner-primary" style="display:inline-block; width:14px; height:14px; margin-right:6px;"></span> Verifying Identity...';
+
+      try {
+        const res = await api.verifyPassword(pwd);
+        if (res && res.success && res.verified) {
+          verifiedCurrentPassword = pwd;
+          document.getElementById('pwd-stage-1-confirm').style.display = 'none';
+          document.getElementById('pwd-stage-2-change').style.display = 'block';
+          document.getElementById('pwd-stage-badge').textContent = 'Identity Verified';
+          document.getElementById('pwd-stage-badge').className = 'badge badge-low';
+          Utils.showToast('Identity confirmed! Password change fields unlocked.', 'success');
+          document.getElementById('newPassword').focus();
+        } else {
+          Utils.showToast((res && res.message) || 'Current password verification failed.', 'danger');
+        }
+      } catch (err) {
+        Utils.showToast(err.message || 'Current password verification failed.', 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🔐 Verify Identity & Unlock Password Change';
+      }
+    }
+
+    function lockPasswordChangeStage() {
+      verifiedCurrentPassword = '';
+      document.getElementById('verify_current_password').value = '';
+      document.getElementById('newPassword').value = '';
+      document.getElementById('confirmNewPassword').value = '';
+      document.getElementById('pwd-stage-2-change').style.display = 'none';
+      document.getElementById('pwd-stage-1-confirm').style.display = 'block';
+      document.getElementById('pwd-stage-badge').textContent = 'Security Gate';
+      document.getElementById('pwd-stage-badge').className = 'badge badge-neutral';
+    }
+
+    async function handleSubmitNewPassword() {
+      const newPwd = document.getElementById('newPassword').value;
+      const confirmNewPwd = document.getElementById('confirmNewPassword').value;
+
+      if (newPwd.length < 6) {
+        Utils.showToast('New password must be at least 6 characters.', 'warning');
+        return;
+      }
+      if (newPwd !== confirmNewPwd) {
+        Utils.showToast('New passwords do not match.', 'danger');
+        return;
+      }
+
+      const btn = document.getElementById('change-pwd-btn');
+      btn.disabled = true;
+      btn.textContent = 'Updating Hash...';
+
+      try {
+        const res = await api.changePassword(verifiedCurrentPassword, newPwd);
+        if (res && res.success) {
+          Utils.showToast('Password updated successfully in database!', 'success');
+          lockPasswordChangeStage();
+        } else {
+          Utils.showToast(res.message || 'Failed to update password.', 'danger');
+        }
+      } catch (err) {
+        Utils.showToast(err.message || 'Failed to update password.', 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Update Password Hash';
+      }
+    }
+
+    // 6. Account Settings & Profile
+    async function loadUserProfileToAccountForm() {
+      try {
+        const res = await api.getProfile();
+        if (res && res.success && res.data) {
+          const p = res.data;
+          const user = p.user || JSON.parse(localStorage.getItem('sih_user') || '{}');
+
+          document.getElementById('acc_personnel_id').value = p.personnelId || user.personnelId || '';
+          document.getElementById('acc_full_name').value = p.fullName || user.fullName || '';
+          document.getElementById('acc_email').value = user.email || '';
+          document.getElementById('acc_role').value = user.role || 'PERSONNEL';
+          document.getElementById('acc_unit').value = p.unit || user.unit || '';
+          document.getElementById('acc_rank').value = p.rank || user.rank || '';
+          document.getElementById('acc_zone').value = p.deploymentZone || '';
+
+          if (p.emergencyContact) {
+            document.getElementById('acc_em_name').value = p.emergencyContact.name || '';
+            document.getElementById('acc_em_rel').value = p.emergencyContact.relationship || '';
+            document.getElementById('acc_em_phone').value = p.emergencyContact.phone || '';
+          }
+
+          if (p.profileImage && !currentSettingsAvatar) {
+            currentSettingsAvatar = p.profileImage;
+            renderSettingsAvatarPreview(currentSettingsAvatar);
+          }
+        }
+      } catch (e) {
+        console.error('Error loading profile form:', e);
+      }
+    }
+
+    async function saveAccountProfile() {
+      const btn = document.getElementById('save-account-profile-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner spinner-primary" style="display:inline-block; width:14px; height:14px; margin-right:6px;"></span> Saving Profile...';
+
+      try {
+        const fullName = document.getElementById('acc_full_name').value;
+        const unit = document.getElementById('acc_unit').value;
+        const rank = document.getElementById('acc_rank').value;
+        const deploymentZone = document.getElementById('acc_zone').value;
+        const emergencyContact = {
+          name: document.getElementById('acc_em_name').value,
+          relationship: document.getElementById('acc_em_rel').value,
+          phone: document.getElementById('acc_em_phone').value
+        };
+
+        const res = await api.updateProfile({
+          fullName,
+          unit,
+          rank,
+          deploymentZone,
+          emergencyContact
+        });
+
+        if (res && res.success) {
+          try {
+            const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+            localUser.fullName = fullName;
+            localUser.unit = unit;
+            localUser.rank = rank;
+            localStorage.setItem('sih_user', JSON.stringify(localUser));
+          } catch(e) {}
+
+          Utils.showToast('Account profile updated successfully in database.', 'success');
+        } else {
+          Utils.showToast((res && res.message) || 'Failed to update profile.', 'danger');
+        }
+      } catch (err) {
+        Utils.showToast('Error updating profile: ' + err.message, 'danger');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Save Account Profile';
+      }
+    }
+
+    // Avatar handlers
     function renderSettingsAvatarPreview(avatarVal) {
       const preview = document.getElementById('settings-avatar-preview-box');
       const sideAvatar = document.querySelector('.sidebar-footer .user-avatar');
 
-      const localUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || '{}');
+      const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
       const name = localUser.fullName || '';
       const initials = name ? name.split(' ').map(n => n[0]).filter(Boolean).join('').substring(0, 2).toUpperCase() : 'ME';
 
       if (!avatarVal || avatarVal.trim() === '') {
-        if (preview) {
-          preview.innerHTML = '';
-          preview.textContent = initials;
-        }
-        if (sideAvatar) {
-          sideAvatar.innerHTML = '';
-          sideAvatar.textContent = initials;
-        }
-        document.querySelectorAll('.user-avatar').forEach(el => {
-          if (el !== preview && el !== sideAvatar) {
-            el.innerHTML = '';
-            el.textContent = initials;
-          }
-        });
+        if (preview) { preview.innerHTML = ''; preview.textContent = initials; }
+        if (sideAvatar) { sideAvatar.innerHTML = ''; sideAvatar.textContent = initials; }
         return;
       }
 
       const val = avatarVal.trim();
       let htmlContent = '';
-
-      if (val.startsWith('<svg') || val.startsWith('<?xml') || val.includes('<svg')) {
+      if (val.startsWith('<svg') || val.includes('<svg')) {
         htmlContent = val;
-      } else if (val.startsWith('data:image/svg+xml;base64,')) {
-        try {
-          const b64 = val.replace('data:image/svg+xml;base64,', '');
-          htmlContent = decodeURIComponent(escape(atob(b64)));
-        } catch(e) {
-          htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
-        }
       } else {
         htmlContent = `<img src="${val}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;" />`;
       }
 
-      if (preview) {
-        preview.textContent = '';
-        preview.innerHTML = htmlContent;
-      }
-      if (sideAvatar) {
-        sideAvatar.textContent = '';
-        sideAvatar.innerHTML = htmlContent;
-      }
-      // Also update any other user avatars on the page
-      document.querySelectorAll('.user-avatar').forEach(el => {
-        if (el !== preview && el !== sideAvatar) {
-          el.textContent = '';
-          el.innerHTML = htmlContent;
-        }
-      });
+      if (preview) { preview.textContent = ''; preview.innerHTML = htmlContent; }
+      if (sideAvatar) { sideAvatar.textContent = ''; sideAvatar.innerHTML = htmlContent; }
     }
 
     function resetSettingsAvatarToInitials() {
       currentSettingsAvatar = '';
-      try {
-        localStorage.removeItem('sih_user_avatar');
-      } catch(e) {}
+      try { localStorage.removeItem('sih_user_avatar'); } catch(e) {}
       renderSettingsAvatarPreview('');
-      if (typeof Utils !== 'undefined' && Utils.showToast) {
-        Utils.showToast('Reset to initials avatar.', 'info', 1800);
-      }
+      Utils.showToast('Reset to initials avatar.', 'info');
     }
 
     function handleSettingsAvatarFileSelect(input) {
@@ -415,7 +854,6 @@
         Utils.showToast('Please select a valid image file (PNG, JPG, WebP).', 'warning');
         return;
       }
-
       if (file.size > 5 * 1024 * 1024) {
         Utils.showToast('Photo size must be under 5MB.', 'warning');
         return;
@@ -425,30 +863,20 @@
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          // Client-side HTML5 canvas automatic compression (max 256x256 px at 0.85 quality)
           const canvas = document.createElement('canvas');
           const maxDim = 256;
-          let w = img.width;
-          let h = img.height;
+          let w = img.width, h = img.height;
           if (w > h) {
-            if (w > maxDim) {
-              h = Math.round((h * maxDim) / w);
-              w = maxDim;
-            }
+            if (w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
           } else {
-            if (h > maxDim) {
-              w = Math.round((w * maxDim) / h);
-              h = maxDim;
-            }
+            if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
           }
-          canvas.width = w;
-          canvas.height = h;
+          canvas.width = w; canvas.height = h;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, w, h);
-          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
-          currentSettingsAvatar = compressedDataUrl;
+          currentSettingsAvatar = canvas.toDataURL('image/jpeg', 0.85);
           renderSettingsAvatarPreview(currentSettingsAvatar);
-          Utils.showToast('Photo uploaded & compressed (256x256)! Click Save to persist.', 'success');
+          Utils.showToast('Photo compressed (256x256)! Click Save Avatar to persist.', 'success');
         };
         img.src = e.target.result;
       };
@@ -457,7 +885,6 @@
 
     async function saveSettingsAvatar() {
       const btn = document.getElementById('save-settings-avatar-btn');
-      const origText = btn.textContent;
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner spinner-primary" style="display:inline-block; width:14px; height:14px; margin-right:6px;"></span> Saving...';
 
@@ -470,89 +897,17 @@
             } else {
               localStorage.removeItem('sih_user_avatar');
             }
-            const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
-            localUser.profileImage = currentSettingsAvatar;
-            localStorage.setItem('sih_user', JSON.stringify(localUser));
           } catch(e) {}
-
           renderSettingsAvatarPreview(currentSettingsAvatar);
           Utils.showToast('Avatar saved successfully across platform!', 'success');
-        } else {
-          Utils.showToast((res && res.message) || 'Failed to save avatar.', 'error');
         }
       } catch (err) {
-        Utils.showToast('Failed to save avatar: ' + err.message, 'error');
+        Utils.showToast('Failed to save avatar: ' + err.message, 'danger');
       } finally {
         btn.disabled = false;
-        btn.textContent = origText;
+        btn.textContent = 'Save Avatar Selection';
       }
     }
-
-    window.switchSettingsTab = switchSettingsTab;
-    window.setThemeDirect = setThemeDirect;
-    window.resetSettingsAvatarToInitials = resetSettingsAvatarToInitials;
-    window.handleSettingsAvatarFileSelect = handleSettingsAvatarFileSelect;
-    window.saveSettingsAvatar = saveSettingsAvatar;
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      // 1. Initial avatar render from localStorage
-      const cachedAvatar = localStorage.getItem('sih_user_avatar') || '';
-      currentSettingsAvatar = cachedAvatar;
-      if (cachedAvatar) {
-        renderSettingsAvatarPreview(cachedAvatar);
-      } else {
-        renderSettingsAvatarPreview('');
-      }
-
-      // 2. Authenticate and fetch profile from backend
-      try {
-        await checkAuth();
-        const profRes = await api.getProfile().catch(() => null);
-        if (profRes && profRes.success && profRes.data && profRes.data.profileImage && !currentSettingsAvatar) {
-          currentSettingsAvatar = profRes.data.profileImage;
-          renderSettingsAvatarPreview(currentSettingsAvatar);
-        }
-      } catch(e) {}
-
-      // Password update handler
-      const pwdForm = document.getElementById('change-password-form');
-      if (pwdForm) {
-        pwdForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          const currentPassword = document.getElementById('currentPassword').value;
-          const newPassword = document.getElementById('newPassword').value;
-          const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-
-          if (newPassword !== confirmNewPassword) {
-            Utils.showToast('New passwords do not match.', 'error');
-            return;
-          }
-
-          const btn = document.getElementById('change-pwd-btn');
-          btn.disabled = true;
-          btn.textContent = 'Updating Hash...';
-
-          try {
-            const res = await api.request('/auth/change-password', {
-              method: 'POST',
-              body: { currentPassword, newPassword }
-            });
-
-            if (res && res.success) {
-              Utils.showToast('Password updated successfully in database!', 'success');
-              pwdForm.reset();
-            } else {
-              Utils.showToast(res.message || 'Failed to update password.', 'error');
-            }
-          } catch (err) {
-            Utils.showToast(err.message || 'Failed to update password.', 'error');
-          } finally {
-            btn.disabled = false;
-            btn.textContent = 'Update Password Hash';
-          }
-        });
-      }
-    });
 
     async function exportDataJSON() {
       try {
@@ -573,8 +928,7 @@
         a.click();
         Utils.showToast('JSON export generated.', 'success');
       } catch (err) {
-        console.error(err);
-        Utils.showToast('Failed to export data.', 'error');
+        Utils.showToast('Failed to export data.', 'danger');
       }
     }
 
@@ -602,10 +956,26 @@
         Utils.exportToCSV('WelfareAI_History.csv', rows);
         Utils.showToast('CSV export generated.', 'success');
       } catch (err) {
-        console.error(err);
-        Utils.showToast('Failed to export CSV.', 'error');
+        Utils.showToast('Failed to export CSV.', 'danger');
       }
     }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await checkAuth();
+
+      // Hydrate avatar
+      const cachedAvatar = localStorage.getItem('sih_user_avatar') || '';
+      currentSettingsAvatar = cachedAvatar;
+      renderSettingsAvatarPreview(cachedAvatar);
+
+      // Hydrate profile form
+      loadUserProfileToAccountForm();
+
+      // Highlight active theme
+      const savedTheme = localStorage.getItem('sih_welfare_theme') || 'light';
+      const activeCard = document.getElementById(`theme-card-${savedTheme}`);
+      if (activeCard) activeCard.classList.add('active-theme');
+    });
   </script>
 </body>
 </html>

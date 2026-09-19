@@ -162,5 +162,71 @@
     ],
     "createdAt": "2026-09-19T16:00:32.770Z",
     "updatedAt": "2026-09-19T16:00:32.770Z"
+  },
+  {
+    "_id": "1997814d82e818ee54b54fbd",
+    "referenceId": "ACT-7845",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "REST_RECOVERY",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: REST_RECOVERY. Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "resolutionNotes": "Authorized 48h restorative sleep reset and shift rotation under welfare protocol.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T16:14:04.483Z",
+        "note": "Unit Welfare Officer initiated support action: REST_RECOVERY"
+      }
+    ],
+    "createdAt": "2026-09-19T16:14:04.483Z",
+    "updatedAt": "2026-09-19T16:14:04.483Z"
+  },
+  {
+    "_id": "8f6b18c5d20e5d575fce2150",
+    "referenceId": "ACT-4814",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "MANDATORY_REST_PERIOD",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: MANDATORY_REST_PERIOD. Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "resolutionNotes": "Authorized 48h rest rotation and post-duty clinical check-in. Non-punitive care intervention.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-19T16:16:09.965Z",
+        "note": "Unit Welfare Officer initiated support action: MANDATORY_REST_PERIOD"
+      }
+    ],
+    "createdAt": "2026-09-19T16:16:09.965Z",
+    "updatedAt": "2026-09-19T16:16:09.965Z"
+  },
+  {
+    "_id": "6ccfcb58ce757ee6ac65b321",
+    "referenceId": "REQ-9889",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "CONFIDENTIAL_COUNSELING",
+    "urgency": "PRIORITY",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "preferredTime": "ANYTIME",
+    "notes": "Voluntary self-request for stress decompression consultation.",
+    "status": "SUBMITTED",
+    "personnelConcernLevel": "HIGH",
+    "isSelfRequested": true,
+    "accessibleRegardlessOfConcern": true,
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-19T16:16:09.977Z",
+        "note": "Request received and logged confidentially. Unit Welfare Officer notified."
+      }
+    ],
+    "createdAt": "2026-09-19T16:16:09.978Z",
+    "updatedAt": "2026-09-19T16:16:09.978Z"
   }
 ]

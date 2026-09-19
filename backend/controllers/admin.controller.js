@@ -5,9 +5,12 @@ const mlClient = require('../services/mlClient.service');
 const getSystemMetrics = async (req, res, next) => {
   try {
     const usersCount = await db.Users.countDocuments();
+    const personnelCount = await db.Personnel.countDocuments();
     const checkInsCount = await db.CheckIns.countDocuments();
     const predictionsCount = await db.Predictions.countDocuments();
     const alertsCount = await db.Alerts.countDocuments();
+    const supportRequestsCount = await db.SupportRequests.countDocuments();
+    const followUpsCount = await db.FollowUps.countDocuments();
     const auditLogsCount = await db.AuditLogs.countDocuments();
 
     const dbStatus = getDBStatus();
@@ -23,9 +26,12 @@ const getSystemMetrics = async (req, res, next) => {
         },
         counts: {
           users: usersCount,
+          personnel: personnelCount,
           checkIns: checkInsCount,
           predictions: predictionsCount,
           alerts: alertsCount,
+          supportRequests: supportRequestsCount,
+          followUps: followUpsCount,
           auditLogs: auditLogsCount
         }
       }

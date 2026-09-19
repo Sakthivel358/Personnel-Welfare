@@ -334,4 +334,31 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, logout, getMe, changePassword };
+const verifyCurrentPassword = async (req, res, next) => {
+  try {
+    const { password } = req.body;
+    if (!password) {
+      return res.status(400).json({ success: false, message: 'Current password is required for verification.' });
+    }
+
+    const user = await db.Users.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User record not found.' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Current password verification failed. Please enter your correct password.' });
+    }
+
+    return res.status(200).json({
+      success: true,
+      verified: true,
+      message: 'Identity successfully confirmed. You may now enter your new password.'
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, logout, getMe, changePassword, verifyCurrentPassword };
