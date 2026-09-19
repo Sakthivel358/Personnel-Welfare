@@ -371,6 +371,43 @@ class MLClientService {
       });
     }
 
+    // Extended HR / Operational Data Context Integration
+    if (checkinData.leavePattern && checkinData.leavePattern.leaveDeficitWarning) {
+      normalizedRiskDelta += 2.0;
+      contributingFactors.push({
+        feature_key: 'hr_leave_deficit',
+        title: 'Rest & Leave Accrual Deficit',
+        description: `Personnel has accumulated unavailed earned leave (${checkinData.leavePattern.daysRemaining || 45} days) with overdue rest interval`,
+        user_value: checkinData.leavePattern.daysRemaining || 45,
+        unit: 'earned days unavailed',
+        healthy_range: '< 30 days backlog',
+        baseline_mean: 15,
+        importance_weight: 0.07,
+        contribution_score: 5.5,
+        impact_level: 'MODERATE',
+        status: 'Overdue Leave Deficit',
+        is_risk_driver: true
+      });
+    }
+
+    if (checkinData.workloadTrends && (checkinData.workloadTrends.trajectory === 'Increasing' || checkinData.workloadTrends.surgeWeeksCount >= 3)) {
+      normalizedRiskDelta += 2.5;
+      contributingFactors.push({
+        feature_key: 'hr_workload_trajectory',
+        title: 'Longitudinal Workload Surge Velocity',
+        description: `Operational workload trend is ${checkinData.workloadTrends.trajectory} with ${checkinData.workloadTrends.surgeWeeksCount || 3} surge weeks`,
+        user_value: checkinData.workloadTrends.surgeWeeksCount || 3,
+        unit: 'surge weeks',
+        healthy_range: '<= 1 surge week',
+        baseline_mean: 1,
+        importance_weight: 0.08,
+        contribution_score: 6.8,
+        impact_level: 'HIGH',
+        status: 'Sustained Operational Surge',
+        is_risk_driver: true
+      });
+    }
+
     let compositeRisk = Math.min(95.0, Math.max(5.0, 45.0 + normalizedRiskDelta));
     compositeRisk = Number(compositeRisk.toFixed(1));
 

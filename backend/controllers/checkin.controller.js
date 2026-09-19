@@ -190,6 +190,12 @@ const submitCheckIn = async (req, res, next) => {
       duty_type: activeDutyType,
       postingType: activePostingType,
       deploymentZone: activeDeploymentZone,
+      leavePattern: personnelProfile ? personnelProfile.leavePattern : null,
+      deploymentHistory: personnelProfile ? personnelProfile.deploymentHistory : null,
+      dutySchedule: personnelProfile ? personnelProfile.dutySchedule : null,
+      transferFrequency: personnelProfile ? personnelProfile.transferFrequency : null,
+      trainingCommitments: personnelProfile ? personnelProfile.trainingCommitments : null,
+      workloadTrends: personnelProfile ? personnelProfile.workloadTrends : null,
       recovery_pattern: recovery_pattern || 'CONTINUOUS',
       rest_interval_hours: rest_interval_hours !== undefined ? Number(rest_interval_hours) : 8.0,
       recent_trend_indicator: Number(recent_trend_indicator.toFixed(1)),
@@ -296,6 +302,13 @@ const submitCheckIn = async (req, res, next) => {
 
     // 4. Generate & Persist Recommendations
     const recData = recommendationService.generateRecommendations(mlPrediction, checkInPayload);
+    const interventionsData = recommendationService.generateWelfareInterventions(
+      personnelProfile || { fullName: req.user.fullName, personnelId: req.user.personnelId, rank: req.user.rank, unit: req.user.unit },
+      mlPrediction,
+      checkInPayload,
+      personnelProfile || {}
+    );
+
     const newRecommendation = await db.Recommendations.create({
       userId: req.user._id,
       predictionId: newPrediction._id,
@@ -303,6 +316,7 @@ const submitCheckIn = async (req, res, next) => {
       primaryAction: recData.primaryAction,
       compositeRiskScore: recData.compositeRiskScore,
       actionItems: recData.actionItems,
+      welfareInterventions: interventionsData.interventions || [],
       welfareResourceSuggestions: recData.welfareResourceSuggestions
     });
 

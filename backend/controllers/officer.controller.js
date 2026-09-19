@@ -1,6 +1,7 @@
 const db = require('../models/dbAdapter');
 const auditService = require('../services/audit.service');
 const privacyService = require('../services/privacy.service');
+const recommendationService = require('../services/recommendation.service');
 const { computePersonalBaseline } = require('./prediction.controller');
 
 const getOfficerDashboard = async (req, res, next) => {
@@ -734,6 +735,14 @@ const searchPersonnel = async (req, res, next) => {
       // Active alerts
       const activeAlerts = allAlerts.filter(a => String(a.userId) === uidStr && a.status === 'PENDING_REVIEW');
 
+      // Welfare Intervention Recommendations
+      const interventionsPkg = recommendationService.generateWelfareInterventions(
+        p,
+        latestPred || { compositeRiskScore: 30, concernLevel: 'LOW' },
+        latestCheckin || {},
+        p
+      );
+
       return {
         _id: p._id,
         userId: p.userId,
@@ -748,6 +757,16 @@ const searchPersonnel = async (req, res, next) => {
         preferredSupportLanguage: p.preferredSupportLanguage || 'Hindi / English',
         isEnrolledInWelfare: p.isEnrolledInWelfare !== false,
         totalCheckinsCount: userCheckins.length,
+        // Extended HR & Operational Data
+        leavePattern: p.leavePattern || null,
+        deploymentHistory: p.deploymentHistory || [],
+        dutySchedule: p.dutySchedule || null,
+        transferFrequency: p.transferFrequency || null,
+        trainingCommitments: p.trainingCommitments || [],
+        workloadTrends: p.workloadTrends || null,
+        // Welfare Intervention Recommendations
+        welfareInterventions: interventionsPkg.interventions || [],
+        welfareInterventionsSummary: interventionsPkg.summary || '',
         privacyPreferences: p.privacyPreferences || {
           shareWithWelfareOfficer: true,
           anonymousAggregatedStats: true
@@ -928,6 +947,255 @@ const approveRosterPacing = async (req, res, next) => {
   }
 };
 
+/**
+ * Welfare Intervention Recommendations (Requirement 1)
+ * Generates supportive, non-disciplinary welfare recommendations across all unit personnel
+ */
+const getWelfareInterventions = async (req, res, next) => {
+  try {
+    const personnel = await db.Personnel.find();
+    const predictions = await db.Predictions.find();
+    const checkIns = await db.CheckIns.find();
+
+    const predMap = {};
+    predictions.forEach(p => {
+      if (!predMap[String(p.userId)] || new Date(p.createdAt || p.analyzedAt || 0) > new Date(predMap[String(p.userId)].createdAt || predMap[String(p.userId)].analyzedAt || 0)) {
+        predMap[String(p.userId)] = p;
+      }
+    });
+
+    const checkInMap = {};
+    checkIns.forEach(c => {
+      if (!checkInMap[String(c.userId)] || new Date(c.createdAt || c.checkInDate || 0) > new Date(checkInMap[String(c.userId)].createdAt || checkInMap[String(c.userId)].checkInDate || 0)) {
+        checkInMap[String(c.userId)] = c;
+      }
+    });
+
+    const results = personnel.map(p => {
+      const pred = predMap[String(p.userId)] || { compositeRiskScore: 30, concernLevel: 'LOW' };
+      const chk = checkInMap[String(p.userId)] || {};
+      return recommendationService.generateWelfareInterventions(p, pred, chk, p);
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        totalMonitored: personnel.length,
+        welfareInterventions: results,
+        nonPunitiveNotice: 'All recommendations are non-disciplinary decision support tools. Automated duty changes are prohibited.'
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getPersonnelInterventions = async (req, res, next) => {
+  try {
+    const id = String(req.params.id || '').trim();
+    const p = await db.Personnel.findOne({
+      $or: [{ personnelId: id }, { userId: id }]
+    });
+
+    if (!p) {
+      return res.status(404).json({
+        success: false,
+        message: `Personnel record ${id} not found.`
+      });
+    }
+
+    const predictions = await db.Predictions.find({ userId: p.userId });
+    predictions.sort((a, b) => new Date(b.createdAt || b.analyzedAt || 0) - new Date(a.createdAt || a.analyzedAt || 0));
+    const latestPred = predictions[0] || { compositeRiskScore: 30, concernLevel: 'LOW' };
+
+    const checkIns = await db.CheckIns.find({ userId: p.userId });
+    checkIns.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+    const latestCheckin = checkIns[0] || {};
+
+    const interventionsPkg = recommendationService.generateWelfareInterventions(p, latestPred, latestCheckin, p);
+
+    return res.status(200).json({
+      success: true,
+      data: interventionsPkg
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Workload Balancing Support (Requirement 3)
+ * Identifies sustained workload overload patterns and formulates suggested review actions.
+ * Strictly non-automated, advisory only.
+ */
+const getWorkloadBalancingProposals = async (req, res, next) => {
+  try {
+    const personnel = await db.Personnel.find();
+    const predictions = await db.Predictions.find();
+    const checkIns = await db.CheckIns.find();
+    const users = await db.Users.find();
+
+    const userMap = {};
+    users.forEach(u => { userMap[String(u._id)] = u; });
+
+    const latestPredMap = {};
+    predictions.forEach(p => {
+      if (!latestPredMap[String(p.userId)] || new Date(p.createdAt || p.analyzedAt || 0) > new Date(latestPredMap[String(p.userId)].createdAt || latestPredMap[String(p.userId)].analyzedAt || 0)) {
+        latestPredMap[String(p.userId)] = p;
+      }
+    });
+
+    const latestCheckinMap = {};
+    checkIns.forEach(c => {
+      if (!latestCheckinMap[String(c.userId)] || new Date(c.createdAt || c.checkInDate || 0) > new Date(latestCheckinMap[String(c.userId)].createdAt || latestCheckinMap[String(c.userId)].checkInDate || 0)) {
+        latestCheckinMap[String(c.userId)] = c;
+      }
+    });
+
+    const balancingProposals = [];
+    let highStrainCount = 0;
+    let moderateStrainCount = 0;
+
+    personnel.forEach((p, idx) => {
+      const u = userMap[String(p.userId)] || {};
+      const pred = latestPredMap[String(p.userId)] || { compositeRiskScore: 35, concernLevel: 'LOW' };
+      const chk = latestCheckinMap[String(p.userId)] || {};
+      const risk = Math.round(Number(pred.compositeRiskScore || 0));
+
+      const weeklyHours = chk.workload_hours != null ? Number(chk.workload_hours) : (chk.weekly_duty_hours != null ? Number(chk.weekly_duty_hours) : 48);
+      const shifts = chk.shift_continuity_days != null ? Number(chk.shift_continuity_days) : 0;
+      const prolonged = chk.prolonged_duty_hours != null ? Number(chk.prolonged_duty_hours) : 0;
+      const night = chk.night_duty_hours != null ? Number(chk.night_duty_hours) : 0;
+      const activeDuty = chk.duty_type || p.primaryDuty || p.dutyType || 'Field Operations / Patrol';
+
+      const wt = p.workloadTrends || { averageWeeklyHours: 48, surgeWeeksCount: 1, trajectory: 'Stable' };
+      const lp = p.leavePattern || { daysRemaining: 40, leaveDeficitWarning: false };
+      const ds = p.dutySchedule || { shiftType: 'Rotational 3-Watch', nightShiftRatio: 0.25 };
+
+      // Identify sustained workload patterns
+      const isSustainedWeekly = weeklyHours >= 58 || wt.averageWeeklyHours >= 56 || wt.surgeWeeksCount >= 3;
+      const isConsecutiveOverload = shifts >= 7;
+      const isProlongedWatch = prolonged >= 12;
+      const isNightDutyOverload = night >= 16 || (ds.nightShiftRatio && ds.nightShiftRatio >= 0.35);
+      const isSurgeTrajectory = wt.trajectory === 'Increasing' && risk >= 45;
+
+      const hasSustainedPattern = isSustainedWeekly || isConsecutiveOverload || isProlongedWatch || isNightDutyOverload || isSurgeTrajectory || risk >= 55;
+
+      if (hasSustainedPattern) {
+        const patternsDetected = [];
+        let suggestedReviewAction = 'Review operational pacing and rotate non-critical standby duties with Adjutant Desk.';
+        let targetArea = 'General Workload Pacing';
+        let severity = 'MODERATE';
+
+        if (isConsecutiveOverload) {
+          severity = 'HIGH';
+          patternsDetected.push(`Continuous Duty Exposure (${shifts} consecutive shifts without rest)`);
+          suggestedReviewAction = `Recommend Adjutant review mandatory 48-hour recuperative rest window before next deployment (current streak: ${shifts} consecutive shifts).`;
+          targetArea = 'Mandatory Decompression';
+        } else if (isProlongedWatch) {
+          severity = 'HIGH';
+          patternsDetected.push(`Prolonged Watch Length (${prolonged} continuous hours)`);
+          suggestedReviewAction = `Suggest watch split to 4-hour staggered rotation intervals to cap continuous vigilance strain.`;
+          targetArea = 'Watch Interval Splitting';
+        } else if (isSustainedWeekly) {
+          severity = weeklyHours >= 65 ? 'HIGH' : 'MODERATE';
+          patternsDetected.push(`Sustained Weekly Load (${weeklyHours}h/wk, ${wt.surgeWeeksCount || 2} surge cycles)`);
+          suggestedReviewAction = `Recommend temporary redistribution to daylight base maintenance and technical logistics (capping at 40h/wk).`;
+          targetArea = 'Duty Redistribution';
+        } else if (isNightDutyOverload) {
+          severity = 'MODERATE';
+          patternsDetected.push(`Circadian Night Watch Load (${night} night hours/wk)`);
+          suggestedReviewAction = `Suggest rotating to daylight watch shift to restore circadian sleep equilibrium.`;
+          targetArea = 'Circadian Rebalancing';
+        } else if (isSurgeTrajectory) {
+          severity = 'MODERATE';
+          patternsDetected.push(`Upward Workload Velocity (${wt.trajectory} trajectory, ${wt.surgeWeeksCount} surge weeks)`);
+          suggestedReviewAction = `Suggest Adjutant review workload velocity to prevent chronic fatigue transition.`;
+          targetArea = 'Trajectory Stabilization';
+        } else {
+          patternsDetected.push(`Elevated Operational Strain Index (${risk}%)`);
+        }
+
+        if (severity === 'HIGH') highStrainCount++;
+        else moderateStrainCount++;
+
+        balancingProposals.push({
+          proposalId: `WLB-${p.personnelId}-${p._id ? String(p._id).slice(-4) : (idx + 1).toString().padStart(3, '0')}`,
+          userId: p.userId,
+          personnelId: p.personnelId,
+          fullName: p.fullName || u.fullName || 'Personnel Member',
+          rank: p.rank || u.rank || 'Personnel',
+          unit: p.unit || u.unit || 'Operational Unit',
+          currentDuty: activeDuty,
+          patternsDetected,
+          targetArea,
+          severity,
+          metrics: {
+            weeklyDutyHours: weeklyHours,
+            consecutiveDutyDays: shifts,
+            prolongedDutyHours: prolonged,
+            nightDutyHours: night,
+            workloadTrajectory: wt.trajectory,
+            surgeWeeksCount: wt.surgeWeeksCount,
+            riskScore: risk,
+            leaveDeficit: lp.leaveDeficitWarning
+          },
+          suggestedReviewAction,
+          advisoryOnly: true,
+          automatedActionTaken: false,
+          status: 'PENDING_OFFICER_REVIEW',
+          governanceNotice: 'Advisory Pacing Only — Automated duty modification is strictly prohibited. Final duty schedule decisions reside solely with the Unit Commander / Adjutant.'
+        });
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        totalEvaluated: personnel.length,
+        sustainedWorkloadCount: balancingProposals.length,
+        highSeverityCount: highStrainCount,
+        moderateSeverityCount: moderateStrainCount,
+        proposals: balancingProposals,
+        governanceRule: 'Automated duty modification strictly prohibited; all proposals require human officer adjudication and Commander confirmation.'
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const reviewWorkloadProposal = async (req, res, next) => {
+  try {
+    const { proposalId } = req.params;
+    const { reviewAction, officerNotes, personnelId } = req.body;
+
+    await auditService.log({
+      action: 'WORKLOAD_PACING_REVIEWED',
+      userId: req.user._id,
+      personnelId: personnelId || 'UNKNOWN',
+      targetResource: 'WorkloadBalancing',
+      ipAddress: req.ip,
+      details: { proposalId, reviewAction, officerNotes, automatedActionTaken: false }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: `Workload pacing review recorded successfully. Advisory dispatched to Adjutant Desk.`,
+      data: {
+        proposalId,
+        reviewAction: reviewAction || 'DISPATCH_TO_ADJUTANT',
+        officerNotes: officerNotes || '',
+        status: 'REVIEWED_BY_OFFICER',
+        automatedActionTaken: false,
+        reviewedAt: new Date().toISOString()
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getOfficerDashboard,
   getEarlyWarningCenter,
@@ -939,5 +1207,9 @@ module.exports = {
   searchPersonnel,
   getPersonnelById,
   getRosterOptimization,
-  approveRosterPacing
+  approveRosterPacing,
+  getWelfareInterventions,
+  getPersonnelInterventions,
+  getWorkloadBalancingProposals,
+  reviewWorkloadProposal
 };

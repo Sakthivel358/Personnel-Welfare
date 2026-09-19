@@ -22,4 +22,12 @@ router.get('/roster-optimizer', officerController.getRosterOptimization);
 router.get('/roster-optimization', officerController.getRosterOptimization);
 router.post('/approve-pacing', officerController.approveRosterPacing);
 
+// Welfare Intervention Recommendations (Requirement 1)
+router.get('/interventions', officerController.getWelfareInterventions);
+router.get('/interventions/:id', officerController.getPersonnelInterventions);
+
+// Workload Balancing (Requirement 3)
+router.get('/workload-balancing', officerController.getWorkloadBalancingProposals);
+router.post('/workload-balancing/proposals/:proposalId/review', officerController.reviewWorkloadProposal);
+
 module.exports = router;

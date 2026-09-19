@@ -363,20 +363,36 @@
           </div>
         </div>
 
-        <!-- TAB 3: AI Roster Pacing & Shift Optimizer -->
+        <!-- TAB 3: Workload Balancing & Shift Pacing Advisory -->
         <div id="tab-optimizer" class="officer-tab-content" style="display:none;">
           <div class="card mb-3" style="background-color: var(--bg-card-subtle); border: 1px solid var(--border-color);">
             <div class="d-flex justify-between align-center flex-wrap gap-1">
               <div>
-                <h3>🛡️ AI Shift Pacing & Rest Rotation Optimizer</h3>
+                <h3>🛡️ Workload Balancing & Shift Pacing Advisory</h3>
                 <p class="text-muted" style="font-size:0.85rem; margin-top:0.25rem;">
-                  Predictive fatigue reallocation for Adjutant & Duty Desks: Rebalancing high-strain personnel to prevent operational burnout.
+                  Sustained workload pattern detection & fatigue mitigation: Formulates suggested review actions for authorized officers.
                 </p>
               </div>
               <div class="d-flex gap-1 align-center">
-                <span class="badge badge-neutral" id="opt-fatigue-reduction">Est. Battalion Fatigue Reduction: --</span>
-                <button class="btn btn-sm btn-secondary" onclick="loadRosterOptimization()">🔄 Re-Calculate</button>
+                <span class="badge badge-neutral" id="opt-fatigue-reduction">Sustained Patterns: --</span>
+                <button class="btn btn-sm btn-secondary" onclick="loadRosterOptimization()">🔄 Re-Scan Unit Workload</button>
               </div>
+            </div>
+          </div>
+
+          <!-- Non-Automated Duty Modification Safeguard Notice -->
+          <div class="card mb-3" style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--risk-mod-border); border-left: 4px solid var(--risk-mod); padding: 0.85rem 1.25rem;">
+            <div class="d-flex align-center justify-between flex-wrap gap-2">
+              <div class="d-flex align-center gap-1">
+                <span style="font-size: 1.3rem;">⚖️</span>
+                <div>
+                  <strong style="font-size: 0.9rem; color: var(--text-primary);">Human-in-the-Loop Workload Balancing Protocol</strong>
+                  <div class="text-muted" style="font-size: 0.82rem; margin-top: 2px;">
+                    The system identifies sustained workload patterns across weekly duty hours, consecutive shifts, watch duration, and surge velocity. <strong>Duty rosters are NEVER modified automatically.</strong> All proposals are advisory only; final duty schedule decisions reside solely with the Unit Commander / Adjutant.
+                  </div>
+                </div>
+              </div>
+              <span class="badge badge-neutral" style="font-size: 0.76rem; font-weight: 700;">Advisory Pacing Only</span>
             </div>
           </div>
 
@@ -938,82 +954,141 @@
       container.innerHTML = '<div class="spinner spinner-primary" style="margin:2rem auto;"></div>';
 
       try {
-        const res = await api.getRosterOptimization();
-        if (res && res.success && res.data) {
-          const { proposals, estimatedBattalionFatigueReduction } = res.data;
+        // Try dedicated Workload Balancing endpoint first, with fallback to roster optimizer
+        let res = await api.getWorkloadBalancing().catch(() => null);
+        let proposals = [];
+        let sustainedCount = 0;
+
+        if (res && res.success && res.data && res.data.proposals) {
+          proposals = res.data.proposals;
+          sustainedCount = res.data.sustainedWorkloadCount || proposals.length;
           const badgeEl = document.getElementById('opt-fatigue-reduction');
           if (badgeEl) {
-            badgeEl.textContent = `Est. Battalion Fatigue Reduction: ~${estimatedBattalionFatigueReduction || '0%'}`;
-            badgeEl.className = `badge ${estimatedBattalionFatigueReduction && estimatedBattalionFatigueReduction !== '0%' ? 'badge-low' : 'badge-neutral'}`;
+            badgeEl.textContent = `Sustained Patterns Flagged: ${sustainedCount}`;
+            badgeEl.className = `badge ${sustainedCount > 0 ? 'badge-high' : 'badge-low'}`;
           }
-
-          if (!proposals || proposals.length === 0) {
-            container.innerHTML = '<div class="text-center text-muted py-4">No roster pacing interventions currently required. All personnel in optimal balance.</div>';
-            return;
+        } else {
+          res = await api.getRosterOptimization();
+          if (res && res.success && res.data) {
+            proposals = res.data.proposals || [];
+            sustainedCount = proposals.length;
+            const badgeEl = document.getElementById('opt-fatigue-reduction');
+            if (badgeEl) {
+              badgeEl.textContent = `Est. Battalion Fatigue Reduction: ~${res.data.estimatedBattalionFatigueReduction || '0%'}`;
+              badgeEl.className = `badge ${res.data.estimatedBattalionFatigueReduction && res.data.estimatedBattalionFatigueReduction !== '0%' ? 'badge-low' : 'badge-neutral'}`;
+            }
           }
+        }
 
-          container.innerHTML = proposals.map(p => `
-            <div class="card" style="background:var(--bg-card); border-left: 4px solid var(--accent); padding:1.25rem;">
+        if (!proposals || proposals.length === 0) {
+          container.innerHTML = '<div class="text-center text-muted py-4">No sustained workload overloads detected. All monitored personnel within nominal duty limits.</div>';
+          return;
+        }
+
+        container.innerHTML = proposals.map(p => {
+          const patterns = p.patternsDetected || [p.rationale || 'Elevated fatigue and duty continuous exposure'];
+          const m = p.metrics || {
+            weeklyDutyHours: p.weeklyDutyHours || 56,
+            consecutiveDutyDays: p.consecutiveDutyDays || 0,
+            prolongedDutyHours: p.prolongedDutyHours || 0,
+            workloadTrajectory: 'Increasing',
+            riskScore: p.currentRiskScore || 50
+          };
+          const reviewAction = p.suggestedReviewAction || p.recommendedDuty || 'Review shift pacing intervals';
+
+          return `
+            <div class="card" style="background:var(--bg-card); border-left: 4px solid ${p.severity === 'HIGH' ? 'var(--risk-high)' : 'var(--accent)'}; padding:1.25rem;">
               <div class="d-flex justify-between align-center mb-2 flex-wrap gap-1">
                 <div>
-                  <strong style="font-size:1.05rem;">${p.fullName}</strong>
-                  <span class="text-muted" style="font-size:0.85rem; margin-left:0.5rem;">${p.personnelId} • ${p.rank} • ${p.unit}</span>
+                  <strong style="font-size:1.05rem;">${Utils.sanitize(p.fullName)}</strong>
+                  <span class="text-muted" style="font-size:0.85rem; margin-left:0.5rem;">${Utils.sanitize(p.personnelId)} • ${Utils.sanitize(p.rank)} • ${Utils.sanitize(p.unit)}</span>
                 </div>
-                <div class="d-flex gap-1 align-center">
-                  <span class="badge badge-high">Current Strain: ${p.currentRiskScore}%</span>
-                  <span class="badge badge-low">Predicted Relief: ${p.predictedRiskDelta}%</span>
-                </div>
-              </div>
-
-              <div class="grid-2 mb-2" style="background:var(--bg-card-subtle); padding:0.75rem; border-radius:6px; font-size:0.85rem;">
-                <div>
-                  <div class="text-muted">Current Shift Assignment:</div>
-                  <strong style="color:var(--danger);">${p.currentDuty}</strong>
-                </div>
-                <div>
-                  <div class="text-muted">AI Recommended Pacing Reallocation:</div>
-                  <strong style="color:var(--success);">${p.recommendedDuty}</strong>
-                  <div style="font-size:0.75rem; color:var(--text-muted);">${p.recommendedRestHours}</div>
+                <div class="d-flex gap-1 align-center flex-wrap">
+                  <span class="badge ${p.severity === 'HIGH' ? 'badge-high' : 'badge-mod'}">${p.severity || 'MODERATE'} Priority</span>
+                  <span class="badge badge-neutral">Current Strain: ${m.riskScore || p.currentRiskScore || 50}%</span>
                 </div>
               </div>
 
-              <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">
-                💡 <em>${p.rationale}</em>
-              </p>
+              <!-- Detected Sustained Workload Patterns -->
+              <div class="mb-2">
+                <div class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">
+                  ⚠️ Sustained Workload Pattern(s) Identified:
+                </div>
+                <div class="d-flex gap-1 flex-wrap">
+                  ${patterns.map(pat => `
+                    <span class="badge badge-mod" style="font-size: 0.75rem; padding: 3px 8px;">${Utils.sanitize(pat)}</span>
+                  `).join(' ')}
+                </div>
+              </div>
 
+              <!-- Metrics Row -->
+              <div class="grid-4 mb-2" style="background:var(--bg-card-subtle); padding:0.6rem 0.75rem; border-radius:6px; font-size:0.8rem; text-align:center;">
+                <div><span class="text-muted">Weekly Duty:</span> <strong style="color:var(--text-primary);">${m.weeklyDutyHours || 52}h/wk</strong></div>
+                <div><span class="text-muted">Consecutive Shifts:</span> <strong style="color:${m.consecutiveDutyDays >= 7 ? 'var(--risk-high)' : 'var(--text-primary)'};">${m.consecutiveDutyDays || 0} Days</strong></div>
+                <div><span class="text-muted">Continuous Watch:</span> <strong style="color:${m.prolongedDutyHours >= 12 ? 'var(--risk-high)' : 'var(--text-primary)'};">${m.prolongedDutyHours || 0}h</strong></div>
+                <div><span class="text-muted">Trajectory:</span> <strong style="color:var(--accent);">${m.workloadTrajectory || 'Stable'}</strong></div>
+              </div>
+
+              <!-- Suggested Workload-Review Action -->
+              <div class="mb-2" style="background: rgba(99, 102, 241, 0.05); border: 1px dashed var(--accent); padding: 0.75rem 1rem; border-radius: 6px;">
+                <div class="d-flex align-center gap-1 mb-1">
+                  <span style="font-size: 1rem;">💡</span>
+                  <strong style="font-size: 0.88rem; color: var(--accent);">Suggested Workload-Review Action:</strong>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-primary); line-height: 1.45;">
+                  ${Utils.sanitize(reviewAction)}
+                </div>
+              </div>
+
+              <!-- Non-Automated Advisory Guard & Officer Decision Button -->
               <div class="d-flex justify-between align-center flex-wrap gap-1 pt-2" style="border-top:1px solid var(--border-color);">
-                <span class="text-muted" style="font-size:0.75rem;">Adjutant Protocol Ref: ${p.proposalId}</span>
+                <div class="text-muted" style="font-size:0.75rem; max-width: 550px; line-height: 1.35;">
+                  ⚖️ <strong>Advisory Only:</strong> System never modifies rosters autonomously. Action requires officer adjudication and Adjutant confirmation.
+                </div>
                 <div id="action-container-${p.proposalId}">
-                  ${p.status === 'APPROVED' ? `
-                    <span class="badge badge-low">✓ Pacing Rotation Approved</span>
+                  ${p.status === 'APPROVED' || p.status === 'REVIEWED_BY_OFFICER' ? `
+                    <span class="badge badge-low">✓ Advisory Endorsed & Dispatched</span>
                   ` : `
-                    <button class="btn btn-sm btn-primary" onclick="approvePacing('${p.proposalId}', '${p.personnelId}', '${p.recommendedDuty}')">
-                      ⚡ Approve Pacing Reallocation
+                    <button class="btn btn-sm btn-primary" onclick="endorseWorkloadProposal('${p.proposalId}', '${p.personnelId}', '${Utils.sanitize(reviewAction)}')">
+                      ⚡ Endorse & Dispatch Advisory
                     </button>
                   `}
                 </div>
               </div>
             </div>
-          `).join('');
+          `;
+        }).join('');
+      } catch (err) {
+        container.innerHTML = `<div class="alert alert-danger">Error loading workload balancing proposals: ${err.message}</div>`;
+      }
+    }
+
+    async function endorseWorkloadProposal(proposalId, personnelId, suggestedAction) {
+      try {
+        let res = await api.reviewWorkloadProposal(proposalId, {
+          reviewAction: 'DISPATCH_TO_ADJUTANT',
+          officerNotes: `Welfare Officer endorsed review action: ${suggestedAction}`,
+          personnelId
+        }).catch(() => null);
+
+        if (!res || !res.success) {
+          res = await api.approveRosterPacing({ proposalId, personnelId, approvedDuty: suggestedAction });
+        }
+
+        if (res && res.success) {
+          Utils.showToast('Workload pacing advisory endorsed and dispatched to Adjutant Desk.', 'success');
+          const actEl = document.getElementById(`action-container-${proposalId}`);
+          if (actEl) {
+            actEl.innerHTML = '<span class="badge badge-low">✓ Advisory Endorsed & Dispatched</span>';
+          }
         }
       } catch (err) {
-        container.innerHTML = `<div class="alert alert-danger">Error generating roster pacing recommendations: ${err.message}</div>`;
+        Utils.showToast('Failed to record review: ' + err.message, 'danger');
       }
     }
 
     async function approvePacing(proposalId, personnelId, approvedDuty) {
-      try {
-        const res = await api.approveRosterPacing({ proposalId, personnelId, approvedDuty });
-        if (res && res.success) {
-          Utils.showToast(res.message || 'Pacing schedule approved and dispatched to Adjutant Desk.', 'success');
-          const actEl = document.getElementById(`action-container-${proposalId}`);
-          if (actEl) {
-            actEl.innerHTML = '<span class="badge badge-low">✓ Pacing Rotation Approved</span>';
-          }
-        }
-      } catch (err) {
-        Utils.showToast('Failed to approve pacing: ' + err.message, 'danger');
-      }
+      return endorseWorkloadProposal(proposalId, personnelId, approvedDuty);
     }
 
     async function openExecutivePDFModal() {

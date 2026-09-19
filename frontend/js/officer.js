@@ -523,6 +523,148 @@ function renderPersonnelSearchResults(records) {
           </div>
         </div>
 
+        <!-- EXTENDED HR & OPERATIONAL INTELLIGENCE (6 Dimensions) -->
+        <div class="card mb-3" style="background: var(--bg-card); padding: 1.15rem; border: 1px solid var(--border-color);">
+          <div class="d-flex justify-between align-center mb-2 flex-wrap gap-1" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            <div class="d-flex align-center gap-1">
+              <span style="font-size: 1.1rem;">📑</span>
+              <strong style="font-size: 0.92rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">
+                Complete HR & Operational Deployment Profile
+              </strong>
+            </div>
+            <span class="badge badge-neutral" style="font-size: 0.72rem;">6 Core Operational Dimensions</span>
+          </div>
+
+          <div class="grid-3 mb-2" style="gap: 0.85rem; font-size: 0.82rem;">
+            <!-- 1. Leave Pattern -->
+            <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: 6px; border-left: 3px solid ${p.leavePattern && p.leavePattern.leaveDeficitWarning ? 'var(--risk-high)' : 'var(--accent)'};">
+              <div class="d-flex justify-between align-center mb-1">
+                <strong>📅 Leave Pattern & Balance</strong>
+                ${p.leavePattern && p.leavePattern.leaveDeficitWarning ? '<span class="badge badge-high" style="font-size:0.68rem;">⚠️ Deficit Warning</span>' : '<span class="badge badge-low" style="font-size:0.68rem;">✓ Balanced</span>'}
+              </div>
+              <div><span class="text-muted">Days Earned:</span> <strong>${p.leavePattern ? p.leavePattern.daysEarned : 60}</strong> • <span class="text-muted">Availed:</span> <strong>${p.leavePattern ? p.leavePattern.daysAvailed : 15}</strong></div>
+              <div><span class="text-muted">Remaining Balance:</span> <strong>${p.leavePattern ? p.leavePattern.daysRemaining : 45} Days</strong></div>
+              <div><span class="text-muted">Last Leave Availed:</span> <strong>${p.leavePattern && p.leavePattern.lastLeaveDate ? p.leavePattern.lastLeaveDate : 'Over 6 Months Ago'}</strong></div>
+            </div>
+
+            <!-- 2. Deployment History -->
+            <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: 6px; border-left: 3px solid var(--accent);">
+              <div class="d-flex justify-between align-center mb-1">
+                <strong>🏔️ Deployment History</strong>
+                <span class="badge badge-neutral" style="font-size:0.68rem;">${(p.deploymentHistory || []).length} Postings</span>
+              </div>
+              <div style="max-height: 70px; overflow-y: auto;">
+                ${(p.deploymentHistory && p.deploymentHistory.length > 0) ? p.deploymentHistory.map(d => `
+                  <div style="margin-bottom: 3px; line-height: 1.3;">
+                    <strong>${Utils.sanitize(d.mission)}</strong>: ${d.durationMonths || 12} mos in ${Utils.sanitize(d.zone || d.terrainType)}
+                  </div>
+                `).join('') : '<div class="text-muted">Northern Sector High-Altitude Deployment</div>'}
+              </div>
+            </div>
+
+            <!-- 3. Duty Schedule -->
+            <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: 6px; border-left: 3px solid var(--accent);">
+              <div class="d-flex justify-between align-center mb-1">
+                <strong>⏱️ Duty Schedule & Watch Timing</strong>
+                <span class="badge badge-neutral" style="font-size:0.68rem;">${p.dutySchedule ? p.dutySchedule.shiftType : 'Rotational'}</span>
+              </div>
+              <div><span class="text-muted">Rotation Cycle:</span> <strong>${p.dutySchedule ? p.dutySchedule.rotationCycle : '8h Watch / 16h Rest'}</strong></div>
+              <div><span class="text-muted">Nominal Weekly:</span> <strong>${p.dutySchedule ? p.dutySchedule.weeklyHoursNominal : 48} hrs/wk</strong></div>
+              <div><span class="text-muted">Night Shift Ratio:</span> <strong>${p.dutySchedule ? Math.round(p.dutySchedule.nightShiftRatio * 100) : 25}%</strong></div>
+            </div>
+          </div>
+
+          <div class="grid-3" style="gap: 0.85rem; font-size: 0.82rem;">
+            <!-- 4. Transfer Frequency -->
+            <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: 6px; border-left: 3px solid ${p.transferFrequency && p.transferFrequency.highMobilityFlag ? 'var(--risk-mod)' : 'var(--accent)'};">
+              <div class="d-flex justify-between align-center mb-1">
+                <strong>🔄 Transfer Frequency & Mobility</strong>
+                ${p.transferFrequency && p.transferFrequency.highMobilityFlag ? '<span class="badge badge-mod" style="font-size:0.68rem;">⚡ High Mobility</span>' : '<span class="badge badge-low" style="font-size:0.68rem;">✓ Standard Tenure</span>'}
+              </div>
+              <div><span class="text-muted">Total Rotational Postings:</span> <strong>${p.transferFrequency ? p.transferFrequency.transfersCount : 3}</strong></div>
+              <div><span class="text-muted">Average Sector Tenure:</span> <strong>${p.transferFrequency ? p.transferFrequency.averageTenureMonths : 22} Months</strong></div>
+              <div><span class="text-muted">Last Relocation Date:</span> <strong>${p.transferFrequency && p.transferFrequency.lastTransferDate ? p.transferFrequency.lastTransferDate : '2025-06-15'}</strong></div>
+            </div>
+
+            <!-- 5. Training Commitments -->
+            <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: 6px; border-left: 3px solid var(--accent);">
+              <div class="d-flex justify-between align-center mb-1">
+                <strong>🎯 Training Commitments</strong>
+                <span class="badge badge-neutral" style="font-size:0.68rem;">${(p.trainingCommitments || []).length} Modules</span>
+              </div>
+              <div style="max-height: 70px; overflow-y: auto;">
+                ${(p.trainingCommitments && p.trainingCommitments.length > 0) ? p.trainingCommitments.map(t => `
+                  <div style="margin-bottom: 3px; line-height: 1.3;">
+                    <strong>${Utils.sanitize(t.program)}</strong>: <span class="badge ${t.status === 'Completed' ? 'badge-low' : 'badge-mod'}" style="font-size:0.65rem; padding:1px 5px;">${t.status}</span> (${t.completedHours}/${t.mandatoryHours}h)
+                  </div>
+                `).join('') : '<div class="text-muted">High-Altitude Conditioning Completed</div>'}
+              </div>
+            </div>
+
+            <!-- 6. Workload Trends -->
+            <div style="background: var(--bg-card-subtle); padding: 0.75rem; border-radius: 6px; border-left: 3px solid ${p.workloadTrends && p.workloadTrends.trajectory === 'Increasing' ? 'var(--risk-high)' : 'var(--accent)'};">
+              <div class="d-flex justify-between align-center mb-1">
+                <strong>📈 Workload Trends & Velocity</strong>
+                <span class="badge ${p.workloadTrends && p.workloadTrends.trajectory === 'Increasing' ? 'badge-high' : 'badge-low'}" style="font-size:0.68rem;">
+                  ${p.workloadTrends ? p.workloadTrends.trajectory : 'Stable'} Velocity
+                </span>
+              </div>
+              <div><span class="text-muted">Rolling Average Duty:</span> <strong>${p.workloadTrends ? p.workloadTrends.averageWeeklyHours : 52} hrs/wk</strong></div>
+              <div><span class="text-muted">Peak Shift Exposure:</span> <strong>${p.workloadTrends ? p.workloadTrends.peakWeeklyHours : 68} hrs/wk</strong></div>
+              <div><span class="text-muted">Surge Cycles Logged:</span> <strong>${p.workloadTrends ? p.workloadTrends.surgeWeeksCount : 3} Weeks</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WELFARE INTERVENTION RECOMMENDATIONS (Strictly Non-Disciplinary & Supportive) -->
+        <div class="card mb-3" style="background: var(--bg-card); padding: 1.15rem; border: 1px solid var(--border-color); border-left: 4px solid var(--success);">
+          <div class="d-flex justify-between align-center mb-2 flex-wrap gap-1" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+            <div class="d-flex align-center gap-1">
+              <span style="font-size: 1.15rem;">🤝</span>
+              <div>
+                <strong style="font-size: 0.92rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">
+                  Welfare Intervention Recommendations
+                </strong>
+                <div class="text-muted" style="font-size: 0.76rem;">
+                  Evidence-based supportive actions generated from multi-modal indicators. Strictly non-punitive decision support.
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-1 align-center flex-wrap">
+              <span class="badge badge-low" style="font-size: 0.72rem;">✓ Non-Disciplinary</span>
+              <span class="badge badge-neutral" style="font-size: 0.72rem;">Officer Adjudication Required</span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+            ${(p.welfareInterventions && p.welfareInterventions.length > 0) ? p.welfareInterventions.map(int => `
+              <div style="background: var(--bg-card-subtle); padding: 0.85rem 1rem; border-radius: 6px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 260px;">
+                  <div class="d-flex align-center gap-1 mb-1 flex-wrap">
+                    <span class="badge badge-neutral" style="font-size: 0.7rem; font-weight: 700;">${int.categoryLabel || int.category}</span>
+                    <strong style="font-size: 0.88rem; color: var(--text-primary);">${Utils.sanitize(int.title)}</strong>
+                    <span class="badge badge-${(int.priority || 'medium').toLowerCase()}" style="font-size: 0.68rem;">${int.priority || 'Medium'} Priority</span>
+                  </div>
+                  <div style="font-size: 0.84rem; line-height: 1.45; color: var(--text-secondary); margin-bottom: 0.35rem;">
+                    <strong>Suggested Action:</strong> ${Utils.sanitize(int.suggestedAction)}
+                  </div>
+                  <div class="text-muted" style="font-size: 0.76rem;">
+                    💡 <em>Evidence Basis:</em> ${Utils.sanitize(int.evidenceBasis)}
+                  </div>
+                </div>
+                <div style="text-align: right; font-size: 0.76rem; flex-shrink: 0;">
+                  <div class="text-muted">Target Timeframe:</div>
+                  <strong style="color: var(--accent);">${int.reviewTimeframe || 'Next 7 Days'}</strong>
+                </div>
+              </div>
+            `).join('') : `
+              <div class="text-muted py-2" style="font-size: 0.85rem;">
+                Baseline indicators optimal. Continue routine wellness check-ins and open-door welfare accessibility.
+              </div>
+            `}
+          </div>
+        </div>
+
         <!-- Non-Punitive Legal Notice & Actions Footer -->
         <div class="d-flex justify-between align-center flex-wrap gap-2 pt-2" style="border-top: 1px solid var(--border-color);">
           <div class="text-muted" style="font-size: 0.76rem; max-width: 600px; line-height: 1.4;">

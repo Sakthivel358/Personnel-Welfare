@@ -450,5 +450,21 @@
     "isNonPunitive": true,
     "createdAt": "2026-09-19T17:42:02.095Z",
     "updatedAt": "2026-09-19T17:42:02.095Z"
+  },
+  {
+    "_id": "684d12b95298540b2cba797b",
+    "alertId": "280d7648d01754380eeae95a",
+    "userId": "8765e38373dc5aeb0a15eec8",
+    "personnelId": "PERS_FIN_577928",
+    "assignedOfficerId": "57cb3b32be462b32a3b7fa23",
+    "status": "SCHEDULED",
+    "scheduledDate": "2026-09-20T18:07:07.737Z",
+    "initialRiskScore": 90.6,
+    "reAnalyzedRiskScore": null,
+    "welfareDelta": "PENDING_DATA",
+    "officerNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-19T18:07:07.747Z",
+    "updatedAt": "2026-09-19T18:07:07.747Z"
   }
 ]

@@ -211,6 +211,22 @@ class APIClient {
     return this.request('/officer/approve-pacing', { method: 'POST', body: JSON.stringify(data) });
   }
 
+  async getWelfareInterventions(personnelId) {
+    const endpoint = personnelId ? `/officer/interventions/${encodeURIComponent(personnelId)}` : '/officer/interventions';
+    return this.request(endpoint, { method: 'GET' });
+  }
+
+  async getWorkloadBalancing() {
+    return this.request('/officer/workload-balancing', { method: 'GET' });
+  }
+
+  async reviewWorkloadProposal(proposalId, data) {
+    return this.request(`/officer/workload-balancing/proposals/${encodeURIComponent(proposalId)}/review`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
   // Follow-up endpoints
   async getFollowUps() {
     return this.request('/followups', { method: 'GET' });

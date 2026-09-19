@@ -151,6 +151,23 @@
           </div>
         </div>
 
+        <!-- 1.5 Supportive Welfare Intervention Recommendations (Requirement 1) -->
+        <div class="card mb-3" style="border-left: 4px solid var(--success);">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h3>🤝 Supportive Welfare Intervention Recommendations</h3>
+              <p class="text-muted" style="font-size:0.8rem;">Non-disciplinary supportive guidance across check-in cadence, officer follow-up, recovery, workload, and voluntary referrals.</p>
+            </div>
+            <div class="d-flex gap-1 align-center">
+              <span class="badge badge-low">Strictly Non-Disciplinary</span>
+              <span class="badge badge-neutral">Supportive Care</span>
+            </div>
+          </div>
+          <div id="welfare-interventions-container" style="display:flex; flex-direction:column; gap:0.75rem; padding: 0.5rem 0;">
+            <div class="spinner spinner-primary" style="margin:1rem auto;"></div>
+          </div>
+        </div>
+
         <!-- 2. Recovery & Operational Guidance Protocol -->
         <div class="grid-2 mb-3">
           <div class="card">
@@ -281,6 +298,7 @@
           });
 
           renderActionCards();
+          renderWelfareInterventions(r.welfareInterventions || generateFallbackInterventions(r.concernLevel || (p && p.concernLevel)));
           updateProgress();
         } else {
           document.getElementById('primary-action-text').textContent = 'Please complete an initial check-in to generate tailored recommendations.';
@@ -289,10 +307,91 @@
               <a href="/stress-checkin.html" class="btn btn-primary">Start Initial Check-in</a>
             </div>
           `;
+          document.getElementById('welfare-interventions-container').innerHTML = `
+            <div class="text-muted text-center py-3">Submit your operational check-in to activate supportive welfare interventions.</div>
+          `;
         }
       } catch (err) {
         console.error('Error loading recommendations:', err);
       }
+    }
+
+    function renderWelfareInterventions(interventions) {
+      const container = document.getElementById('welfare-interventions-container');
+      if (!container) return;
+
+      if (!interventions || interventions.length === 0) {
+        container.innerHTML = `<div class="text-muted py-2">Baseline indicators optimal. Continue standard duty pacing and restorative rest.</div>`;
+        return;
+      }
+
+      container.innerHTML = interventions.map(item => `
+        <div style="background: var(--bg-card-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); border-left: 3px solid ${item.priority === 'HIGH' ? 'var(--risk-high)' : 'var(--accent)'};">
+          <div class="d-flex justify-between align-center flex-wrap gap-1 mb-1">
+            <div class="d-flex align-center gap-1 flex-wrap">
+              <span class="badge badge-neutral" style="font-size:0.75rem; font-weight:700;">${Utils.sanitize(item.categoryLabel || item.category)}</span>
+              <strong style="font-size:0.95rem; color:var(--text-primary);">${Utils.sanitize(item.title)}</strong>
+            </div>
+            <div class="d-flex gap-1 align-center">
+              <span class="badge badge-${(item.priority || 'medium').toLowerCase()}" style="font-size:0.7rem;">${item.priority || 'Medium'} Priority</span>
+              <span class="badge badge-low" style="font-size:0.68rem;">Non-Disciplinary</span>
+            </div>
+          </div>
+          <div style="font-size:0.88rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.4rem;">
+            <strong>Supportive Guidance:</strong> ${Utils.sanitize(item.suggestedAction || item.description || '')}
+          </div>
+          <div class="d-flex justify-between align-center flex-wrap gap-1" style="font-size:0.78rem; color:var(--text-muted); padding-top:0.35rem; border-top:1px dashed var(--border-color);">
+            <div>💡 <em>Evidence Basis:</em> ${Utils.sanitize(item.evidenceBasis || 'Based on active duty and rest indicators')}</div>
+            <div>Review Window: <strong style="color:var(--accent);">${item.reviewTimeframe || 'Next 7 Days'}</strong></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function generateFallbackInterventions(concernLevel) {
+      const isHigh = concernLevel === 'HIGH';
+      return [
+        {
+          categoryLabel: 'Welfare Check-in Cadence',
+          title: 'Proactive Welfare Check-in Schedule',
+          suggestedAction: isHigh ? 'Schedule weekly welfare check-in interval to monitor recovery trajectory.' : 'Maintain standard bi-weekly check-in schedule to monitor baseline stability.',
+          evidenceBasis: isHigh ? 'Elevated operational stress pattern detected in recent duty cycle.' : 'Routine monitoring maintains positive resilience tracking.',
+          reviewTimeframe: isHigh ? 'Within 3 Days' : 'Next 7 Days',
+          priority: isHigh ? 'HIGH' : 'LOW'
+        },
+        {
+          categoryLabel: 'Officer Supportive Follow-Up',
+          title: 'Supportive 1-on-1 Officer Dialogue',
+          suggestedAction: isHigh ? 'Connect with unit Welfare Officer for confidential discussion on duty pacing and personal well-being.' : 'Reinforce open-door welfare access during standard unit routines.',
+          evidenceBasis: 'Strictly voluntary, non-punitive welfare support liaison.',
+          reviewTimeframe: isHigh ? 'Within 48 Hours' : 'Voluntary Access',
+          priority: isHigh ? 'HIGH' : 'LOW'
+        },
+        {
+          categoryLabel: 'Rest / Recovery Review',
+          title: 'Restorative Sleep & Leave Recuperation Review',
+          suggestedAction: 'Prioritize uninterrupted restorative sleep blocks and coordinate with Adjutant for accrued earned leave utilization.',
+          evidenceBasis: 'Optimal cognitive and autonomic readiness requires consistent sleep recovery.',
+          reviewTimeframe: 'Next Duty Roster',
+          priority: isHigh ? 'HIGH' : 'MEDIUM'
+        },
+        {
+          categoryLabel: 'Workload Review',
+          title: 'Operational Shift Duration & Duty Pacing Review',
+          suggestedAction: 'Coordinate watch rotation to balance high-intensity operational vigilance with restorative base duties.',
+          evidenceBasis: 'Pacing consecutive duties prevents acute strain accumulation.',
+          reviewTimeframe: 'Next Roster Cycle',
+          priority: isHigh ? 'HIGH' : 'LOW'
+        },
+        {
+          categoryLabel: 'Support Referral',
+          title: 'Voluntary Welfare Support & Healthcare Liaison',
+          suggestedAction: 'Access confidential 24/7 tele-counseling (1800-180-4024) or connect with Battalion Peer Support Desk.',
+          evidenceBasis: 'Confidential, voluntary welfare assistance available around the clock.',
+          reviewTimeframe: 'Voluntary Access',
+          priority: 'LOW'
+        }
+      ];
     }
 
     function renderActionCards() {

@@ -60,7 +60,13 @@ const updateProfile = async (req, res, next) => {
       welfareContactPreference,
       accessibilityPreference,
       emergencyContact,
-      privacyPreferences
+      privacyPreferences,
+      leavePattern,
+      deploymentHistory,
+      dutySchedule,
+      transferFrequency,
+      trainingCommitments,
+      workloadTrends
     } = req.body;
 
     // Update User core info
@@ -73,6 +79,10 @@ const updateProfile = async (req, res, next) => {
       userUpdate.profileImage = profileImage;
     }
     await db.Users.findByIdAndUpdate(req.user._id, userUpdate);
+
+    const existingPersonnel = await db.Personnel.findOne({
+      $or: [{ userId: req.user._id }, { personnelId: req.user.personnelId }]
+    });
 
     // Update Personnel structured details
     const personnelUpdate = {
@@ -87,28 +97,73 @@ const updateProfile = async (req, res, next) => {
       yearsOfService: yearsOfService !== undefined ? Number(yearsOfService) : 5,
       serviceCategory: serviceCategory || 'Combatant',
       postingType: postingType || 'Field Operations',
-        deploymentZone: deploymentZone || 'Standard Field Deployment',
-        currentLocation: currentLocation || 'Battalion HQ',
-        preferredSupportLanguage: preferredSupportLanguage || 'English / Hindi',
-        primaryDuty: primaryDuty || 'Field Patrol / Active Security',
-        secondaryDuty: secondaryDuty || 'Logistics & Communication',
-        qualification: qualification || 'Graduate / Diploma',
-        trainingCompleted: trainingCompleted || 'Basic Operational & Counter-Insurgency Training',
-        certifications: certifications || 'High-Altitude Survival, First Aid',
-        experienceYears: experienceYears !== undefined ? Number(experienceYears) : 5,
-        preferredSupportChannel: preferredSupportChannel || 'In-App Notification',
-        preferredContactTime: preferredContactTime || 'Evening (Post-Duty)',
-        welfareContactPreference: welfareContactPreference || 'Welfare Officer In-Person',
-        accessibilityPreference: accessibilityPreference || 'Standard Display',
-        emergencyContact: emergencyContact || {},
-        privacyPreferences: privacyPreferences || {
-          shareWithWelfareOfficer: true,
-          anonymousAggregatedStats: true,
-          notificationChannel: 'IN_APP'
-        },
-        // Strict separation: profile never captures dynamic welfare/wearable telemetry
-        personnelId: req.user.personnelId
-      };
+      deploymentZone: deploymentZone || 'Standard Field Deployment',
+      currentLocation: currentLocation || 'Battalion HQ',
+      preferredSupportLanguage: preferredSupportLanguage || 'English / Hindi',
+      primaryDuty: primaryDuty || 'Field Patrol / Active Security',
+      secondaryDuty: secondaryDuty || 'Logistics & Communication',
+      qualification: qualification || 'Graduate / Diploma',
+      trainingCompleted: trainingCompleted || 'Basic Operational & Counter-Insurgency Training',
+      certifications: certifications || 'High-Altitude Survival, First Aid',
+      experienceYears: experienceYears !== undefined ? Number(experienceYears) : 5,
+      preferredSupportChannel: preferredSupportChannel || 'In-App Notification',
+      preferredContactTime: preferredContactTime || 'Evening (Post-Duty)',
+      welfareContactPreference: welfareContactPreference || 'Welfare Officer In-Person',
+      accessibilityPreference: accessibilityPreference || 'Standard Display',
+      emergencyContact: emergencyContact || {},
+      privacyPreferences: privacyPreferences || {
+        shareWithWelfareOfficer: true,
+        anonymousAggregatedStats: true,
+        notificationChannel: 'IN_APP'
+      },
+      // Extended HR & Operational Data
+      leavePattern: leavePattern || (existingPersonnel && existingPersonnel.leavePattern) || {
+        daysEarned: 60,
+        daysAvailed: 15,
+        daysRemaining: 45,
+        lastLeaveDate: '2026-03-10',
+        leaveDeficitWarning: false,
+        annualEntitlement: 60
+      },
+      deploymentHistory: deploymentHistory || (existingPersonnel && existingPersonnel.deploymentHistory) || [
+        {
+          mission: 'Op Rakshak - Sector North',
+          zone: deploymentZone || 'Northern Sector (High Altitude)',
+          durationMonths: 14,
+          terrainType: 'Glacial Mountain / High Altitude',
+          completedAt: '2025-11-20'
+        }
+      ],
+      dutySchedule: dutySchedule || (existingPersonnel && existingPersonnel.dutySchedule) || {
+        shiftType: 'Rotational 3-Watch',
+        rotationCycle: '8h Watch / 16h Rest',
+        weeklyHoursNominal: 48,
+        nightShiftRatio: 0.25,
+        timing: '06:00 - 14:00 / 14:00 - 22:00 / 22:00 - 06:00'
+      },
+      transferFrequency: transferFrequency || (existingPersonnel && existingPersonnel.transferFrequency) || {
+        transfersCount: 3,
+        averageTenureMonths: 22,
+        lastTransferDate: '2025-06-15',
+        highMobilityFlag: false
+      },
+      trainingCommitments: trainingCommitments || (existingPersonnel && existingPersonnel.trainingCommitments) || [
+        {
+          program: 'High Altitude Tactical Conditioning & Cold Survival',
+          status: 'Completed',
+          mandatoryHours: 40,
+          completedHours: 40
+        }
+      ],
+      workloadTrends: workloadTrends || (existingPersonnel && existingPersonnel.workloadTrends) || {
+        averageWeeklyHours: 52,
+        peakWeeklyHours: 68,
+        surgeWeeksCount: 3,
+        trajectory: 'Increasing'
+      },
+      // Strict separation: profile never captures dynamic welfare/wearable telemetry
+      personnelId: req.user.personnelId
+    };
       if (profileImage !== undefined) {
         personnelUpdate.profileImage = profileImage;
       }

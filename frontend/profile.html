@@ -231,6 +231,10 @@
             <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
             4. Welfare & Privacy
           </a>
+          <a href="#section-hr-ops" class="profile-nav-pill">
+            <svg class="svg-icon" style="width:14px;height:14px;" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            5. Operational & HR Data
+          </a>
         </nav>
 
         <form id="profile-form">
@@ -561,6 +565,103 @@
             </div>
           </section>
 
+          <!-- COMPONENT 5: COMPLETE HR & OPERATIONAL DATA (Requirement 2) -->
+          <section id="section-hr-ops" class="profile-section-card">
+            <div class="section-header">
+              <div class="section-badge">5</div>
+              <div class="section-title-wrap">
+                <h3>Operational Deployment & HR Service Registry</h3>
+                <p>Authorized operational data: Leave Pattern, Deployment History, Duty Schedule, Transfer Frequency, Training Commitments, and Workload Trends.</p>
+              </div>
+            </div>
+
+            <!-- 1. Leave Pattern -->
+            <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1rem; border:1px solid var(--border-color);">
+              <div class="d-flex justify-between align-center mb-2 flex-wrap gap-1">
+                <strong style="color:var(--accent);">📅 Leave Pattern & Recovery Balance</strong>
+                <span id="prof_leave_badge" class="badge badge-low">Nominal Balance</span>
+              </div>
+              <div class="grid-3">
+                <div class="form-group mb-0">
+                  <label class="form-label" for="prof_leave_earned">Annual Earned Days</label>
+                  <input type="number" id="prof_leave_earned" class="form-control" value="60" min="0" max="90">
+                </div>
+                <div class="form-group mb-0">
+                  <label class="form-label" for="prof_leave_availed">Days Availed this Year</label>
+                  <input type="number" id="prof_leave_availed" class="form-control" value="15" min="0" max="90">
+                </div>
+                <div class="form-group mb-0">
+                  <label class="form-label" for="prof_leave_lastDate">Last Leave Availed Date</label>
+                  <input type="date" id="prof_leave_lastDate" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Duty Schedule -->
+            <div class="card mb-3" style="background:var(--bg-card-subtle); padding:1rem; border:1px solid var(--border-color);">
+              <strong style="color:var(--accent); display:block; margin-bottom:0.75rem;">⏱️ Duty Schedule & Watch Architecture</strong>
+              <div class="grid-3">
+                <div class="form-group mb-0">
+                  <label class="form-label" for="prof_shiftType">Watch / Shift Model</label>
+                  <select id="prof_shiftType" class="form-select">
+                    <option value="Rotational 3-Watch">Rotational 3-Watch (8h Watch / 16h Rest)</option>
+                    <option value="Fixed Day Guard">Fixed Day Guard (10h Daylight)</option>
+                    <option value="QRT High-Alert Standby">QRT High-Alert Standby (12h Split)</option>
+                    <option value="Convoy Escort Rotation">Convoy Escort Rotation</option>
+                  </select>
+                </div>
+                <div class="form-group mb-0">
+                  <label class="form-label" for="prof_nominalHours">Nominal Weekly Hours</label>
+                  <input type="number" id="prof_nominalHours" class="form-control" value="48" min="30" max="80">
+                </div>
+                <div class="form-group mb-0">
+                  <label class="form-label" for="prof_nightRatio">Night Shift Allocation Ratio</label>
+                  <select id="prof_nightRatio" class="form-select">
+                    <option value="0.20">Standard Night Watch (20%)</option>
+                    <option value="0.25" selected>Rotational Night Watch (25%)</option>
+                    <option value="0.35">Heavy Night Watch (35%)</option>
+                    <option value="0.50">Tactical Nocturnal Focus (50%)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Transfer Frequency & Workload Trends -->
+            <div class="grid-2 mb-3">
+              <div class="card" style="background:var(--bg-card-subtle); padding:1rem; border:1px solid var(--border-color);">
+                <strong style="color:var(--accent); display:block; margin-bottom:0.75rem;">🔄 Transfer Frequency & Mobility</strong>
+                <div class="grid-2">
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="prof_transfersCount">Total Relocations</label>
+                    <input type="number" id="prof_transfersCount" class="form-control" value="3" min="0" max="20">
+                  </div>
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="prof_avgTenure">Avg Tenure (Months)</label>
+                    <input type="number" id="prof_avgTenure" class="form-control" value="22" min="1" max="60">
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="background:var(--bg-card-subtle); padding:1rem; border:1px solid var(--border-color);">
+                <strong style="color:var(--accent); display:block; margin-bottom:0.75rem;">📈 Longitudinal Workload Trends</strong>
+                <div class="grid-2">
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="prof_rollingAvgHours">Rolling Average (hrs/wk)</label>
+                    <input type="number" id="prof_rollingAvgHours" class="form-control" value="52" min="30" max="100">
+                  </div>
+                  <div class="form-group mb-0">
+                    <label class="form-label" for="prof_workloadTrajectory">Workload Trajectory</label>
+                    <select id="prof_workloadTrajectory" class="form-select">
+                      <option value="Stable" selected>Stable Baseline</option>
+                      <option value="Increasing">Increasing (Surge Velocity)</option>
+                      <option value="Decreasing">Decreasing (Recovery Velocity)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <!-- Sticky Action Bar -->
           <div class="profile-action-bar">
             <div class="d-flex align-center gap-1">
@@ -774,6 +875,35 @@
             document.getElementById('pref_anonStats').checked = p.privacyPreferences.anonymousAggregatedStats !== false;
           }
 
+          // Extended Operational & HR Data (Section 5)
+          const lp = p.leavePattern || {};
+          if (lp.daysEarned !== undefined) document.getElementById('prof_leave_earned').value = lp.daysEarned;
+          if (lp.daysAvailed !== undefined) document.getElementById('prof_leave_availed').value = lp.daysAvailed;
+          if (lp.lastLeaveDate) document.getElementById('prof_leave_lastDate').value = lp.lastLeaveDate;
+          const leaveBadge = document.getElementById('prof_leave_badge');
+          if (leaveBadge) {
+            if (lp.leaveDeficitWarning) {
+              leaveBadge.className = 'badge badge-high';
+              leaveBadge.textContent = '⚠️ Deficit Alert';
+            } else {
+              leaveBadge.className = 'badge badge-low';
+              leaveBadge.textContent = '✓ Nominal Balance';
+            }
+          }
+
+          const ds = p.dutySchedule || {};
+          if (ds.shiftType) document.getElementById('prof_shiftType').value = ds.shiftType;
+          if (ds.weeklyHoursNominal) document.getElementById('prof_nominalHours').value = ds.weeklyHoursNominal;
+          if (ds.nightShiftRatio !== undefined) document.getElementById('prof_nightRatio').value = ds.nightShiftRatio.toFixed(2);
+
+          const tf = p.transferFrequency || {};
+          if (tf.transfersCount !== undefined) document.getElementById('prof_transfersCount').value = tf.transfersCount;
+          if (tf.averageTenureMonths !== undefined) document.getElementById('prof_avgTenure').value = tf.averageTenureMonths;
+
+          const wt = p.workloadTrends || {};
+          if (wt.averageWeeklyHours !== undefined) document.getElementById('prof_rollingAvgHours').value = wt.averageWeeklyHours;
+          if (wt.trajectory) document.getElementById('prof_workloadTrajectory').value = wt.trajectory;
+
           // Initialize Avatar: only overwrite if currentAvatar was not already set
           const savedAvatar = currentAvatar || p.profileImage || localStorage.getItem('sih_user_avatar') || '';
           if (savedAvatar) {
@@ -862,6 +992,28 @@
           shareWithWelfareOfficer: document.getElementById('pref_officerShare').checked,
           anonymousAggregatedStats: document.getElementById('pref_anonStats').checked,
           notificationChannel: document.getElementById('prof_preferredSupportChannel').value
+        },
+        // Extended Operational & HR Data (Requirement 2)
+        leavePattern: {
+          daysEarned: Number(document.getElementById('prof_leave_earned').value),
+          daysAvailed: Number(document.getElementById('prof_leave_availed').value),
+          daysRemaining: Number(document.getElementById('prof_leave_earned').value) - Number(document.getElementById('prof_leave_availed').value),
+          lastLeaveDate: document.getElementById('prof_leave_lastDate').value,
+          leaveDeficitWarning: (Number(document.getElementById('prof_leave_earned').value) - Number(document.getElementById('prof_leave_availed').value)) >= 45 && Number(document.getElementById('prof_leave_availed').value) <= 10
+        },
+        dutySchedule: {
+          shiftType: document.getElementById('prof_shiftType').value,
+          weeklyHoursNominal: Number(document.getElementById('prof_nominalHours').value),
+          nightShiftRatio: Number(document.getElementById('prof_nightRatio').value)
+        },
+        transferFrequency: {
+          transfersCount: Number(document.getElementById('prof_transfersCount').value),
+          averageTenureMonths: Number(document.getElementById('prof_avgTenure').value),
+          highMobilityFlag: Number(document.getElementById('prof_transfersCount').value) >= 5 || Number(document.getElementById('prof_avgTenure').value) < 14
+        },
+        workloadTrends: {
+          averageWeeklyHours: Number(document.getElementById('prof_rollingAvgHours').value),
+          trajectory: document.getElementById('prof_workloadTrajectory').value
         }
       };
 
