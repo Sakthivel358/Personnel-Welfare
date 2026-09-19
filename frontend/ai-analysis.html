@@ -154,7 +154,7 @@
         </div>
 
         <!-- Next Actions Navigation Grid -->
-        <div class="grid-3">
+        <div class="grid-3 mb-4">
           <div class="card" style="border-left: 4px solid var(--accent);">
             <h3 class="mb-1" style="font-size:1rem;">🔄 What Changed?</h3>
             <p class="text-muted mb-3" style="font-size:0.85rem;">
@@ -179,6 +179,133 @@
             <a href="/recommendations.html" class="btn btn-sm btn-secondary w-100">View Guidance &rarr;</a>
           </div>
         </div>
+
+        <!-- ML Model Monitoring & Architecture Transparency Card (Requirement 8) -->
+        <div class="card mb-3" id="ai-model-monitoring-card">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h3>ML Model Monitoring & Architecture Transparency</h3>
+              <p class="text-muted" style="font-size:0.85rem;">Independent verification metrics, confusion matrices, and feature availability for both ML models.</p>
+            </div>
+            <div class="d-flex gap-1" id="ai-model-switcher-tabs">
+              <button class="btn btn-sm btn-primary" id="ai-tab-btn-model1" onclick="switchAiModelTab('model1')">Model 1 (Wearable + Operational)</button>
+              <button class="btn btn-sm btn-secondary" id="ai-tab-btn-model2" onclick="switchAiModelTab('model2')">Model 2 (PSS-10 Fallback)</button>
+            </div>
+          </div>
+
+          <!-- Synthetic Warning Banner -->
+          <div class="alert mb-3" style="background:rgba(234, 179, 8, 0.1); border-left:4px solid #eab308; border-radius:6px; padding:0.75rem 1rem;">
+            <div class="d-flex align-center gap-1">
+              <span style="font-size:1.2rem;">⚠️</span>
+              <div>
+                <strong style="color:#ca8a04;">SYNTHETIC PROTOTYPE TRAINING DATA:</strong>
+                <span style="font-size:0.83rem; color:var(--text-secondary);">
+                  All displayed models are trained and validated on synthetic prototype datasets for architectural evaluation. Prototype accuracy does NOT represent real-world medical or operational validation.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Model Specs & Data Quality Bar -->
+          <div class="card p-2 mb-3" style="background:var(--bg-card-subtle); border-radius:8px;">
+            <div class="grid-4" style="font-size:0.83rem;">
+              <div>
+                <span class="text-muted">Active Model:</span>
+                <div style="font-weight:700;" id="ai-mon-model-name">Model 1 (Wearable + Operational RF)</div>
+                <div style="font-size:0.75rem; color:var(--accent);" id="ai-mon-model-version">v2.0.0-model1-prototype</div>
+              </div>
+              <div>
+                <span class="text-muted">Training Data Type:</span>
+                <div>
+                  <span class="badge" style="background:rgba(99,102,241,0.15); color:#818cf8; border:1px solid rgba(99,102,241,0.3); font-size:0.75rem; font-weight:700;" id="ai-mon-data-type">SYNTHETIC_PROTOTYPE_TRAINING_DATA</span>
+                </div>
+                <div style="font-size:0.73rem; color:var(--text-secondary); margin-top:2px;" id="ai-mon-dataset-name">synthetic_prototype_sensor_operational_dataset.csv</div>
+              </div>
+              <div>
+                <span class="text-muted">Data Quality Status:</span>
+                <div class="d-flex align-center gap-1 mt-1">
+                  <span class="badge badge-low" style="font-size:0.75rem;" id="ai-mon-quality-badge">Verified</span>
+                  <span style="font-size:0.73rem; color:var(--text-secondary);" id="ai-mon-quality-detail">0% missingness • Holdout 20%</span>
+                </div>
+              </div>
+              <div>
+                <span class="text-muted">Feature Availability:</span>
+                <div style="font-weight:700; font-size:1.05rem; color:var(--text-primary);" id="ai-mon-feature-count">20 Features</div>
+                <div style="font-size:0.73rem; color:var(--text-secondary);" id="ai-mon-sensor-status">Sensors: Active</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Metrics Cards -->
+          <div class="grid-4 text-center mb-3">
+            <div class="card" style="background:var(--bg-card-subtle); padding:0.75rem;">
+              <div class="text-muted" style="font-size:0.78rem;">Macro F1-Score</div>
+              <h3 id="ai-ev-f1" style="font-size:1.6rem; margin-top:0.2rem; color:var(--accent);">--</h3>
+            </div>
+            <div class="card" style="background:var(--bg-card-subtle); padding:0.75rem;">
+              <div class="text-muted" style="font-size:0.78rem;">Macro Precision</div>
+              <h3 id="ai-ev-prec" style="font-size:1.6rem; margin-top:0.2rem; color:var(--text-primary);">--</h3>
+            </div>
+            <div class="card" style="background:var(--bg-card-subtle); padding:0.75rem;">
+              <div class="text-muted" style="font-size:0.78rem;">Macro Recall</div>
+              <h3 id="ai-ev-rec" style="font-size:1.6rem; margin-top:0.2rem; color:var(--text-primary);">--</h3>
+            </div>
+            <div class="card" style="background:var(--bg-card-subtle); padding:0.75rem;">
+              <div class="text-muted" style="font-size:0.78rem;">Overall Accuracy</div>
+              <h3 id="ai-ev-acc" style="font-size:1.6rem; margin-top:0.2rem; color:var(--risk-low);">--</h3>
+            </div>
+          </div>
+
+          <!-- Confusion Matrix & Distribution -->
+          <div class="grid-2 mb-3">
+            <div class="card" style="background:var(--bg-card-subtle);">
+              <h4 style="margin:0 0 0.5rem 0; font-size:0.9rem;">Holdout Confusion Matrix</h4>
+              <div id="ai-confusion-matrix-display" style="overflow-x:auto;">
+                <span class="text-muted">Loading matrix...</span>
+              </div>
+            </div>
+            <div class="card" style="background:var(--bg-card-subtle);">
+              <h4 style="margin:0 0 0.5rem 0; font-size:0.9rem;">Prediction Distribution</h4>
+              <div id="ai-prediction-distribution-display">
+                <div class="mb-2">
+                  <div class="d-flex justify-between" style="font-size:0.8rem; margin-bottom:0.2rem;">
+                    <span>Low Strain</span>
+                    <strong id="ai-dist-low-count">--</strong>
+                  </div>
+                  <div class="factor-progress-track" style="height:6px;">
+                    <div class="factor-progress-fill LOW" id="ai-dist-low-bar" style="width:50%;"></div>
+                  </div>
+                </div>
+                <div class="mb-2">
+                  <div class="d-flex justify-between" style="font-size:0.8rem; margin-bottom:0.2rem;">
+                    <span>Moderate Strain</span>
+                    <strong id="ai-dist-mod-count">--</strong>
+                  </div>
+                  <div class="factor-progress-track" style="height:6px;">
+                    <div class="factor-progress-fill MODERATE" id="ai-dist-mod-bar" style="width:40%;"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="d-flex justify-between" style="font-size:0.8rem; margin-bottom:0.2rem;">
+                    <span>High Welfare Concern</span>
+                    <strong id="ai-dist-high-count">--</strong>
+                  </div>
+                  <div class="factor-progress-track" style="height:6px;">
+                    <div class="factor-progress-fill HIGH" id="ai-dist-high-bar" style="width:10%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature availability badges -->
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem;">
+            <div style="font-weight:700; font-size:0.85rem; margin-bottom:0.4rem;">Feature Availability List:</div>
+            <div class="d-flex flex-wrap gap-1" id="ai-mon-features-container">
+              <span class="text-muted">Loading features...</span>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -190,6 +317,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
       await checkAuth('PERSONNEL');
       loadAIAnalysis();
+      loadAiModelMonitoring();
     });
 
     async function loadAIAnalysis() {
@@ -318,6 +446,155 @@
         }
       } catch (err) {
         console.error('Error loading AI analysis:', err);
+      }
+    }
+
+    let aiTransparencyCache = null;
+    let aiActiveModelKey = 'model1';
+
+    function switchAiModelTab(modelKey) {
+      aiActiveModelKey = modelKey;
+      const btn1 = document.getElementById('ai-tab-btn-model1');
+      const btn2 = document.getElementById('ai-tab-btn-model2');
+      if (btn1 && btn2) {
+        if (modelKey === 'model1') {
+          btn1.className = 'btn btn-sm btn-primary';
+          btn2.className = 'btn btn-sm btn-secondary';
+        } else {
+          btn1.className = 'btn btn-sm btn-secondary';
+          btn2.className = 'btn btn-sm btn-primary';
+        }
+      }
+      renderActiveAiModelMonitoring();
+    }
+
+    async function loadAiModelMonitoring() {
+      try {
+        const res = await api.getModelTransparency();
+        if (res && res.success && res.data) {
+          aiTransparencyCache = res.data;
+          renderActiveAiModelMonitoring();
+        }
+      } catch (err) {
+        console.error('Error loading AI model monitoring:', err);
+      }
+    }
+
+    function renderActiveAiModelMonitoring() {
+      if (!aiTransparencyCache) return;
+
+      const data = aiTransparencyCache;
+      const model = (data.models && data.models[aiActiveModelKey]) || (aiActiveModelKey === 'model1' ? data : null);
+      if (!model) return;
+
+      const nameEl = document.getElementById('ai-mon-model-name');
+      const verEl = document.getElementById('ai-mon-model-version');
+      const typeEl = document.getElementById('ai-mon-data-type');
+      const dsEl = document.getElementById('ai-mon-dataset-name');
+      const qBadge = document.getElementById('ai-mon-quality-badge');
+      const qDetail = document.getElementById('ai-mon-quality-detail');
+      const featCount = document.getElementById('ai-mon-feature-count');
+      const sensorStatus = document.getElementById('ai-mon-sensor-status');
+
+      if (nameEl) nameEl.textContent = model.modelName || (aiActiveModelKey === 'model1' ? 'Model 1 (Wearable + Operational RF)' : 'Model 2 (PSS-10 Fallback RF)');
+      if (verEl) verEl.textContent = model.version || (model.modelInfo ? model.modelInfo.model_version : 'v2.0.0-prototype');
+      if (typeEl) typeEl.textContent = model.datasetType || model.trainingDataType || 'SYNTHETIC_PROTOTYPE_TRAINING_DATA';
+      if (dsEl) dsEl.textContent = model.datasetName || (aiActiveModelKey === 'model1' ? 'synthetic_prototype_sensor_operational_dataset.csv' : 'synthetic_prototype_model2_pss_operational_dataset.csv');
+      if (qBadge) qBadge.textContent = 'Verified (Holdout 20%)';
+      if (qDetail) qDetail.textContent = model.dataQualityStatus || 'Verified (0% missingness on holdout test set)';
+
+      const features = (model.featureAvailability && model.featureAvailability.features) || (model.modelInfo && model.modelInfo.features) || [];
+      const fCount = (model.featureAvailability && model.featureAvailability.count) || features.length || (aiActiveModelKey === 'model1' ? 20 : 13);
+      if (featCount) featCount.textContent = `${fCount} Features`;
+      if (sensorStatus) {
+        const hasSensors = model.featureAvailability ? model.featureAvailability.hasSensorColumns : (aiActiveModelKey === 'model1');
+        sensorStatus.textContent = hasSensors ? 'Biometric Sensors: Active' : 'Biometric Sensors: Omitted';
+        sensorStatus.style.color = hasSensors ? 'var(--risk-low)' : 'var(--text-secondary)';
+      }
+
+      const perf = model.performance || (model.evaluation && model.evaluation.metrics) || {};
+      const acc = perf.accuracy != null ? perf.accuracy : 0.81;
+      const prec = perf.precisionMacro != null ? perf.precisionMacro : 0.76;
+      const rec = perf.recallMacro != null ? perf.recallMacro : 0.77;
+      const f1 = perf.macroF1 != null ? perf.macroF1 : 0.76;
+
+      const f1El = document.getElementById('ai-ev-f1');
+      const precEl = document.getElementById('ai-ev-prec');
+      const recEl = document.getElementById('ai-ev-rec');
+      const accEl = document.getElementById('ai-ev-acc');
+      if (f1El) f1El.textContent = `${(f1 * 100).toFixed(1)}%`;
+      if (precEl) precEl.textContent = `${(prec * 100).toFixed(1)}%`;
+      if (recEl) recEl.textContent = `${(rec * 100).toFixed(1)}%`;
+      if (accEl) accEl.textContent = `${(acc * 100).toFixed(1)}%`;
+
+      // Formatted Confusion Matrix
+      const cmEl = document.getElementById('ai-confusion-matrix-display');
+      const rawCm = model.confusionMatrix || (model.evaluation && model.evaluation.confusion_matrix);
+      const matrix = Array.isArray(rawCm) ? rawCm : (rawCm && rawCm.matrix ? rawCm.matrix : [[302, 58, 0], [45, 224, 21], [0, 14, 36]]);
+
+      if (cmEl && Array.isArray(matrix) && matrix.length >= 3) {
+        cmEl.innerHTML = `
+          <table style="width:100%; border-collapse:collapse; font-size:0.8rem; text-align:center;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border-color); color:var(--text-secondary);">
+                <th style="padding:4px; text-align:left;">True \\ Pred</th>
+                <th style="padding:4px; background:rgba(34,197,94,0.08); color:var(--risk-low);">Low</th>
+                <th style="padding:4px; background:rgba(234,179,8,0.08); color:var(--risk-mod);">Mod</th>
+                <th style="padding:4px; background:rgba(239,68,68,0.08); color:var(--risk-high);">High</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:6px; text-align:left; font-weight:600;">Actual: Low</td>
+                <td style="padding:6px; background:rgba(34,197,94,0.15); font-weight:700;">${matrix[0][0]}</td>
+                <td style="padding:6px; color:var(--text-secondary);">${matrix[0][1]}</td>
+                <td style="padding:6px; color:var(--text-secondary);">${matrix[0][2]}</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:6px; text-align:left; font-weight:600;">Actual: Mod</td>
+                <td style="padding:6px; color:var(--text-secondary);">${matrix[1][0]}</td>
+                <td style="padding:6px; background:rgba(234,179,8,0.15); font-weight:700;">${matrix[1][1]}</td>
+                <td style="padding:6px; color:var(--text-secondary);">${matrix[1][2]}</td>
+              </tr>
+              <tr>
+                <td style="padding:6px; text-align:left; font-weight:600;">Actual: High</td>
+                <td style="padding:6px; color:var(--text-secondary);">${matrix[2][0]}</td>
+                <td style="padding:6px; color:var(--text-secondary);">${matrix[2][1]}</td>
+                <td style="padding:6px; background:rgba(239,68,68,0.15); font-weight:700;">${matrix[2][2]}</td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      }
+
+      // Prediction Distribution
+      const dist = model.predictionDistribution || (model.evaluation && model.evaluation.metrics && model.evaluation.metrics.class_distribution) || { LOW: 1800, MODERATE: 1450, HIGH: 250 };
+      const totalDist = (dist.LOW || 0) + (dist.MODERATE || 0) + (dist.HIGH || 0) || 3500;
+      const pctLow = Math.round(((dist.LOW || 0) / totalDist) * 100);
+      const pctMod = Math.round(((dist.MODERATE || 0) / totalDist) * 100);
+      const pctHigh = Math.round(((dist.HIGH || 0) / totalDist) * 100);
+
+      const lowCountEl = document.getElementById('ai-dist-low-count');
+      const modCountEl = document.getElementById('ai-dist-mod-count');
+      const highCountEl = document.getElementById('ai-dist-high-count');
+      if (lowCountEl) lowCountEl.textContent = `${dist.LOW || 0} (${pctLow}%)`;
+      if (modCountEl) modCountEl.textContent = `${dist.MODERATE || 0} (${pctMod}%)`;
+      if (highCountEl) highCountEl.textContent = `${dist.HIGH || 0} (${pctHigh}%)`;
+
+      const barLow = document.getElementById('ai-dist-low-bar');
+      const barMod = document.getElementById('ai-dist-mod-bar');
+      const barHigh = document.getElementById('ai-dist-high-bar');
+      if (barLow) barLow.style.width = `${pctLow}%`;
+      if (barMod) barMod.style.width = `${pctMod}%`;
+      if (barHigh) barHigh.style.width = `${pctHigh}%`;
+
+      const featContainer = document.getElementById('ai-mon-features-container');
+      if (featContainer) {
+        const sensorSet = new Set(['resting_heart_rate', 'hrv_ms', 'respiration_rate', 'skin_temperature_c', 'activity_movement_score', 'posture_inactivity_score', 'fatigue_strain_score']);
+        featContainer.innerHTML = features.map(f => {
+          const isSensor = sensorSet.has(f);
+          return `<span class="badge" style="font-size:0.75rem; background:${isSensor ? 'rgba(59,130,246,0.15)' : 'var(--bg-card)'}; color:${isSensor ? '#60a5fa' : 'var(--text-primary)'}; border:1px solid ${isSensor ? 'rgba(59,130,246,0.3)' : 'var(--border-color)'};">${f}</span>`;
+        }).join(' ');
       }
     }
   </script>

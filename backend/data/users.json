@@ -9,9 +9,9 @@
     "unit": "CRPF Battalion 104",
     "rank": "Havildar (GD)",
     "isActive": true,
-    "lastLogin": "2026-09-19T18:54:11.354Z",
+    "lastLogin": "2026-09-19T19:11:47.496Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-19T18:54:11.355Z"
+    "updatedAt": "2026-09-19T19:11:47.517Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T18:54:11.285Z",
+    "lastLogin": "2026-09-19T19:11:47.419Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T18:54:11.285Z"
+    "updatedAt": "2026-09-19T19:11:47.420Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,9 +37,9 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-19T18:06:57.833Z",
+    "lastLogin": "2026-09-19T19:11:32.702Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-19T18:06:57.834Z"
+    "updatedAt": "2026-09-19T19:11:32.702Z"
   },
   {
     "_id": "351cc70fa4ab2222abc5f216",
@@ -2432,5 +2432,90 @@
     "createdAt": "2026-09-19T18:54:17.104Z",
     "updatedAt": "2026-09-19T18:54:17.118Z",
     "lastLogout": "2026-09-19T18:54:17.118Z"
+  },
+  {
+    "_id": "3d9e5a1e131905750f536d53",
+    "personnelId": "AUDIT-ESC-1789845065951",
+    "email": "audit-esc-1789845065951@test.forces.gov.in",
+    "password": "$2a$10$yu6HE0zGaQCQTfYbHdMH2.HUbloXCT3CxvqWjnzRQ.wT4NhJJNl8q",
+    "fullName": "Escalation Test User",
+    "unit": "Operational Unit",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T19:11:06.034Z",
+    "createdAt": "2026-09-19T19:11:06.034Z",
+    "updatedAt": "2026-09-19T19:11:06.034Z"
+  },
+  {
+    "_id": "fa558bc55b550adb65974d6e",
+    "personnelId": "AUDIT-ESC-1789845092828",
+    "email": "audit-esc-1789845092828@test.forces.gov.in",
+    "password": "$2a$10$5nxTPsavvkvo7IhUmTihoulRs9RT5OgQdjvUl0ZSwTGTNKC6uMtJu",
+    "fullName": "Escalation Test User",
+    "unit": "Operational Unit",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T19:11:32.903Z",
+    "createdAt": "2026-09-19T19:11:32.903Z",
+    "updatedAt": "2026-09-19T19:11:32.903Z"
+  },
+  {
+    "_id": "1aab5a92609ea49dfa2ade9b",
+    "personnelId": "PERS_FIN_106639",
+    "email": "pers_fin_106639@welfare.mil.in",
+    "password": "$2a$10$Z.5nHryrOv7QEhcuk/l.DeUC2RmB/HrPfD8V8lmJxoNam30kE2B1O",
+    "fullName": "Subedar Major Vikram Singh",
+    "unit": "12th Assam Rifles",
+    "rank": "Subedar Major",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T19:11:57.009Z",
+    "createdAt": "2026-09-19T19:11:55.892Z",
+    "updatedAt": "2026-09-19T19:11:57.009Z"
+  },
+  {
+    "_id": "53b986627945ff497b17db3c",
+    "personnelId": "TEST_WO_106639",
+    "email": "wo_fin_106639@welfare.mil.in",
+    "password": "$2a$10$xz.v2aS6GjijYy3GWjOjz.KLDfA9EMLP7nCjiViiaO3SXoZFznbCO",
+    "fullName": "Capt. Ananya Sen",
+    "unit": "Operational Unit",
+    "rank": "Welfare Officer",
+    "role": "WELFARE_OFFICER",
+    "isActive": true,
+    "lastLogin": "2026-09-19T19:11:55.993Z",
+    "createdAt": "2026-09-19T19:11:55.993Z",
+    "updatedAt": "2026-09-19T19:11:55.993Z"
+  },
+  {
+    "_id": "4a9bb1c40674e2e2ee68a8b2",
+    "personnelId": "ADM_FIN_106639",
+    "email": "adm_fin_106639@welfare.mil.in",
+    "password": "$2a$10$HLO932GBapCTjZyv/4fYD.YlTwIzBkkExDBfvm/YOtWfOXbuW6ujq",
+    "fullName": "Col. R. K. Nair",
+    "unit": "Operational Unit",
+    "rank": "System Administrator",
+    "role": "ADMIN",
+    "isActive": true,
+    "lastLogin": "2026-09-19T19:11:56.098Z",
+    "createdAt": "2026-09-19T19:11:56.098Z",
+    "updatedAt": "2026-09-19T19:11:56.098Z"
+  },
+  {
+    "_id": "4a0341b9e0c9c6dd58dee9a9",
+    "personnelId": "TEMP_LO_106639",
+    "email": "temp_lo_106639@welfare.mil.in",
+    "password": "$2a$10$8rF7mXHNjuOKe.ZY2uLdxuiVfeIi7ZH1wa4hh8Eu3RlxcWmq3vQee",
+    "fullName": "Temp Logout User",
+    "unit": "Operational Unit",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T19:11:56.281Z",
+    "createdAt": "2026-09-19T19:11:56.281Z",
+    "updatedAt": "2026-09-19T19:11:56.293Z",
+    "lastLogout": "2026-09-19T19:11:56.293Z"
   }
 ]

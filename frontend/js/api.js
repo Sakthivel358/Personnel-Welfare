@@ -333,6 +333,15 @@ class APIClient {
   async getPrivacyStatus() {
     return this.request('/privacy/status', { method: 'GET' });
   }
+
+  // Consent & Data Control (Task 7)
+  async getPrivacyConsent() {
+    return this.request('/privacy/consent', { method: 'GET' });
+  }
+
+  async updatePrivacyConsent(consentData) {
+    return this.request('/privacy/consent', { method: 'PUT', body: JSON.stringify(consentData) });
+  }
 }
 
 const api = new APIClient();

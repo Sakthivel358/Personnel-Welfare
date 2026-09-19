@@ -302,12 +302,91 @@
           </div>
         </div>
 
-        <!-- 4. PRIVACY PANE -->
+        <!-- 4. PRIVACY & CONSENT CONTROL PANE (Task 7) -->
         <div id="set-pane-privacy" class="settings-pane">
+          <!-- Card 1: Consent & Optional Telemetry Permissions -->
+          <div class="card mb-3" style="border-left: 4px solid var(--accent);">
+            <div class="card-header">
+              <div>
+                <h3>Consent & Optional Data Permissions</h3>
+                <p class="text-muted" style="font-size:0.82rem; margin:0;">
+                  Under Force Welfare Governance Directive, self-check and wearable sensor data are strictly voluntary and non-punitive. Control your active permissions below.
+                </p>
+              </div>
+              <span class="badge badge-low" id="consent-status-badge">Protected & Configurable</span>
+            </div>
+
+            <!-- Permission 1: Self-Check Subjective Ratings -->
+            <div class="card mb-2 p-3" style="background:var(--bg-card-subtle); border:1px solid var(--border-color);">
+              <div class="d-flex justify-between align-center mb-1">
+                <label class="d-flex align-center gap-2" style="cursor:pointer; font-weight:700;">
+                  <input type="checkbox" id="priv_allow_selfcheck" checked style="transform:scale(1.2);">
+                  <span>Optional Self-Check Subjective Wellness Inputs</span>
+                </label>
+                <span class="badge badge-primary" style="font-size:0.7rem;">Voluntary Wellness</span>
+              </div>
+              <p class="text-muted mb-1" style="font-size:0.82rem; line-height:1.4;">
+                <strong>How Data is Used:</strong> Captures your voluntary ratings of daily energy, morale, subjective tension, and recovery sleep. Used by AI model and Welfare Officers solely to suggest shift pacing adjustments and fatigue recovery windows.
+              </p>
+              <div class="d-flex gap-2 text-muted" style="font-size:0.75rem;">
+                <span>🛡️ Non-punitive guarantee</span> • <span>⏳ 180-day retention window</span> • <span>🚫 Never cited in appraisals</span>
+              </div>
+            </div>
+
+            <!-- Permission 2: Wearable Biometric Telemetry -->
+            <div class="card mb-2 p-3" style="background:var(--bg-card-subtle); border:1px solid var(--border-color);">
+              <div class="d-flex justify-between align-center mb-1">
+                <label class="d-flex align-center gap-2" style="cursor:pointer; font-weight:700;">
+                  <input type="checkbox" id="priv_allow_wearable" checked style="transform:scale(1.2);">
+                  <span>Wearable Sensor Telemetry Collection (Smart Jacket / Band)</span>
+                </label>
+                <span class="badge badge-primary" style="font-size:0.7rem;">Autonomic Biometrics</span>
+              </div>
+              <p class="text-muted mb-1" style="font-size:0.82rem; line-height:1.4;">
+                <strong>How Data is Used:</strong> Processes continuous resting heart rate, heart-rate variability (HRV), skin temperature, and motion. Used exclusively to compute physiological strain scores and warn against heat / nocturnal duty exhaustion.
+              </p>
+              <div class="d-flex gap-2 text-muted" style="font-size:0.75rem;">
+                <span>🛡️ Medical confidentiality safeguard</span> • <span>⏳ Raw telemetry purged in 30 days</span> • <span>🚫 Zero administrative board access</span>
+              </div>
+            </div>
+
+            <!-- Permission 3: Longitudinal Trend Trajectory -->
+            <div class="card mb-2 p-3" style="background:var(--bg-card-subtle); border:1px solid var(--border-color);">
+              <div class="d-flex justify-between align-center mb-1">
+                <label class="d-flex align-center gap-2" style="cursor:pointer; font-weight:700;">
+                  <input type="checkbox" id="priv_allow_trends" checked style="transform:scale(1.2);">
+                  <span>Longitudinal Welfare Trajectory Tracking</span>
+                </label>
+                <span class="badge badge-primary" style="font-size:0.7rem;">Longitudinal Pacing</span>
+              </div>
+              <p class="text-muted mb-1" style="font-size:0.82rem; line-height:1.4;">
+                <strong>How Data is Used:</strong> Compares your current operational indicators against historical baselines to identify subtle multi-week fatigue velocity (Stable, Improving, Elevated) across duty rotations.
+              </p>
+              <div class="d-flex gap-2 text-muted" style="font-size:0.75rem;">
+                <span>🛡️ Early burnout prevention</span> • <span>⏳ Active service duration</span> • <span>💡 Automatic rest pacing guidance</span>
+              </div>
+            </div>
+
+            <!-- Permission 4: Research Contribution -->
+            <div class="card mb-3 p-3" style="background:var(--bg-card-subtle); border:1px solid var(--border-color);">
+              <div class="d-flex justify-between align-center mb-1">
+                <label class="d-flex align-center gap-2" style="cursor:pointer; font-weight:700;">
+                  <input type="checkbox" id="priv_anonymous_stats" checked style="transform:scale(1.2);">
+                  <span>Contribute De-Identified Statistics to Force Resilience Research</span>
+                </label>
+                <span class="badge badge-low" style="font-size:0.7rem;">K-Anonymized (k &ge; 5)</span>
+              </div>
+              <p class="text-muted mb-0" style="font-size:0.82rem; line-height:1.4;">
+                <strong>How Data is Used:</strong> Contributes aggregated, stripped cohort indicators to defense researchers studying optimal shift durations and high-altitude adaptation. Fully decoupled from personal identifiers.
+              </p>
+            </div>
+          </div>
+
+          <!-- Card 2: Data Minimization & Privacy Controls -->
           <div class="card mb-3">
             <div class="card-header">
-              <h3>Data Privacy & Minimization Controls</h3>
-              <span class="badge badge-low">Task 36 Protected</span>
+              <h3>Data Minimization & Privacy Controls</h3>
+              <span class="badge badge-neutral">Granularity Controls</span>
             </div>
 
             <div class="form-group mb-3">
@@ -319,44 +398,49 @@
             </div>
 
             <div class="form-group mb-3">
-              <label class="form-label"><strong>Telemetry Granularity Sharing Level</strong></label>
-              <div class="d-flex flex-column gap-1 mt-1">
-                <label class="d-flex align-center gap-1" style="font-size:0.88rem;">
+              <label class="form-label"><strong>Telemetry Granularity Sharing Level (Data Minimization)</strong></label>
+              <div class="d-flex flex-column gap-2 mt-1">
+                <label class="d-flex align-center gap-2 p-2" style="border:1px solid var(--border-color); border-radius:6px; background:var(--bg-card-subtle); cursor:pointer;">
                   <input type="radio" name="telemetry_level" value="FULL" checked>
-                  <span><strong>Complete Telemetry:</strong> Workload, sleep hours, subjective ratings, and PSS-10 item responses.</span>
+                  <div>
+                    <strong>Complete Telemetry:</strong> Full workload hours, sleep hours, subjective ratings, and PSS-10 item responses.
+                    <div class="text-muted" style="font-size:0.76rem;">Highest precision recommendation fidelity and personalized pacing.</div>
+                  </div>
                 </label>
-                <label class="d-flex align-center gap-1" style="font-size:0.88rem;">
+                <label class="d-flex align-center gap-2 p-2" style="border:1px solid var(--border-color); border-radius:6px; background:var(--bg-card-subtle); cursor:pointer;">
                   <input type="radio" name="telemetry_level" value="COARSE">
-                  <span><strong>Coarse Aggregation:</strong> Workload brackets and overall composite risk score only.</span>
+                  <div>
+                    <strong>Coarse Aggregation:</strong> Workload brackets (5-hour buckets) and composite risk score only; suppresses raw sensor samples.
+                    <div class="text-muted" style="font-size:0.76rem;">Balanced data minimization for routine monitoring.</div>
+                  </div>
                 </label>
-                <label class="d-flex align-center gap-1" style="font-size:0.88rem;">
+                <label class="d-flex align-center gap-2 p-2" style="border:1px solid var(--border-color); border-radius:6px; background:var(--bg-card-subtle); cursor:pointer;">
                   <input type="radio" name="telemetry_level" value="MINIMAL">
-                  <span><strong>Minimal Welfare Only:</strong> Only flags when strain enters High Concern category.</span>
+                  <div>
+                    <strong>Minimal Welfare Alert-Only:</strong> Zero telemetry shared during normal duty; only transmits a notice if strain reaches High Concern threshold.
+                    <div class="text-muted" style="font-size:0.76rem;">Maximum data minimization for privacy-sensitive personnel.</div>
+                  </div>
                 </label>
               </div>
             </div>
 
             <!-- Privacy Sandbox Interactive Showcase Link -->
-            <div class="card mb-3" style="background-color: var(--bg-card-subtle); border: 1px solid var(--border-color);">
-              <div class="d-flex justify-between align-center flex-wrap gap-1">
+            <div class="card mb-3 p-3" style="background-color: var(--bg-card-subtle); border: 1px dashed var(--accent);">
+              <div class="d-flex justify-between align-center flex-wrap gap-2">
                 <div>
-                  <strong>🧪 Interactive Privacy Sandbox Available</strong>
-                  <div class="text-muted" style="font-size:0.82rem;">Inspect real-time Before & After pseudonymization, data minimization, and K-anonymity bucketing.</div>
+                  <strong>🧪 Interactive Privacy Sandbox Showcase</strong>
+                  <div class="text-muted" style="font-size:0.82rem;">Inspect real-time Before &amp; After pseudonymization, 5-year age bucketing, and K-anonymity masking.</div>
                 </div>
                 <a href="/privacy-sandbox.html" class="btn btn-sm btn-primary">Open Privacy Sandbox &rarr;</a>
               </div>
             </div>
 
-            <div class="form-group mb-3">
-              <label class="d-flex align-center gap-1">
-                <input type="checkbox" id="priv_anonymous_stats" checked style="transform:scale(1.2);">
-                <span><strong>Contribute Anonymized Aggregated Statistics to Force Resilience Research</strong></span>
-              </label>
-            </div>
-
-            <div class="d-flex justify-between align-center pt-2" style="border-top:1px solid var(--border-color);">
-              <button class="btn btn-secondary btn-sm" onclick="clearLocalTelemetryCache()">🗑️ Clear Local Device Cache</button>
-              <button class="btn btn-primary" onclick="savePrivacyPreferences()">Save Privacy Preferences</button>
+            <div class="d-flex justify-between align-center pt-2 flex-wrap gap-2" style="border-top:1px solid var(--border-color);">
+              <div class="d-flex gap-1">
+                <button class="btn btn-secondary btn-sm" onclick="clearLocalTelemetryCache()">🗑️ Clear Local Device Cache</button>
+                <button class="btn btn-outline btn-sm" onclick="exportDataJSON()">📥 Export My Data</button>
+              </div>
+              <button class="btn btn-primary" id="btn-save-privacy-consent" onclick="savePrivacyPreferences()">Save Consent &amp; Privacy Preferences</button>
             </div>
           </div>
         </div>
@@ -634,17 +718,73 @@
       Utils.showToast(`Text scale set to ${scaleVal}%.`, 'info', 1500);
     }
 
-    // 4. Privacy Preferences
-    function savePrivacyPreferences() {
-      const pseudo = document.getElementById('priv_pseudonymize_toggle').checked;
-      const anon = document.getElementById('priv_anonymous_stats').checked;
-      const telLevel = document.querySelector('input[name="telemetry_level"]:checked')?.value || 'FULL';
+    // 4. Privacy & Consent Preferences (Task 7)
+    async function loadPrivacyConsent() {
+      try {
+        const res = await api.getPrivacyConsent();
+        if (res && res.success && res.data && res.data.consent) {
+          const c = res.data.consent;
+          const selfCheckEl = document.getElementById('priv_allow_selfcheck');
+          const wearableEl = document.getElementById('priv_allow_wearable');
+          const trendsEl = document.getElementById('priv_allow_trends');
+          const anonEl = document.getElementById('priv_anonymous_stats');
+          const pseudoEl = document.getElementById('priv_pseudonymize_toggle');
 
-      localStorage.setItem('sih_priv_pseudonymize', pseudo);
-      localStorage.setItem('sih_priv_anon', anon);
-      localStorage.setItem('sih_priv_telemetry', telLevel);
+          if (selfCheckEl) selfCheckEl.checked = c.allowSelfCheckSubjective !== false;
+          if (wearableEl) wearableEl.checked = c.allowWearableBiometrics !== false;
+          if (trendsEl) trendsEl.checked = c.allowLongitudinalTrends !== false;
+          if (anonEl) anonEl.checked = c.contributeAnonymizedResearch !== false;
+          if (pseudoEl) pseudoEl.checked = c.pseudonymizeIdentity !== false;
 
-      Utils.showToast('Privacy preferences recorded.', 'success');
+          const level = c.telemetryGranularity || 'FULL';
+          const radio = document.querySelector(`input[name="telemetry_level"][value="${level}"]`);
+          if (radio) radio.checked = true;
+        }
+      } catch (err) {
+        console.warn('Could not load server consent settings, using local defaults:', err);
+      }
+    }
+
+    async function savePrivacyPreferences() {
+      const btn = document.getElementById('btn-save-privacy-consent');
+      if (btn) btn.disabled = true;
+
+      const allowSelfCheckSubjective = document.getElementById('priv_allow_selfcheck')?.checked ?? true;
+      const allowWearableBiometrics = document.getElementById('priv_allow_wearable')?.checked ?? true;
+      const allowLongitudinalTrends = document.getElementById('priv_allow_trends')?.checked ?? true;
+      const contributeAnonymizedResearch = document.getElementById('priv_anonymous_stats')?.checked ?? true;
+      const pseudonymizeIdentity = document.getElementById('priv_pseudonymize_toggle')?.checked ?? true;
+      const telemetryGranularity = document.querySelector('input[name="telemetry_level"]:checked')?.value || 'FULL';
+
+      try {
+        const payload = {
+          allowSelfCheckSubjective,
+          allowWearableBiometrics,
+          allowLongitudinalTrends,
+          contributeAnonymizedResearch,
+          telemetryGranularity,
+          pseudonymizeIdentity
+        };
+
+        const res = await api.updatePrivacyConsent(payload);
+        if (res && res.success) {
+          localStorage.setItem('sih_priv_selfcheck', allowSelfCheckSubjective);
+          localStorage.setItem('sih_priv_wearable', allowWearableBiometrics);
+          localStorage.setItem('sih_priv_trends', allowLongitudinalTrends);
+          localStorage.setItem('sih_priv_anon', contributeAnonymizedResearch);
+          localStorage.setItem('sih_priv_pseudonymize', pseudonymizeIdentity);
+          localStorage.setItem('sih_priv_telemetry', telemetryGranularity);
+
+          Utils.showToast('Consent & Data Control settings saved and synced with Force Privacy Engine!', 'success');
+        } else {
+          throw new Error(res?.message || 'Failed to update consent');
+        }
+      } catch (err) {
+        console.error('Save consent error:', err);
+        Utils.showToast('Saved locally: ' + err.message, 'info');
+      } finally {
+        if (btn) btn.disabled = false;
+      }
     }
 
     function clearLocalTelemetryCache() {
@@ -975,6 +1115,9 @@
       const savedTheme = localStorage.getItem('sih_welfare_theme') || 'light';
       const activeCard = document.getElementById(`theme-card-${savedTheme}`);
       if (activeCard) activeCard.classList.add('active-theme');
+
+      // Hydrate Consent & Data Control
+      loadPrivacyConsent();
     });
   </script>
 </body>

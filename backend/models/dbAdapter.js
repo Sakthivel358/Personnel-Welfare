@@ -264,7 +264,8 @@ const db = {
   WelfareResources: new Collection('welfare_resources'),
   AuditLogs: new Collection('audit_logs'),
   RevokedTokens: new Collection('revoked_tokens'),
-  WearableData: new Collection('wearable_data')
+  WearableData: new Collection('wearable_data'),
+  Consent: new Collection('consent')
 };
 
 

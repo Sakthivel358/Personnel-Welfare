@@ -487,15 +487,17 @@
     "_id": "ab1bb049bfd83a0f700e74f7",
     "userId": "b89451b0525f73ec0e2338ef",
     "personnelId": "CRPF-9042",
-    "supportRequestId": "ad8b8822dab0fc2d178417f0",
+    "supportRequestId": "0b8ff03d05694f30a07a9f28",
     "scheduledDate": "2026-09-24T00:00:00.000Z",
-    "status": "SCHEDULED",
+    "status": "CHECKIN_COMPLETED",
     "officerNotes": "Conducted confidential 1-on-1 welfare dialogue. Authorized 48-hour restorative downtime and assigned peer mentor support.",
     "initialRiskScore": "UNDETERMINED",
-    "welfareDelta": "PENDING_DATA",
+    "welfareDelta": "STABLE",
     "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
     "createdAt": "2026-09-19T18:54:11.513Z",
-    "updatedAt": "2026-09-19T18:54:11.513Z"
+    "updatedAt": "2026-09-19T19:11:47.716Z",
+    "reAnalyzedRiskScore": 86.6,
+    "completedAt": "2026-09-19T19:11:47.716Z"
   },
   {
     "_id": "71d4303fba8d309f07d58189",
@@ -512,5 +514,21 @@
     "isNonPunitive": true,
     "createdAt": "2026-09-19T18:54:17.406Z",
     "updatedAt": "2026-09-19T18:54:17.406Z"
+  },
+  {
+    "_id": "3eb92a802583596e462259b0",
+    "alertId": "68ce64be2271f018f7a20eaf",
+    "userId": "1aab5a92609ea49dfa2ade9b",
+    "personnelId": "PERS_FIN_106639",
+    "assignedOfficerId": "53b986627945ff497b17db3c",
+    "status": "SCHEDULED",
+    "scheduledDate": "2026-09-20T19:11:56.680Z",
+    "initialRiskScore": 90.6,
+    "reAnalyzedRiskScore": null,
+    "welfareDelta": "PENDING_DATA",
+    "officerNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-19T19:11:56.689Z",
+    "updatedAt": "2026-09-19T19:11:56.689Z"
   }
 ]

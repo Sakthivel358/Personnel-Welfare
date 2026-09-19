@@ -97,6 +97,41 @@
             </div>
           </div>
 
+          <!-- Live Consent & Data Control Gateway Card (Task 7) -->
+          <div class="card mb-3" style="border: 1px solid var(--border-color); background: var(--bg-card-subtle); padding: 1.25rem;">
+            <div class="d-flex justify-between align-center flex-wrap gap-2 mb-2">
+              <div class="d-flex align-center gap-1">
+                <span style="font-size: 1.4rem;">🛡️</span>
+                <div>
+                  <h3 style="margin:0; font-size:1.05rem;">Your Active Consent &amp; Data Control Permissions (Task 7)</h3>
+                  <span class="text-muted" style="font-size:0.8rem;">Control optional self-check, wearable telemetry sync, and data minimization</span>
+                </div>
+              </div>
+              <a href="/settings.html" class="btn btn-sm btn-primary">Manage My Permissions &rarr;</a>
+            </div>
+            <div class="grid-4 text-center gap-2 mb-2" id="privacy-consent-quickview">
+              <div class="card p-2" style="background:var(--bg-card);">
+                <div class="text-muted" style="font-size:0.75rem;">Self-Check Inputs</div>
+                <strong id="priv-view-selfcheck" style="color:var(--risk-low); font-size:0.88rem;">Active</strong>
+              </div>
+              <div class="card p-2" style="background:var(--bg-card);">
+                <div class="text-muted" style="font-size:0.75rem;">Wearable Sensors</div>
+                <strong id="priv-view-wearable" style="color:var(--risk-low); font-size:0.88rem;">Active</strong>
+              </div>
+              <div class="card p-2" style="background:var(--bg-card);">
+                <div class="text-muted" style="font-size:0.75rem;">Trajectory Tracking</div>
+                <strong id="priv-view-trends" style="color:var(--risk-low); font-size:0.88rem;">Active</strong>
+              </div>
+              <div class="card p-2" style="background:var(--bg-card);">
+                <div class="text-muted" style="font-size:0.75rem;">Data Minimization</div>
+                <strong id="priv-view-granularity" style="color:var(--accent); font-size:0.88rem;">Full Telemetry</strong>
+              </div>
+            </div>
+            <div class="text-muted" style="font-size:0.78rem;">
+              ⚖️ <em>Non-Punitive Doctrine: Under Force Directive, withholding optional telemetry never disqualifies personnel from welfare support, nor affects appraisals or service records.</em>
+            </div>
+          </div>
+
           <!-- Section 1: Non-Clinical Boundaries & Ethical Mission -->
           <div class="card mb-3" style="background: var(--bg-card-subtle);">
             <h3 style="color: var(--accent); font-size: 1.1rem; margin-bottom: 0.5rem;">I. Non-Clinical Boundaries & Welfare Mission</h3>
@@ -166,6 +201,35 @@
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       await checkAuth();
+
+      try {
+        const res = await api.getPrivacyConsent();
+        if (res && res.success && res.data && res.data.consent) {
+          const c = res.data.consent;
+          const sc = document.getElementById('priv-view-selfcheck');
+          const wb = document.getElementById('priv-view-wearable');
+          const tr = document.getElementById('priv-view-trends');
+          const gr = document.getElementById('priv-view-granularity');
+
+          if (sc) {
+            sc.textContent = c.allowSelfCheckSubjective !== false ? 'Active' : 'Paused';
+            sc.style.color = c.allowSelfCheckSubjective !== false ? 'var(--risk-low)' : 'var(--text-muted)';
+          }
+          if (wb) {
+            wb.textContent = c.allowWearableBiometrics !== false ? 'Active' : 'Paused';
+            wb.style.color = c.allowWearableBiometrics !== false ? 'var(--risk-low)' : 'var(--text-muted)';
+          }
+          if (tr) {
+            tr.textContent = c.allowLongitudinalTrends !== false ? 'Active' : 'Paused';
+            tr.style.color = c.allowLongitudinalTrends !== false ? 'var(--risk-low)' : 'var(--text-muted)';
+          }
+          if (gr) {
+            gr.textContent = c.telemetryGranularity === 'MINIMAL' ? 'Minimal Alert-Only' : (c.telemetryGranularity === 'COARSE' ? 'Coarse Buckets' : 'Full Telemetry');
+          }
+        }
+      } catch (e) {
+        console.warn('Privacy overview check deferred:', e);
+      }
     });
   </script>
 </body>
