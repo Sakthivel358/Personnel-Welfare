@@ -74,6 +74,19 @@ const getModelTransparency = async (req, res, next) => {
             description: 'Model 1 and Model 2 are strictly independent Random Forests with distinct datasets, training pipelines, feature schemas, and pickled weights.'
           }
         },
+        decisionLayer: {
+          name: 'WelfareAI Decision Layer',
+          version: 'v2.1.0-decision-layer',
+          position: 'Downstream of ML Model 1 & ML Model 2',
+          pillars: [
+            'Welfare Concern (Classification & Calibrated Composite Risk Score)',
+            'Evidence Strength (HIGH / MODERATE / EMERGING with quantitative metric)',
+            'Main Contributors (Ranked impact indicators & baseline deviations)',
+            'Human Welfare Review (Automated officer triage protocol & guidelines)'
+          ],
+          evidenceStrengthLevels: ['HIGH', 'MODERATE', 'EMERGING'],
+          humanReviewPriorities: ['CRITICAL', 'HIGH', 'ROUTINE', 'STANDARD_MONITORING']
+        },
         datasetInfo: {
           dataset_name: 'synthetic_prototype_sensor_operational_dataset.csv',
           provenance: 'SYNTHETIC_PROTOTYPE_DATA',

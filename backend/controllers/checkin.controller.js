@@ -251,6 +251,10 @@ const submitCheckIn = async (req, res, next) => {
     });
 
     // 3. Persist StressPrediction Record
+    const decisionLayer = mlPrediction.decisionLayer || null;
+    const humanReview = decisionLayer ? decisionLayer.humanWelfareReview : null;
+    const isAlertGenerated = humanReview ? humanReview.requiresHumanReview : (mlPrediction.concernLevel === 'HIGH' || mlPrediction.compositeRiskScore >= 65);
+
     const newPrediction = await db.Predictions.create({
       userId: req.user._id,
       checkInId: newCheckIn._id,
@@ -260,12 +264,17 @@ const submitCheckIn = async (req, res, next) => {
       probabilities: mlPrediction.probabilities,
       evidenceSources: mlPrediction.evidenceSources || evidenceSources,
       evidenceCount: (mlPrediction.evidenceSources || evidenceSources).length,
+      evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : (mlPrediction.evidenceStrength || 'MODERATE'),
+      evidenceStrengthScore: decisionLayer ? decisionLayer.evidenceStrength.score : (mlPrediction.evidenceStrengthScore || 0.6),
+      decisionLayer: decisionLayer,
       topDrivers: mlPrediction.topDrivers,
       contributingFactors: mlPrediction.contributingFactors,
       modelUsed: mlPrediction.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
       modelVersion: mlPrediction.modelVersion,
       analyzedAt: mlPrediction.analyzedAt,
-      isAlertGenerated: mlPrediction.concernLevel === 'HIGH' || mlPrediction.compositeRiskScore >= 65
+      isAlertGenerated: isAlertGenerated,
+      requiresHumanReview: isAlertGenerated,
+      humanReviewPriority: humanReview ? humanReview.priority : (mlPrediction.compositeRiskScore >= 80 ? 'CRITICAL' : 'HIGH')
     });
 
     // Link prediction ID back to check-in
@@ -283,18 +292,24 @@ const submitCheckIn = async (req, res, next) => {
       welfareResourceSuggestions: recData.welfareResourceSuggestions
     });
 
-    // 5. Generate Welfare Alert if signal is elevated
+    // 5. Generate Welfare Alert if signal is elevated or Human Review required
     let alertCreated = false;
     if (newPrediction.isAlertGenerated) {
       alertCreated = true;
+      const alertPriority = humanReview ? humanReview.priority : (mlPrediction.compositeRiskScore >= 80 ? 'CRITICAL' : 'HIGH');
       const newAlert = await db.Alerts.create({
         personnelId: req.user.personnelId,
         userId: req.user._id,
         predictionId: newPrediction._id,
-        priority: mlPrediction.compositeRiskScore >= 80 ? 'CRITICAL' : 'HIGH',
+        priority: alertPriority,
         concernLevel: mlPrediction.concernLevel,
         compositeRiskScore: mlPrediction.compositeRiskScore,
         topDrivers: mlPrediction.topDrivers,
+        evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : 'MODERATE',
+        evidenceStrengthScore: decisionLayer ? decisionLayer.evidenceStrength.score : 0.6,
+        mainContributors: decisionLayer ? decisionLayer.mainContributors.slice(0, 5) : [],
+        reviewTriggers: humanReview ? humanReview.reviewTriggers : (mlPrediction.topDrivers || []),
+        recommendedOfficerAction: humanReview ? humanReview.recommendedOfficerAction : 'Conduct supportive welfare review and verify restorative downtime.',
         status: 'PENDING_REVIEW',
         officerNotes: '',
         createdAt: new Date().toISOString()
@@ -364,8 +379,10 @@ const submitCheckIn = async (req, res, next) => {
       data: {
         checkIn: newCheckIn,
         prediction: newPrediction,
+        decisionLayer: newPrediction.decisionLayer || mlPrediction.decisionLayer || null,
         evidenceSources: newPrediction.evidenceSources || evidenceSources,
         evidenceCount: newPrediction.evidenceCount || evidenceSources.length,
+        evidenceStrength: newPrediction.evidenceStrength,
         recommendations: newRecommendation,
         alertGenerated: alertCreated
       }

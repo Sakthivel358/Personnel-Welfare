@@ -14,6 +14,8 @@ import numpy as np
 from datetime import datetime
 from typing import Dict, Any, List
 
+from decision_layer import WelfareAIDecisionLayer
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model.pkl")
 PREPROCESSING_PATH = os.path.join(BASE_DIR, "preprocessing.pkl")
@@ -398,7 +400,7 @@ def predict_model1_wearable_operational(checkin_data: Dict[str, Any]) -> Dict[st
     if not top_drivers:
         top_drivers = [f["title"] for f in contributing_factors[:2]]
 
-    return {
+    raw_result = {
         "concernLevel": concern_level,
         "confidence": round(confidence, 4),
         "compositeRiskScore": composite_risk_score,
@@ -415,6 +417,7 @@ def predict_model1_wearable_operational(checkin_data: Dict[str, Any]) -> Dict[st
         "analyzedAt": datetime.now().isoformat(),
         "disclaimer": "PROTOTYPE MODEL 1 (Wearable + Operational RF): Multi-source predictive signal trained on synthetic prototype benchmark data. Does NOT represent real-world clinical or operational validated performance."
     }
+    return WelfareAIDecisionLayer.evaluate(checkin_data, raw_result)
 
 def predict_model2_pss_operational(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -568,7 +571,7 @@ def predict_model2_pss_operational(checkin_data: Dict[str, Any]) -> Dict[str, An
     if not top_drivers:
         top_drivers = [f["title"] for f in contributing_factors[:2]]
 
-    return {
+    raw_result = {
         "concernLevel": concern_level,
         "confidence": round(confidence, 4),
         "compositeRiskScore": composite_risk_score,
@@ -585,6 +588,7 @@ def predict_model2_pss_operational(checkin_data: Dict[str, Any]) -> Dict[str, An
         "analyzedAt": datetime.now().isoformat(),
         "disclaimer": "PROTOTYPE MODEL 2 (PSS + Operational Fallback RF): Designated fallback pathway when wearable telemetry is unavailable. Multi-source predictive signal based on duty, workload, rest, and self-check data."
     }
+    return WelfareAIDecisionLayer.evaluate(checkin_data, raw_result)
 
 def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -917,3 +921,10 @@ def _predict_legacy_model(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
         "analyzedAt": datetime.now().isoformat(),
         "disclaimer": "AI-generated welfare decision-support signal based on authorized multi-source operational and biometric evidence."
     }
+
+def evaluate_decision_layer(checkin_data: Dict[str, Any], ml_result: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Direct interface to execute the WelfareAI Decision Layer on an existing ML result.
+    """
+    return WelfareAIDecisionLayer.evaluate(checkin_data, ml_result)
+

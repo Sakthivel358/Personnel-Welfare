@@ -162,7 +162,11 @@ class MLClientService {
       try {
         const response = await this.client.post('/predict/model1', features);
         if (response.data && response.data.success) {
-          return response.data.data;
+          const resData = response.data.data;
+          if (!resData.decisionLayer) {
+            resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
+          }
+          return resData;
         }
       } catch (err) {
         console.warn('[ML Client] Remote Model 1 call failed for sensor checkin. Using Embedded Model 1 Engine. Error:', err.message);
@@ -176,7 +180,11 @@ class MLClientService {
     try {
       const response = await this.client.post('/predict/model2', features);
       if (response.data && response.data.success) {
-        return response.data.data;
+        const resData = response.data.data;
+        if (!resData.decisionLayer) {
+          resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
+        }
+        return resData;
       }
     } catch (err) {
       console.warn('[ML Client] Remote Model 2 call failed. Using Embedded Model 2 Engine. Error:', err.message);
@@ -352,7 +360,7 @@ class MLClientService {
     const topDrivers = contributingFactors.filter(f => f.is_risk_driver);
     const selectedTopDrivers = (topDrivers.length > 0 ? topDrivers : contributingFactors).slice(0, 3).map(d => d.title);
 
-    return {
+    const rawResult = {
       concernLevel: concernLevel,
       confidence: concernLevel === 'HIGH' ? probHigh : (concernLevel === 'MODERATE' ? probMod : probLow),
       compositeRiskScore: compositeRisk,
@@ -374,6 +382,175 @@ class MLClientService {
       disclaimer: hasWearable
         ? 'PROTOTYPE MODEL 1 (Wearable + Operational RF): Multi-source predictive signal based on synthetic prototype benchmark. Does NOT represent real-world clinical or operational validated performance.'
         : 'PROTOTYPE MODEL 2 (PSS + Operational Fallback RF): Multi-source predictive signal based on synthetic prototype benchmark. Designated fallback pathway when wearable telemetry is unavailable.'
+    };
+
+    const decisionLayer = this.synthesizeDecisionLayer(checkinData, rawResult);
+    return {
+      ...rawResult,
+      decisionLayer,
+      evidenceStrength: decisionLayer.evidenceStrength.level,
+      evidenceStrengthScore: decisionLayer.evidenceStrength.score,
+      requiresHumanReview: decisionLayer.humanWelfareReview.requiresHumanReview,
+      humanReviewPriority: decisionLayer.humanWelfareReview.priority
+    };
+  }
+
+  synthesizeDecisionLayer(checkinData, mlResult) {
+    const evidenceSources = mlResult.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'];
+    const hasWearable = evidenceSources.includes('WEARABLE');
+    const hasSelfCheck = evidenceSources.includes('SELF_CHECK');
+    const hasDuty = evidenceSources.includes('DUTY');
+    const hasWorkload = evidenceSources.includes('WORKLOAD');
+    const hasRest = evidenceSources.includes('REST_RECOVERY');
+
+    let evidenceScore = 0.0;
+    const details = [];
+    if (hasDuty) { evidenceScore += 0.20; details.push('Authorized duty schedule verified'); }
+    if (hasWorkload) { evidenceScore += 0.20; details.push('Operational workload logged'); }
+    if (hasRest) { evidenceScore += 0.20; details.push('Rest and recovery data documented'); }
+    if (hasSelfCheck) { evidenceScore += 0.15; details.push('Self-check questionnaire provided'); }
+    if (hasWearable) { evidenceScore += 0.25; details.push('Continuous wearable biometric telemetry synchronized'); }
+
+    evidenceScore = Number(Math.min(1.0, Math.max(0.1, evidenceScore)).toFixed(2));
+    let evidenceLevel = 'EMERGING';
+    let evidenceSummary = 'Preliminary evidence based on sparse or partial parameters.';
+    if (evidenceScore >= 0.75 && hasWearable) {
+      evidenceLevel = 'HIGH';
+      evidenceSummary = 'Robust multi-source evidence with active continuous wearable biometric telemetry and verified operational logs.';
+    } else if (evidenceScore >= 0.50) {
+      evidenceLevel = 'MODERATE';
+      evidenceSummary = 'Sufficient evidence based on authorized operational logs, rest records, and self-check input.';
+    }
+
+    const evidenceStrength = {
+      level: evidenceLevel,
+      score: evidenceScore,
+      sourcesCount: evidenceSources.length,
+      sources: evidenceSources,
+      hasWearableTelemetry: hasWearable,
+      hasOperationalDuty: hasDuty,
+      hasRestRecovery: hasRest,
+      hasSelfCheck: hasSelfCheck,
+      summary: evidenceSummary,
+      evidenceDetails: details
+    };
+
+    // Compound strain checks
+    const nightDuty = Number(checkinData.night_duty_hours || 0);
+    const sleep = Number(checkinData.recovery_sleep_hours || 7);
+    const consecutive = Number(checkinData.shift_continuity_days || 0);
+    const prolonged = Number(checkinData.prolonged_duty_hours || 0);
+    const workload = Number(checkinData.workload_hours || 45);
+
+    let compoundStrain = false;
+    const compoundReasons = [];
+    if (nightDuty >= 16.0 && sleep < 5.0 && consecutive >= 6.0) {
+      compoundStrain = true;
+      compoundReasons.push('Severe cumulative duty exposure: graveyard duty >= 16h with acute sleep deficit < 5h');
+    }
+    if (prolonged >= 16.0 && workload > 65.0) {
+      compoundStrain = true;
+      compoundReasons.push('Extreme operational duration: continuous duty >= 16h with weekly workload > 65h');
+    }
+
+    let finalConcern = mlResult.concernLevel;
+    let finalScore = mlResult.compositeRiskScore;
+    if (compoundStrain) {
+      if (finalConcern === 'LOW') { finalConcern = 'MODERATE'; finalScore = Math.max(finalScore, 52.0); }
+      else if (finalConcern === 'MODERATE' && finalScore >= 60.0) { finalConcern = 'HIGH'; finalScore = Math.max(finalScore, 75.0); }
+    }
+
+    const welfareConcern = {
+      concernLevel: finalConcern,
+      rawModelConcern: mlResult.concernLevel,
+      compositeRiskScore: finalScore,
+      confidence: mlResult.confidence,
+      probabilities: mlResult.probabilities,
+      modelUsed: mlResult.modelUsed,
+      compoundStrainDetected: compoundStrain,
+      compoundReasons,
+      status: finalScore >= 80 ? 'CRITICAL' : (finalScore >= 60 ? 'ELEVATED' : (finalScore >= 40 ? 'MODERATE' : 'BALANCED'))
+    };
+
+    const mainContributors = (mlResult.contributingFactors || []).map(f => {
+      let cat = 'PSYCHOLOGICAL_EQUILIBRIUM';
+      const k = f.feature_key || f.featureKey || '';
+      if (['resting_heart_rate', 'hrv_ms', 'respiration_rate', 'skin_temperature_c', 'fatigue_physical_strain'].includes(k)) cat = 'WEARABLE_BIOMETRIC';
+      else if (['prolonged_duty_hours', 'night_duty_hours', 'shift_continuity_days', 'deployment_demand_score', 'operational_duty_context'].includes(k)) cat = 'OPERATIONAL_DUTY';
+      else if (['workload_hours', 'work_pressure_rating', 'personal_workload_surge'].includes(k)) cat = 'WORKLOAD_PRESSURE';
+      else if (['recovery_sleep_hours', 'rest_interval_hours', 'recovery_pattern_score', 'personal_sleep_deficit'].includes(k)) cat = 'REST_RECOVERY';
+
+      return {
+        featureKey: k,
+        title: f.title || k.replace(/_/g, ' '),
+        category: cat,
+        userValue: f.user_value !== undefined ? f.user_value : f.userValue,
+        unit: f.unit || '',
+        healthyRange: f.healthy_range || f.healthyRange || 'Standard',
+        baselineMean: f.baseline_mean !== undefined ? f.baseline_mean : f.baselineMean,
+        contributionScore: f.contribution_score !== undefined ? f.contribution_score : (f.contributionScore || 0),
+        impactLevel: f.impact_level || f.impactLevel || 'LOW',
+        isRiskDriver: Boolean(f.is_risk_driver || f.isRiskDriver),
+        status: f.status || 'Within Baseline'
+      };
+    }).sort((a, b) => b.contributionScore - a.contributionScore);
+
+    // Human Welfare Review Formulation
+    let requiresReview = false;
+    let priority = 'STANDARD_MONITORING';
+    let action = 'Routine monitoring; personnel operating within normal welfare equilibrium.';
+    const triggers = [];
+
+    if (finalConcern === 'HIGH' || finalScore >= 65.0) {
+      requiresReview = true;
+      if (finalScore >= 80.0) {
+        priority = 'CRITICAL';
+        triggers.push(`Critical composite welfare risk score (${finalScore}%) exceeds acute safety threshold`);
+      } else {
+        priority = 'HIGH';
+        triggers.push(`High welfare concern signal (${finalScore}%) flagged by ${mlResult.modelUsed}`);
+      }
+    }
+
+    if (compoundStrain) {
+      requiresReview = true;
+      if (priority !== 'CRITICAL') priority = 'HIGH';
+      triggers.push(...compoundReasons);
+    }
+
+    const topDrivers = mainContributors.filter(m => m.isRiskDriver);
+    (topDrivers.length > 0 ? topDrivers : mainContributors).slice(0, 3).forEach(d => {
+      triggers.push(`${d.title}: ${d.userValue}${d.unit || ''} (${d.impactLevel} strain vs baseline ${d.baselineMean})`);
+    });
+
+    if (requiresReview) {
+      if (priority === 'CRITICAL') {
+        action = 'URGENT WELFARE INTERVENTION: Initiate confidential 1-on-1 check-in within 12 hours. Review active duty roster for immediate 24-hour mandatory rest rotation and evaluate medical/counseling referral.';
+      } else {
+        action = 'OFFICER REVIEW REQUIRED: Schedule supportive welfare consultation within 24–48 hours. Assess recent shift continuity, night watch exposure, and ensure restorative sleep compliance.';
+      }
+    } else if (finalConcern === 'MODERATE') {
+      priority = 'ROUTINE';
+      action = 'MONITORED STATUS: Recommend proactive peer support and unit downtime. Monitor next check-in cycle for directional velocity.';
+    }
+
+    const humanWelfareReview = {
+      requiresHumanReview: requiresReview,
+      priority,
+      status: requiresReview ? 'PENDING_REVIEW' : 'MONITORING_ONLY',
+      reviewTriggers: triggers.length > 0 ? triggers : ['No adverse triggers detected'],
+      recommendedOfficerAction: action,
+      assignedRole: 'Unit Welfare Officer / Station Resilience Lead',
+      escalationPath: priority === 'CRITICAL' ? 'Medical Officer / Commanding Officer' : 'Welfare Officer Review'
+    };
+
+    return {
+      welfareConcern,
+      evidenceStrength,
+      mainContributors,
+      humanWelfareReview,
+      evaluatedAt: new Date().toISOString(),
+      decisionEngineVersion: 'v2.1.0-decision-layer'
     };
   }
 

@@ -20,6 +20,7 @@ from predict import (
     predict_welfare_risk,
     predict_model1_wearable_operational,
     predict_model2_pss_operational,
+    evaluate_decision_layer,
     load_artifacts,
     load_model1_artifacts,
     load_model2_artifacts
@@ -449,6 +450,51 @@ async def get_evaluation_metrics():
     return {
         "metrics": metrics,
         "confusion_matrix": cm_data
+    }
+
+@app.post("/decision-layer/evaluate", tags=["Decision Layer"])
+async def evaluate_decision_layer_endpoint(data: CheckInInput):
+    """
+    Executes the WelfareAI Decision Layer immediately downstream of ML Model 1 or Model 2,
+    returning synthesized Welfare Concern, Evidence Strength, Main Contributors,
+    and Human Welfare Review triage package.
+    """
+    try:
+        input_dict = data.dict()
+        result = predict_welfare_risk(input_dict)
+        return {
+            "success": True,
+            "data": result.get("decisionLayer", result)
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Decision Layer evaluation failed: {str(e)}"
+        )
+
+@app.get("/decision-layer/info", tags=["Decision Layer"])
+async def get_decision_layer_info():
+    """
+    Returns metadata, criteria, and architecture for the WelfareAI Decision Layer.
+    """
+    return {
+        "engine": "WelfareAI Decision Layer",
+        "version": "v2.1.0-decision-layer",
+        "role": "Synthesizes final Welfare Concern, Evidence Strength, and Main Contributors downstream of ML Models 1 & 2 to drive Human Welfare Review",
+        "architecture_flow": [
+            "1. Authorized Multi-Source Ingestion (Wearable, Duty, Workload, Rest, Self-Check)",
+            "2. Model Dispatch (Model 1 when wearable telemetry synced; Model 2 fallback when absent)",
+            "3. Decision Layer Post-Processing (Compounding operational strain & baseline calibration)",
+            "4. Evidence Strength Metric Formulation (HIGH, MODERATE, EMERGING)",
+            "5. Main Contributors Attribution Ranking",
+            "6. Automated Human Welfare Review Protocol (Officer Triage Alert & Guidelines)"
+        ],
+        "evidence_strength_levels": {
+            "HIGH": "Score >= 0.75: Multi-source evidence with active continuous wearable biometrics + duty logs",
+            "MODERATE": "Score >= 0.50: Authorized operational logs, rest records, and self-check input",
+            "EMERGING": "Score < 0.50: Preliminary evidence based on sparse or single-source parameters"
+        },
+        "review_priorities": ["CRITICAL", "HIGH", "ROUTINE", "STANDARD_MONITORING"]
     }
 
 if __name__ == "__main__":

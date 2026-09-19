@@ -20,6 +20,8 @@ const getLatestPrediction = async (req, res, next) => {
       success: true,
       data: {
         prediction: latest,
+        decisionLayer: latest.decisionLayer || null,
+        evidenceStrength: latest.evidenceStrength || 'MODERATE',
         recommendations,
         checkIn
       }
@@ -123,6 +125,8 @@ const getExplainability = async (req, res, next) => {
         compositeRiskScore: latest.compositeRiskScore,
         evidenceSources: latest.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
         evidenceCount: latest.evidenceCount || (latest.evidenceSources ? latest.evidenceSources.length : 3),
+        evidenceStrength: latest.evidenceStrength || (latest.decisionLayer ? latest.decisionLayer.evidenceStrength.level : 'MODERATE'),
+        decisionLayer: latest.decisionLayer || null,
         topDrivers: latest.topDrivers,
         contributingFactors: latest.contributingFactors || [],
         modelUsed: latest.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',

@@ -258,6 +258,11 @@ const getAlerts = async (req, res, next) => {
       const u = userMap[String(a.userId)] || {};
       return {
         ...a,
+        evidenceStrength: a.evidenceStrength || 'MODERATE',
+        evidenceStrengthScore: a.evidenceStrengthScore !== undefined ? a.evidenceStrengthScore : 0.6,
+        mainContributors: a.mainContributors || [],
+        reviewTriggers: a.reviewTriggers || (a.topDrivers ? a.topDrivers.map(d => `${d} strain detected`) : ['Elevated welfare strain detected']),
+        recommendedOfficerAction: a.recommendedOfficerAction || 'Conduct welfare review and verify restorative downtime.',
         personnelName: u.fullName || 'Personnel Member',
         unit: u.unit || 'Operational Unit',
         rank: u.rank || 'Member'
