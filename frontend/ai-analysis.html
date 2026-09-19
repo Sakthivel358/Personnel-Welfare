@@ -73,6 +73,16 @@
       </header>
 
       <div class="page-container">
+        <!-- Ethical Directive Banner -->
+        <div class="alert alert-info mb-3 d-flex align-center gap-1" style="border-left:4px solid #3b82f6; background:rgba(59,130,246,0.08); padding:0.85rem 1.25rem; border-radius:8px;">
+          <span style="font-size:1.3rem;">🛡️</span>
+          <div>
+            <strong style="color:var(--text-primary);">Ethical Standard:</strong>
+            <span style="font-size:0.9rem; color:var(--text-secondary);">The model identifies welfare-risk patterns/concerns, not a medical diagnosis. Prototype accuracy must not be presented as real-world validated accuracy.</span>
+            <span class="badge badge-secondary" style="font-size:0.75rem; background:rgba(99,102,241,0.15); color:#818cf8; border:1px solid rgba(99,102,241,0.3); border-radius:4px; padding:2px 8px; margin-left:8px;">Synthetic Prototype Training Data</span>
+          </div>
+        </div>
+
         <!-- Main Analysis Card -->
         <div class="card mb-3">
           <div class="card-header">
@@ -81,6 +91,7 @@
               <p class="text-muted" style="font-size:0.85rem;" id="analysis-timestamp">Analyzed: --</p>
             </div>
             <div class="d-flex gap-1 align-center">
+              <span class="badge badge-secondary" style="font-size:0.75rem; background:rgba(99,102,241,0.15); color:#818cf8;">Synthetic Prototype Training Data</span>
               <span class="badge badge-neutral" id="model-badge">Random Forest Classifier</span>
               <span id="concern-badge-top"></span>
             </div>

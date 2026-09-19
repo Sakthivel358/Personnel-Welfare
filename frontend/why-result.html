@@ -71,13 +71,22 @@
 
       <div class="page-container">
         <!-- Header Banner -->
+        <div class="alert alert-info mb-3 d-flex align-center gap-1" style="border-left:4px solid #3b82f6; background:rgba(59,130,246,0.08); padding:0.85rem 1.25rem; border-radius:8px;">
+          <span style="font-size:1.3rem;">🛡️</span>
+          <div>
+            <strong style="color:var(--text-primary);">Ethical Standard:</strong>
+            <span style="font-size:0.9rem; color:var(--text-secondary);">The model identifies welfare-risk patterns/concerns, not a medical diagnosis.</span>
+            <span class="badge badge-secondary" style="font-size:0.75rem; background:rgba(99,102,241,0.15); color:#818cf8; border:1px solid rgba(99,102,241,0.3); border-radius:4px; padding:2px 8px; margin-left:8px;">Synthetic Prototype Training Data</span>
+          </div>
+        </div>
+
         <div class="card mb-3" style="background: linear-gradient(135deg, #1e3a8a, #1e293b); color: #fff;">
           <h2>Model-Derived Contributing Indicators</h2>
           <p style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.25rem;">
             Your current welfare signal reflects the combination of indicators submitted in your recent check-in compared against standard operational baseline distributions.
           </p>
           <div class="mt-2" style="font-size: 0.8rem; color: #94a3b8;">
-            ⚠️ <em>"Model-derived contributing indicators represent statistical variance relative to operational baselines, not clinical causation or diagnostic certainty."</em>
+            ⚠️ <em>"The model identifies welfare-risk patterns/concerns, not a medical diagnosis. Contributing indicators represent statistical variance relative to operational baselines, not clinical causation."</em>
           </div>
         </div>
 
@@ -146,7 +155,8 @@
         <div class="card mb-3" style="border-left: 4px solid var(--risk-mod); background: var(--bg-card);">
           <h3 class="mb-2" style="color:var(--risk-mod-text);">🛡️ What This Result Does NOT Mean</h3>
           <ul style="margin-left: 1.5rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
-            <li><strong>NOT a Medical Diagnosis:</strong> This is an AI-generated decision-support signal for proactive welfare tracking, not a clinical psychiatric diagnosis of depression, anxiety, or PTSD.</li>
+            <li><strong>NOT a Medical Diagnosis:</strong> <em>The model identifies welfare-risk patterns/concerns, not a medical diagnosis.</em> This is an AI decision-support platform for proactive welfare tracking, not a psychiatric or clinical diagnostic tool.</li>
+            <li><strong>Synthetic Prototype Transparency:</strong> If synthetic data is used for Model 1 prototype training, prototype evaluation accuracy is strictly for system pipeline verification and must not be presented or interpreted as real-world clinically or operationally validated accuracy.</li>
             <li><strong>NOT Proof of Single-Factor Causation:</strong> Elevated indicators reflect statistical correlation in operational patterns, not proof that a single duty caused stress.</li>
             <li><strong>NOT for Disciplinary Use:</strong> The platform is insulated from administrative command and performance appraisals. It cannot be used for demotion, termination, or punishment.</li>
             <li><strong>Human Oversight is Mandatory:</strong> Automated AI signals never trigger administrative actions without authorized human review by qualified Welfare Officers.</li>

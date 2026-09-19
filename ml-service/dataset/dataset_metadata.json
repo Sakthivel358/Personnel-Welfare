@@ -29,11 +29,16 @@
     "pss_score"
   ],
   "target_column": "welfare_concern_level",
+  "dataset_label": "Synthetic Prototype Training Data",
+  "dataset_type": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+  "real_world_validated_accuracy": false,
+  "prototype_accuracy_notice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+  "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
   "class_distribution": {
     "LOW": 1541,
     "MODERATE": 1634,
     "HIGH": 325
   },
   "description": "Clearly labelled synthetic prototype dataset for wearable sensor and operational duty stress prediction. Real authorized sensor data is unavailable.",
-  "disclaimer": "PROTOTYPE DATA: This synthetic dataset was algorithmically generated to verify data schemas, physiological ranges, and integration pipelines. Model accuracy derived from this dataset DO NOT represent real-world clinical or operational validated performance."
+  "disclaimer": "SYNTHETIC PROTOTYPE TRAINING DATA: This synthetic dataset was algorithmically generated to verify data schemas, physiological ranges, and integration pipelines. Prototype accuracy metrics DO NOT represent real-world clinical or operational validated performance."
 }

@@ -232,7 +232,14 @@ async def get_model1_info():
             "trained_at": prep1.get("trained_at"),
             "is_synthetic_prototype": True,
             "real_world_validated": False,
+            "real_world_validated_accuracy": False,
             "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+            "dataset_label": "Synthetic Prototype Training Data",
+            "dataset_type": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+            "prototype_accuracy_notice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+            "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "medical_disclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "not_medical_diagnosis": True,
             "n_estimators": getattr(m1, "n_estimators", 100),
             "features_count": len(prep1.get("feature_columns", [])),
             "features": prep1.get("feature_columns", []),
@@ -263,12 +270,28 @@ async def get_model1_evaluation():
             cm_data = json.load(f)
 
     return {
+        "status": "success",
         "model": "Model 1 (Wearable + Operational Random Forest Prototype)",
         "is_synthetic_prototype": True,
         "real_world_validated": False,
+        "real_world_validated_accuracy": False,
         "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+        "dataset_label": "Synthetic Prototype Training Data",
+        "dataset_type": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+        "prototype_accuracy_notice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+        "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+        "medical_disclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+        "not_medical_diagnosis": True,
+        "accuracy": metrics.get("accuracy"),
+        "precision_macro": metrics.get("precision_macro"),
+        "recall_macro": metrics.get("recall_macro"),
+        "f1_macro": metrics.get("f1_macro"),
+        "per_class": metrics.get("per_class"),
+        "train_samples": metrics.get("train_samples"),
+        "test_samples": metrics.get("test_samples"),
         "metrics": metrics,
-        "confusion_matrix": cm_data,
+        "confusion_matrix": cm_data.get("matrix", cm_data),
+        "confusion_matrix_details": cm_data,
         "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL: Evaluated on synthetic prototype benchmark data. Accuracy does NOT represent real-world clinical or operational validated performance.")
     }
 
@@ -309,7 +332,14 @@ async def get_model2_info():
             "trained_at": prep2.get("trained_at"),
             "is_synthetic_prototype": True,
             "real_world_validated": False,
+            "real_world_validated_accuracy": False,
             "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+            "dataset_label": "Synthetic Prototype Training Data",
+            "dataset_type": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+            "prototype_accuracy_notice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+            "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "medical_disclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "not_medical_diagnosis": True,
             "n_estimators": getattr(m2, "n_estimators", 100),
             "features_count": len(prep2.get("feature_columns", [])),
             "features": prep2.get("feature_columns", []),
@@ -340,12 +370,28 @@ async def get_model2_evaluation():
             cm_data = json.load(f)
 
     return {
+        "status": "success",
         "model": "Model 2 (PSS + Operational Fallback Random Forest Prototype)",
         "is_synthetic_prototype": True,
         "real_world_validated": False,
+        "real_world_validated_accuracy": False,
         "dataset_provenance": "SYNTHETIC_PROTOTYPE_BENCHMARK",
+        "dataset_label": "Synthetic Prototype Training Data",
+        "dataset_type": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+        "prototype_accuracy_notice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+        "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+        "medical_disclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+        "not_medical_diagnosis": True,
+        "accuracy": metrics.get("accuracy"),
+        "precision_macro": metrics.get("precision_macro"),
+        "recall_macro": metrics.get("recall_macro"),
+        "f1_macro": metrics.get("f1_macro"),
+        "per_class": metrics.get("per_class"),
+        "train_samples": metrics.get("train_samples"),
+        "test_samples": metrics.get("test_samples"),
         "metrics": metrics,
-        "confusion_matrix": cm_data,
+        "confusion_matrix": cm_data.get("matrix", cm_data),
+        "confusion_matrix_details": cm_data,
         "disclaimer": metrics.get("disclaimer", "PROTOTYPE MODEL 2: Evaluated on synthetic prototype benchmark data for fallback verification. Accuracy does NOT represent real-world clinical or operational validated performance.")
     }
 
@@ -517,6 +563,13 @@ async def get_decision_layer_info():
             "pathway_4": "Insufficient evidence -> UNDETERMINED (Never guess a welfare concern when evidence is insufficient)"
         },
         "zero_guessing_guarantee": True,
+        "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+        "medical_disclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+        "not_medical_diagnosis": True,
+        "dataset_label": "Synthetic Prototype Training Data",
+        "dataset_type": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+        "prototype_accuracy_notice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system verification and pipeline testing. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+        "real_world_validated_accuracy": False,
         "review_priorities": ["CRITICAL", "HIGH", "ROUTINE", "STANDARD_MONITORING", "NONE"]
     }
 

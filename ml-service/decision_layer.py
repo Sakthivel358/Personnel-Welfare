@@ -95,6 +95,18 @@ class WelfareAIDecisionLayer:
         enriched_result["requiresHumanReview"] = human_review["requiresHumanReview"]
         enriched_result["humanReviewPriority"] = human_review["priority"]
 
+        # Tasks 28 & 30: Medical non-diagnosis statement and prototype accuracy transparency
+        statement = "The model identifies welfare-risk patterns/concerns, not a medical diagnosis."
+        enriched_result["statement"] = statement
+        enriched_result["medicalDisclaimer"] = statement
+        enriched_result["notMedicalDiagnosis"] = True
+        enriched_result["prototypeAccuracyNotice"] = "Prototype evaluation accuracy is derived from synthetic prototype training data for system verification and pipeline testing. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy."
+        enriched_result["realWorldValidatedAccuracy"] = False
+
+        decision_layer_payload["statement"] = statement
+        decision_layer_payload["medicalDisclaimer"] = statement
+        decision_layer_payload["notMedicalDiagnosis"] = True
+
         return enriched_result
 
     @classmethod
@@ -168,6 +180,11 @@ class WelfareAIDecisionLayer:
             "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
             "requiresHumanReview": False,
             "humanReviewPriority": "NONE",
+            "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "medicalDisclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "notMedicalDiagnosis": True,
+            "prototypeAccuracyNotice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system verification and pipeline testing. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+            "realWorldValidatedAccuracy": False,
             "decisionLayer": decision_layer_payload,
             "analyzedAt": datetime.now().isoformat(),
             "disclaimer": "EVIDENCE INSUFFICIENT: Never guess a welfare concern when evidence is insufficient. Check-in must include authorized operational data alongside either wearable sensor telemetry or self-check input."
@@ -303,6 +320,11 @@ class WelfareAIDecisionLayer:
             "contributingFactors": m1_result.get("contributingFactors", []),
             "requiresHumanReview": human_review["requiresHumanReview"],
             "humanReviewPriority": human_review["priority"],
+            "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "medicalDisclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+            "notMedicalDiagnosis": True,
+            "prototypeAccuracyNotice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system verification and pipeline testing. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+            "realWorldValidatedAccuracy": False,
             "decisionLayer": decision_layer_payload,
             "analyzedAt": datetime.now().isoformat(),
             "disclaimer": "DUAL-MODEL DECISION CONSENSUS: Evaluated across ML Model 1 (Wearable + Operational) and ML Model 2 (PSS-10 Fallback) through the WelfareAI Decision Layer."

@@ -87,11 +87,25 @@ const getModelTransparency = async (req, res, next) => {
           evidenceStrengthLevels: ['HIGH', 'MODERATE', 'EMERGING'],
           humanReviewPriorities: ['CRITICAL', 'HIGH', 'ROUTINE', 'STANDARD_MONITORING']
         },
+        statement: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.',
+        medicalDisclaimer: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.',
+        notMedicalDiagnosis: true,
+        prototypeAccuracyNotice: 'Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.',
+        prototype_accuracy_notice: 'Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.',
+        realWorldValidatedAccuracy: false,
+        dataset_label: 'Synthetic Prototype Training Data',
+        dataset_type: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA',
+        real_world_validated_accuracy: false,
         datasetInfo: {
           dataset_name: 'synthetic_prototype_sensor_operational_dataset.csv',
+          dataset_label: 'Synthetic Prototype Training Data',
+          dataset_type: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA',
           provenance: 'SYNTHETIC_PROTOTYPE_DATA',
-          label: 'DEMO / SYNTHETIC DATA — NOT REAL PERSONNEL OR SENSOR DATA',
+          label: 'Synthetic Prototype Training Data (Not Real Personnel Data)',
           real_world_claim: false,
+          real_world_validated_accuracy: false,
+          prototype_accuracy_notice: 'Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.',
+          statement: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.',
           disclaimer: 'Trained on clearly labelled synthetic prototype benchmark data. Accuracy metrics reflect synthetic prototype validation and do NOT represent real-world clinical or operational validated performance.'
         },
         pipeline: {

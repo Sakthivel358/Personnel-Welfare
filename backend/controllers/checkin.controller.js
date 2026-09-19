@@ -278,6 +278,13 @@ const submitCheckIn = async (req, res, next) => {
       modelUsed: mlPrediction.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
       modelVersion: mlPrediction.modelVersion,
       analyzedAt: mlPrediction.analyzedAt,
+      statement: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.',
+      medicalDisclaimer: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.',
+      notMedicalDiagnosis: true,
+      datasetLabel: 'Synthetic Prototype Training Data',
+      datasetType: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA',
+      realWorldValidatedAccuracy: false,
+      prototypeAccuracyNotice: 'Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.',
       isAlertGenerated: isAlertGenerated,
       requiresHumanReview: isAlertGenerated,
       humanReviewPriority: isAlertGenerated ? (humanReview ? humanReview.priority : 'HIGH') : 'NONE'

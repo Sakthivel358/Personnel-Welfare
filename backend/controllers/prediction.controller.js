@@ -48,6 +48,8 @@ const getLatestPrediction = async (req, res, next) => {
     const concernDisplay = latest.welfareConcernDisplay || (isUndet ? 'WELFARE CONCERN — UNDETERMINED' : `WELFARE CONCERN — ${latest.concernLevel}`);
     const evDisplay = latest.evidenceDisplay || (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.displayLabel : `EVIDENCE — ${latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE')}`);
     const guidance = isUndet ? 'Additional authorized data or a welfare check-in is required.' : null;
+    const medicalStatement = 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.';
+    const prototypeNotice = 'Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.';
 
     return res.status(200).json({
       success: true,
@@ -55,16 +57,38 @@ const getLatestPrediction = async (req, res, next) => {
       welfareConcernDisplay: concernDisplay,
       evidenceDisplay: evDisplay,
       guidanceText: guidance,
+      statement: medicalStatement,
+      medicalDisclaimer: medicalStatement,
+      notMedicalDiagnosis: true,
+      prototypeAccuracyNotice: prototypeNotice,
+      realWorldValidatedAccuracy: false,
+      datasetLabel: 'Synthetic Prototype Training Data',
+      datasetType: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA',
       data: {
         concernLevel: isUndet ? 'UNDETERMINED' : latest.concernLevel,
+        statement: medicalStatement,
+        medicalDisclaimer: medicalStatement,
+        notMedicalDiagnosis: true,
+        prototypeAccuracyNotice: prototypeNotice,
+        realWorldValidatedAccuracy: false,
+        datasetLabel: 'Synthetic Prototype Training Data',
+        datasetType: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA',
         prediction: {
           ...latest,
           concernLevel: isUndet ? 'UNDETERMINED' : latest.concernLevel,
           welfareConcernDisplay: concernDisplay,
           evidenceDisplay: evDisplay,
-          guidanceText: guidance
+          guidanceText: guidance,
+          statement: medicalStatement,
+          medicalDisclaimer: medicalStatement,
+          notMedicalDiagnosis: true,
+          prototypeAccuracyNotice: prototypeNotice,
+          realWorldValidatedAccuracy: false,
+          datasetLabel: 'Synthetic Prototype Training Data',
+          datasetType: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA'
         },
         decisionLayer: latest.decisionLayer || null,
+        mainContributors: (latest.decisionLayer && latest.decisionLayer.mainContributors) || [],
         evidenceStrength: latest.evidenceStrength || (isUndet ? 'INSUFFICIENT' : 'MODERATE'),
         welfareConcernDisplay: concernDisplay,
         evidenceDisplay: evDisplay,
@@ -189,14 +213,21 @@ const getExplainability = async (req, res, next) => {
         evidenceDisplay: latest.evidenceDisplay || `EVIDENCE — ${latest.evidenceStrength || 'MODERATE'}`,
         dataAvailableCount: count,
         dataAvailableTotal: 5,
-        dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
+        dataAvailableDisplay: latest.dataAvailableDisplay || (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.dataAvailableDisplay : `DATA AVAILABLE — ${count} / 5`),
         decisionLayer: latest.decisionLayer || null,
+        mainContributors: (latest.decisionLayer && latest.decisionLayer.mainContributors) || [],
+        contributingIndicators: (latest.decisionLayer && latest.decisionLayer.mainContributors) || latest.contributingFactors || [],
         topDrivers: latest.topDrivers,
         contributingFactors: latest.contributingFactors || [],
         modelUsed: latest.modelUsed || 'MODEL_1_WEARABLE_OPERATIONAL',
-        modelVersion: latest.modelVersion,
-        analyzedAt: latest.analyzedAt,
-        disclaimer: 'Model-derived contributing indicators from Random Forest baseline attribution. Not proof of individual causation.'
+        statement: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.',
+        medicalDisclaimer: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis.',
+        notMedicalDiagnosis: true,
+        datasetLabel: 'Synthetic Prototype Training Data',
+        datasetType: 'SYNTHETIC_PROTOTYPE_TRAINING_DATA',
+        realWorldValidatedAccuracy: false,
+        prototypeAccuracyNotice: 'Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.',
+        disclaimer: 'The model identifies welfare-risk patterns/concerns, not a medical diagnosis. Model-derived contributing indicators reflect statistical baseline variance, not proof of individual causation.'
       }
     });
 
