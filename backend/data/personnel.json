@@ -424,5 +424,71 @@
     "preferredContactTime": "Evening (Post-Duty)",
     "welfareContactPreference": "Welfare Officer In-Person",
     "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "269b91e8701c3908a43add88",
+    "userId": "0a2c26475adde510af61cafe",
+    "personnelId": "CRPF-LOGIC-7804",
+    "fullName": "Logic Tester 7804",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T01:01:27.877Z",
+    "updatedAt": "2026-09-19T01:01:27.877Z"
+  },
+  {
+    "_id": "849dab9056714cf53894fd0a",
+    "userId": "537b11ea619923bdbbbfa064",
+    "personnelId": "CRPF-TEST-4389",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T01:01:34.460Z",
+    "updatedAt": "2026-09-19T01:01:34.556Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
   }
 ]

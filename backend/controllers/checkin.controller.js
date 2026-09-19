@@ -32,8 +32,43 @@ const submitCheckIn = async (req, res, next) => {
       activity_movement,
       posture_inactivity,
       fatigue_physical_strain,
-      wearable_synced
+      wearable_synced,
+      // Idempotency & Offline Sync
+      idempotencyKey
     } = req.body;
+
+    // Idempotency check: prevent duplicate check-ins and duplicate ML predictions
+    if (idempotencyKey && typeof idempotencyKey === 'string' && idempotencyKey.trim()) {
+      const cleanKey = String(idempotencyKey).trim();
+      const existingCheckIn = await db.CheckIns.findOne({
+        userId: req.user._id,
+        idempotencyKey: cleanKey
+      });
+
+      if (existingCheckIn) {
+        const existingPred = existingCheckIn.predictionId 
+          ? await db.Predictions.findById(existingCheckIn.predictionId) 
+          : await db.Predictions.findOne({ checkInId: existingCheckIn._id });
+        const existingRec = existingPred 
+          ? await db.Recommendations.findOne({ predictionId: existingPred._id }) 
+          : null;
+
+        return res.status(200).json({
+          success: true,
+          isDuplicate: true,
+          message: 'Check-in already synchronized (idempotent duplicate prevented).',
+          data: {
+            checkIn: existingCheckIn,
+            prediction: existingPred,
+            evidenceSources: existingCheckIn.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
+            evidenceCount: existingCheckIn.evidenceCount || 3,
+            recommendations: existingRec,
+            alertGenerated: false
+          }
+        });
+      }
+    }
+
 
     // Field-level numeric validations (PSS-10 is optional)
     if (pss_score !== undefined && pss_score !== null) {
@@ -140,7 +175,9 @@ const submitCheckIn = async (req, res, next) => {
     const newCheckIn = await db.CheckIns.create({
       userId: req.user._id,
       personnelId: req.user.personnelId,
+      idempotencyKey: idempotencyKey ? String(idempotencyKey).trim() : `chk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
       pss_score: checkInPayload.pss_score,
+
       pss_responses: pss_responses || [],
       workload_hours: checkInPayload.workload_hours,
       work_pressure_rating: checkInPayload.work_pressure_rating,
@@ -344,4 +381,100 @@ const getCheckInById = async (req, res, next) => {
   }
 };
 
-module.exports = { submitCheckIn, getCheckInHistory, getCheckInById };
+/**
+ * Synchronize a batch of offline-buffered check-in records.
+ * Ensures deduplication by idempotencyKey to prevent duplicate records or ML predictions.
+ */
+const syncCheckInsBatch = async (req, res, next) => {
+  try {
+    const rawItems = Array.isArray(req.body) ? req.body : (req.body.items || []);
+
+    if (!Array.isArray(rawItems) || rawItems.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No check-in items provided for batch synchronization.'
+      });
+    }
+
+    const synced = [];
+    const duplicates = [];
+    const errors = [];
+
+    // Cache existing keys for this user
+    const existingCheckIns = await db.CheckIns.find({ userId: req.user._id });
+    const existingKeySet = new Set(existingCheckIns.map(c => c.idempotencyKey).filter(Boolean));
+
+    for (const item of rawItems) {
+      try {
+        const itemKey = item.idempotencyKey ? String(item.idempotencyKey).trim() : null;
+
+        if (itemKey && existingKeySet.has(itemKey)) {
+          const existing = existingCheckIns.find(c => c.idempotencyKey === itemKey);
+          duplicates.push({
+            idempotencyKey: itemKey,
+            checkInId: existing ? existing._id : null,
+            message: 'Check-in already synchronized (duplicate prevented).'
+          });
+          continue;
+        }
+
+        if (itemKey) {
+          existingKeySet.add(itemKey);
+        }
+
+        // Simulate request to submitCheckIn logic
+        const fakeReq = {
+          body: item,
+          user: req.user,
+          ip: req.ip
+        };
+
+        // We can invoke the internal processing by constructing a mock res
+        let capturedData = null;
+        const fakeRes = {
+          status: () => fakeRes,
+          json: (payload) => { capturedData = payload; return fakeRes; }
+        };
+
+        await submitCheckIn(fakeReq, fakeRes, (err) => {
+          if (err) throw err;
+        });
+
+        if (capturedData && capturedData.success) {
+          if (capturedData.isDuplicate) {
+            duplicates.push({
+              idempotencyKey: itemKey,
+              message: 'Check-in was recognized as existing duplicate.'
+            });
+          } else {
+            synced.push({
+              idempotencyKey: itemKey,
+              checkIn: capturedData.data.checkIn,
+              prediction: capturedData.data.prediction
+            });
+          }
+        } else {
+          errors.push({ item, error: capturedData ? capturedData.message : 'Unknown processing error' });
+        }
+      } catch (itemErr) {
+        errors.push({ item, error: itemErr.message });
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Batch synchronization completed: ${synced.length} synced, ${duplicates.length} duplicate(s) prevented, ${errors.length} failed.`,
+      syncedCount: synced.length,
+      duplicateCount: duplicates.length,
+      errorCount: errors.length,
+      synced,
+      duplicates,
+      errors
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { submitCheckIn, syncCheckInsBatch, getCheckInHistory, getCheckInById };
+

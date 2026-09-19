@@ -604,12 +604,68 @@ function setupFormSubmit() {
         payload.wearable_synced = true;
       }
 
-      const res = await api.submitCheckIn(payload);
-      if (res && res.success) {
-        Utils.showToast(`Check-in processed across ${res.data.evidenceCount || 3} evidence sources! AI Prediction generated.`, 'success');
-        setTimeout(() => {
-          window.location.href = '/ai-analysis.html';
-        }, 800);
+      // Generate unique idempotency key to prevent duplicate records
+      payload.idempotencyKey = typeof OfflineVault !== 'undefined'
+
+        ? OfflineVault.generateIdempotencyKey('chk')
+        : `chk-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+
+      // Check if browser is currently offline
+      if (typeof navigator !== 'undefined' && !navigator.onLine) {
+        if (typeof OfflineVault !== 'undefined') {
+          await OfflineVault.saveCheckIn(payload);
+          if (wearableEnabled) {
+            await OfflineVault.saveWearableTelemetry({
+              deviceId: 'TACTICAL-JACKET-CRPF-01',
+              deviceType: 'TACTICAL_SMART_JACKET',
+              telemetry: {
+                resting_heart_rate: payload.resting_heart_rate,
+                hrv_ms: payload.hrv_ms,
+                respiration_rate: payload.respiration_rate,
+                skin_temperature_c: payload.skin_temperature_c,
+                fatigue_physical_strain: payload.fatigue_physical_strain,
+                activity_movement: payload.activity_movement,
+                posture_inactivity: payload.posture_inactivity
+              }
+            });
+          }
+          Utils.showToast('Offline Mode: Check-in securely buffered in local vault! It will sync automatically when online.', 'warning', 4500);
+          setTimeout(() => {
+            window.location.href = '/dashboard.html';
+          }, 1500);
+          return;
+        }
+      }
+
+      // Online submission attempt
+      try {
+        const res = await api.submitCheckIn(payload);
+        if (res && res.success) {
+          if (res.isDuplicate) {
+            Utils.showToast('Notice: Identical check-in already synchronized previously.', 'info');
+          } else {
+            Utils.showToast(`Check-in processed across ${res.data.evidenceCount || 3} evidence sources! AI Prediction generated.`, 'success');
+          }
+          setTimeout(() => {
+            window.location.href = '/ai-analysis.html';
+          }, 800);
+        }
+      } catch (submitErr) {
+        // Network connection error fallback: buffer securely
+        const isNetworkErr = !navigator.onLine || 
+                             submitErr.message.includes('fetch') || 
+                             submitErr.message.includes('network') ||
+                             submitErr.message.includes('Failed to fetch');
+
+        if (isNetworkErr && typeof OfflineVault !== 'undefined') {
+          await OfflineVault.saveCheckIn(payload);
+          Utils.showToast('Network disconnected: Check-in saved to local offline vault. Auto-sync will resume when connection returns.', 'warning', 4500);
+          setTimeout(() => {
+            window.location.href = '/dashboard.html';
+          }, 1500);
+          return;
+        }
+        throw submitErr;
       }
     } catch (err) {
       Utils.showToast(`Error submitting check-in: ${err.message}`, 'danger');
@@ -620,6 +676,7 @@ function setupFormSubmit() {
     }
   });
 }
+
 
 // Tactical Wearable & Smart Jacket Bluetooth / IoT Streaming Engine
 let activeBleDevice = null;

@@ -110,5 +110,21 @@
     "createdAt": "2026-09-19T00:52:01.773Z",
     "updatedAt": "2026-09-19T00:52:01.806Z",
     "completedAt": "2026-09-19T00:52:01.806Z"
+  },
+  {
+    "_id": "8e05d2a98d66251b4b4e6913",
+    "alertId": "0379789b084e8c19ac94b743",
+    "userId": "537b11ea619923bdbbbfa064",
+    "personnelId": "CRPF-TEST-4389",
+    "assignedOfficerId": "26445b0244cb7d59a6d1eefc",
+    "status": "CHECKIN_COMPLETED",
+    "scheduledDate": "2026-09-26T01:01:34.766Z",
+    "initialRiskScore": 77.4,
+    "reAnalyzedRiskScore": 5.7,
+    "welfareDelta": "IMPROVED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-19T01:01:34.766Z",
+    "updatedAt": "2026-09-19T01:01:34.797Z",
+    "completedAt": "2026-09-19T01:01:34.797Z"
   }
 ]

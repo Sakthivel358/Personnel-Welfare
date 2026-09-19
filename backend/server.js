@@ -26,6 +26,7 @@ const supportRoutes = require('./routes/support.routes');
 const notificationRoutes = require('./routes/notification.routes');
 const adminRoutes = require('./routes/admin.routes');
 const systemRoutes = require('./routes/system.routes');
+const wearableRoutes = require('./routes/wearable.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -54,6 +55,7 @@ app.use(express.static(frontendDir));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/profile', profileRoutes);
 app.use('/api/v1/checkin', checkinRoutes);
+app.use('/api/v1/wearable', wearableRoutes);
 app.use('/api/v1/prediction', predictionRoutes);
 app.use('/api/v1/predictions', predictionRoutes);
 app.use('/api/v1/officer', officerRoutes);
@@ -62,6 +64,7 @@ app.use('/api/v1/support', supportRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/system', systemRoutes);
+
 
 // Health check alias
 app.get('/health', (req, res) => {

@@ -14,5 +14,13 @@
     "revokedAt": "2026-09-19T00:52:01.605Z",
     "createdAt": "2026-09-19T00:52:01.606Z",
     "updatedAt": "2026-09-19T00:52:01.606Z"
+  },
+  {
+    "_id": "5d58c277c360c24fcf75a1fd",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUzN2IxMWVhNjE5OTIzYmRiYmJmYTA2NCIsInBlcnNvbm5lbElkIjoiQ1JQRi1URVNULTQzODkiLCJlbWFpbCI6InRlc3QuMTc4OTc3OTY5NDM4OUBjcnBmLmdvdi5pbiIsInJvbGUiOiJQRVJTT05ORUwiLCJqdGkiOiI0ODYzNmNmODA3NjRhZGMxOWUwM2YzNTUwOWRmOGJmMSIsImlhdCI6MTc4OTc3OTY5NCwiZXhwIjoxNzg5ODY2MDk0fQ.izC3K6Ft0eardQ0Eg1yBguHwp6UfCXBoN7-dncsMuzM",
+    "userId": "537b11ea619923bdbbbfa064",
+    "revokedAt": "2026-09-19T01:01:34.604Z",
+    "createdAt": "2026-09-19T01:01:34.604Z",
+    "updatedAt": "2026-09-19T01:01:34.604Z"
   }
 ]

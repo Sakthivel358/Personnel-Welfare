@@ -9,9 +9,9 @@
     "unit": "CRPF Battalion 104",
     "rank": "Havildar",
     "isActive": true,
-    "lastLogin": "2026-09-19T00:51:46.853Z",
+    "lastLogin": "2026-09-19T01:01:20.865Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-19T00:51:46.854Z"
+    "updatedAt": "2026-09-19T01:01:20.865Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T00:52:01.760Z",
+    "lastLogin": "2026-09-19T01:01:34.755Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T00:52:01.760Z"
+    "updatedAt": "2026-09-19T01:01:34.756Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,9 +37,9 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-19T00:52:01.892Z",
+    "lastLogin": "2026-09-19T01:01:34.879Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-19T00:52:01.892Z"
+    "updatedAt": "2026-09-19T01:01:34.879Z"
   },
   {
     "_id": "351cc70fa4ab2222abc5f216",
@@ -196,5 +196,34 @@
     "createdAt": "2026-09-19T00:52:01.475Z",
     "updatedAt": "2026-09-19T00:52:01.684Z",
     "lastLogout": "2026-09-19T00:52:01.607Z"
+  },
+  {
+    "_id": "0a2c26475adde510af61cafe",
+    "personnelId": "CRPF-LOGIC-7804",
+    "email": "logic.test.7804@crpf.gov.in",
+    "password": "$2a$10$WKR1.U4O7t31tDpb1DCV1Omkf.EPJhHUm3ywWsN4MEZIULOiiqVzq",
+    "fullName": "Logic Tester 7804",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T01:01:27.876Z",
+    "createdAt": "2026-09-19T01:01:27.876Z",
+    "updatedAt": "2026-09-19T01:01:27.876Z"
+  },
+  {
+    "_id": "537b11ea619923bdbbbfa064",
+    "personnelId": "CRPF-TEST-4389",
+    "email": "test.1789779694389@crpf.gov.in",
+    "password": "$2a$10$aa6.dKfIW2F2ax62WFMwIunyTXHzVVRFHWY2WgsbsHCzh7QbWZSkK",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T01:01:34.678Z",
+    "createdAt": "2026-09-19T01:01:34.459Z",
+    "updatedAt": "2026-09-19T01:01:34.679Z",
+    "lastLogout": "2026-09-19T01:01:34.605Z"
   }
 ]

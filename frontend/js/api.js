@@ -125,9 +125,31 @@ class APIClient {
     return this.request('/checkin', { method: 'POST', body: JSON.stringify(checkInData) });
   }
 
+  async syncCheckInsBatch(items) {
+    return this.request('/checkin/sync', { method: 'POST', body: JSON.stringify({ items }) });
+  }
+
   async getCheckInHistory() {
     return this.request('/checkin/history', { method: 'GET' });
   }
+
+  // Wearable Telemetry endpoints
+  async ingestWearableData(wearableData) {
+    return this.request('/wearable/ingest', { method: 'POST', body: JSON.stringify(wearableData) });
+  }
+
+  async syncWearableBatch(items) {
+    return this.request('/wearable/sync', { method: 'POST', body: JSON.stringify({ items }) });
+  }
+
+  async getLatestWearable() {
+    return this.request('/wearable/latest', { method: 'GET' });
+  }
+
+  async getWearableHistory(limit = 30) {
+    return this.request(`/wearable/history?limit=${limit}`, { method: 'GET' });
+  }
+
 
   async getLatestPrediction() {
     return this.request('/prediction/latest', { method: 'GET' });
