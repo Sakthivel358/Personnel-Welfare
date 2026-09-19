@@ -81,8 +81,20 @@
           </div>
         </div>
 
+        <!-- Evidence Sources Banner -->
+        <div class="card mb-3" id="evidence-sources-card" style="display:none; background: var(--bg-card-subtle); padding: 0.85rem 1.25rem; border-left: 3px solid var(--accent);">
+          <div class="d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <strong style="font-size:0.9rem;">Multi-Source Evidence Breakdown:</strong>
+              <div class="text-muted" style="font-size:0.8rem;">Authorized streams fused into this Random Forest inference</div>
+            </div>
+            <div id="why-evidence-pills" class="d-flex gap-1 flex-wrap"></div>
+          </div>
+        </div>
+
         <!-- Visual Factor Breakdown & Radar Chart -->
         <div class="grid-2 mb-3">
+
           <!-- Radar Chart -->
           <div class="card">
             <div class="card-header">
@@ -170,10 +182,29 @@
         if (res && res.success && res.data && res.data.contributingFactors) {
           const factors = res.data.contributingFactors;
           
+          if (res.data.evidenceSources && Array.isArray(res.data.evidenceSources)) {
+            const card = document.getElementById('evidence-sources-card');
+            const pills = document.getElementById('why-evidence-pills');
+            if (card && pills) {
+              card.style.display = 'block';
+              const labelMap = {
+                'DUTY': '🪖 Duty Exposure',
+                'WORKLOAD': '⏱️ Workload Pace',
+                'REST_RECOVERY': '🛌 Rest & Recovery',
+                'SELF_CHECK': '📝 Self-Check (PSS-10)',
+                'WEARABLE': '🦺 Smart Jacket Telemetry'
+              };
+              pills.innerHTML = res.data.evidenceSources.map(s => `
+                <span class="badge badge-low" style="font-size:0.75rem; padding:0.35rem 0.6rem;">${labelMap[s] || s}</span>
+              `).join('');
+            }
+          }
+
           ChartsManager.renderRadarChart('factor-radar-chart', factors);
           renderDetailedList(factors);
           renderTable(factors);
         } else {
+
           document.getElementById('factors-detailed-list').innerHTML = `
             <div class="text-center text-muted py-4">
               Please submit a check-in first to generate model attribution breakdown.

@@ -82,6 +82,56 @@ const FEATURE_METADATA = {
     baseline_mean: 0.0,
     baseline_std: 4.5,
     weight: 0.03
+  },
+  resting_heart_rate: {
+    title: 'Resting Heart Rate (Smart Jacket)',
+    description: 'Cardiovascular autonomic baseline from Smart Jacket sensor',
+    high_is_risk: true,
+    unit: 'bpm',
+    healthy_range: '50 - 75',
+    baseline_mean: 66.0,
+    baseline_std: 9.5,
+    weight: 0.14
+  },
+  hrv_ms: {
+    title: 'Heart Rate Variability (HRV)',
+    description: 'Parasympathetic resilience & autonomic reserve index',
+    high_is_risk: false,
+    unit: 'ms',
+    healthy_range: '45 - 90',
+    baseline_mean: 62.0,
+    baseline_std: 14.0,
+    weight: 0.16
+  },
+  respiration_rate: {
+    title: 'Respiration Cadence',
+    description: 'Resting breathing rate from Smart Jacket expansion sensor',
+    high_is_risk: true,
+    unit: 'br/min',
+    healthy_range: '12 - 18',
+    baseline_mean: 15.0,
+    baseline_std: 2.8,
+    weight: 0.08
+  },
+  prolonged_duty_hours: {
+    title: 'Prolonged Shift Duration',
+    description: 'Continuous uninterrupted active duty on watch',
+    high_is_risk: true,
+    unit: 'hrs',
+    healthy_range: '0 - 8',
+    baseline_mean: 8.0,
+    baseline_std: 4.0,
+    weight: 0.10
+  },
+  night_duty_hours: {
+    title: 'Nocturnal Shift Exposure',
+    description: 'Night watch duty hours disrupting circadian equilibrium',
+    high_is_risk: true,
+    unit: 'hrs/wk',
+    healthy_range: '0 - 12',
+    baseline_mean: 12.0,
+    baseline_std: 6.0,
+    weight: 0.09
   }
 };
 
@@ -111,11 +161,35 @@ class MLClientService {
   }
 
   calculateEmbeddedPrediction(checkinData) {
-    const featureKeys = Object.keys(FEATURE_METADATA);
+    const evidenceSources = ['DUTY', 'WORKLOAD', 'REST_RECOVERY'];
+    const hasSelfCheck = checkinData.pss_score !== undefined && checkinData.pss_score !== null;
+    if (hasSelfCheck) evidenceSources.push('SELF_CHECK');
+
+    const hasWearable = Boolean(
+      checkinData.wearable_synced ||
+      checkinData.resting_heart_rate != null ||
+      checkinData.hrv_ms != null ||
+      checkinData.respiration_rate != null ||
+      checkinData.skin_temperature_c != null ||
+      checkinData.fatigue_physical_strain != null
+    );
+    if (hasWearable) evidenceSources.push('WEARABLE');
+
     let totalRiskScore = 0;
+    let totalWeight = 0;
     const contributingFactors = [];
 
-    featureKeys.forEach(key => {
+    // Filter active features
+    const allKeys = Object.keys(FEATURE_METADATA);
+    const activeKeys = allKeys.filter(k => {
+      if (k === 'pss_score' && !hasSelfCheck) return false;
+      if (['resting_heart_rate', 'hrv_ms', 'respiration_rate', 'prolonged_duty_hours', 'night_duty_hours'].includes(k)) {
+        return checkinData[k] !== undefined && checkinData[k] !== null;
+      }
+      return true;
+    });
+
+    activeKeys.forEach(key => {
       const meta = FEATURE_METADATA[key];
       const rawVal = Number(checkinData[key] !== undefined ? checkinData[key] : meta.baseline_mean);
       const zScore = (rawVal - meta.baseline_mean) / meta.baseline_std;
@@ -123,6 +197,7 @@ class MLClientService {
 
       const factorContribution = Math.max(0, stressDeviation + 1.2) * meta.weight * 100.0;
       totalRiskScore += (stressDeviation * meta.weight * 25.0);
+      totalWeight += meta.weight;
 
       let impactLevel = 'LOW';
       let status = 'Within Baseline';
@@ -150,8 +225,11 @@ class MLClientService {
       });
     });
 
-    // Baseline risk score normalized between 5% and 95%
-    let compositeRisk = Math.min(95.0, Math.max(5.0, 45.0 + totalRiskScore));
+    // Re-normalize score according to active weight sum
+    const weightFactor = totalWeight > 0 ? (1.0 / totalWeight) : 1.0;
+    const normalizedRiskDelta = totalRiskScore * (weightFactor * 0.85);
+
+    let compositeRisk = Math.min(95.0, Math.max(5.0, 45.0 + normalizedRiskDelta));
     compositeRisk = Number(compositeRisk.toFixed(1));
 
     let concernLevel = 'LOW';
@@ -159,12 +237,12 @@ class MLClientService {
     let probMod = 0.12;
     let probHigh = 0.03;
 
-    if (compositeRisk >= 68.0) {
+    if (compositeRisk >= 66.0) {
       concernLevel = 'HIGH';
       probHigh = Number((compositeRisk / 100).toFixed(2));
       probMod = Number(((100 - compositeRisk) * 0.7 / 100).toFixed(2));
-      probLow = Number((1.0 - probHigh - probMod).toFixed(2));
-    } else if (compositeRisk >= 40.0) {
+      probLow = Number(Math.max(0, 1.0 - probHigh - probMod).toFixed(2));
+    } else if (compositeRisk >= 38.0) {
       concernLevel = 'MODERATE';
       probMod = 0.65;
       probLow = 0.25;
@@ -184,12 +262,14 @@ class MLClientService {
         MODERATE: probMod,
         HIGH: probHigh
       },
+      evidenceSources,
+      evidenceCount: evidenceSources.length,
       topDrivers: selectedTopDrivers,
       contributingFactors: contributingFactors,
-      modelVersion: 'v1.0',
+      modelVersion: 'v1.4.0',
       trainedAt: new Date().toISOString(),
       analyzedAt: new Date().toISOString(),
-      disclaimer: 'AI-generated welfare decision-support signal based on submitted indicators. Not a clinical medical diagnosis.'
+      disclaimer: 'AI-generated welfare decision-support signal based on authorized multi-source operational and biometric evidence.'
     };
   }
 

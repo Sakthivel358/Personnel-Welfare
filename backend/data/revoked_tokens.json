@@ -6,5 +6,13 @@
     "revokedAt": "2026-09-19T00:39:51.523Z",
     "createdAt": "2026-09-19T00:39:51.523Z",
     "updatedAt": "2026-09-19T00:39:51.523Z"
+  },
+  {
+    "_id": "d06992487e163657375a6534",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhhZjVhYzM3OTVkMjQyZjIwODVkYmEzYSIsInBlcnNvbm5lbElkIjoiQ1JQRi1URVNULTE0MDIiLCJlbWFpbCI6InRlc3QuMTc4OTc3OTEyMTQwMkBjcnBmLmdvdi5pbiIsInJvbGUiOiJQRVJTT05ORUwiLCJqdGkiOiIyNzQ4ZWU4OGZjYWI4NjMxOGVmMmZiZGU1OWEwZWNkZSIsImlhdCI6MTc4OTc3OTEyMSwiZXhwIjoxNzg5ODY1NTIxfQ.HxFKAX9o4qGyJP-QECYRvPYItcIEhOnuzTRxl49k4OE",
+    "userId": "8af5ac3795d242f2085dba3a",
+    "revokedAt": "2026-09-19T00:52:01.605Z",
+    "createdAt": "2026-09-19T00:52:01.606Z",
+    "updatedAt": "2026-09-19T00:52:01.606Z"
   }
 ]

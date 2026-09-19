@@ -73,6 +73,54 @@ class RecommendationService {
       });
     }
 
+    // 6. Wearable / Smart Jacket Biometric Strain
+    const rhr = checkinData.resting_heart_rate != null ? Number(checkinData.resting_heart_rate) : null;
+    const hrv = checkinData.hrv_ms != null ? Number(checkinData.hrv_ms) : null;
+    const resp = checkinData.respiration_rate != null ? Number(checkinData.respiration_rate) : null;
+    const strain = checkinData.fatigue_physical_strain != null ? Number(checkinData.fatigue_physical_strain) : null;
+    const skinTemp = checkinData.skin_temperature_c != null ? Number(checkinData.skin_temperature_c) : null;
+
+    if ((rhr && rhr >= 90) || (hrv && hrv < 35) || (resp && resp >= 22) || (strain && strain >= 70)) {
+      actionItems.push({
+        category: 'Physiological Strain & Autonomic Recovery',
+        title: 'Tactical Respiration & Physical De-escalation',
+        description: `Smart Jacket biometrics indicate elevated physiological load (RHR: ${rhr || 'N/A'} BPM, HRV: ${hrv || 'N/A'} ms, Strain: ${strain || 'N/A'}/100). Implement 4-4-4-4 tactical box breathing and scheduled physical cool-down.`,
+        priority: 'HIGH'
+      });
+    }
+
+    if (skinTemp && skinTemp >= 38.0) {
+      actionItems.push({
+        category: 'Thermal Regulation',
+        title: 'Thermal & Exertion Monitoring',
+        description: `Elevated skin/body temperature (${skinTemp}°C) detected via Smart Jacket sensors. Immediately rehydrate, seek ventilation, and follow thermal stress management protocols.`,
+        priority: 'HIGH'
+      });
+    }
+
+    // 7. Prolonged & Night Duty Operational Strain
+    const prolongedHours = checkinData.prolonged_duty_hours != null ? Number(checkinData.prolonged_duty_hours) : null;
+    const nightHours = checkinData.night_duty_hours != null ? Number(checkinData.night_duty_hours) : null;
+
+    if (prolongedHours && prolongedHours >= 12) {
+      actionItems.push({
+        category: 'Operational Duty & Rest Rotation',
+        title: 'Continuous Deployment Duty Relief',
+        description: `Continuous duty deployment reaching ${prolongedHours} hours. Request tactical duty relief and take mandatory hydration and restorative break.`,
+        priority: 'HIGH'
+      });
+    }
+
+    if (nightHours && nightHours >= 16) {
+      actionItems.push({
+        category: 'Circadian Rhythm & Night Duty',
+        title: 'Nocturnal Shift Recovery Protocol',
+        description: `Extended nocturnal operational exposure (${nightHours} night duty hours). Prioritize quiet dark-room rest post-shift and maintain minimum 8-hour recovery interval.`,
+        priority: 'MEDIUM'
+      });
+    }
+
+
     // Determine primary action
     if (concernLevel === 'HIGH') {
       primaryAction = 'Elevated welfare strain detected. We recommend connecting with a designated Unit Welfare Officer for proactive support.';

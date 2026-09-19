@@ -39,14 +39,37 @@ METRICS_PATH = os.path.join(EVAL_DIR, "metrics.json")
 CONFUSION_MATRIX_PATH = os.path.join(EVAL_DIR, "confusion_matrix.json")
 
 class CheckInInput(BaseModel):
-    pss_score: float = Field(..., ge=0.0, le=40.0, description="Perceived Stress Scale score (0-40)")
+    # Source 4: Optional Self-Check / PSS-10
+    pss_score: Optional[float] = Field(default=None, ge=0.0, le=40.0, description="Perceived Stress Scale score (0-40, optional)")
+    
+    # Source 2: Operational Workload
     workload_hours: float = Field(..., ge=20.0, le=120.0, description="Weekly duty hours (20-120)")
     work_pressure_rating: float = Field(..., ge=1.0, le=10.0, description="Subjective pressure rating (1-10)")
-    recovery_sleep_hours: float = Field(..., ge=2.0, le=14.0, description="Daily sleep/rest hours (2-14)")
-    social_support_rating: float = Field(..., ge=1.0, le=10.0, description="Social & peer support rating (1-10)")
-    work_life_balance_rating: float = Field(..., ge=1.0, le=10.0, description="Work-life balance rating (1-10)")
-    shift_continuity_days: float = Field(default=0.0, ge=0.0, le=60.0, description="Consecutive shift duty days (0-60)")
     recent_trend_indicator: float = Field(default=0.0, ge=-10.0, le=10.0, description="Recent trend delta indicator (-10 to 10)")
+    
+    # Source 3: Rest & Recovery Patterns
+    recovery_sleep_hours: float = Field(..., ge=2.0, le=14.0, description="Daily sleep/rest hours (2-14)")
+    work_life_balance_rating: float = Field(default=5.0, ge=1.0, le=10.0, description="Work-life balance rating (1-10)")
+    recovery_pattern: Optional[str] = Field(default='CONTINUOUS', description="Recovery pattern (e.g. CONTINUOUS, FRAGMENTED, SLEEP_DEBT)")
+    rest_interval_hours: Optional[float] = Field(default=8.0, ge=0.0, le=48.0, description="Unbroken rest interval between watches (hours)")
+    
+    # Source 1: Duty Exposure
+    shift_continuity_days: float = Field(default=0.0, ge=0.0, le=60.0, description="Consecutive shift duty days (0-60)")
+    prolonged_duty_hours: Optional[float] = Field(default=0.0, ge=0.0, le=48.0, description="Continuous uninterrupted shift duty (hours)")
+    night_duty_hours: Optional[float] = Field(default=0.0, ge=0.0, le=80.0, description="Graveyard / night duty exposure in last 7 days (hours)")
+    
+    # Source 4: Self-Check Additional
+    social_support_rating: float = Field(default=5.0, ge=1.0, le=10.0, description="Social & peer support rating (1-10)")
+    
+    # Source 5: Smart Jacket & Wearable Biometric Telemetry (Optional)
+    resting_heart_rate: Optional[float] = Field(default=None, ge=40.0, le=180.0, description="Resting heart rate in bpm (40-180)")
+    hrv_ms: Optional[float] = Field(default=None, ge=10.0, le=160.0, description="Heart rate variability in ms (10-160)")
+    respiration_rate: Optional[float] = Field(default=None, ge=8.0, le=45.0, description="Respiration rate in breaths/min (8-45)")
+    skin_temperature_c: Optional[float] = Field(default=None, ge=30.0, le=43.0, description="Body/skin temperature in Celsius (30.0-43.0)")
+    activity_movement: Optional[str] = Field(default=None, description="Activity movement pattern (e.g. ACTIVE_PATROL, STATIC_GUARD)")
+    posture_inactivity: Optional[str] = Field(default=None, description="Posture tracking state (e.g. STANDING_VIGILANCE, PROLONGED_INACTIVITY)")
+    fatigue_physical_strain: Optional[float] = Field(default=None, ge=0.0, le=100.0, description="Physical strain and fatigue index (0-100)")
+    wearable_synced: Optional[bool] = Field(default=False, description="True if telemetry originated from smart jacket sensor")
 
 @app.on_event("startup")
 async def startup_event():

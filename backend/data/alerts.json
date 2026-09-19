@@ -186,5 +186,61 @@
     "updatedAt": "2026-09-19T00:39:51.687Z",
     "reviewedBy": "26445b0244cb7d59a6d1eefc",
     "reviewedAt": "2026-09-19T00:39:51.687Z"
+  },
+  {
+    "_id": "f146c5d0e2ebf0be71bba1f2",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "c17cafd979302b5a270f0f42",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 82.6,
+    "topDrivers": [
+      "Heart Rate Variability (HRV)",
+      "Weekly Workload & Duty Hours",
+      "Resting Heart Rate (Smart Jacket)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T00:51:46.959Z",
+    "updatedAt": "2026-09-19T00:51:46.959Z"
+  },
+  {
+    "_id": "7fc7d8b2a958711ff0b86fd7",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "4643aeaa74cb0905ecb1c4a3",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 95,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Resting Heart Rate (Smart Jacket)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T00:51:46.982Z",
+    "updatedAt": "2026-09-19T00:51:46.982Z"
+  },
+  {
+    "_id": "04e00634a2d69adfea2414f3",
+    "personnelId": "CRPF-TEST-1402",
+    "userId": "8af5ac3795d242f2085dba3a",
+    "predictionId": "6e7e8d9f991bbd22b0030787",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 77.4,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-19T00:52:01.589Z",
+    "updatedAt": "2026-09-19T00:52:01.772Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-19T00:52:01.772Z"
   }
 ]

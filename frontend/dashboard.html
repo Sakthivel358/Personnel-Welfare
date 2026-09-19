@@ -112,6 +112,16 @@
           </div>
         </div>
 
+        <!-- Evidence Sources Banner -->
+        <div class="card mb-3" id="evidence-sources-bar" style="display:none; background: var(--bg-card-subtle); padding: 0.75rem 1.25rem; border-left: 3px solid var(--accent);">
+          <div class="d-flex justify-between align-center flex-wrap gap-1">
+            <div style="font-size:0.82rem; font-weight:700; color:var(--text-muted);">
+              AUTHORIZED EVIDENCE SOURCES FUSED:
+            </div>
+            <div id="dashboard-evidence-pills" class="d-flex align-center gap-1 flex-wrap"></div>
+          </div>
+        </div>
+
         <!-- Dashboard Metrics Grid -->
         <div class="grid-3 mb-3">
           <!-- Card 1: Latest AI Welfare Signal -->
@@ -313,7 +323,26 @@
       if (p.modelVersion) {
         document.getElementById('model-version-tag').textContent = p.modelVersion;
       }
+
+      if (p.evidenceSources && Array.isArray(p.evidenceSources)) {
+        const bar = document.getElementById('evidence-sources-bar');
+        const pills = document.getElementById('dashboard-evidence-pills');
+        if (bar && pills) {
+          bar.style.display = 'block';
+          const labelMap = {
+            'DUTY': '🪖 Duty Exposure',
+            'WORKLOAD': '⏱️ Workload Pace',
+            'REST_RECOVERY': '🛌 Rest & Recovery',
+            'SELF_CHECK': '📝 Self-Check (PSS-10)',
+            'WEARABLE': '🦺 Smart Jacket Telemetry'
+          };
+          pills.innerHTML = p.evidenceSources.map(s => `
+            <span class="badge badge-low" style="font-size:0.75rem; padding:0.35rem 0.6rem;">${labelMap[s] || s}</span>
+          `).join('');
+        }
+      }
     }
+
 
     function renderFactors(factors) {
       const container = document.getElementById('factors-container');

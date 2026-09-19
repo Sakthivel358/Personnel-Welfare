@@ -49,13 +49,26 @@ const getPredictionHistory = async (req, res, next) => {
         concernLevel: p.concernLevel,
         compositeRiskScore: p.compositeRiskScore != null ? Number(p.compositeRiskScore) : 0,
         confidence: p.confidence,
-        pss_score: relatedCheckIn.pss_score != null ? Number(relatedCheckIn.pss_score) : 0,
+        evidenceSources: p.evidenceSources || relatedCheckIn.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
+        evidenceCount: p.evidenceCount || (relatedCheckIn.evidenceSources ? relatedCheckIn.evidenceSources.length : 3),
+        pss_score: relatedCheckIn.pss_score != null ? Number(relatedCheckIn.pss_score) : null,
         workload_hours: relatedCheckIn.workload_hours != null ? Number(relatedCheckIn.workload_hours) : 0,
         recovery_sleep_hours: relatedCheckIn.recovery_sleep_hours != null ? Number(relatedCheckIn.recovery_sleep_hours) : 0,
         work_pressure_rating: relatedCheckIn.work_pressure_rating != null ? Number(relatedCheckIn.work_pressure_rating) : 0,
         shift_continuity_days: relatedCheckIn.shift_continuity_days != null ? Number(relatedCheckIn.shift_continuity_days) : 0,
         social_support_rating: relatedCheckIn.social_support_rating != null ? Number(relatedCheckIn.social_support_rating) : 0,
         work_life_balance_rating: relatedCheckIn.work_life_balance_rating != null ? Number(relatedCheckIn.work_life_balance_rating) : 0,
+        resting_heart_rate: relatedCheckIn.resting_heart_rate != null ? Number(relatedCheckIn.resting_heart_rate) : null,
+        hrv_ms: relatedCheckIn.hrv_ms != null ? Number(relatedCheckIn.hrv_ms) : null,
+        respiration_rate: relatedCheckIn.respiration_rate != null ? Number(relatedCheckIn.respiration_rate) : null,
+        skin_temperature_c: relatedCheckIn.skin_temperature_c != null ? Number(relatedCheckIn.skin_temperature_c) : null,
+        activity_movement: relatedCheckIn.activity_movement || null,
+        posture_inactivity: relatedCheckIn.posture_inactivity || null,
+        fatigue_physical_strain: relatedCheckIn.fatigue_physical_strain != null ? Number(relatedCheckIn.fatigue_physical_strain) : null,
+        prolonged_duty_hours: relatedCheckIn.prolonged_duty_hours != null ? Number(relatedCheckIn.prolonged_duty_hours) : null,
+        night_duty_hours: relatedCheckIn.night_duty_hours != null ? Number(relatedCheckIn.night_duty_hours) : null,
+        recovery_pattern: relatedCheckIn.recovery_pattern || null,
+        rest_interval_hours: relatedCheckIn.rest_interval_hours != null ? Number(relatedCheckIn.rest_interval_hours) : null,
         contributingFactors: p.contributingFactors || [],
         topDrivers: p.topDrivers || [],
         notes: relatedCheckIn.notes || ''
@@ -90,6 +103,8 @@ const getExplainability = async (req, res, next) => {
         predictionId: latest._id,
         concernLevel: latest.concernLevel,
         compositeRiskScore: latest.compositeRiskScore,
+        evidenceSources: latest.evidenceSources || ['DUTY', 'WORKLOAD', 'REST_RECOVERY'],
+        evidenceCount: latest.evidenceCount || (latest.evidenceSources ? latest.evidenceSources.length : 3),
         topDrivers: latest.topDrivers,
         contributingFactors: latest.contributingFactors || [],
         modelVersion: latest.modelVersion,
@@ -97,6 +112,7 @@ const getExplainability = async (req, res, next) => {
         disclaimer: 'Model-derived contributing indicators from Random Forest baseline attribution. Not proof of individual causation.'
       }
     });
+
   } catch (err) {
     next(err);
   }
@@ -232,12 +248,38 @@ const getWhatChanged = async (req, res, next) => {
         unit: 'pts',
         ...calcDelta(currentCheckIn.pss_score, previousCheckIn.pss_score, true)
       },
+      resting_heart_rate: {
+        title: 'Resting Heart Rate',
+        unit: 'BPM',
+        ...calcDelta(currentCheckIn.resting_heart_rate, previousCheckIn.resting_heart_rate, true)
+      },
+      hrv_ms: {
+        title: 'Heart Rate Variability (HRV)',
+        unit: 'ms',
+        ...calcDelta(currentCheckIn.hrv_ms, previousCheckIn.hrv_ms, false)
+      },
+      fatigue_physical_strain: {
+        title: 'Fatigue & Physical Strain',
+        unit: '/100',
+        ...calcDelta(currentCheckIn.fatigue_physical_strain, previousCheckIn.fatigue_physical_strain, true)
+      },
+      prolonged_duty_hours: {
+        title: 'Prolonged Duty Hours',
+        unit: 'hrs',
+        ...calcDelta(currentCheckIn.prolonged_duty_hours, previousCheckIn.prolonged_duty_hours, true)
+      },
+      night_duty_hours: {
+        title: 'Night Duty Hours',
+        unit: 'hrs',
+        ...calcDelta(currentCheckIn.night_duty_hours, previousCheckIn.night_duty_hours, true)
+      },
       compositeRiskScore: {
         title: 'Overall Risk Index',
         unit: '%',
         ...calcDelta(currentPred.compositeRiskScore, previousPred.compositeRiskScore, true)
       }
     };
+
 
     // Formulate non-causal summary explanation
     const notableChanges = [];

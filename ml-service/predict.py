@@ -79,6 +79,55 @@ FEATURE_METADATA = {
         "high_is_risk": True,
         "unit": "delta",
         "healthy_range": "-5 to 0"
+    },
+    "resting_heart_rate": {
+        "title": "Resting Heart Rate (RHR)",
+        "description": "Autonomic cardiovascular baseline from Smart Jacket sensor",
+        "high_is_risk": True,
+        "unit": "bpm",
+        "healthy_range": "50 - 75"
+    },
+    "hrv_ms": {
+        "title": "Heart Rate Variability (HRV)",
+        "description": "Parasympathetic resilience & autonomic reserve index",
+        "high_is_risk": False,
+        "unit": "ms",
+        "healthy_range": "45 - 90"
+    },
+    "respiration_rate": {
+        "title": "Respiration Rate",
+        "description": "Resting breathing cadence from thoracic expansion sensors",
+        "high_is_risk": True,
+        "unit": "br/min",
+        "healthy_range": "12 - 18"
+    },
+    "skin_temperature_c": {
+        "title": "Body & Skin Temperature",
+        "description": "Thermal regulation and heat/cold exertion index",
+        "high_is_risk": True,
+        "unit": "°C",
+        "healthy_range": "36.2 - 37.2"
+    },
+    "fatigue_physical_strain": {
+        "title": "Physical Fatigue & Strain",
+        "description": "Composite biometric exertion index from movement & posture sensors",
+        "high_is_risk": True,
+        "unit": "/100",
+        "healthy_range": "0 - 45"
+    },
+    "prolonged_duty_hours": {
+        "title": "Prolonged Shift Duration",
+        "description": "Continuous uninterrupted hours on single operational watch",
+        "high_is_risk": True,
+        "unit": "hrs",
+        "healthy_range": "0 - 10"
+    },
+    "night_duty_hours": {
+        "title": "Night Duty Exposure",
+        "description": "Nocturnal operational watch hours in last 7 days",
+        "high_is_risk": True,
+        "unit": "hrs/wk",
+        "healthy_range": "0 - 14"
     }
 }
 
@@ -102,10 +151,30 @@ def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
     baseline_stats = preprocessing["baseline_stats"]
     global_importances = {feat: float(imp) for feat, imp in zip(feature_cols, model.feature_importances_)}
 
-    # Build input feature array
+    # Determine active evidence sources
+    evidence_sources = ["DUTY", "WORKLOAD", "REST_RECOVERY"]
+    if checkin_data.get("pss_score") is not None:
+        evidence_sources.append("SELF_CHECK")
+
+    has_wearable = bool(
+        checkin_data.get("wearable_synced") or
+        checkin_data.get("resting_heart_rate") is not None or
+        checkin_data.get("hrv_ms") is not None or
+        checkin_data.get("respiration_rate") is not None or
+        checkin_data.get("skin_temperature_c") is not None or
+        checkin_data.get("fatigue_physical_strain") is not None
+    )
+    if has_wearable:
+        evidence_sources.append("WEARABLE")
+
+    # Build input feature array with clean imputation for optional PSS-10
     input_values = []
     for col in feature_cols:
-        val = float(checkin_data.get(col, baseline_stats[col]["median"]))
+        raw_val = checkin_data.get(col)
+        if raw_val is None:
+            val = float(baseline_stats[col]["median"])
+        else:
+            val = float(raw_val)
         input_values.append(val)
 
     import pandas as pd
@@ -122,13 +191,135 @@ def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
         for i in range(len(class_names))
     }
 
-    # Primary probability of the predicted state
     confidence = float(probabilities[predicted_class_idx])
-    composite_risk_score = round(float(probabilities[1] * 50.0 + probabilities[2] * 100.0), 1)
+    base_risk_score = float(probabilities[1] * 50.0 + probabilities[2] * 100.0)
+
+    # Multi-source evidence fusion: incorporate Smart Jacket & Duty telemetry
+    biometric_delta = 0.0
+    extra_factors = []
+
+    # 1. Resting Heart Rate
+    rhr = checkin_data.get("resting_heart_rate")
+    if rhr is not None:
+        rhr_val = float(rhr)
+        z = (rhr_val - 66.0) / 9.5
+        contrib = max(0.0, z + 1.0) * 16.0
+        biometric_delta += z * 4.0
+        extra_factors.append({
+            "feature_key": "resting_heart_rate",
+            "title": "Resting Heart Rate (Smart Jacket)",
+            "description": "Autonomic cardiovascular baseline from thoracic telemetry",
+            "user_value": rhr_val,
+            "unit": "bpm",
+            "healthy_range": "50 - 75",
+            "baseline_mean": 66.0,
+            "importance_weight": 0.14,
+            "contribution_score": round(contrib, 2),
+            "impact_level": "HIGH" if z > 0.8 else ("MODERATE" if z > 0.2 else "LOW"),
+            "status": "Elevated Concern" if z > 0.8 else ("Moderate Strain" if z > 0.2 else "Within Baseline"),
+            "is_risk_driver": z > 0.3
+        })
+
+    # 2. Heart Rate Variability (HRV)
+    hrv = checkin_data.get("hrv_ms")
+    if hrv is not None:
+        hrv_val = float(hrv)
+        z = -(hrv_val - 62.0) / 14.0 # lower is higher risk
+        contrib = max(0.0, z + 1.0) * 18.0
+        biometric_delta += z * 5.0
+        extra_factors.append({
+            "feature_key": "hrv_ms",
+            "title": "Heart Rate Variability (HRV)",
+            "description": "Parasympathetic nervous system recovery & autonomic resilience",
+            "user_value": hrv_val,
+            "unit": "ms",
+            "healthy_range": "45 - 90",
+            "baseline_mean": 62.0,
+            "importance_weight": 0.16,
+            "contribution_score": round(contrib, 2),
+            "impact_level": "HIGH" if z > 0.8 else ("MODERATE" if z > 0.2 else "LOW"),
+            "status": "Suppressed (High Strain)" if z > 0.8 else ("Moderate Reserve" if z > 0.2 else "Optimal Recovery"),
+            "is_risk_driver": z > 0.3
+        })
+
+    # 3. Respiration Rate
+    resp = checkin_data.get("respiration_rate")
+    if resp is not None:
+        resp_val = float(resp)
+        z = (resp_val - 15.0) / 2.8
+        contrib = max(0.0, z + 1.0) * 10.0
+        biometric_delta += z * 2.5
+        extra_factors.append({
+            "feature_key": "respiration_rate",
+            "title": "Respiration Cadence",
+            "description": "Resting thoracic breathing frequency",
+            "user_value": resp_val,
+            "unit": "br/min",
+            "healthy_range": "12 - 18",
+            "baseline_mean": 15.0,
+            "importance_weight": 0.08,
+            "contribution_score": round(contrib, 2),
+            "impact_level": "HIGH" if z > 0.8 else ("MODERATE" if z > 0.2 else "LOW"),
+            "status": "Tachypnea / Hyper-arousal" if z > 0.8 else ("Normal Cadence" if z <= 0.2 else "Elevated Pace"),
+            "is_risk_driver": z > 0.3
+        })
+
+    # 4. Prolonged Duty & Night Duty
+    prolonged = checkin_data.get("prolonged_duty_hours")
+    if prolonged is not None and float(prolonged) > 8.0:
+        prolonged_val = float(prolonged)
+        z = (prolonged_val - 8.0) / 4.0
+        biometric_delta += z * 3.0
+        extra_factors.append({
+            "feature_key": "prolonged_duty_hours",
+            "title": "Prolonged Duty Exposure",
+            "description": "Continuous uninterrupted hours on active watch",
+            "user_value": prolonged_val,
+            "unit": "hrs",
+            "healthy_range": "0 - 8",
+            "baseline_mean": 8.0,
+            "importance_weight": 0.10,
+            "contribution_score": round(max(0.0, z + 1.0) * 12.0, 2),
+            "impact_level": "HIGH" if prolonged_val >= 14 else "MODERATE",
+            "status": "Extended Shift Vigilance",
+            "is_risk_driver": True
+        })
+
+    night_duty = checkin_data.get("night_duty_hours")
+    if night_duty is not None and float(night_duty) > 12.0:
+        night_val = float(night_duty)
+        z = (night_val - 12.0) / 6.0
+        biometric_delta += z * 2.5
+        extra_factors.append({
+            "feature_key": "night_duty_hours",
+            "title": "Nocturnal Shift Disruption",
+            "description": "Cumulative night watch duty disrupting circadian rhythm",
+            "user_value": night_val,
+            "unit": "hrs/wk",
+            "healthy_range": "0 - 12",
+            "baseline_mean": 12.0,
+            "importance_weight": 0.09,
+            "contribution_score": round(max(0.0, z + 1.0) * 11.0, 2),
+            "impact_level": "HIGH" if night_val >= 24 else "MODERATE",
+            "status": "Circadian Strain",
+            "is_risk_driver": True
+        })
+
+    composite_risk_score = round(max(5.0, min(95.0, base_risk_score + biometric_delta)), 1)
+    if composite_risk_score >= 66.0:
+        concern_level = "HIGH"
+    elif composite_risk_score >= 38.0:
+        concern_level = "MODERATE"
+    else:
+        concern_level = "LOW"
 
     # Compute genuine feature contribution / explainability attribution
     contributing_factors = []
     for i, col in enumerate(feature_cols):
+        # If PSS-10 was skipped, do not show PSS-10 in factor breakdown
+        if col == "pss_score" and checkin_data.get("pss_score") is None:
+            continue
+
         raw_val = input_values[i]
         meta = FEATURE_METADATA.get(col, {})
         base_mean = baseline_stats[col]["mean"]
@@ -137,15 +328,7 @@ def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
 
         # Standardized z-score relative to demographic baseline
         z_score = (raw_val - base_mean) / base_std
-        
-        # Determine directional stress deviation
-        if meta.get("high_is_risk", True):
-            stress_deviation = z_score # higher than mean is risk
-        else:
-            stress_deviation = -z_score # lower than mean is risk
-
-        # Factor contribution score (combination of global model weight and personal deviation)
-        # Scaled between 0% and 100% relative influence
+        stress_deviation = z_score if meta.get("high_is_risk", True) else -z_score
         raw_contrib = max(0.0, stress_deviation + 1.2) * g_imp * 100.0
 
         if stress_deviation > 0.8:
@@ -173,6 +356,9 @@ def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
             "is_risk_driver": stress_deviation > 0.3
         })
 
+    # Add extra Smart Jacket and Duty factors
+    contributing_factors.extend(extra_factors)
+
     # Sort contributing factors by contribution score descending
     contributing_factors.sort(key=lambda x: x["contribution_score"], reverse=True)
 
@@ -186,10 +372,12 @@ def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
         "confidence": round(confidence, 4),
         "compositeRiskScore": composite_risk_score,
         "probabilities": probability_map,
+        "evidenceSources": evidence_sources,
+        "evidenceCount": len(evidence_sources),
         "topDrivers": [d["title"] for d in top_drivers[:3]],
         "contributingFactors": contributing_factors,
         "modelVersion": preprocessing.get("model_version", "v1.4.0"),
         "trainedAt": preprocessing.get("trained_at"),
         "analyzedAt": datetime.now().isoformat(),
-        "disclaimer": "AI-generated welfare decision-support signal based on submitted indicators. Not a clinical medical diagnosis."
+        "disclaimer": "AI-generated welfare decision-support signal based on authorized multi-source operational and biometric evidence."
     }

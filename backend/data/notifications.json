@@ -1592,5 +1592,136 @@
     "isRead": false,
     "createdAt": "2026-09-19T00:39:51.722Z",
     "updatedAt": "2026-09-19T00:39:51.722Z"
+  },
+  {
+    "_id": "5437ad2515b468c8060ec87b",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: LOW concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:06.843Z",
+    "updatedAt": "2026-09-19T00:51:06.843Z"
+  },
+  {
+    "_id": "24ea4927c6fb55836739dcc9",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: LOW concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:46.905Z",
+    "updatedAt": "2026-09-19T00:51:46.905Z"
+  },
+  {
+    "_id": "c0f93c15a488cbe567ed89b3",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: MODERATE concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:46.934Z",
+    "updatedAt": "2026-09-19T00:51:46.934Z"
+  },
+  {
+    "_id": "33a28cdd3387b65904141071",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (Heart Rate Variability (HRV), Weekly Workload & Duty Hours, Resting Heart Rate (Smart Jacket)). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:46.960Z",
+    "updatedAt": "2026-09-19T00:51:46.960Z"
+  },
+  {
+    "_id": "c0e5d14830680d7a9dcff8b4",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (Weekly Workload & Duty Hours, Perceived Stress Indicator, Resting Heart Rate (Smart Jacket)). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:46.982Z",
+    "updatedAt": "2026-09-19T00:51:46.982Z"
+  },
+  {
+    "_id": "e02d81f3d435141c66a56a69",
+    "userId": "d7c66bf00667bd676a381771",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:55.014Z",
+    "updatedAt": "2026-09-19T00:51:55.014Z"
+  },
+  {
+    "_id": "eefc88899c9d1517e6ceee71",
+    "userId": "d7c66bf00667bd676a381771",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: LOW concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:55.044Z",
+    "updatedAt": "2026-09-19T00:51:55.044Z"
+  },
+  {
+    "_id": "041c82048860cfbbed804fa0",
+    "userId": "d7c66bf00667bd676a381771",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: LOW concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:51:55.075Z",
+    "updatedAt": "2026-09-19T00:51:55.075Z"
+  },
+  {
+    "_id": "9b0f54465b07d4c7dbfe1784",
+    "userId": "8af5ac3795d242f2085dba3a",
+    "title": "Welcome to WelfareAI Platform",
+    "message": "Your account is registered. You can now perform routine welfare check-ins and access support.",
+    "type": "SYSTEM",
+    "link": "/dashboard.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:52:01.477Z",
+    "updatedAt": "2026-09-19T00:52:01.477Z"
+  },
+  {
+    "_id": "5d9314a8db08575c3582bfef",
+    "userId": "8af5ac3795d242f2085dba3a",
+    "title": "Welfare Decision-Support Notice",
+    "message": "Your check-in indicated elevated welfare strain (Weekly Workload & Duty Hours, Perceived Stress Indicator, Rest & Sleep Recovery). Support resources are available in the Welfare tab.",
+    "type": "ALERT",
+    "link": "/why-risk-high.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:52:01.590Z",
+    "updatedAt": "2026-09-19T00:52:01.590Z"
+  },
+  {
+    "_id": "f51e3e1f70affd4fbfcbb72b",
+    "userId": "8af5ac3795d242f2085dba3a",
+    "title": "Welfare Follow-up Scheduled",
+    "message": "Your Unit Welfare Officer has scheduled a supportive follow-up session. Please check your schedule.",
+    "type": "SUPPORT_UPDATE",
+    "link": "/recovery-journey.html",
+    "createdAt": "2026-09-19T00:52:01.773Z",
+    "updatedAt": "2026-09-19T00:52:01.773Z"
+  },
+  {
+    "_id": "a342b1f6c43a85b7d08575a5",
+    "userId": "8af5ac3795d242f2085dba3a",
+    "title": "Check-in Recorded Successfully",
+    "message": "Your welfare check-in was processed. Signal: LOW concern level.",
+    "type": "CHECKIN_REMINDER",
+    "link": "/ai-analysis.html",
+    "isRead": false,
+    "createdAt": "2026-09-19T00:52:01.805Z",
+    "updatedAt": "2026-09-19T00:52:01.805Z"
   }
 ]
