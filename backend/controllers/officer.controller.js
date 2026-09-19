@@ -8,20 +8,29 @@ const getOfficerDashboard = async (req, res, next) => {
     const followUps = await db.FollowUps.find();
     const predictions = await db.Predictions.find();
 
-    // Group current risk distribution
+    // Sort predictions chronologically
+    const sortedPredictions = [...predictions].sort((a, b) => new Date(a.createdAt || a.analyzedAt || 0) - new Date(b.createdAt || b.analyzedAt || 0));
     const latestPredMap = {};
-    predictions.forEach(p => {
+    sortedPredictions.forEach(p => {
       latestPredMap[String(p.userId)] = p;
     });
 
     let highCount = 0;
     let modCount = 0;
     let lowCount = 0;
+    let unassessedCount = 0;
 
-    Object.values(latestPredMap).forEach(p => {
-      if (p.concernLevel === 'HIGH') highCount++;
-      else if (p.concernLevel === 'MODERATE') modCount++;
-      else lowCount++;
+    personnel.forEach(p => {
+      const pred = latestPredMap[String(p.userId)];
+      if (!pred) {
+        unassessedCount++;
+      } else if (pred.concernLevel === 'HIGH') {
+        highCount++;
+      } else if (pred.concernLevel === 'MODERATE') {
+        modCount++;
+      } else {
+        lowCount++;
+      }
     });
 
     const pendingAlerts = alerts.filter(a => a.status === 'PENDING_REVIEW' || a.status === 'ACKNOWLEDGED');
@@ -35,7 +44,7 @@ const getOfficerDashboard = async (req, res, next) => {
           HIGH: highCount,
           MODERATE: modCount,
           LOW: lowCount,
-          UNASSESSED: Math.max(0, personnel.length - Object.keys(latestPredMap).length)
+          UNASSESSED: unassessedCount
         },
         alertsCount: {
           total: alerts.length,
@@ -87,7 +96,7 @@ const getEarlyWarningCenter = async (req, res, next) => {
     const improvingSignals = [];
 
     Object.keys(userPredictions).forEach(uid => {
-      const uPreds = userPredictions[uid];
+      const uPreds = userPredictions[uid].sort((a, b) => new Date(a.createdAt || a.analyzedAt || 0) - new Date(b.createdAt || b.analyzedAt || 0));
       const u = userMap[uid] || {};
       const latest = uPreds[uPreds.length - 1];
 
@@ -100,7 +109,7 @@ const getEarlyWarningCenter = async (req, res, next) => {
         rank: u.rank || 'Member',
         unit: u.unit || 'Operational Unit',
         concernLevel: latest.concernLevel,
-        compositeRiskScore: latest.compositeRiskScore,
+        compositeRiskScore: latest.compositeRiskScore != null ? Number(latest.compositeRiskScore) : 0,
         topDrivers: latest.topDrivers || [],
         analyzedAt: latest.analyzedAt || latest.createdAt
       };
@@ -111,7 +120,13 @@ const getEarlyWarningCenter = async (req, res, next) => {
         }
       } else {
         const prev = uPreds[uPreds.length - 2];
-        const delta = (latest.compositeRiskScore || 0) - (prev.compositeRiskScore || 0);
+        const latestRisk = latest.compositeRiskScore != null ? Number(latest.compositeRiskScore) : 0;
+        const prevRisk = prev.compositeRiskScore != null ? Number(prev.compositeRiskScore) : 0;
+        const delta = latestRisk - prevRisk;
+
+        if (prev.concernLevel !== 'HIGH' && latest.concernLevel === 'HIGH') {
+          newSignals.push({ ...item, category: 'NEW_SIGNAL', reason: 'Recent check-in transitioned into elevated strain' });
+        }
 
         if (delta >= 6) {
           risingSignals.push({ ...item, category: 'RISING_SIGNAL', delta: `+${Math.round(delta)}%`, reason: 'Risk index increased across recent check-in' });
@@ -173,16 +188,23 @@ const getInterventionEffectiveness = async (req, res, next) => {
     let stableCount = 0;
     let increasedCount = 0;
     let totalScoreDelta = 0;
+    let evaluatedCount = 0;
 
     const comparativeRecords = completed.map(f => {
       const u = userMap[String(f.userId)] || {};
-      const initial = Number(f.initialRiskScore) || 70;
-      const reanalyzed = Number(f.reAnalyzedRiskScore) || initial;
-      const delta = reanalyzed - initial;
-      totalScoreDelta += delta;
+      const hasInitial = f.initialRiskScore != null;
+      const hasReanalyzed = f.reAnalyzedRiskScore != null;
+      const initial = hasInitial ? Number(f.initialRiskScore) : null;
+      const reanalyzed = hasReanalyzed ? Number(f.reAnalyzedRiskScore) : null;
+      const delta = (hasInitial && hasReanalyzed) ? (reanalyzed - initial) : null;
 
-      if (f.welfareDelta === 'IMPROVED' || delta < -5) improvedCount++;
-      else if (f.welfareDelta === 'INCREASED' || delta > 5) increasedCount++;
+      if (hasInitial && hasReanalyzed) {
+        totalScoreDelta += delta;
+        evaluatedCount++;
+      }
+
+      if (f.welfareDelta === 'IMPROVED' || (delta !== null && delta < -5)) improvedCount++;
+      else if (f.welfareDelta === 'INCREASED' || (delta !== null && delta > 5)) increasedCount++;
       else stableCount++;
 
       return {
@@ -193,13 +215,13 @@ const getInterventionEffectiveness = async (req, res, next) => {
         initialRiskScore: initial,
         reAnalyzedRiskScore: reanalyzed,
         observedChange: delta,
-        welfareDelta: f.welfareDelta || (delta < -5 ? 'IMPROVED' : 'STABLE'),
+        welfareDelta: f.welfareDelta || (delta !== null && delta < -5 ? 'IMPROVED' : 'STABLE'),
         completedAt: f.completedAt || f.updatedAt,
         officerNotes: f.officerNotes || 'Routine support and rest coordination completed.'
       };
     });
 
-    const avgReduction = completed.length > 0 ? Number((totalScoreDelta / completed.length).toFixed(1)) : 0;
+    const avgReduction = evaluatedCount > 0 ? Number((totalScoreDelta / evaluatedCount).toFixed(1)) : 0;
 
     return res.status(200).json({
       success: true,
@@ -277,7 +299,7 @@ const reviewAlert = async (req, res, next) => {
         assignedOfficerId: req.user._id,
         status: 'SCHEDULED',
         scheduledDate: scheduledDate || new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        initialRiskScore: alert.compositeRiskScore || 70,
+        initialRiskScore: alert.compositeRiskScore != null ? Number(alert.compositeRiskScore) : 0,
         reAnalyzedRiskScore: null,
         welfareDelta: 'PENDING_DATA',
         officerNotes: officerNotes || 'Routine welfare review scheduled.'
@@ -367,14 +389,22 @@ const getRosterOptimization = async (req, res, next) => {
     users.forEach(u => { userMap[String(u._id)] = u; });
 
     const proposals = [];
-    personnel.forEach(p => {
+    let totalFatigueReduction = 0;
+
+    personnel.forEach((p, idx) => {
       const pred = predMap[String(p.userId)];
+      if (!pred) return; // Only propose pacing for personnel with existing risk evaluations
+
       const u = userMap[String(p.userId)] || {};
-      const risk = pred ? Math.round(pred.compositeRiskScore || 0) : 40;
+      const risk = Math.round(Number(pred.compositeRiskScore || 0));
       
-      if (risk > 50 || (pred && pred.concernLevel === 'HIGH')) {
+      if (risk > 50 || pred.concernLevel === 'HIGH') {
+        const expectedReduction = Math.max(10, Math.min(35, Math.round(risk * 0.4)));
+        const predictedDelta = -expectedReduction;
+        totalFatigueReduction += expectedReduction;
+
         proposals.push({
-          proposalId: `PROP-${p.personnelId}-${Math.floor(100 + Math.random()*900)}`,
+          proposalId: `PROP-${p.personnelId}-${p._id ? String(p._id).slice(-4) : (idx + 1).toString().padStart(3, '0')}`,
           userId: p.userId,
           personnelId: p.personnelId,
           fullName: p.fullName || u.fullName,
@@ -384,14 +414,15 @@ const getRosterOptimization = async (req, res, next) => {
           currentRiskScore: risk,
           recommendedDuty: 'Daylight Base Support & Equipment Logistics',
           recommendedRestHours: '48 Hours Decompression Cycle',
-          predictedRiskDelta: -28,
+          predictedRiskDelta: predictedDelta,
           status: 'PROPOSED',
           rationale: `AI detected compounding strain (${risk}% risk index). Reallocating watch intervals mitigates chronic fatigue velocity.`
         });
       }
     });
 
-    const estimatedBattalionFatigueReduction = proposals.length > 0 ? '26.4%' : '0%';
+    const battalionAvg = personnel.length > 0 ? (totalFatigueReduction / personnel.length) : 0;
+    const estimatedBattalionFatigueReduction = `${battalionAvg.toFixed(1)}%`;
 
     return res.status(200).json({
       success: true,

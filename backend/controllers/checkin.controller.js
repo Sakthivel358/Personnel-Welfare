@@ -60,8 +60,10 @@ const submitCheckIn = async (req, res, next) => {
     let recent_trend_indicator = 0.0;
     if (priorCheckIns.length > 0) {
       const lastCheckIn = priorCheckIns[priorCheckIns.length - 1];
-      const pssDelta = Number(pss_score) - Number(lastCheckIn.pss_score || 18);
-      const pressureDelta = Number(work_pressure_rating) - Number(lastCheckIn.work_pressure_rating || 5);
+      const prevPss = (lastCheckIn.pss_score !== undefined && lastCheckIn.pss_score !== null) ? Number(lastCheckIn.pss_score) : Number(pss_score);
+      const prevPressure = (lastCheckIn.work_pressure_rating !== undefined && lastCheckIn.work_pressure_rating !== null) ? Number(lastCheckIn.work_pressure_rating) : Number(work_pressure_rating);
+      const pssDelta = Number(pss_score) - prevPss;
+      const pressureDelta = Number(work_pressure_rating) - prevPressure;
       recent_trend_indicator = Math.min(5, Math.max(-5, (pssDelta / 4.0) + (pressureDelta * 0.5)));
     }
 
@@ -172,9 +174,10 @@ const submitCheckIn = async (req, res, next) => {
 
     if (activeFollowUp) {
       let delta = 'STABLE';
-      if (mlPrediction.compositeRiskScore < (activeFollowUp.initialRiskScore - 8)) {
+      const initialScore = activeFollowUp.initialRiskScore != null ? Number(activeFollowUp.initialRiskScore) : mlPrediction.compositeRiskScore;
+      if (mlPrediction.compositeRiskScore < (initialScore - 8)) {
         delta = 'IMPROVED';
-      } else if (mlPrediction.compositeRiskScore > (activeFollowUp.initialRiskScore + 8)) {
+      } else if (mlPrediction.compositeRiskScore > (initialScore + 8)) {
         delta = 'INCREASED';
       }
 

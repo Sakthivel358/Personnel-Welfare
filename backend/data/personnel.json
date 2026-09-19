@@ -266,5 +266,97 @@
     "preferredContactTime": "Evening (Post-Duty)",
     "welfareContactPreference": "Welfare Officer In-Person",
     "accessibilityPreference": "Standard Display"
+  },
+  {
+    "_id": "48af285753b4270791afe197",
+    "userId": "fc43f13faf1d723d7ae599d6",
+    "personnelId": "CRPF-LOGIC-7598",
+    "fullName": "Logic Tester 7598",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T00:39:27.675Z",
+    "updatedAt": "2026-09-19T00:39:27.675Z"
+  },
+  {
+    "_id": "5baa4da38144783c8729267f",
+    "userId": "348ef10433cf1e1deeed552d",
+    "personnelId": "CRPF-LOGIC-4698",
+    "fullName": "Logic Tester 4698",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T00:39:44.771Z",
+    "updatedAt": "2026-09-19T00:39:44.771Z"
+  },
+  {
+    "_id": "a7656a05479e10a458582f2e",
+    "userId": "bda3841c46cc3ae3f7f60a4e",
+    "personnelId": "CRPF-TEST-1288",
+    "fullName": "Sub-Inspector Anil Verma",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit (Editable in Profile)",
+    "deploymentZone": "Sector North - High Altitude Deployment Zone",
+    "yearsOfService": 10,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-19T00:39:51.362Z",
+    "updatedAt": "2026-09-19T00:39:51.466Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display"
   }
 ]

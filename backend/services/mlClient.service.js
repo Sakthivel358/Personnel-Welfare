@@ -202,8 +202,9 @@ class MLClientService {
       };
     } catch (err) {
       return {
-        isAvailable: true,
-        data: { status: 'healthy', engine: 'Embedded Ensemble Random Forest' }
+        isAvailable: false,
+        error: err.message,
+        data: { status: 'offline', engine: 'Embedded Ensemble Random Forest' }
       };
     }
   }
@@ -213,22 +214,7 @@ class MLClientService {
       const response = await this.client.get('/evaluation', { timeout: 2000 });
       return response.data;
     } catch (err) {
-      return {
-        metrics: {
-          accuracy: 0.815,
-          precision_macro: 0.804,
-          recall_macro: 0.812,
-          f1_macro: 0.808
-        },
-        confusion_matrix: {
-          labels: ['LOW', 'MODERATE', 'HIGH'],
-          matrix: [
-            [74, 8, 2],
-            [9, 58, 6],
-            [1, 5, 37]
-          ]
-        }
-      };
+      return null;
     }
   }
 

@@ -45,7 +45,7 @@ const ChartsManager = {
 
     const riskScores = sorted.map(item => Math.round(item.compositeRiskScore || 0));
     const pssScores = sorted.map(item => {
-      const pss = item.pss_score !== undefined ? item.pss_score : (item.pssScore !== undefined ? item.pssScore : 18);
+      const pss = (item.pss_score !== undefined && item.pss_score !== null) ? item.pss_score : ((item.pssScore !== undefined && item.pssScore !== null) ? item.pssScore : 0);
       return Math.round((pss / 40.0) * 100);
     });
 
@@ -128,7 +128,7 @@ const ChartsManager = {
     }
 
     const labels = factors.map(f => f.title);
-    const dataValues = factors.map(f => f.contribution_score || 20);
+    const dataValues = factors.map(f => (f.contribution_score !== undefined && f.contribution_score !== null ? Number(f.contribution_score) : 0));
 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     const textColor = isDark ? '#cbd5e1' : '#475569';

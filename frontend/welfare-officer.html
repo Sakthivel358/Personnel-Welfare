@@ -726,11 +726,11 @@
                 <div class="text-muted" style="font-size:0.75rem;">${f.personnelId} • ${f.personnelRank}</div>
               </td>
               <td style="padding:0.75rem;">${Utils.formatDate(f.scheduledDate)}</td>
-              <td style="padding:0.75rem;"><strong>${f.initialRiskScore || 70}%</strong></td>
-              <td style="padding:0.75rem;">${f.reAnalyzedRiskScore ? `<strong>${f.reAnalyzedRiskScore}%</strong>` : '<span class="text-muted">Awaiting New Check-in</span>'}</td>
+              <td style="padding:0.75rem;"><strong>${f.initialRiskScore != null ? f.initialRiskScore + '%' : '--'}</strong></td>
+              <td style="padding:0.75rem;">${f.reAnalyzedRiskScore != null ? `<strong>${f.reAnalyzedRiskScore}%</strong>` : '<span class="text-muted">Awaiting New Check-in</span>'}</td>
               <td style="padding:0.75rem;">
-                ${f.welfareDelta === 'IMPROVED' ? `<span class="badge badge-low">Improved (-${(f.initialRiskScore - f.reAnalyzedRiskScore)}%)</span>` :
-                  f.welfareDelta === 'INCREASED' ? `<span class="badge badge-high">Elevated</span>` :
+                ${f.welfareDelta === 'IMPROVED' ? `<span class="badge badge-low">Improved ${(f.initialRiskScore != null && f.reAnalyzedRiskScore != null) ? '(-' + Math.round(f.initialRiskScore - f.reAnalyzedRiskScore) + '%)' : ''}</span>` :
+                  f.welfareDelta === 'INCREASED' ? `<span class="badge badge-high">Elevated ${(f.initialRiskScore != null && f.reAnalyzedRiskScore != null) ? '(+' + Math.round(f.reAnalyzedRiskScore - f.initialRiskScore) + '%)' : ''}</span>` :
                   f.welfareDelta === 'STABLE' ? `<span class="badge badge-moderate">Stable</span>` :
                   `<span class="badge badge-neutral">Pending Check-in</span>`}
               </td>

@@ -44,14 +44,7 @@ const getModelTransparency = async (req, res, next) => {
           n_estimators: 60,
           disclaimer: 'Decision-support model for personnel welfare and resilience monitoring.'
         },
-        evaluation: evaluation || {
-          metrics: {
-            accuracy: 0.815,
-            precision_macro: 0.5488,
-            recall_macro: 0.5471,
-            f1_macro: 0.5480
-          }
-        },
+        evaluation: evaluation || null,
         pipeline: {
           step1: 'Personnel Check-In Form (Front-end)',
           step2: 'Data Validation & Normalization (Node.js/Express)',

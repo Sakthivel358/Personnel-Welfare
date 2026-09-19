@@ -157,7 +157,7 @@
                 ${s.date ? `<div class="text-muted" style="font-size:0.75rem;">Recorded Milestone: ${Utils.formatDate(s.date)}</div>` : ''}
                 ${isPending && (s.key === 'HUMAN_REVIEW' || s.key === 'FOLLOW_UP_SCHEDULED') ? `
                   <div class="mt-2 pt-2" style="border-top:1px dashed var(--border-color); font-size:0.8rem; color:var(--text-muted);">
-                    <em>Status is pending confidential review by Unit Welfare Officer. Click "Simulate Officer Review" at top to advance this stage.</em>
+                    <em>Status is pending confidential review and follow-up scheduling by your Unit Welfare Officer.</em>
                   </div>
                 ` : ''}
               </div>
@@ -166,28 +166,6 @@
         }
       } catch (err) {
         console.error('Error loading recovery journey:', err);
-      }
-    }
-
-    async function simulateOfficerReview() {
-      const btn = document.getElementById('btn-sim-officer');
-      btn.disabled = true;
-      btn.textContent = 'Simulating Officer Triage...';
-
-      try {
-        const res = await api.request('/followups/simulate-review', { method: 'POST' });
-        if (res && res.success) {
-          Utils.showToast('Unit Welfare Officer review & follow-up consultation scheduled!', 'success');
-          await loadRecoveryJourney();
-        } else {
-          Utils.showToast(res.message || 'Failed to simulate officer review.', 'error');
-        }
-      } catch (err) {
-        console.error('Simulation error:', err);
-        Utils.showToast(err.message || 'Simulation error.', 'error');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = '⚡ Simulate Officer Review & Follow-Up';
       }
     }
   </script>

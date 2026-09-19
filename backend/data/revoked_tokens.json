@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "_id": "1927c43546f373af5b9de61c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJkYTM4NDFjNDZjYzNhZTNmN2Y2MGE0ZSIsInBlcnNvbm5lbElkIjoiQ1JQRi1URVNULTEyODgiLCJlbWFpbCI6InRlc3QuMTc4OTc3ODM5MTI4OEBjcnBmLmdvdi5pbiIsInJvbGUiOiJQRVJTT05ORUwiLCJqdGkiOiJhYjc1YWFkYTY0YTIyNWY2YjVmYzE1Y2ZkMGE5ZmU3ZiIsImlhdCI6MTc4OTc3ODM5MSwiZXhwIjoxNzg5ODY0NzkxfQ.O9He_10ybede0_lBV9LLQpDZZdKOKZXbwtndko1syGQ",
+    "userId": "bda3841c46cc3ae3f7f60a4e",
+    "revokedAt": "2026-09-19T00:39:51.523Z",
+    "createdAt": "2026-09-19T00:39:51.523Z",
+    "updatedAt": "2026-09-19T00:39:51.523Z"
+  }
+]

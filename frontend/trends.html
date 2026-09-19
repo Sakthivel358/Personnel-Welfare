@@ -193,7 +193,7 @@
     function renderTrajectory(series) {
       document.getElementById('stat-total-checkins').textContent = series.length;
 
-      const avg = series.reduce((acc, cur) => acc + (cur.compositeRiskScore || 0), 0) / series.length;
+      const avg = series.length > 0 ? (series.reduce((acc, cur) => acc + (cur.compositeRiskScore || 0), 0) / series.length) : 0;
       document.getElementById('stat-avg-score').textContent = `${Math.round(avg)}%`;
 
       if (series.length >= 2) {
@@ -255,18 +255,13 @@
     function viewItemDetails(index) {
       const item = rawHistory[index];
       if (item) {
-        // Ensure compatibility for Utils modal
         const modalPayload = {
           ...item,
           createdAt: item.date || item.createdAt || item.checkInDate,
           pssScore: item.pss_score !== undefined ? item.pss_score : item.pssScore,
           workloadHours: item.workload_hours !== undefined ? item.workload_hours : item.workloadHours,
           recoverySleepHours: item.recovery_sleep_hours !== undefined ? item.recovery_sleep_hours : item.recoverySleepHours,
-          factorAttributions: item.factorAttributions || [
-            { factorName: 'PSS-10 Stress Index', attributionScore: ((item.pss_score || 18)/40)*0.4, status: (item.pss_score || 18) > 26 ? 'ELEVATED' : 'NORMAL' },
-            { factorName: 'Workload & Duty Hours', attributionScore: ((item.workload_hours || 48)/80)*0.35, status: (item.workload_hours || 48) > 55 ? 'ELEVATED' : 'NORMAL' },
-            { factorName: 'Recovery Sleep Deficit', attributionScore: (1 - ((item.recovery_sleep_hours || 7)/9))*0.25, status: (item.recovery_sleep_hours || 7) < 6 ? 'ELEVATED' : 'NORMAL' }
-          ]
+          contributingFactors: item.contributingFactors || item.factorAttributions || []
         };
         Utils.openCheckinDetailModal(modalPayload);
       }

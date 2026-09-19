@@ -47,12 +47,18 @@ const getPredictionHistory = async (req, res, next) => {
         checkInIndex: index + 1,
         date: p.analyzedAt || p.createdAt || relatedCheckIn.createdAt || relatedCheckIn.checkInDate,
         concernLevel: p.concernLevel,
-        compositeRiskScore: p.compositeRiskScore,
+        compositeRiskScore: p.compositeRiskScore != null ? Number(p.compositeRiskScore) : 0,
         confidence: p.confidence,
-        pss_score: relatedCheckIn.pss_score || 0,
-        workload_hours: relatedCheckIn.workload_hours || 0,
-        recovery_sleep_hours: relatedCheckIn.recovery_sleep_hours || 0,
-        work_pressure_rating: relatedCheckIn.work_pressure_rating || 0
+        pss_score: relatedCheckIn.pss_score != null ? Number(relatedCheckIn.pss_score) : 0,
+        workload_hours: relatedCheckIn.workload_hours != null ? Number(relatedCheckIn.workload_hours) : 0,
+        recovery_sleep_hours: relatedCheckIn.recovery_sleep_hours != null ? Number(relatedCheckIn.recovery_sleep_hours) : 0,
+        work_pressure_rating: relatedCheckIn.work_pressure_rating != null ? Number(relatedCheckIn.work_pressure_rating) : 0,
+        shift_continuity_days: relatedCheckIn.shift_continuity_days != null ? Number(relatedCheckIn.shift_continuity_days) : 0,
+        social_support_rating: relatedCheckIn.social_support_rating != null ? Number(relatedCheckIn.social_support_rating) : 0,
+        work_life_balance_rating: relatedCheckIn.work_life_balance_rating != null ? Number(relatedCheckIn.work_life_balance_rating) : 0,
+        contributingFactors: p.contributingFactors || [],
+        topDrivers: p.topDrivers || [],
+        notes: relatedCheckIn.notes || ''
       };
     });
 
@@ -158,8 +164,17 @@ const getWhatChanged = async (req, res, next) => {
     }
 
     const calcDelta = (currentVal, prevVal, isHigherRisk = true) => {
-      const c = Number(currentVal) || 0;
-      const p = Number(prevVal) || 0;
+      if (currentVal === null || currentVal === undefined || prevVal === null || prevVal === undefined) {
+        return {
+          previous: (prevVal !== undefined && prevVal !== null) ? Number(prevVal) : null,
+          current: (currentVal !== undefined && currentVal !== null) ? Number(currentVal) : null,
+          diff: 0,
+          direction: 'INSUFFICIENT_DATA',
+          welfareImpact: 'NEUTRAL'
+        };
+      }
+      const c = Number(currentVal);
+      const p = Number(prevVal);
       const diff = Number((c - p).toFixed(1));
       let direction = 'STABLE';
       let welfareImpact = 'NEUTRAL';

@@ -91,7 +91,7 @@ const getRecoveryJourney = async (req, res, next) => {
         status: latestPred ? 'COMPLETED' : 'PENDING',
         date: latestPred ? (latestPred.analyzedAt || latestPred.createdAt) : null,
         description: latestPred
-          ? `Random Forest model identified ${latestPred.concernLevel} concern level (${Math.round(latestPred.compositeRiskScore)}% risk index).`
+          ? `Random Forest model identified ${latestPred.concernLevel} concern level (${Math.round(latestPred.compositeRiskScore != null ? latestPred.compositeRiskScore : 0)}% risk index).`
           : 'Pending initial check-in submission.',
         details: latestPred ? { topDrivers: latestPred.topDrivers, concernLevel: latestPred.concernLevel } : null
       },
@@ -169,18 +169,24 @@ const simulateOfficerReview = async (req, res, next) => {
   try {
     const userId = req.user._id;
     const predictions = await db.Predictions.find({ userId });
-    const latestPred = predictions.length > 0 ? predictions[predictions.length - 1] : null;
+    if (predictions.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Cannot schedule follow-up without an existing welfare check-in assessment.'
+      });
+    }
+    const latestPred = predictions[predictions.length - 1];
 
     let alert = (await db.Alerts.find({ userId })).pop();
     if (!alert) {
       alert = await db.Alerts.create({
         userId: req.user._id,
         personnelId: req.user.personnelId,
-        concernLevel: latestPred?.concernLevel || 'MODERATE',
-        compositeRiskScore: latestPred?.compositeRiskScore || 58,
-        priority: latestPred?.concernLevel === 'HIGH' ? 'HIGH' : 'MEDIUM',
+        concernLevel: latestPred.concernLevel,
+        compositeRiskScore: Math.round(latestPred.compositeRiskScore != null ? latestPred.compositeRiskScore : 0),
+        priority: latestPred.concernLevel === 'HIGH' ? 'HIGH' : 'MEDIUM',
         status: 'PENDING_REVIEW',
-        reasons: latestPred?.topDrivers || ['Operational duty hours', 'Rest deficit']
+        reasons: latestPred.topDrivers || ['Operational duty hours', 'Rest deficit']
       });
     }
 
@@ -200,7 +206,7 @@ const simulateOfficerReview = async (req, res, next) => {
         personnelId: req.user.personnelId,
         status: 'SCHEDULED',
         scheduledDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
-        initialRiskScore: latestPred ? Math.round(latestPred.compositeRiskScore) : 65,
+        initialRiskScore: Math.round(latestPred.compositeRiskScore != null ? latestPred.compositeRiskScore : 0),
         reAnalyzedRiskScore: null,
         welfareDelta: 'PENDING_DATA',
         officerNotes: 'Scheduled follow-up consultation with Unit Welfare Officer to review sleep and workload modulation.'

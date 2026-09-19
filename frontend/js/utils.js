@@ -195,16 +195,20 @@ const Utils = {
       document.body.appendChild(modal);
     }
 
-    const factors = item.factorAttributions || [];
-    const pss = item.pssScore !== undefined ? item.pssScore : (item.pssResponses ? Object.values(item.pssResponses).reduce((a,b)=>a+Number(b||0),0) : 'N/A');
+    const factors = item.contributingFactors || item.factorAttributions || [];
+    const pss = (item.pss_score !== undefined && item.pss_score !== null) ? item.pss_score : ((item.pssScore !== undefined && item.pssScore !== null) ? item.pssScore : (item.pssResponses ? Object.values(item.pssResponses).reduce((a,b)=>a+Number(b||0),0) : 'N/A'));
     const risk = Math.round(item.compositeRiskScore || 0);
+    const workload = item.workload_hours !== undefined ? `${item.workload_hours} hrs/wk` : (item.workloadHours !== undefined ? `${item.workloadHours} hrs/day` : '--');
+    const sleep = item.recovery_sleep_hours !== undefined ? `${item.recovery_sleep_hours} hrs/day` : (item.recoverySleepHours !== undefined ? `${item.recoverySleepHours} hrs/night` : '--');
+    const shiftDays = item.shift_continuity_days !== undefined ? `${item.shift_continuity_days} days` : (item.extendedDutyDays !== undefined ? `${item.extendedDutyDays} days` : '--');
+    const pressure = item.work_pressure_rating !== undefined ? `${item.work_pressure_rating} / 10` : (item.workPressureRating !== undefined ? `${item.workPressureRating} / 10` : '--');
 
     modal.innerHTML = `
       <div class="card" style="max-width: 650px; width: 100%; max-height: 88vh; overflow-y: auto; box-shadow: var(--shadow-xl); border: 1px solid var(--border-color);">
         <div class="d-flex justify-between align-center mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);">
           <div>
             <h3 style="margin-bottom:0.2rem;">Detailed Check-in Record</h3>
-            <span class="text-muted" style="font-size:0.8rem;">Recorded on: ${Utils.formatDate(item.createdAt)}</span>
+            <span class="text-muted" style="font-size:0.8rem;">Recorded on: ${Utils.formatDate(item.createdAt || item.date)}</span>
           </div>
           <button onclick="document.getElementById('checkin-detail-modal').style.display='none'" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted);">&times;</button>
         </div>
@@ -227,31 +231,34 @@ const Utils = {
         <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Operational Indicators</h4>
         <div class="grid-2 mb-3" style="font-size: 0.85rem; gap: 0.5rem;">
           <div style="padding: 0.5rem; background: var(--bg-card-subtle); border-radius: var(--radius-sm);">
-            <strong>Workload Hours:</strong> ${item.workloadHours || 8} hrs/day
+            <strong>Workload Hours:</strong> ${workload}
           </div>
           <div style="padding: 0.5rem; background: var(--bg-card-subtle); border-radius: var(--radius-sm);">
-            <strong>Recovery Sleep:</strong> ${item.recoverySleepHours || 7} hrs/night
+            <strong>Recovery Sleep:</strong> ${sleep}
           </div>
           <div style="padding: 0.5rem; background: var(--bg-card-subtle); border-radius: var(--radius-sm);">
-            <strong>Extended Duty Days:</strong> ${item.extendedDutyDays || 0} / 14 days
+            <strong>Continuous Shift Exposure:</strong> ${shiftDays}
           </div>
           <div style="padding: 0.5rem; background: var(--bg-card-subtle); border-radius: var(--radius-sm);">
-            <strong>Deployment Duration:</strong> ${item.deploymentMonths || 0} months
+            <strong>Operational Pressure:</strong> ${pressure}
           </div>
         </div>
 
         <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Random Forest Attribution Breakdown</h4>
         <div class="mb-3">
           ${factors.length > 0 ? factors.map(f => {
-            const pct = Math.round((f.attributionScore || f.importance || 0.1) * 100);
+            const score = f.contribution_score !== undefined ? Number(f.contribution_score) : (f.attributionScore !== undefined ? Math.round(f.attributionScore * 100) : (f.importance !== undefined ? Math.round(f.importance * 100) : 0));
+            const factorName = f.title || f.factorName || f.factor || 'Operational Factor';
+            const statusText = f.status || (score > 25 ? 'ELEVATED' : 'NORMAL');
+            const isElevated = statusText === 'ELEVATED' || statusText === 'HIGH' || statusText === 'Elevated Concern';
             return `
               <div class="mb-2">
                 <div class="d-flex justify-between align-center mb-1" style="font-size: 0.85rem;">
-                  <span><strong>${f.factorName || f.factor || 'Operational Factor'}</strong> <span class="text-muted">(${f.category || 'General'})</span></span>
-                  <span class="badge ${f.status === 'ELEVATED' || f.status === 'HIGH' ? 'badge-high' : 'badge-low'}">${f.status || 'NORMAL'}</span>
+                  <span><strong>${factorName}</strong> ${f.unit ? `<span class="text-muted">(${f.unit})</span>` : ''}</span>
+                  <span class="badge ${isElevated ? 'badge-high' : 'badge-low'}">${statusText}</span>
                 </div>
                 <div class="progress-bar-bg" style="height: 6px;">
-                  <div class="progress-bar-fill" style="width: ${Math.min(100, pct * 3.5)}%; background: ${f.status === 'ELEVATED' || f.status === 'HIGH' ? 'var(--risk-high)' : 'var(--accent)'};"></div>
+                  <div class="progress-bar-fill" style="width: ${Math.min(100, Math.max(0, score))}%; background: ${isElevated ? 'var(--risk-high)' : 'var(--accent)'};"></div>
                 </div>
               </div>
             `;
@@ -291,13 +298,13 @@ const Utils = {
     modal.innerHTML = `
       <div class="card" style="max-width: 440px; width: 100%; box-shadow: var(--shadow-xl); border: 1px solid var(--border-color); text-align: center; padding: 1.75rem;">
         <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🛡️</div>
-        <h3 style="margin-bottom: 0.5rem;">Confirm Sign Out</h3>
+        <h3 style="margin-bottom: 0.5rem;">Confirm Logout</h3>
         <p class="text-muted" style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem;">
           Are you sure you want to end your secure session? Your profile details, check-in history, and welfare records remain securely saved in the database.
         </p>
         <div class="d-flex gap-1 justify-center">
           <button class="btn btn-secondary" style="flex:1;" onclick="document.getElementById('logout-confirm-modal').style.display='none'">Cancel</button>
-          <button class="btn btn-primary" style="flex:1; background: #dc2626; border-color: #dc2626;" onclick="document.getElementById('logout-confirm-modal').style.display='none'; auth.directLogout();">Sign Out</button>
+          <button class="btn btn-primary" style="flex:1; background: #dc2626; border-color: #dc2626;" onclick="document.getElementById('logout-confirm-modal').style.display='none'; auth.directLogout();">Logout</button>
         </div>
       </div>
     `;
