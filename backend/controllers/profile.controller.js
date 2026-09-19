@@ -105,14 +105,16 @@ const updateProfile = async (req, res, next) => {
           shareWithWelfareOfficer: true,
           anonymousAggregatedStats: true,
           notificationChannel: 'IN_APP'
-        }
+        },
+        // Strict separation: profile never captures dynamic welfare/wearable telemetry
+        personnelId: req.user.personnelId
       };
       if (profileImage !== undefined) {
         personnelUpdate.profileImage = profileImage;
       }
 
       const updatedPersonnel = await db.Personnel.findOneAndUpdate(
-        { userId: req.user._id },
+        { $or: [{ userId: req.user._id }, { personnelId: req.user.personnelId }] },
         personnelUpdate,
         { new: true, upsert: true }
       );

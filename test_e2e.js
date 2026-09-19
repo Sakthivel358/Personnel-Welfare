@@ -100,7 +100,7 @@ async function runTests() {
     // 7. Verify Explainability & Recommendations
     console.log('\n7. Testing Explainability Breakdown & Personalized Guidance...');
     const expRes = await axios.get(`${BASE_URL}/prediction/explainability`, authHeaders);
-    assert(expRes.data.data.contributingFactors.length === 8, 'Explainability engine returned all 8 feature attributions');
+    assert(expRes.data.data.contributingFactors.length >= 8, `Explainability engine returned ${expRes.data.data.contributingFactors.length} feature attributions (>= 8 baseline + duty factors)`);
 
     const latestPred = await axios.get(`${BASE_URL}/prediction/latest`, authHeaders);
     assert(latestPred.data.data.recommendations.actionItems.length > 0, 'Generated factor-tailored action items');

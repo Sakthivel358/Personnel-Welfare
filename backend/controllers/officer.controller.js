@@ -391,17 +391,48 @@ const getRosterOptimization = async (req, res, next) => {
     const proposals = [];
     let totalFatigueReduction = 0;
 
+    const checkIns = await db.CheckIns.find();
+    const latestCheckInMap = {};
+    checkIns.forEach(c => {
+      if (!latestCheckInMap[String(c.userId)] || new Date(c.createdAt || c.checkInDate || 0) > new Date(latestCheckInMap[String(c.userId)].createdAt || latestCheckInMap[String(c.userId)].checkInDate || 0)) {
+        latestCheckInMap[String(c.userId)] = c;
+      }
+    });
+
     personnel.forEach((p, idx) => {
       const pred = predMap[String(p.userId)];
       if (!pred) return; // Only propose pacing for personnel with existing risk evaluations
 
       const u = userMap[String(p.userId)] || {};
+      const chk = latestCheckInMap[String(p.userId)] || {};
       const risk = Math.round(Number(pred.compositeRiskScore || 0));
+      const shifts = chk.shift_continuity_days != null ? Number(chk.shift_continuity_days) : 0;
+      const prolonged = chk.prolonged_duty_hours != null ? Number(chk.prolonged_duty_hours) : 0;
+      const night = chk.night_duty_hours != null ? Number(chk.night_duty_hours) : 0;
+      const activeDuty = chk.duty_type || p.primaryDuty || p.dutyType || 'Field Operations / Patrol';
       
-      if (risk > 50 || pred.concernLevel === 'HIGH') {
-        const expectedReduction = Math.max(10, Math.min(35, Math.round(risk * 0.4)));
+      if (risk > 50 || pred.concernLevel === 'HIGH' || shifts >= 7 || prolonged >= 14) {
+        const expectedReduction = Math.max(10, Math.min(35, Math.round(risk * 0.4) + (shifts >= 7 ? 5 : 0)));
         const predictedDelta = -expectedReduction;
         totalFatigueReduction += expectedReduction;
+
+        let recDuty = 'Daylight Base Support & Equipment Logistics';
+        let recRest = '48 Hours Decompression Cycle';
+        let rationale = `Compounding strain (${risk}% risk index). Reallocating watch intervals mitigates chronic fatigue velocity.`;
+
+        if (shifts >= 7) {
+          recDuty = 'Mandatory Off-Duty Recuperation';
+          recRest = '72 Hours Unbroken Downtime';
+          rationale = `Continuous duty reached ${shifts} consecutive days without full 24h rest. Priority roster relief required.`;
+        } else if (night >= 16) {
+          recDuty = 'Daylight Administrative Watch';
+          recRest = '36 Hours Circadian Resynchronization';
+          rationale = `High night duty exposure (${night} hrs/wk). Day-shift rotation recommended to restore circadian rhythm.`;
+        } else if (prolonged >= 12) {
+          recDuty = 'Staggered 4-Hour Post Rotation';
+          recRest = '24 Hours Post-Watch Rest';
+          rationale = `Prolonged shift length (${prolonged} hrs continuous). Immediate watch split and relief scheduled.`;
+        }
 
         proposals.push({
           proposalId: `PROP-${p.personnelId}-${p._id ? String(p._id).slice(-4) : (idx + 1).toString().padStart(3, '0')}`,
@@ -410,13 +441,16 @@ const getRosterOptimization = async (req, res, next) => {
           fullName: p.fullName || u.fullName,
           rank: p.rank || u.rank,
           unit: p.unit || u.unit,
-          currentDuty: p.dutyType || 'Field Operations / High-Intensity Patrol',
+          currentDuty: activeDuty,
+          consecutiveDutyDays: shifts,
+          prolongedDutyHours: prolonged,
+          nightDutyHours: night,
           currentRiskScore: risk,
-          recommendedDuty: 'Daylight Base Support & Equipment Logistics',
-          recommendedRestHours: '48 Hours Decompression Cycle',
+          recommendedDuty: recDuty,
+          recommendedRestHours: recRest,
           predictedRiskDelta: predictedDelta,
           status: 'PROPOSED',
-          rationale: `AI detected compounding strain (${risk}% risk index). Reallocating watch intervals mitigates chronic fatigue velocity.`
+          rationale
         });
       }
     });

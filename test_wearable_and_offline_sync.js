@@ -84,10 +84,11 @@ async function runTests() {
 
   // Step 1: Valid Wearable Telemetry Ingestion (Task 9)
   console.log('\n--- Step 1: Ingest Valid Wearable Telemetry (Task 9) ---');
+  const runTimestamp = Date.now();
   const validPacket = {
     deviceId: 'TACTICAL-SMART-JACKET-01',
     deviceType: 'TACTICAL_SMART_JACKET',
-    idempotencyKey: 'test-key-wb-001',
+    idempotencyKey: `test-key-wb-${runTimestamp}`,
     timestamp: new Date().toISOString(),
     batteryLevel: 85,
     signalQuality: 92,
@@ -216,7 +217,7 @@ async function runTests() {
 
   // Step 5: Check-in Idempotency & Duplicate Prevention (Task 10)
   console.log('\n--- Step 5: Check-in Idempotency & Duplicate Prevention (Task 10) ---');
-  const offlineCheckInKey = 'chk-offline-vault-test-999';
+  const offlineCheckInKey = `chk-offline-vault-test-${runTimestamp}`;
   const offlineCheckInPayload = {
     idempotencyKey: offlineCheckInKey,
     workload_hours: 50,
@@ -266,7 +267,7 @@ async function runTests() {
     items: [
       offlineCheckInPayload, // Already existing -> should be duplicate
       {
-        idempotencyKey: 'chk-offline-sync-new-1',
+        idempotencyKey: `chk-offline-sync-new-${runTimestamp}`,
         workload_hours: 45,
         work_pressure_rating: 5,
         shift_continuity_days: 2,
@@ -301,7 +302,7 @@ async function runTests() {
       {
         deviceId: 'TACTICAL-SMART-JACKET-01',
         deviceType: 'TACTICAL_SMART_JACKET',
-        idempotencyKey: 'wb-batch-sync-new-1',
+        idempotencyKey: `wb-batch-sync-new-${runTimestamp}`,
         timestamp: new Date().toISOString(),
         telemetry: {
           resting_heart_rate: 72,
@@ -314,7 +315,7 @@ async function runTests() {
       {
         deviceId: 'TACTICAL-SMART-JACKET-01',
         deviceType: 'TACTICAL_SMART_JACKET',
-        idempotencyKey: 'wb-batch-sync-invalid',
+        idempotencyKey: `wb-batch-sync-invalid-${runTimestamp}`,
         telemetry: {
           resting_heart_rate: 350 // Invalid -> should be rejected
         }

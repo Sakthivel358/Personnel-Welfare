@@ -144,6 +144,18 @@ const submitCheckIn = async (req, res, next) => {
     );
     if (hasWearable) evidenceSources.push('WEARABLE');
 
+    // Enrich Duty context with personnel service posting baseline
+    const personnelProfile = await db.Personnel.findOne({
+      $or: [
+        { userId: req.user._id },
+        { personnelId: req.user.personnelId }
+      ]
+    });
+
+    const activeDutyType = duty_type || (personnelProfile && personnelProfile.primaryDuty) || 'Patrol & Active Security';
+    const activePostingType = (personnelProfile && personnelProfile.postingType) || 'Field Operations';
+    const activeDeploymentZone = (personnelProfile && personnelProfile.deploymentZone) || 'Standard Field Deployment';
+
     const checkInPayload = {
       pss_score: hasSelfCheck ? Number(pss_score) : null,
       workload_hours: cleanWorkload,
@@ -154,6 +166,9 @@ const submitCheckIn = async (req, res, next) => {
       shift_continuity_days: cleanShifts,
       prolonged_duty_hours: cleanProlonged,
       night_duty_hours: cleanNight,
+      duty_type: activeDutyType,
+      postingType: activePostingType,
+      deploymentZone: activeDeploymentZone,
       recovery_pattern: recovery_pattern || 'CONTINUOUS',
       rest_interval_hours: rest_interval_hours !== undefined ? Number(rest_interval_hours) : 8.0,
       recent_trend_indicator: Number(recent_trend_indicator.toFixed(1)),
@@ -187,6 +202,9 @@ const submitCheckIn = async (req, res, next) => {
       shift_continuity_days: checkInPayload.shift_continuity_days,
       prolonged_duty_hours: checkInPayload.prolonged_duty_hours,
       night_duty_hours: checkInPayload.night_duty_hours,
+      duty_type: checkInPayload.duty_type,
+      postingType: checkInPayload.postingType,
+      deploymentZone: checkInPayload.deploymentZone,
       recovery_pattern: checkInPayload.recovery_pattern,
       rest_interval_hours: checkInPayload.rest_interval_hours,
       recent_trend_indicator: checkInPayload.recent_trend_indicator,

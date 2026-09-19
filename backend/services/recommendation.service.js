@@ -120,6 +120,27 @@ class RecommendationService {
       });
     }
 
+    // 8. Sector & Duty Role Specific Pacing
+    const dutyType = String(checkinData.duty_type || '');
+    const zone = String(checkinData.deploymentZone || '');
+    if (zone.toLowerCase().includes('high altitude') && ((prolongedHours && prolongedHours >= 8) || checkinData.workload_hours >= 55)) {
+      actionItems.push({
+        category: 'Extreme Terrain Adaptation',
+        title: 'High-Altitude Hypoxia & Cold Mitigation',
+        description: 'Deployed in Northern Sector / High-Altitude terrain with active duty load. Adhere to acclimatization hydration rules, monitor peripheral SpO2, and request heated bunker rest.',
+        priority: 'HIGH'
+      });
+    }
+
+    if (dutyType.toLowerCase().includes('quick reaction') && checkinData.shift_continuity_days >= 5) {
+      actionItems.push({
+        category: 'Tactical Readiness Pacing',
+        title: 'QRT High-Alert Standby Rotation',
+        description: 'Sustained Quick Reaction standby over 5 consecutive days induces sympathetic hyper-vigilance. Coordinate with Adjutant for scheduled 24-hour non-readiness respite.',
+        priority: 'HIGH'
+      });
+    }
+
 
     // Determine primary action
     if (concernLevel === 'HIGH') {

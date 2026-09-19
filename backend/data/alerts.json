@@ -298,5 +298,135 @@
     "updatedAt": "2026-09-19T01:01:34.765Z",
     "reviewedBy": "26445b0244cb7d59a6d1eefc",
     "reviewedAt": "2026-09-19T01:01:34.765Z"
+  },
+  {
+    "_id": "75e32ba032fae73b7a89c92a",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "b292dc12bae98bd56129294c",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 84.5,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Rest & Sleep Recovery",
+      "Prolonged Duty Exposure"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T01:13:07.527Z",
+    "updatedAt": "2026-09-19T01:13:07.529Z"
+  },
+  {
+    "_id": "0fb2172897438bb7a19749c3",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "b7bc357dbb7f82cc84842f72",
+    "priority": "HIGH",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 79.2,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Rest & Sleep Recovery",
+      "Prolonged Duty Exposure"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T01:13:36.051Z",
+    "updatedAt": "2026-09-19T01:13:36.052Z"
+  },
+  {
+    "_id": "f9480e8181e8cbcb9f1a159c",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "feacb017105cd7f7f6d66c36",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 88.6,
+    "topDrivers": [
+      "Heart Rate Variability (HRV)",
+      "Weekly Workload & Duty Hours",
+      "Resting Heart Rate (Smart Jacket)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T01:15:08.159Z",
+    "updatedAt": "2026-09-19T01:15:08.159Z"
+  },
+  {
+    "_id": "110fc1d4135746fba8835620",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "eb50d9e6233bdb2b9a91670d",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 95,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Resting Heart Rate (Smart Jacket)"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T01:15:08.202Z",
+    "updatedAt": "2026-09-19T01:15:08.202Z"
+  },
+  {
+    "_id": "5e7260bfaf9cf06375726e23",
+    "personnelId": "CRPF-TEST-5318",
+    "userId": "d30c9fe6535a2861e4461a87",
+    "predictionId": "d13dde78a9efa62d2b4ab3b3",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 83.4,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-19T01:15:25.582Z",
+    "updatedAt": "2026-09-19T01:15:25.821Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-19T01:15:25.821Z"
+  },
+  {
+    "_id": "5ba33d566b4fd8b1a215f417",
+    "personnelId": "CRPF-TEST-0201",
+    "userId": "3ae7c31fd73c0f434dd16186",
+    "predictionId": "aa8685431dfcbb4a250f9292",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 83.4,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Perceived Stress Indicator",
+      "Rest & Sleep Recovery"
+    ],
+    "status": "FOLLOW_UP_ASSIGNED",
+    "officerNotes": "Reviewed convoy workload. Assigned mandatory 48h rest rotation and follow-up session.",
+    "createdAt": "2026-09-19T01:15:40.471Z",
+    "updatedAt": "2026-09-19T01:15:40.705Z",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-19T01:15:40.705Z"
+  },
+  {
+    "_id": "aba02392efce8255732278d3",
+    "personnelId": "CRPF-9042",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "4824fc209aef9c0095827343",
+    "priority": "CRITICAL",
+    "concernLevel": "HIGH",
+    "compositeRiskScore": 84.5,
+    "topDrivers": [
+      "Weekly Workload & Duty Hours",
+      "Rest & Sleep Recovery",
+      "Prolonged Duty Exposure"
+    ],
+    "status": "PENDING_REVIEW",
+    "officerNotes": "",
+    "createdAt": "2026-09-19T01:15:50.636Z",
+    "updatedAt": "2026-09-19T01:15:50.636Z"
   }
 ]

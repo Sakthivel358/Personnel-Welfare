@@ -305,6 +305,36 @@ def predict_welfare_risk(checkin_data: Dict[str, float]) -> Dict[str, Any]:
             "is_risk_driver": True
         })
 
+    # 5. Duty Role & Operational Deployment Context
+    duty_type = str(checkin_data.get("duty_type") or "")
+    zone = str(checkin_data.get("deploymentZone") or "")
+    posting = str(checkin_data.get("postingType") or "")
+
+    duty_mult = 0.0
+    if "high altitude" in zone.lower() or "remote" in zone.lower():
+        duty_mult += 3.5
+    if "quick reaction" in duty_type.lower() or "patrol" in duty_type.lower():
+        duty_mult += 2.5
+    elif "convoy" in duty_type.lower():
+        duty_mult += 1.5
+
+    if duty_mult > 0:
+        biometric_delta += duty_mult
+        extra_factors.append({
+            "feature_key": "operational_duty_context",
+            "title": "Operational Sector & Duty Post",
+            "description": f"{duty_type or 'Active Watch'} in {zone or posting or 'Field Area'}",
+            "user_value": duty_mult,
+            "unit": "index",
+            "healthy_range": "Baseline Post",
+            "baseline_mean": 0.0,
+            "importance_weight": 0.08,
+            "contribution_score": round(duty_mult * 3.0, 2),
+            "impact_level": "HIGH" if duty_mult >= 4.0 else "MODERATE",
+            "status": "High Altitude / Tactical Demand" if duty_mult >= 4.0 else "Tactical Duty Demands",
+            "is_risk_driver": duty_mult >= 3.0
+        })
+
     composite_risk_score = round(max(5.0, min(95.0, base_risk_score + biometric_delta)), 1)
     if composite_risk_score >= 66.0:
         concern_level = "HIGH"

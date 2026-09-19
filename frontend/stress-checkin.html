@@ -106,7 +106,37 @@
             <!-- Step 1: Operational Duty & Workload (Evidence Sources 1 & 2) -->
             <div id="wizard-step-1">
               <div class="alert alert-info mb-3">
-                <strong>Evidence Sources 1 & 2 (Duty & Workload):</strong> Enter your operational duty duration, prolonged shifts, night duties, and workload pace.
+                <strong>Evidence Sources 1 & 2 (Duty & Workload):</strong> Enter your operational duty role, watch duration, consecutive shift exposure, and operational tempo.
+              </div>
+
+              <!-- Operational Duty Role Selector -->
+              <div class="card mb-3" style="background: var(--bg-card); border-left: 4px solid var(--accent);">
+                <div class="d-flex justify-between align-center mb-1 flex-wrap gap-1">
+                  <label class="form-label mb-0" for="duty_type">
+                    <strong>Operational Duty Role / Watch Assignment</strong>
+                  </label>
+                  <span class="badge badge-low" id="posting_context_badge">Active Field Duty</span>
+                </div>
+                <p class="text-muted mb-2" style="font-size:0.78rem;">
+                  Select current operational watch profile. Influences physiological pacing thresholds and tactical rest rotation recommendations.
+                </p>
+                <div class="grid-2">
+                  <div>
+                    <select id="duty_type" class="form-control" style="font-size:0.85rem; font-weight:600;">
+                      <option value="Patrol & Active Security">Patrol & Active Security Duty (High Mobility)</option>
+                      <option value="Quick Reaction Team (QRT)">Quick Reaction Team / Emergency Standby (High Readiness)</option>
+                      <option value="Convoy Escort & Guard">Convoy Escort & Highway Security (Prolonged Transit)</option>
+                      <option value="Static Station Watch">Static Outpost & Perimeter Guard (Vigilance)</option>
+                      <option value="Signals & Telecommunications">Signals & Comms Operations Room (Cognitive Vigilance)</option>
+                      <option value="Headquarters Administration">Headquarters Logistics & Command Support</option>
+                    </select>
+                  </div>
+                  <div>
+                    <div id="duty_context_info" class="text-muted" style="font-size:0.8rem; padding:0.4rem 0.6rem; background:var(--bg-card-subtle); border-radius:4px;">
+                      ⚡ <em>High-mobility patrol watch with acute physical exertion profile.</em>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="grid-2">

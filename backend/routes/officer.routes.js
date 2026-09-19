@@ -15,6 +15,7 @@ router.get('/alerts', officerController.getAlerts);
 router.put('/alerts/:alertId/review', officerController.reviewAlert);
 router.get('/personnel', officerController.getPersonnelList);
 router.get('/roster-optimizer', officerController.getRosterOptimization);
+router.get('/roster-optimization', officerController.getRosterOptimization);
 router.post('/approve-pacing', officerController.approveRosterPacing);
 
 module.exports = router;

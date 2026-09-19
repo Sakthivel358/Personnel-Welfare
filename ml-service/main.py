@@ -57,6 +57,9 @@ class CheckInInput(BaseModel):
     shift_continuity_days: float = Field(default=0.0, ge=0.0, le=60.0, description="Consecutive shift duty days (0-60)")
     prolonged_duty_hours: Optional[float] = Field(default=0.0, ge=0.0, le=48.0, description="Continuous uninterrupted shift duty (hours)")
     night_duty_hours: Optional[float] = Field(default=0.0, ge=0.0, le=80.0, description="Graveyard / night duty exposure in last 7 days (hours)")
+    duty_type: Optional[str] = Field(default='Patrol & Active Security', description="Operational duty role or watch profile")
+    postingType: Optional[str] = Field(default='Field Operations', description="Service operational posting type")
+    deploymentZone: Optional[str] = Field(default='Standard Field Deployment', description="Operational sector or terrain classification")
     
     # Source 4: Self-Check Additional
     social_support_rating: float = Field(default=5.0, ge=1.0, le=10.0, description="Social & peer support rating (1-10)")

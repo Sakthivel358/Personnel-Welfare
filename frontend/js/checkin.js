@@ -35,6 +35,64 @@ function initCheckInWizard() {
   setupRangeSliders();
   setupNavigation();
   setupFormSubmit();
+  loadUserProfileDutyContext();
+}
+
+async function loadUserProfileDutyContext() {
+  try {
+    const res = await (typeof api !== 'undefined' && api.getProfile ? api.getProfile().catch(() => null) : null);
+    const profile = res && res.success && res.data ? res.data : null;
+    const localUser = JSON.parse(localStorage.getItem('sih_user') || '{}');
+    const p = profile || localUser;
+
+    const dutyTypeSelect = document.getElementById('duty_type');
+    const badge = document.getElementById('posting_context_badge');
+    const info = document.getElementById('duty_context_info');
+
+    if (p) {
+      if (dutyTypeSelect && p.primaryDuty) {
+        // Match option or set
+        for (let opt of dutyTypeSelect.options) {
+          if (opt.value.toLowerCase().includes(p.primaryDuty.toLowerCase()) || p.primaryDuty.toLowerCase().includes(opt.value.toLowerCase())) {
+            dutyTypeSelect.value = opt.value;
+            break;
+          }
+        }
+      }
+
+      if (badge && (p.postingType || p.deploymentZone)) {
+        badge.textContent = `${p.postingType || 'Operational'} | ${p.deploymentZone || 'Field Sector'}`;
+      }
+
+      if (dutyTypeSelect) {
+        dutyTypeSelect.addEventListener('change', () => {
+          updateDutyContextNote(dutyTypeSelect.value);
+        });
+        updateDutyContextNote(dutyTypeSelect.value);
+      }
+    }
+  } catch (e) {
+    console.warn('Duty context load deferred:', e);
+  }
+}
+
+function updateDutyContextNote(duty) {
+  const info = document.getElementById('duty_context_info');
+  if (!info) return;
+
+  if (duty.includes('Quick Reaction')) {
+    info.innerHTML = '⚡ <strong>QRT Alert Status:</strong> High baseline adrenaline & vigilance readiness. Shorter tactical rotation cycles recommended.';
+  } else if (duty.includes('Convoy')) {
+    info.innerHTML = '🛡️ <strong>Convoy Security:</strong> Prolonged vehicle posture vibration & transit vigilance profile.';
+  } else if (duty.includes('Static Outpost')) {
+    info.innerHTML = '👁️ <strong>Static Watch:</strong> Sustained standing vigilance with minimal physical mobility.';
+  } else if (duty.includes('Signals')) {
+    info.innerHTML = '📡 <strong>Ops Room & Signals:</strong> Nocturnal screen vigilance and high cognitive task-switching load.';
+  } else if (duty.includes('Headquarters')) {
+    info.innerHTML = '📋 <strong>HQ Logistics:</strong> Administrative pace and daytime staff coordination.';
+  } else {
+    info.innerHTML = '⚡ <strong>High-mobility Patrol:</strong> Acute aerobic exertion & environmental terrain exposure profile.';
+  }
 }
 
 function renderPSSQuestions() {
@@ -409,10 +467,11 @@ function populateReviewSummary() {
   const strain = document.getElementById('fatigue_physical_strain')?.value || '35';
 
   // Render 5 Evidence Source verification pills
+  const dutyTypeVal = document.getElementById('duty_type')?.value || 'Patrol & Active Security';
   const pillsContainer = document.getElementById('active-evidence-pills');
   if (pillsContainer) {
     pillsContainer.innerHTML = `
-      <span class="badge badge-low">🪖 1. Duty (${shifts}d continuous, ${prolonged}h shift, ${night}h night)</span>
+      <span class="badge badge-low">🪖 1. Duty: ${dutyTypeVal} (${shifts}d continuous, ${prolonged}h shift, ${night}h night)</span>
       <span class="badge badge-low">⏱️ 2. Workload (${workload}h/wk, ${pressure}/10)</span>
       <span class="badge badge-low">🛌 3. Rest & Recovery (${sleep}h sleep, ${restInt}h interval)</span>
       <span class="badge ${pssData.score != null ? 'badge-primary' : 'badge-neutral'}">
@@ -571,6 +630,7 @@ function setupFormSubmit() {
       const pssData = calculatePSSScore();
 
       const payload = {
+        duty_type: document.getElementById('duty_type')?.value || 'Patrol & Active Security',
         workload_hours: parseFloat(document.getElementById('workload_hours').value),
         work_pressure_rating: parseFloat(document.getElementById('work_pressure_rating').value),
         shift_continuity_days: parseFloat(document.getElementById('shift_continuity_days').value),

@@ -4,14 +4,14 @@
     "personnelId": "CRPF-9042",
     "email": "vijay.kumar@crpf.gov.in",
     "password": "$2a$10$FJNNI9Ekk7um5dyXpZ8O7.ETQW.2Yshg7tvtRnlwB1WFFy2B2Y2Cq",
-    "fullName": "Havildar Vijay Kumar",
+    "fullName": "Havildar Rajesh Kumar",
     "role": "PERSONNEL",
     "unit": "CRPF Battalion 104",
-    "rank": "Havildar",
+    "rank": "Havildar (GD)",
     "isActive": true,
-    "lastLogin": "2026-09-19T01:01:20.865Z",
+    "lastLogin": "2026-09-19T01:15:50.464Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-19T01:01:20.865Z"
+    "updatedAt": "2026-09-19T01:15:50.602Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T01:01:34.755Z",
+    "lastLogin": "2026-09-19T01:15:50.583Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T01:01:34.756Z"
+    "updatedAt": "2026-09-19T01:15:50.583Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,9 +37,9 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-19T01:01:34.879Z",
+    "lastLogin": "2026-09-19T01:15:40.847Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-19T01:01:34.879Z"
+    "updatedAt": "2026-09-19T01:15:40.847Z"
   },
   {
     "_id": "351cc70fa4ab2222abc5f216",
@@ -225,5 +225,49 @@
     "createdAt": "2026-09-19T01:01:34.459Z",
     "updatedAt": "2026-09-19T01:01:34.679Z",
     "lastLogout": "2026-09-19T01:01:34.605Z"
+  },
+  {
+    "_id": "0043c1fbe259f9a8aba80750",
+    "personnelId": "CRPF-LOGIC-6347",
+    "email": "logic.test.6347@crpf.gov.in",
+    "password": "$2a$10$6T8PlogGwmDwdFszZ94cGuOqmbll3H3D5MtRjEZtqzoGdTRqnKD.6",
+    "fullName": "Logic Tester 6347",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T01:15:16.447Z",
+    "createdAt": "2026-09-19T01:15:16.447Z",
+    "updatedAt": "2026-09-19T01:15:16.447Z"
+  },
+  {
+    "_id": "d30c9fe6535a2861e4461a87",
+    "personnelId": "CRPF-TEST-5318",
+    "email": "test.1789780525318@crpf.gov.in",
+    "password": "$2a$10$8.pITUtl/ca4O6zlbAWFiOZdRzMuU4cmcnC9CEJQ1T610rQvDNnKm",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T01:15:25.701Z",
+    "createdAt": "2026-09-19T01:15:25.416Z",
+    "updatedAt": "2026-09-19T01:15:25.701Z",
+    "lastLogout": "2026-09-19T01:15:25.604Z"
+  },
+  {
+    "_id": "3ae7c31fd73c0f434dd16186",
+    "personnelId": "CRPF-TEST-0201",
+    "email": "test.1789780540201@crpf.gov.in",
+    "password": "$2a$10$KmuvGhSjLkD.r.BX63nxCuEyd.rb/Y2/q0F4qgdPSJzZlJO8c/Aku",
+    "fullName": "Sub-Inspector Anil Verma",
+    "unit": "Operational Unit (Editable in Profile)",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-19T01:15:40.590Z",
+    "createdAt": "2026-09-19T01:15:40.316Z",
+    "updatedAt": "2026-09-19T01:15:40.590Z",
+    "lastLogout": "2026-09-19T01:15:40.497Z"
   }
 ]

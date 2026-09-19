@@ -227,7 +227,40 @@ class MLClientService {
 
     // Re-normalize score according to active weight sum
     const weightFactor = totalWeight > 0 ? (1.0 / totalWeight) : 1.0;
-    const normalizedRiskDelta = totalRiskScore * (weightFactor * 0.85);
+    let normalizedRiskDelta = totalRiskScore * (weightFactor * 0.85);
+
+    // Contextual Duty Role & Deployment Sector multiplier
+    const dutyType = checkinData.duty_type || '';
+    const zone = checkinData.deploymentZone || '';
+    const posting = checkinData.postingType || '';
+
+    let dutyMultiplier = 0.0;
+    if (zone.toLowerCase().includes('high altitude') || zone.toLowerCase().includes('remote')) {
+      dutyMultiplier += 3.5;
+    }
+    if (dutyType.toLowerCase().includes('quick reaction') || dutyType.toLowerCase().includes('patrol')) {
+      dutyMultiplier += 2.5;
+    } else if (dutyType.toLowerCase().includes('convoy')) {
+      dutyMultiplier += 1.5;
+    }
+
+    if (dutyMultiplier > 0) {
+      normalizedRiskDelta += dutyMultiplier;
+      contributingFactors.push({
+        feature_key: 'operational_duty_context',
+        title: 'Operational Sector & Duty Post',
+        description: `${dutyType || 'Active Watch'} in ${zone || posting || 'Field Area'}`,
+        user_value: dutyMultiplier,
+        unit: 'index',
+        healthy_range: 'Baseline Post',
+        baseline_mean: 0,
+        importance_weight: 0.08,
+        contribution_score: Number((dutyMultiplier * 3.0).toFixed(2)),
+        impact_level: dutyMultiplier >= 4.0 ? 'HIGH' : 'MODERATE',
+        status: dutyMultiplier >= 4.0 ? 'High Altitude / Tactical Demand' : 'Tactical Duty Demands',
+        is_risk_driver: dutyMultiplier >= 3.0
+      });
+    }
 
     let compositeRisk = Math.min(95.0, Math.max(5.0, 45.0 + normalizedRiskDelta));
     compositeRisk = Number(compositeRisk.toFixed(1));
