@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const db = require('../models/dbAdapter');
+const auditService = require('../services/audit.service');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'sih26186_personnel_welfare_secure_jwt_secret_2026';
 
@@ -61,6 +62,16 @@ const authenticate = async (req, res, next) => {
     // Check if token was invalidated by an explicit logout
     const isRevoked = await db.RevokedTokens.findOne({ token });
     if (isRevoked) {
+      auditService.log({
+        action: 'UNAUTHORIZED_ACCESS_ATTEMPT',
+        userId: user ? user._id : null,
+        personnelId: user ? user.personnelId : null,
+        targetResource: req.originalUrl || 'Auth',
+        outcome: 'DENIED',
+        ipAddress: req.ip,
+        details: { reason: 'Revoked session token presented' }
+      }).catch(() => {});
+
       return res.status(401).json({
         success: false,
         message: 'Your session was ended by logout. Please log in again.',
@@ -69,6 +80,16 @@ const authenticate = async (req, res, next) => {
     }
 
     if (user.isActive === false) {
+      auditService.log({
+        action: 'UNAUTHORIZED_ACCESS_ATTEMPT',
+        userId: user._id,
+        personnelId: user.personnelId,
+        targetResource: req.originalUrl || 'Auth',
+        outcome: 'DENIED',
+        ipAddress: req.ip,
+        details: { reason: 'Deactivated account access attempt' }
+      }).catch(() => {});
+
       return res.status(403).json({
         success: false,
         message: 'Your account has been deactivated. Please contact the welfare administrator.',

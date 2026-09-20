@@ -45,6 +45,17 @@ const getSystemMetrics = async (req, res, next) => {
 const getAuditLogs = async (req, res, next) => {
   try {
     const logs = await db.AuditLogs.find();
+    if (req.user) {
+      await auditService.log({
+        action: 'SENSITIVE_RECORD_ACCESS',
+        userId: req.user._id,
+        personnelId: req.user.personnelId,
+        targetResource: 'AuditLogs',
+        outcome: 'SUCCESS',
+        ipAddress: req.ip,
+        details: { recordType: 'SYSTEM_AUDIT_TRAIL', returnedCount: Math.min(logs.length, 100) }
+      });
+    }
     return res.status(200).json({
       success: true,
       data: logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 100)
@@ -61,7 +72,69 @@ const getAllUsers = async (req, res, next) => {
       const { password, ...rest } = u;
       return rest;
     });
+    if (req.user) {
+      await auditService.log({
+        action: 'SENSITIVE_RECORD_ACCESS',
+        userId: req.user._id,
+        personnelId: req.user.personnelId,
+        targetResource: 'Users',
+        outcome: 'SUCCESS',
+        ipAddress: req.ip,
+        details: { recordType: 'USER_DIRECTORY', totalUsers: users.length }
+      });
+    }
     return res.status(200).json({ success: true, data: safeUsers });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateUserRole = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+    const allowedRoles = ['PERSONNEL', 'WELFARE_OFFICER', 'ADMIN'];
+
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid role specified. Allowed roles: ${allowedRoles.join(', ')}`
+      });
+    }
+
+    const user = await db.Users.findById(id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User account not found.'
+      });
+    }
+
+    const previousRole = user.role;
+    const updatedUser = await db.Users.findByIdAndUpdate(id, { role });
+
+    await auditService.log({
+      action: 'ROLE_PERMISSION_CHANGE',
+      userId: req.user._id,
+      personnelId: user.personnelId,
+      targetResource: `User:${id}`,
+      outcome: 'SUCCESS',
+      ipAddress: req.ip,
+      details: {
+        targetUserId: id,
+        targetPersonnelId: user.personnelId,
+        previousRole,
+        newRole: role,
+        changedBy: req.user.role
+      }
+    });
+
+    const { password, ...safeUser } = updatedUser;
+    return res.status(200).json({
+      success: true,
+      message: `User role updated from ${previousRole} to ${role}.`,
+      data: safeUser
+    });
   } catch (err) {
     next(err);
   }
@@ -88,6 +161,19 @@ const createWelfareResource = async (req, res, next) => {
       isConfidential: true,
       isActive: true
     });
+
+    if (req.user) {
+      await auditService.log({
+        action: 'ADMIN_RESOURCE_CREATED',
+        userId: req.user._id,
+        personnelId: req.user.personnelId,
+        targetResource: 'WelfareResources',
+        outcome: 'SUCCESS',
+        ipAddress: req.ip,
+        details: { title, category, resourceId: resource._id }
+      });
+    }
+
     return res.status(201).json({ success: true, data: resource });
   } catch (err) {
     next(err);
@@ -116,6 +202,7 @@ module.exports = {
   getSystemMetrics,
   getAuditLogs,
   getAllUsers,
+  updateUserRole,
   getWelfareResources,
   createWelfareResource,
   verifyAuditChain

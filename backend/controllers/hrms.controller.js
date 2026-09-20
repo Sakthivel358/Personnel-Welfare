@@ -5,6 +5,7 @@
  */
 
 const hrmsService = require('../services/hrms.service');
+const auditService = require('../services/audit.service');
 
 const getStatus = async (req, res, next) => {
   try {
@@ -29,6 +30,17 @@ const getMyRecord = async (req, res, next) => {
     }
 
     const dossier = await hrmsService.getPersonnelRecord(personnelId);
+
+    await auditService.log({
+      action: 'SENSITIVE_RECORD_ACCESS',
+      userId: req.user._id,
+      personnelId,
+      targetResource: 'HRMS_MY_RECORD',
+      outcome: 'SUCCESS',
+      ipAddress: req.ip,
+      details: { recordType: 'HRMS_SERVICE_DOSSIER' }
+    });
+
     return res.status(200).json({
       success: true,
       isSimulated: true,
@@ -46,6 +58,16 @@ const getPersonnelRecord = async (req, res, next) => {
 
     // RBAC: PERSONNEL role can only view their own HRMS record
     if (req.user.role === 'PERSONNEL' && req.user.personnelId !== targetId) {
+      await auditService.log({
+        action: 'UNAUTHORIZED_ACCESS_ATTEMPT',
+        userId: req.user._id,
+        personnelId: req.user.personnelId,
+        targetResource: `HRMS_RECORD:${targetId}`,
+        outcome: 'DENIED',
+        ipAddress: req.ip,
+        details: { reason: 'IDOR unauthorized personnel record attempt', targetId }
+      });
+
       return res.status(403).json({
         success: false,
         message: 'Access denied. You may only view your own HRMS record.'
@@ -53,6 +75,17 @@ const getPersonnelRecord = async (req, res, next) => {
     }
 
     const dossier = await hrmsService.getPersonnelRecord(targetId);
+
+    await auditService.log({
+      action: 'SENSITIVE_RECORD_ACCESS',
+      userId: req.user._id,
+      personnelId: targetId,
+      targetResource: `HRMS_RECORD:${targetId}`,
+      outcome: 'SUCCESS',
+      ipAddress: req.ip,
+      details: { recordType: 'HRMS_PERSONNEL_DOSSIER', viewedByRole: req.user.role }
+    });
+
     return res.status(200).json({
       success: true,
       isSimulated: true,
