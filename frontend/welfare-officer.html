@@ -721,12 +721,15 @@
             <div class="form-group mb-0">
               <label class="form-label" for="modal_officer_status" style="font-size:0.82rem; font-weight:700;">Stage 5: Officer Review Decision *</label>
               <select id="modal_officer_status" class="form-select" required>
+                <option value="Reviewed">Reviewed (Acknowledged in operational context)</option>
+                <option value="Needs Follow-up">Needs Follow-up (Schedule proactive follow-up session)</option>
+                <option value="Support Provided">Support Provided (Restorative downtime / fatigue support)</option>
+                <option value="AI Result Not Applicable">AI Result Not Applicable (Operational outlier / not applicable)</option>
                 <option value="ACKNOWLEDGED">Acknowledge & Mark Under Active Observation</option>
                 <option value="SUPPORT_SESSION">Conduct Supportive 1-on-1 Consultation</option>
                 <option value="REST_ROTATION">Authorize 48h Restorative Downtime / Shift Rotation</option>
                 <option value="FATIGUE_PROTOCOL">Activate Fatigue Mitigation & Recovery Protocol</option>
                 <option value="ROSTER_ADJUSTMENT">Adjust Tactical Deployment & Limit Prolonged Duty</option>
-                <option value="MEDICAL_REFERRAL">Voluntary Medical / Psychological Referral</option>
                 <option value="RESOLVED">Resolve / Mark Conditions Stabilized</option>
               </select>
             </div>

@@ -536,6 +536,32 @@ const reviewAlert = async (req, res, next) => {
     }
 
     const effectiveStatus = reviewDecision || status || 'ACKNOWLEDGED';
+    const statusLower = String(effectiveStatus).toLowerCase();
+    let normalizedReviewStatus = 'REVIEWED';
+    let reviewStatusDisplay = 'Reviewed';
+    if (statusLower.includes('not') || statusLower.includes('na') || statusLower.includes('applicable')) {
+      normalizedReviewStatus = 'NOT_APPLICABLE';
+      reviewStatusDisplay = 'AI Result Not Applicable';
+    } else if (statusLower.includes('follow')) {
+      normalizedReviewStatus = 'NEEDS_FOLLOW_UP';
+      reviewStatusDisplay = 'Needs Follow-up';
+    } else if (statusLower.includes('support') || statusLower.includes('action') || statusLower.includes('rest') || statusLower.includes('fatigue')) {
+      normalizedReviewStatus = 'SUPPORT_PROVIDED';
+      reviewStatusDisplay = 'Support Provided';
+    }
+
+    const humanReviewBlock = {
+      reviewStatus: normalizedReviewStatus,
+      reviewStatusDisplay,
+      officerNotes: officerNotes || alert.officerNotes || '',
+      reviewedBy: req.user._id,
+      officerRank: req.user.rank || 'Welfare Officer',
+      officerName: req.user.fullName || 'Authorized Welfare Officer',
+      reviewedAt: new Date().toISOString(),
+      decisionSupportOnly: true,
+      isDisciplinaryOrMedicalAction: false,
+      nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.'
+    };
 
     const updateFields = {
       status: effectiveStatus,
@@ -544,7 +570,8 @@ const reviewAlert = async (req, res, next) => {
       reviewedAt: new Date().toISOString(),
       isNonPunitive: true,
       isNonDisciplinary: true,
-      nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.'
+      nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.',
+      humanReview: humanReviewBlock
     };
 
     if (supportAction) {
@@ -552,6 +579,12 @@ const reviewAlert = async (req, res, next) => {
     }
 
     const updatedAlert = await db.Alerts.findByIdAndUpdate(alertId, updateFields);
+
+    if (alert.predictionId) {
+      await db.Predictions.findByIdAndUpdate(alert.predictionId, {
+        humanReview: humanReviewBlock
+      });
+    }
 
     // If support action specified, create/link in SupportRequests so personnel sees action in Welfare Support
     let createdSupportRequest = null;
@@ -1306,6 +1339,205 @@ const reviewWorkloadProposal = async (req, res, next) => {
   }
 };
 
+const reviewPredictionResult = async (req, res, next) => {
+  try {
+    const predictionId = req.params.predictionId || req.body.predictionId;
+    const {
+      reviewStatus,
+      reviewDecision,
+      officerNotes,
+      supportType,
+      assignFollowUp,
+      scheduledDate,
+      personnelId: providedPersonnelId
+    } = req.body;
+
+    if (!predictionId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Prediction ID is required for human welfare review.'
+      });
+    }
+
+    const prediction = await db.Predictions.findById(predictionId);
+    if (!prediction) {
+      return res.status(404).json({
+        success: false,
+        message: 'Prediction record not found.'
+      });
+    }
+
+    // Standardized status mapping (4 required options)
+    const rawStatus = String(reviewStatus || reviewDecision || 'Reviewed').trim();
+    const statusLower = rawStatus.toLowerCase();
+
+    let normalizedStatus = 'REVIEWED';
+    let statusDisplay = 'Reviewed';
+
+    if (statusLower.includes('not') || statusLower.includes('na') || statusLower.includes('applicable')) {
+      normalizedStatus = 'NOT_APPLICABLE';
+      statusDisplay = 'AI Result Not Applicable';
+    } else if (statusLower.includes('follow')) {
+      normalizedStatus = 'NEEDS_FOLLOW_UP';
+      statusDisplay = 'Needs Follow-up';
+    } else if (statusLower.includes('support') || statusLower.includes('action')) {
+      normalizedStatus = 'SUPPORT_PROVIDED';
+      statusDisplay = 'Support Provided';
+    } else {
+      normalizedStatus = 'REVIEWED';
+      statusDisplay = 'Reviewed';
+    }
+
+    // Mandatory Non-Disciplinary Directive Enforcement:
+    // "Do not automatically make disciplinary, medical or employment decisions from the AI result."
+    const textToCheck = `${rawStatus} ${officerNotes || ''} ${supportType || ''}`.toLowerCase();
+    const prohibitedKeywords = [
+      'disciplinary', 'court-martial', 'punitive', 'penalty', 'demote',
+      'charge sheet', 'charge-sheet', 'punish', 'termination', 'terminate',
+      'discharge', 'medical diagnosis', 'clinical diagnosis', 'prescribe'
+    ];
+
+    for (const kw of prohibitedKeywords) {
+      const cleaned = textToCheck
+        .replace(/non-punitive/g, '')
+        .replace(/non punitive/g, '')
+        .replace(/not punitive/g, '')
+        .replace(/non-disciplinary/g, '')
+        .replace(/non disciplinary/g, '')
+        .replace(/not disciplinary/g, '')
+        .replace(/not a medical diagnosis/g, '')
+        .replace(/never a medical diagnosis/g, '');
+      if (cleaned.includes(kw)) {
+        return res.status(400).json({
+          success: false,
+          error: 'NON_DISCIPLINARY_OR_MEDICAL_VIOLATION',
+          message: 'Prohibited Action: AI predictions must remain decision-support only. Disciplinary, medical diagnosis, or employment decisions are strictly prohibited.',
+          disclaimer: 'The AI must remain decision-support only. Do not automatically make disciplinary, medical or employment decisions from the AI result.'
+        });
+      }
+    }
+
+    const reviewedAt = new Date().toISOString();
+    const officerId = req.user._id;
+    const officerRank = req.user.rank || 'Welfare Officer';
+    const officerName = req.user.fullName || 'Authorized Welfare Officer';
+    const targetPersonnelId = prediction.personnelId || providedPersonnelId || 'PERSONNEL';
+
+    const humanReviewBlock = {
+      reviewStatus: normalizedStatus,
+      reviewStatusDisplay: statusDisplay,
+      officerNotes: officerNotes || '',
+      reviewedBy: officerId,
+      officerRank,
+      officerName,
+      reviewedAt,
+      decisionSupportOnly: true,
+      isDisciplinaryOrMedicalAction: false,
+      nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.'
+    };
+
+    // 1. Keep AI result and human review clearly separate
+    const updatedPrediction = await db.Predictions.findByIdAndUpdate(predictionId, {
+      humanReview: humanReviewBlock
+    });
+
+    // 2. Also update associated alert if exists
+    const associatedAlert = await db.Alerts.findOne({
+      $or: [{ predictionId: prediction._id }, { predictionId: String(prediction._id) }]
+    });
+    if (associatedAlert) {
+      await db.Alerts.findByIdAndUpdate(associatedAlert._id, {
+        status: normalizedStatus === 'NOT_APPLICABLE' ? 'CLOSED' : (normalizedStatus === 'NEEDS_FOLLOW_UP' ? 'FOLLOW_UP_SCHEDULED' : (normalizedStatus === 'SUPPORT_PROVIDED' ? 'SUPPORT_ACTION_TAKEN' : 'ACKNOWLEDGED')),
+        officerNotes: officerNotes || associatedAlert.officerNotes,
+        reviewedBy: officerId,
+        reviewedAt,
+        humanReview: humanReviewBlock
+      });
+    }
+
+    // 3. Optional Follow-up creation if Needs Follow-up
+    let createdFollowUp = null;
+    if (normalizedStatus === 'NEEDS_FOLLOW_UP' || assignFollowUp) {
+      createdFollowUp = await db.FollowUps.create({
+        predictionId: prediction._id,
+        alertId: associatedAlert ? associatedAlert._id : null,
+        userId: prediction.userId,
+        personnelId: targetPersonnelId,
+        assignedOfficerId: officerId,
+        status: 'SCHEDULED',
+        scheduledDate: scheduledDate || new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+        initialRiskScore: prediction.compositeRiskScore,
+        reAnalyzedRiskScore: null,
+        welfareDelta: 'PENDING_DATA',
+        officerNotes: officerNotes || 'Human review follow-up scheduled.',
+        isNonPunitive: true
+      });
+    }
+
+    // 4. Optional Support Request creation if Support Provided
+    let createdSupportRequest = null;
+    if (normalizedStatus === 'SUPPORT_PROVIDED' || supportType) {
+      const refId = `SPT-${Math.floor(1000 + Math.random() * 9000)}`;
+      createdSupportRequest = await db.SupportRequests.create({
+        referenceId: refId,
+        userId: prediction.userId,
+        personnelId: targetPersonnelId,
+        requestType: supportType || 'HUMAN_WELFARE_REVIEW',
+        urgency: prediction.concernLevel === 'HIGH' ? 'PRIORITY' : 'ROUTINE',
+        notes: `Welfare Officer review: ${statusDisplay}. ${officerNotes || ''}`,
+        status: 'SUPPORT_ACTION_TAKEN',
+        assignedOfficer: officerId,
+        resolutionNotes: officerNotes || 'Support action recorded by Welfare Officer.',
+        statusHistory: [
+          {
+            status: 'SUPPORT_ACTION_TAKEN',
+            timestamp: reviewedAt,
+            note: `Human Review completed: ${statusDisplay}`
+          }
+        ]
+      });
+    }
+
+    // 5. Cryptographically chain review into tamper-evident audit log
+    await auditService.log({
+      action: 'AI_RESULT_HUMAN_REVIEW',
+      userId: officerId,
+      personnelId: targetPersonnelId,
+      targetResource: 'WelfarePrediction',
+      ipAddress: req.ip,
+      outcome: 'SUCCESS',
+      details: {
+        predictionId: String(prediction._id),
+        concernLevel: prediction.concernLevel,
+        reviewStatus: normalizedStatus,
+        reviewStatusDisplay: statusDisplay,
+        decisionSupportOnly: true,
+        isDisciplinaryOrMedicalAction: false,
+        nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.'
+      }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: `Human review recorded: ${statusDisplay}. AI result retained as decision-support.`,
+      data: {
+        predictionId: prediction._id,
+        aiResult: {
+          welfareConcern: prediction.concernLevel,
+          compositeRiskScore: prediction.compositeRiskScore,
+          evidenceStrength: prediction.evidenceStrength,
+          isDecisionSupportOnly: true
+        },
+        humanReview: humanReviewBlock,
+        followUp: createdFollowUp,
+        supportRequest: createdSupportRequest
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getOfficerDashboard,
   getEarlyWarningCenter,
@@ -1323,5 +1555,6 @@ module.exports = {
   getWelfareInterventions,
   getPersonnelInterventions,
   getWorkloadBalancingProposals,
-  reviewWorkloadProposal
+  reviewWorkloadProposal,
+  reviewPredictionResult
 };

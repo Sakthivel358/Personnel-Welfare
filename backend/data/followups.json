@@ -562,5 +562,22 @@
     "isNonPunitive": true,
     "createdAt": "2026-09-20T01:32:58.775Z",
     "updatedAt": "2026-09-20T01:32:58.775Z"
+  },
+  {
+    "_id": "4a0f2fb3c059080fd0025a1d",
+    "predictionId": "1d270e2ced01e7cbd14d7503",
+    "alertId": "48eb7b40b8c523819bf133d9",
+    "userId": "3c12df1f7e3f8a7db28bf3e5",
+    "personnelId": "PERSONNEL",
+    "assignedOfficerId": "7f0ad7a5a929133430821c64",
+    "status": "SCHEDULED",
+    "scheduledDate": "2026-09-25T03:02:21.633Z",
+    "initialRiskScore": 85.6,
+    "reAnalyzedRiskScore": null,
+    "welfareDelta": "PENDING_DATA",
+    "officerNotes": "Elevated duty workload. Scheduled check-in session for next Tuesday.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-20T03:02:21.633Z",
+    "updatedAt": "2026-09-20T03:02:21.633Z"
   }
 ]

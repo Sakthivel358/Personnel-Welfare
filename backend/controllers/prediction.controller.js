@@ -276,6 +276,7 @@ const getLatestPrediction = async (req, res, next) => {
         personalBaseline,
         personalBaselineStatus,
         personalBaselineText,
+        humanReview: latest.humanReview || null,
         statement: nonMedicalDisclaimer,
         medicalDisclaimer: nonMedicalDisclaimer,
         nonMedicalDisclaimer,
@@ -543,6 +544,7 @@ const getExplainability = async (req, res, next) => {
         personalBaseline,
         personalBaselineStatus,
         personalBaselineText,
+        humanReview: latest.humanReview || null,
         recommendedNextAction: isUndet ? 'Additional authorized data or a welfare check-in is required.' : (latest.decisionLayer && latest.decisionLayer.humanWelfareReview ? latest.decisionLayer.humanWelfareReview.recommendedOfficerAction : 'Continue standard restorative routines and submit daily check-in.'),
         recommendedAction: isUndet ? 'Additional authorized data or a welfare check-in is required.' : (latest.decisionLayer && latest.decisionLayer.humanWelfareReview ? latest.decisionLayer.humanWelfareReview.recommendedOfficerAction : 'Continue standard restorative routines and submit daily check-in.'),
         topDrivers: latest.topDrivers,
@@ -574,6 +576,10 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
       status: 'INSUFFICIENT_HISTORY',
       message: 'Baseline not established yet.',
       guidanceText: 'Additional authorized data or a welfare check-in is required.',
+      display: 'PERSONAL BASELINE NOT ESTABLISHED',
+      baselineStatusDisplay: 'BASELINE STATUS — NOT ESTABLISHED',
+      personalBaselineText: 'PERSONAL BASELINE NOT ESTABLISHED',
+      notice: 'PERSONAL BASELINE NOT ESTABLISHED',
       baselineCheckInCount: checkIns ? checkIns.length : 0,
       totalCheckInCount: checkIns ? checkIns.length : 0,
       comparisonCategories: null,
@@ -597,6 +603,10 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
       status: 'INSUFFICIENT_HISTORY',
       message: 'Baseline not established yet.',
       guidanceText: 'Additional authorized data or a welfare check-in is required.',
+      display: 'PERSONAL BASELINE NOT ESTABLISHED',
+      baselineStatusDisplay: 'BASELINE STATUS — NOT ESTABLISHED',
+      personalBaselineText: 'PERSONAL BASELINE NOT ESTABLISHED',
+      notice: 'PERSONAL BASELINE NOT ESTABLISHED',
       baselineCheckInCount: 0,
       totalCheckInCount: sorted.length,
       comparisonCategories: null,
@@ -636,30 +646,57 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
     ? Number((currSleep - baseSleep).toFixed(1))
     : 0;
 
-  // 3. Fatigue Category
+  // 3. Night-Duty Pattern Category
+  const baseNightDuty = calcMean(priorCheckIns, 'night_duty_hours');
+  const currNightDuty = current.night_duty_hours != null ? Number(current.night_duty_hours) : null;
+  const nightDutyDelta = (currNightDuty != null && baseNightDuty != null)
+    ? Number((currNightDuty - baseNightDuty).toFixed(1))
+    : 0;
+
+  let nightDutyChange = 'Consistent with your baseline night-duty pattern';
+  if (nightDutyDelta > 0) {
+    nightDutyChange = `+${nightDutyDelta} hrs night duty above normal (${baseNightDuty || 0} hrs avg)`;
+  } else if (nightDutyDelta < 0) {
+    nightDutyChange = `${nightDutyDelta} hrs night duty below normal (${baseNightDuty || 0} hrs avg)`;
+  }
+
+  // 4. Wearable Trends Category (Vitals & Physiological Strain)
+  const baseHr = calcMean(priorCheckIns, 'resting_heart_rate');
+  const baseHrv = calcMean(priorCheckIns, 'hrv_ms');
+  const baseResp = calcMean(priorCheckIns, 'respiration_rate');
+  const baseTemp = calcMean(priorCheckIns, 'skin_temperature_c');
+
+  const currHr = current.resting_heart_rate != null ? Number(current.resting_heart_rate) : null;
+  const currHrv = current.hrv_ms != null ? Number(current.hrv_ms) : null;
+  const currResp = current.respiration_rate != null ? Number(current.respiration_rate) : null;
+  const currTemp = current.skin_temperature_c != null ? Number(current.skin_temperature_c) : null;
+
+  const hrDelta = (currHr != null && baseHr != null) ? Number((currHr - baseHr).toFixed(1)) : null;
+  const hrvDelta = (currHrv != null && baseHrv != null) ? Number((currHrv - baseHrv).toFixed(1)) : null;
+
+  let wearableTrendChange = 'Biometric vitals consistent with personal baseline';
+  if (hrDelta != null && hrDelta > 5.0) {
+    wearableTrendChange = `+${hrDelta} BPM elevated resting heart rate (vs ${baseHr} BPM baseline)`;
+  } else if (hrDelta != null && hrDelta < -5.0) {
+    wearableTrendChange = `${hrDelta} BPM resting heart rate (vs ${baseHr} BPM baseline)`;
+  } else if (hrvDelta != null && hrvDelta < -8.0) {
+    wearableTrendChange = `Autonomic recovery reduced (HRV -${Math.abs(hrvDelta)} ms vs normal ${baseHrv} ms)`;
+  }
+
+  // 5. Fatigue Category (for backward compatibility)
   const baseFatigue = calcMean(priorCheckIns, 'fatigue_physical_strain');
   const baseShiftContinuity = calcMean(priorCheckIns, 'shift_continuity_days');
-  const baseNightDuty = calcMean(priorCheckIns, 'night_duty_hours');
 
   const currFatigue = current.fatigue_physical_strain != null ? Number(current.fatigue_physical_strain) : null;
   const currShiftContinuity = current.shift_continuity_days != null ? Number(current.shift_continuity_days) : null;
-  const currNightDuty = current.night_duty_hours != null ? Number(current.night_duty_hours) : null;
 
   const fatigueDelta = (currFatigue != null && baseFatigue != null)
     ? Number((currFatigue - baseFatigue).toFixed(1))
     : (currNightDuty != null && baseNightDuty != null ? Number((currNightDuty - baseNightDuty).toFixed(1)) : 0);
 
-  // 4. Relevant Stress Indicators Category
+  // 6. Relevant Stress Indicators Category (for backward compatibility)
   const basePss = calcMean(priorCheckIns, 'pss_score');
-  const baseHr = calcMean(priorCheckIns, 'resting_heart_rate');
-  const baseHrv = calcMean(priorCheckIns, 'hrv_ms');
-  const baseResp = calcMean(priorCheckIns, 'respiration_rate');
-
   const currPss = current.pss_score != null ? Number(current.pss_score) : null;
-  const currHr = current.resting_heart_rate != null ? Number(current.resting_heart_rate) : null;
-  const currHrv = current.hrv_ms != null ? Number(current.hrv_ms) : null;
-  const currResp = current.respiration_rate != null ? Number(current.respiration_rate) : null;
-
   const pssDelta = (currPss != null && basePss != null)
     ? Number((currPss - basePss).toFixed(1))
     : null;
@@ -700,7 +737,9 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
   return {
     baselineEstablished: true,
     status: 'BASELINE_ACTIVE',
+    display: 'BASELINE STATUS — ESTABLISHED',
     message: 'Personal baseline active based on authorized historical records.',
+    notice: 'Personal baseline active based on authorized historical records.',
     baselineCheckInCount: priorCheckIns.length,
     totalCheckInCount: sorted.length,
     avgWorkloadHours: baseWorkloadHours,
@@ -708,6 +747,9 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
     avgWorkPressure: baseWorkPressure,
     avgRestIntervalHours: baseRestInterval,
     avgShiftContinuityDays: baseShiftContinuity,
+    avgNightDutyHours: baseNightDuty,
+    avgRestingHeartRate: baseHr,
+    avgHrvMs: baseHrv,
     comparison: {
       workloadDelta,
       workloadStatus,
@@ -715,6 +757,12 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
       sleepDelta,
       sleepStatus,
       sleepLabel: restChange,
+      nightDutyDelta,
+      nightDutyLabel: nightDutyChange,
+      wearableDelta: hrDelta != null ? hrDelta : (hrvDelta != null ? hrvDelta : 0),
+      wearableLabel: wearableTrendChange,
+      hrDelta,
+      hrvDelta,
       pressureDelta: (currWorkPressure != null && baseWorkPressure != null) ? Number((currWorkPressure - baseWorkPressure).toFixed(1)) : 0,
       fatigueDelta: (currFatigue != null && baseFatigue != null) ? Number((currFatigue - baseFatigue).toFixed(1)) : 0,
       fatigueLabel: fatigueChange,
@@ -723,7 +771,8 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
     },
     comparisonCategories: {
       workload: {
-        title: 'Workload',
+        title: 'Workload vs Personal Baseline',
+        category: 'Workload',
         normalPattern: {
           value: baseWorkloadHours,
           unit: 'hrs/wk',
@@ -738,7 +787,8 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
         directionalChange: workloadChange
       },
       rest: {
-        title: 'Rest',
+        title: 'Recovery/Rest vs Baseline',
+        category: 'Recovery / Rest',
         normalPattern: {
           value: baseSleep,
           unit: 'hrs/day',
@@ -751,6 +801,40 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
         },
         delta: sleepDelta,
         directionalChange: restChange
+      },
+      nightDuty: {
+        title: 'Night-Duty Pattern vs Baseline',
+        category: 'Night Duty',
+        normalPattern: {
+          value: baseNightDuty != null ? baseNightDuty : 0,
+          unit: 'hrs/wk',
+          label: baseNightDuty != null ? `${baseNightDuty} hrs/wk` : '0 hrs/wk'
+        },
+        current: {
+          value: currNightDuty != null ? currNightDuty : 0,
+          unit: 'hrs/wk',
+          label: currNightDuty != null ? `${currNightDuty} hrs/wk` : '0 hrs/wk'
+        },
+        delta: nightDutyDelta,
+        directionalChange: nightDutyChange
+      },
+      wearableTrends: {
+        title: 'Relevant Wearable Trends vs Baseline',
+        category: 'Wearable Trends',
+        normalPattern: {
+          value: baseHr != null ? baseHr : null,
+          unit: 'BPM',
+          label: baseHr != null ? `HR: ${baseHr} BPM${baseHrv != null ? ` | HRV: ${baseHrv} ms` : ''}` : 'N/A'
+        },
+        current: {
+          value: currHr != null ? currHr : null,
+          unit: 'BPM',
+          label: currHr != null ? `HR: ${currHr} BPM${currHrv != null ? ` | HRV: ${currHrv} ms` : ''}` : 'N/A'
+        },
+        delta: hrDelta != null ? hrDelta : (hrvDelta != null ? hrvDelta : 0),
+        hrDelta,
+        hrvDelta,
+        directionalChange: wearableTrendChange
       },
       fatigue: {
         title: 'Fatigue',
@@ -786,12 +870,16 @@ function computePersonalBaseline(checkIns, targetIndex = null) {
     yourNormalPattern: {
       workload: baseWorkloadHours != null ? `${baseWorkloadHours} hrs/wk` : 'N/A',
       rest: baseSleep != null ? `${baseSleep} hrs/day` : 'N/A',
+      nightDuty: baseNightDuty != null ? `${baseNightDuty} hrs/wk` : '0 hrs/wk',
+      wearableTrends: baseHr != null ? `HR: ${baseHr} BPM${baseHrv != null ? ` | HRV: ${baseHrv} ms` : ''}` : 'N/A',
       fatigue: baseFatigue != null ? `${baseFatigue} / 100` : (baseNightDuty != null ? `${baseNightDuty} hrs night` : (baseShiftContinuity != null ? `${baseShiftContinuity}d shift` : 'N/A')),
       stressIndicators: basePss != null ? `PSS: ${basePss}` : (baseHr != null ? `HR: ${baseHr} BPM` : 'N/A')
     },
     current: {
       workload: currWorkloadHours != null ? `${currWorkloadHours} hrs/wk` : 'N/A',
       rest: currSleep != null ? `${currSleep} hrs/day` : 'N/A',
+      nightDuty: currNightDuty != null ? `${currNightDuty} hrs/wk` : '0 hrs/wk',
+      wearableTrends: currHr != null ? `HR: ${currHr} BPM${currHrv != null ? ` | HRV: ${currHrv} ms` : ''}` : 'N/A',
       fatigue: currFatigue != null ? `${currFatigue} / 100` : (currNightDuty != null ? `${currNightDuty} hrs night` : (currShiftContinuity != null ? `${currShiftContinuity}d shift` : 'N/A')),
       stressIndicators: currPss != null ? `PSS: ${currPss}` : (currHr != null ? `HR: ${currHr} BPM` : 'N/A')
     }
@@ -805,24 +893,16 @@ const getWhatChanged = async (req, res, next) => {
     const predictions = await db.Predictions.find({ userId: req.user._id });
 
     if (checkIns.length < 2) {
+      const pb = computePersonalBaseline(checkIns);
       return res.status(200).json({
         success: true,
         hasComparison: false,
         baselineEstablished: false,
         status: 'INSUFFICIENT_HISTORY',
+        display: 'PERSONAL BASELINE NOT ESTABLISHED',
         message: 'Baseline not established yet.',
         guidanceText: 'Additional authorized data or a welfare check-in is required.',
-        personalBaseline: {
-          baselineEstablished: false,
-          status: 'INSUFFICIENT_HISTORY',
-          message: 'Baseline not established yet.',
-          guidanceText: 'Additional authorized data or a welfare check-in is required.',
-          baselineCheckInCount: checkIns.length,
-          totalCheckInCount: checkIns.length,
-          comparisonCategories: null,
-          yourNormalPattern: null,
-          current: null
-        },
+        personalBaseline: pb,
         data: checkIns.length === 1 ? { currentCheckIn: checkIns[0] } : null
       });
     }

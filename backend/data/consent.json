@@ -13,5 +13,20 @@
     "lastConsentUpdatedAt": "2026-09-20T01:31:24.625Z",
     "createdAt": "2026-09-19T19:09:23.418Z",
     "updatedAt": "2026-09-20T01:31:24.625Z"
+  },
+  {
+    "_id": "94f5f54bf1ca7ded60b10690",
+    "userId": "611105acb4e87edb82d50c41",
+    "personnelId": "TEST-P-5631",
+    "allowSelfCheckSubjective": true,
+    "allowWearableBiometrics": false,
+    "allowLongitudinalTrends": true,
+    "contributeAnonymizedResearch": true,
+    "telemetryGranularity": "COARSE",
+    "pseudonymizeIdentity": true,
+    "consentVersion": "v1.0-2026",
+    "lastConsentUpdatedAt": "2026-09-20T03:02:56.230Z",
+    "createdAt": "2026-09-20T03:02:56.231Z",
+    "updatedAt": "2026-09-20T03:02:56.231Z"
   }
 ]

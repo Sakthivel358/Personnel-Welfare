@@ -17,6 +17,11 @@ router.put('/alerts/:alertId/review', officerController.reviewAlert);
 router.post('/alerts/:alertId/review', officerController.reviewAlert);
 router.post('/alerts/:alertId/acknowledge', officerController.acknowledgeAlert);
 router.post('/alerts/:alertId/close', officerController.closeAlert);
+
+// Human-in-the-Loop Welfare Review (Part 2)
+router.post('/prediction/:predictionId/review', officerController.reviewPredictionResult);
+router.post('/predictions/:predictionId/review', officerController.reviewPredictionResult);
+router.post('/welfare-review', officerController.reviewPredictionResult);
 router.get('/personnel', officerController.getPersonnelList);
 router.get('/personnel/search', officerController.searchPersonnel);
 router.get('/personnel/:id', officerController.getPersonnelById);

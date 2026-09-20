@@ -270,12 +270,13 @@
 
       if (!pb || !pb.baselineEstablished) {
         if (countEl) {
-          countEl.textContent = 'Baseline not established yet';
+          countEl.textContent = 'PERSONAL BASELINE NOT ESTABLISHED';
           countEl.className = 'badge badge-neutral';
         }
         container.innerHTML = `
           <div class="text-center py-3 text-muted" style="padding:1.5rem 1rem; background:var(--bg-card-subtle); border-radius:8px;">
-            <div style="font-weight:700; font-size:1.05rem; color:var(--text-primary); margin-bottom:0.35rem;">Baseline not established yet.</div>
+            <span class="badge badge-neutral mb-2" style="font-weight:700; font-size:0.85rem; padding:4px 10px;">PERSONAL BASELINE NOT ESTABLISHED</span>
+            <div style="font-weight:700; font-size:1.05rem; color:var(--text-primary); margin:0.35rem 0;">Baseline not established yet.</div>
             <div style="font-size:0.85rem; max-width:480px; margin:0 auto 1rem;">Additional authorized data or a welfare check-in is required to establish your personal normal pattern. (Requires at least 2 authorized check-ins).</div>
             <a href="/stress-checkin.html" class="btn btn-sm btn-primary">+ Submit Check-in</a>
           </div>
@@ -290,69 +291,91 @@
 
       const cats = pb.comparisonCategories;
       if (!cats) {
-        container.innerHTML = `<div class="text-muted text-center py-2">Baseline not established yet.</div>`;
+        container.innerHTML = `
+          <div class="text-center py-3 text-muted" style="padding:1.5rem 1rem; background:var(--bg-card-subtle); border-radius:8px;">
+            <span class="badge badge-neutral mb-2">PERSONAL BASELINE NOT ESTABLISHED</span>
+            <div style="font-size:0.85rem;">Additional authorized data or a welfare check-in is required.</div>
+          </div>
+        `;
         return;
       }
 
+      const workloadCat = cats.workload || {};
+      const restCat = cats.rest || {};
+      const nightCat = cats.nightDuty || {
+        normalPattern: { label: cats.fatigue?.normalPattern?.label || '0 hrs/wk' },
+        current: { label: cats.fatigue?.current?.label || '0 hrs/wk' },
+        directionalChange: 'Consistent with baseline pattern'
+      };
+      const wearableCat = cats.wearableTrends || {
+        normalPattern: { label: cats.stressIndicators?.normalPattern?.label || 'N/A' },
+        current: { label: cats.stressIndicators?.current?.label || 'N/A' },
+        directionalChange: cats.stressIndicators?.directionalChange || 'Consistent with baseline'
+      };
+
       container.innerHTML = `
         <div class="grid-4" style="gap:0.75rem;">
+          <!-- 1. Workload vs Personal Baseline -->
           <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid var(--accent);">
-            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Workload</div>
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Workload vs Baseline</div>
             <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
-              <span class="text-muted">YOUR NORMAL PATTERN:</span>
-              <strong>${cats.workload.normalPattern.label}</strong>
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${workloadCat.normalPattern ? workloadCat.normalPattern.label : 'N/A'}</strong>
             </div>
             <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
               <span class="text-muted">CURRENT:</span>
-              <strong style="color:var(--accent);">${cats.workload.current.label}</strong>
+              <strong style="color:var(--accent);">${workloadCat.current ? workloadCat.current.label : 'N/A'}</strong>
             </div>
             <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
-              ${cats.workload.directionalChange}
+              ${workloadCat.directionalChange || 'Operating within baseline pattern'}
             </div>
           </div>
 
+          <!-- 2. Recovery / Rest vs Baseline -->
           <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #10b981;">
-            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Rest</div>
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Recovery / Rest vs Baseline</div>
             <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
-              <span class="text-muted">YOUR NORMAL PATTERN:</span>
-              <strong>${cats.rest.normalPattern.label}</strong>
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${restCat.normalPattern ? restCat.normalPattern.label : 'N/A'}</strong>
             </div>
             <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
               <span class="text-muted">CURRENT:</span>
-              <strong style="color:#10b981;">${cats.rest.current.label}</strong>
+              <strong style="color:#10b981;">${restCat.current ? restCat.current.label : 'N/A'}</strong>
             </div>
             <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
-              ${cats.rest.directionalChange}
+              ${restCat.directionalChange || 'Rest consistent with baseline'}
             </div>
           </div>
 
+          <!-- 3. Night-Duty Pattern vs Baseline -->
           <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #f59e0b;">
-            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Fatigue</div>
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Night-Duty vs Baseline</div>
             <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
-              <span class="text-muted">YOUR NORMAL PATTERN:</span>
-              <strong>${cats.fatigue.normalPattern.label}</strong>
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${nightCat.normalPattern ? nightCat.normalPattern.label : '0 hrs/wk'}</strong>
             </div>
             <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
               <span class="text-muted">CURRENT:</span>
-              <strong style="color:#f59e0b;">${cats.fatigue.current.label}</strong>
+              <strong style="color:#f59e0b;">${nightCat.current ? nightCat.current.label : '0 hrs/wk'}</strong>
             </div>
             <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
-              ${cats.fatigue.directionalChange}
+              ${nightCat.directionalChange || 'Night duty consistent with baseline'}
             </div>
           </div>
 
+          <!-- 4. Relevant Wearable Trends vs Baseline -->
           <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #8b5cf6;">
-            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Relevant Stress Indicators</div>
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Wearable Trends vs Baseline</div>
             <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
-              <span class="text-muted">YOUR NORMAL PATTERN:</span>
-              <strong>${cats.stressIndicators.normalPattern.label}</strong>
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${wearableCat.normalPattern ? wearableCat.normalPattern.label : 'N/A'}</strong>
             </div>
             <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
               <span class="text-muted">CURRENT:</span>
-              <strong style="color:#8b5cf6;">${cats.stressIndicators.current.label}</strong>
+              <strong style="color:#8b5cf6;">${wearableCat.current ? wearableCat.current.label : 'N/A'}</strong>
             </div>
             <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
-              ${cats.stressIndicators.directionalChange}
+              ${wearableCat.directionalChange || 'Vitals consistent with baseline'}
             </div>
           </div>
         </div>

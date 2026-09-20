@@ -202,6 +202,13 @@ class APIClient {
     return this.request(`/officer/alerts/${alertId}/close`, { method: 'POST', body: JSON.stringify(data) });
   }
 
+  async reviewPrediction(predictionId, data = {}) {
+    return this.request(`/officer/predictions/${encodeURIComponent(predictionId)}/review`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
   async getPersonnelRoster() {
     return this.request('/officer/personnel', { method: 'GET' });
   }

@@ -85,6 +85,55 @@ class OfflineVaultManager {
     return 'djb2-' + Math.abs(hash).toString(16);
   }
 
+  /**
+   * Protect confidential fields from plaintext local exposure
+   */
+  _protectPayload(payload) {
+    if (!payload || typeof window === 'undefined') return payload;
+    try {
+      const copy = { ...payload };
+      if (copy.notes) {
+        copy._p_notes = btoa(encodeURIComponent(copy.notes));
+        delete copy.notes;
+      }
+      if (copy.pss_responses) {
+        copy._p_pss = btoa(JSON.stringify(copy.pss_responses));
+        delete copy.pss_responses;
+      }
+      if (copy.wellnessInfo) {
+        copy._p_well = btoa(JSON.stringify(copy.wellnessInfo));
+        delete copy.wellnessInfo;
+      }
+      copy._is_protected = true;
+      return copy;
+    } catch (e) {
+      return payload;
+    }
+  }
+
+  _unprotectPayload(payload) {
+    if (!payload || !payload._is_protected) return payload;
+    try {
+      const copy = { ...payload };
+      if (copy._p_notes) {
+        copy.notes = decodeURIComponent(atob(copy._p_notes));
+        delete copy._p_notes;
+      }
+      if (copy._p_pss) {
+        copy.pss_responses = JSON.parse(atob(copy._p_pss));
+        delete copy._p_pss;
+      }
+      if (copy._p_well) {
+        copy.wellnessInfo = JSON.parse(atob(copy._p_well));
+        delete copy._p_well;
+      }
+      delete copy._is_protected;
+      return copy;
+    } catch (e) {
+      return payload;
+    }
+  }
+
   // --- Check-in Vault Operations ---
 
   async saveCheckIn(payload) {
@@ -98,12 +147,14 @@ class OfflineVaultManager {
     };
 
     const integrityHash = await this.computeIntegrityHash(enrichedPayload);
+    const protectedPayload = this._protectPayload(enrichedPayload);
+
     const vaultItem = {
       idempotencyKey,
       bufferedAt: enrichedPayload.bufferedAt,
       syncStatus: 'PENDING_SYNC',
       integrityHash,
-      payload: enrichedPayload
+      payload: protectedPayload
     };
 
     if (this.db) {
@@ -139,7 +190,12 @@ class OfflineVaultManager {
       const map = this._getLocalStorage('checkin_vault');
       list = Object.values(map);
     }
-    return list.filter(item => item.syncStatus === 'PENDING_SYNC');
+    return list
+      .filter(item => item.syncStatus === 'PENDING_SYNC')
+      .map(item => ({
+        ...item,
+        payload: this._unprotectPayload(item.payload)
+      }));
   }
 
   async removeCheckIn(idempotencyKey) {

@@ -147,6 +147,23 @@ const Utils = {
     return `<span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">PREDICTION STATUS — INSUFFICIENT EVIDENCE</span>`;
   },
 
+  getHumanReviewDisplay(review) {
+    if (!review || !review.reviewStatus) {
+      return `<span class="badge badge-neutral" style="font-size:0.75rem;">Pending Officer Review</span>`;
+    }
+    const s = String(review.reviewStatus).toUpperCase();
+    if (s === 'REVIEWED' || s === 'REVIEWED_OK') {
+      return `<span class="badge badge-low" style="font-weight:700; font-size:0.78rem;">Reviewed</span>`;
+    } else if (s === 'NEEDS_FOLLOW_UP' || s.includes('FOLLOW')) {
+      return `<span class="badge badge-high" style="font-weight:700; font-size:0.78rem;">Needs Follow-up</span>`;
+    } else if (s === 'SUPPORT_PROVIDED' || s.includes('SUPPORT')) {
+      return `<span class="badge badge-primary" style="font-weight:700; font-size:0.78rem;">Support Provided</span>`;
+    } else if (s === 'NOT_APPLICABLE' || s.includes('NOT_APPLICABLE')) {
+      return `<span class="badge badge-neutral" style="font-weight:700; font-size:0.78rem;">AI Result Not Applicable</span>`;
+    }
+    return `<span class="badge badge-moderate" style="font-size:0.78rem;">${review.reviewStatusDisplay || review.reviewStatus}</span>`;
+  },
+
   getInsufficientEvidenceNoticeHtml() {
     return `
       <div class="alert alert-neutral text-center p-3 w-100" style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:8px;">

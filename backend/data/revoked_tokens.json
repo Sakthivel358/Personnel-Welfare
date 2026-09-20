@@ -222,5 +222,13 @@
     "revokedAt": "2026-09-20T01:32:58.055Z",
     "createdAt": "2026-09-20T01:32:58.055Z",
     "updatedAt": "2026-09-20T01:32:58.055Z"
+  },
+  {
+    "_id": "b8e9049249b244121cc86f92",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMTEwNWFjYjRlODdlZGI4MmQ1MGM0MSIsInBlcnNvbm5lbElkIjoiVEVTVC1QLTU2MzEiLCJlbWFpbCI6InRlc3QuYXVkaXRvci4xNzg5ODczMzc1NjMxQGNycGYuZ292LmluIiwicm9sZSI6IlBFUlNPTk5FTCIsImp0aSI6ImU0NGE2NGRjYmVlYWEyOTIwODg0ODBmMzc0YjliMjk2IiwiaWF0IjoxNzg5ODczMzc1LCJleHAiOjE3ODk5NTk3NzV9.04hWwSKNDZdVDEKW5m3XXkyDhmTRfJzrmIQUiaSsseQ",
+    "userId": "611105acb4e87edb82d50c41",
+    "revokedAt": "2026-09-20T03:02:55.922Z",
+    "createdAt": "2026-09-20T03:02:55.922Z",
+    "updatedAt": "2026-09-20T03:02:55.922Z"
   }
 ]

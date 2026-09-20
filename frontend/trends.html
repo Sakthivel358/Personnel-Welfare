@@ -98,6 +98,20 @@
           </div>
         </div>
 
+        <!-- Personal Baseline Comparison Section -->
+        <div class="card mb-3" id="trends-personal-baseline-card">
+          <div class="card-header d-flex justify-between align-center flex-wrap gap-1">
+            <div>
+              <h3 style="margin-bottom:0.15rem;">Personal Baseline Comparison</h3>
+              <p class="text-muted" style="font-size:0.85rem; margin-bottom:0;">Intra-individual variance against your authentic historical pattern (strictly private, never compared across personnel)</p>
+            </div>
+            <span id="trends-baseline-status-badge" class="badge badge-neutral">Checking Baseline...</span>
+          </div>
+          <div id="trends-baseline-content" class="p-2">
+            <div class="text-muted text-center py-3">Loading personal baseline...</div>
+          </div>
+        </div>
+
         <!-- Full Trend Chart -->
         <div class="card mb-3">
           <div class="card-header">
@@ -176,10 +190,16 @@
 
     async function loadTrends() {
       try {
-        const res = await api.getPredictionHistory();
+        const [res, baselineRes] = await Promise.all([
+          api.getPredictionHistory(),
+          (typeof api !== 'undefined' && api.getPersonalBaseline ? api.getPersonalBaseline().catch(() => null) : null)
+        ]);
+
+        const pb = (baselineRes && baselineRes.success && baselineRes.data) ? baselineRes.data : (res && res.personalBaseline ? res.personalBaseline : null);
+
         if (res && res.success && res.data && res.data.length > 0) {
           rawHistory = res.data;
-          renderTrajectory(rawHistory, res.personalBaseline);
+          renderTrajectory(rawHistory, pb);
           renderTable(rawHistory);
         } else {
           document.getElementById('trend-no-data').style.display = 'block';
@@ -189,12 +209,14 @@
           document.getElementById('stat-total-checkins').textContent = '0';
           document.getElementById('stat-avg-score').textContent = '0%';
           document.getElementById('stat-trend-delta').textContent = 'Baseline';
+          renderPersonalBaselineSection(null);
         }
       } catch (err) {
         console.error('Error loading trends:', err);
         document.getElementById('history-table-body').innerHTML = `
           <tr><td colspan="7" class="text-center py-4 text-danger">Failed to load trajectory data. Please refresh or complete a check-in.</td></tr>
         `;
+        renderPersonalBaselineSection(null);
       }
     }
 
@@ -225,7 +247,6 @@
       document.getElementById('stat-avg-score').textContent = `${Math.round(avg)}%`;
 
       if (series.length >= 2) {
-        // Sort descending to find newest and 2nd newest
         const sortedDesc = [...series].sort((a, b) => new Date(b.date || b.createdAt || 0) - new Date(a.date || a.createdAt || 0));
         const delta = Math.round((sortedDesc[0].compositeRiskScore || 0) - (sortedDesc[1].compositeRiskScore || 0));
         const el = document.getElementById('stat-trend-delta');
@@ -245,7 +266,118 @@
         el.style.color = 'var(--text-muted)';
       }
 
+      renderPersonalBaselineSection(baseline, series);
       ChartsManager.renderDetailedTrend('detailed-trend-chart', series);
+    }
+
+    function renderPersonalBaselineSection(pb, series = []) {
+      const badgeEl = document.getElementById('trends-baseline-status-badge');
+      const contentEl = document.getElementById('trends-baseline-content');
+      if (!contentEl) return;
+
+      const hasBaseline = pb && pb.baselineEstablished;
+      if (!hasBaseline || (series && series.length < 2)) {
+        if (badgeEl) {
+          badgeEl.textContent = 'PERSONAL BASELINE NOT ESTABLISHED';
+          badgeEl.className = 'badge badge-neutral';
+        }
+        contentEl.innerHTML = `
+          <div class="text-center py-3 text-muted" style="padding:1.5rem 1rem; background:var(--bg-card-subtle); border-radius:8px;">
+            <span class="badge badge-neutral mb-2" style="font-weight:700; font-size:0.85rem; padding:4px 10px;">PERSONAL BASELINE NOT ESTABLISHED</span>
+            <div style="font-weight:700; font-size:1.05rem; color:var(--text-primary); margin:0.35rem 0;">Baseline not established yet.</div>
+            <div style="font-size:0.85rem; max-width:480px; margin:0 auto 1rem;">At least 2 authorized check-ins are required to establish your personal normal pattern without fabrication.</div>
+            <a href="/stress-checkin.html" class="btn btn-sm btn-primary">+ Submit Check-in</a>
+          </div>
+        `;
+        return;
+      }
+
+      if (badgeEl) {
+        badgeEl.textContent = `Baseline Active (${pb.baselineCheckInCount || pb.totalCheckInCount} check-ins)`;
+        badgeEl.className = 'badge badge-low';
+      }
+
+      const cats = pb.comparisonCategories || {};
+      const workloadCat = cats.workload || {};
+      const restCat = cats.rest || {};
+      const nightCat = cats.nightDuty || {
+        normalPattern: { label: cats.fatigue?.normalPattern?.label || '0 hrs/wk' },
+        current: { label: cats.fatigue?.current?.label || '0 hrs/wk' },
+        directionalChange: 'Consistent with baseline'
+      };
+      const wearableCat = cats.wearableTrends || {
+        normalPattern: { label: cats.stressIndicators?.normalPattern?.label || 'N/A' },
+        current: { label: cats.stressIndicators?.current?.label || 'N/A' },
+        directionalChange: 'Consistent with baseline'
+      };
+
+      contentEl.innerHTML = `
+        <div class="grid-4" style="gap:0.75rem;">
+          <!-- 1. Workload vs Personal Baseline -->
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid var(--accent);">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Workload vs Baseline</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${workloadCat.normalPattern ? workloadCat.normalPattern.label : 'N/A'}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:var(--accent);">${workloadCat.current ? workloadCat.current.label : 'N/A'}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${workloadCat.directionalChange || 'Operating within baseline pattern'}
+            </div>
+          </div>
+
+          <!-- 2. Recovery / Rest vs Baseline -->
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #10b981;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Recovery / Rest vs Baseline</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${restCat.normalPattern ? restCat.normalPattern.label : 'N/A'}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#10b981;">${restCat.current ? restCat.current.label : 'N/A'}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${restCat.directionalChange || 'Rest consistent with baseline'}
+            </div>
+          </div>
+
+          <!-- 3. Night-Duty Pattern vs Baseline -->
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #f59e0b;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Night-Duty vs Baseline</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${nightCat.normalPattern ? nightCat.normalPattern.label : '0 hrs/wk'}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#f59e0b;">${nightCat.current ? nightCat.current.label : '0 hrs/wk'}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${nightCat.directionalChange || 'Night duty consistent with baseline'}
+            </div>
+          </div>
+
+          <!-- 4. Relevant Wearable Trends vs Baseline -->
+          <div class="card" style="background:var(--bg-card-subtle); padding:0.85rem; border-top:3px solid #8b5cf6;">
+            <div class="text-muted" style="font-size:0.75rem; text-transform:uppercase; font-weight:700;">Wearable Trends vs Baseline</div>
+            <div class="mt-1 d-flex justify-between align-center" style="font-size:0.82rem;">
+              <span class="text-muted">PERSONAL BASELINE:</span>
+              <strong>${wearableCat.normalPattern ? wearableCat.normalPattern.label : 'N/A'}</strong>
+            </div>
+            <div class="d-flex justify-between align-center mt-1" style="font-size:0.82rem;">
+              <span class="text-muted">CURRENT:</span>
+              <strong style="color:#8b5cf6;">${wearableCat.current ? wearableCat.current.label : 'N/A'}</strong>
+            </div>
+            <div class="mt-2 text-muted" style="font-size:0.75rem; font-weight:600;">
+              ${wearableCat.directionalChange || 'Vitals consistent with baseline'}
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     function renderTable(items) {

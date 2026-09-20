@@ -446,6 +446,42 @@
             `;
             driversCard.appendChild(actBox);
           }
+
+          // Human-in-the-Loop Review Status Display (kept clearly separate from AI result)
+          if (p.humanReview) {
+            const hr = p.humanReview;
+            let hrCard = document.getElementById('human-review-status-card');
+            if (!hrCard) {
+              hrCard = document.createElement('div');
+              hrCard.id = 'human-review-status-card';
+              hrCard.className = 'card mb-3';
+              hrCard.style.cssText = 'border-left: 4px solid #10b981; background: var(--bg-card);';
+              const mainCol = document.querySelector('.page-container');
+              if (mainCol) mainCol.appendChild(hrCard);
+            }
+            hrCard.innerHTML = `
+              <div class="d-flex justify-between align-center flex-wrap gap-1 mb-2">
+                <div class="d-flex align-center gap-1">
+                  <span style="font-size:1.2rem;">🩺</span>
+                  <div>
+                    <h3 style="margin:0; font-size:1rem;">Human Welfare Officer Review</h3>
+                    <span class="text-muted" style="font-size:0.75rem;">Independent officer adjudication — separate from AI model prediction</span>
+                  </div>
+                </div>
+                ${Utils.getHumanReviewDisplay(hr)}
+              </div>
+              <div class="p-2" style="background:var(--bg-card-subtle); border-radius:6px; font-size:0.85rem;">
+                <div class="d-flex justify-between align-center mb-1 text-muted" style="font-size:0.78rem;">
+                  <span>Reviewed by: <strong>${hr.officerName || 'Authorized Welfare Officer'}</strong> (${hr.officerRank || 'Officer'})</span>
+                  <span>${Utils.formatDate(hr.reviewedAt)}</span>
+                </div>
+                <p class="mb-1" style="color:var(--text-primary); font-style:italic;">"${hr.officerNotes || 'Review completed within operational welfare context.'}"</p>
+                <div class="text-muted" style="font-size:0.72rem;">
+                  🛡️ <strong>Governance Standard:</strong> The AI remains decision-support only. Disciplinary, medical, or employment decisions from the AI result are strictly prohibited.
+                </div>
+              </div>
+            `;
+          }
         } else {
           const container = document.querySelector('.page-container');
           if (container) {

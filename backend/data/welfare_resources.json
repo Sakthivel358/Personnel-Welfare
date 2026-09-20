@@ -34,5 +34,17 @@
     "isActive": true,
     "createdAt": "2026-09-06T04:04:46.074Z",
     "updatedAt": "2026-09-06T04:04:46.074Z"
+  },
+  {
+    "_id": "4d49e0a14ea492f99061ada7",
+    "title": "24/7 Decompression Hotline",
+    "category": "Psychological Support",
+    "description": "Confidential line for high-altitude deployment teams",
+    "contactNumber": "1800-180-4024",
+    "helplineHours": "24x7 Available",
+    "isConfidential": true,
+    "isActive": true,
+    "createdAt": "2026-09-20T03:02:56.197Z",
+    "updatedAt": "2026-09-20T03:02:56.197Z"
   }
 ]
