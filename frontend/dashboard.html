@@ -137,7 +137,7 @@
             </div>
 
             <div id="risk-content" style="display:none;">
-              <!-- 1. Welfare Concern, 2. Evidence, 3. Data Available, 4. Personal Baseline -->
+              <!-- 1. Welfare Concern, 2. Evidence, 3. Data Available, 4. Data Quality, 5. Baseline Status, 6. Prediction Status -->
               <div class="d-flex flex-column gap-2 mb-3 pb-2" style="border-bottom: 1px solid var(--border-color);" id="welfare-5elements-badges">
                 <div class="d-flex justify-between align-center flex-wrap gap-1">
                   <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Welfare Concern:</span>
@@ -152,8 +152,16 @@
                   <div id="data-available-item"></div>
                 </div>
                 <div class="d-flex justify-between align-center flex-wrap gap-1">
-                  <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Personal Baseline:</span>
-                  <div id="personal-baseline-item"></div>
+                  <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Data Quality:</span>
+                  <div id="data-quality-item"></div>
+                </div>
+                <div class="d-flex justify-between align-center flex-wrap gap-1">
+                  <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Baseline Status:</span>
+                  <div id="baseline-status-item"></div>
+                </div>
+                <div class="d-flex justify-between align-center flex-wrap gap-1">
+                  <span class="text-muted" style="font-size:0.8rem; font-weight:600;">Prediction Status:</span>
+                  <div id="prediction-status-item"></div>
                 </div>
               </div>
 
@@ -191,8 +199,9 @@
               <div class="d-flex justify-center gap-1 flex-wrap mb-2">
                 <span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — UNDETERMINED</span>
                 <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
+                <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">DATA QUALITY — INSUFFICIENT</span>
               </div>
-              <p class="text-muted" style="font-size:0.88rem; font-weight:600; margin-bottom:0.5rem;">Additional authorized data or a welfare check-in is required.</p>
+              <p class="text-muted" style="font-size:0.88rem; font-weight:600; margin-bottom:0.5rem;">INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.</p>
               <div class="p-2 mb-3" style="background:var(--bg-card-subtle); border-radius:6px; font-size:0.8rem; color:var(--text-secondary);">
                 <strong>Recommended next action:</strong> Complete your daily stress check-in to establish authorized evidence.
               </div>
@@ -393,13 +402,28 @@
       const availItem = document.getElementById('data-available-item');
       if (availItem) availItem.innerHTML = dataAvailHtml;
 
-      // 4. Personal Baseline Display
-      const baselineItem = document.getElementById('personal-baseline-item');
-      if (baselineItem) {
-        baselineItem.innerHTML = Utils.getPersonalBaselineDisplay(p.personalBaseline);
+      // 4. Data Quality Display
+      const qualityItem = document.getElementById('data-quality-item');
+      if (qualityItem) {
+        const dq = p.dataQuality || (isUndet ? 'INSUFFICIENT' : 'VERIFIED');
+        qualityItem.innerHTML = Utils.getDataQualityDisplay(dq);
       }
 
-      // 5. Main Contributors Display
+      // 5. Baseline Status Display
+      const baselineStatusItem = document.getElementById('baseline-status-item');
+      if (baselineStatusItem) {
+        const bs = p.baselineStatus || (p.personalBaseline && p.personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED');
+        baselineStatusItem.innerHTML = Utils.getBaselineStatusDisplay(bs);
+      }
+
+      // 6. Prediction Status Display
+      const predStatusItem = document.getElementById('prediction-status-item');
+      if (predStatusItem) {
+        const ps = isUndet ? 'INSUFFICIENT EVIDENCE' : (p.predictionStatus || 'ACTIVE');
+        predStatusItem.innerHTML = Utils.getPredictionStatusDisplay(ps);
+      }
+
+      // 7. Main Contributors Display
       const contribTextEl = document.getElementById('welfare-contributors-text');
       if (contribTextEl) {
         if (isUndet || evLevel === 'INSUFFICIENT' || evLevel === 'INSUFFICIENT EVIDENCE') {
@@ -424,8 +448,10 @@
         }
       }
 
-      // 5. Recommended Next Action Display
-      const actionText = p.recommendedNextAction || p.recommendedAction || p.guidanceText || (isUndet ? 'Additional authorized data or a welfare check-in is required.' : 'Continue standard restorative routines and submit daily check-in.');
+      // 8. Recommended Next Action Display
+      const actionText = (isUndet || p.predictionStatus === 'INSUFFICIENT EVIDENCE')
+        ? 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.'
+        : (p.recommendedNextAction || p.recommendedAction || p.guidanceText || 'Continue standard restorative routines and submit daily check-in.');
       const actionEl = document.getElementById('recommended-next-action-text');
       if (actionEl) actionEl.textContent = actionText;
 

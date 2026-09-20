@@ -741,17 +741,86 @@ def predict_welfare_risk(checkin_data: Dict[str, Any]) -> Dict[str, Any]:
     3. Both wearable and PSS available -> use available evidence from both models through the decision layer
     4. Insufficient evidence -> UNDETERMINED. Never guess a welfare concern when evidence is insufficient.
     """
-    has_wearable = bool(
-        checkin_data.get("wearable_synced") or
+    # Data Quality Validation Layer
+    invalid_issues = []
+    rhr = checkin_data.get("resting_heart_rate")
+    if rhr is not None:
+        try:
+            rhr_f = float(rhr)
+            if rhr_f < 35 or rhr_f > 240:
+                invalid_issues.append(f"Invalid resting heart rate ({rhr_f} bpm): outside authorized physiological bounds [35-240]")
+        except (ValueError, TypeError):
+            invalid_issues.append(f"Invalid non-numeric resting heart rate: {rhr}")
+
+    hrv = checkin_data.get("hrv_ms")
+    if hrv is not None:
+        try:
+            hrv_f = float(hrv)
+            if hrv_f < 5 or hrv_f > 350:
+                invalid_issues.append(f"Invalid HRV ({hrv_f} ms): outside authorized bounds [5-350]")
+        except (ValueError, TypeError):
+            invalid_issues.append(f"Invalid non-numeric HRV: {hrv}")
+
+    sleep = checkin_data.get("recovery_sleep_hours")
+    if sleep is not None:
+        try:
+            sleep_f = float(sleep)
+            if sleep_f < 0 or sleep_f > 24:
+                invalid_issues.append(f"Invalid recovery sleep ({sleep_f} hrs): outside bounds [0-24]")
+        except (ValueError, TypeError):
+            invalid_issues.append(f"Invalid non-numeric recovery sleep: {sleep}")
+
+    workload = checkin_data.get("workload_hours")
+    if workload is not None:
+        try:
+            workload_f = float(workload)
+            if workload_f < 0 or workload_f > 168:
+                invalid_issues.append(f"Invalid workload ({workload_f} hrs): outside bounds [0-168]")
+        except (ValueError, TypeError):
+            invalid_issues.append(f"Invalid non-numeric workload: {workload}")
+
+    pss_raw = checkin_data.get("pss_score")
+    if pss_raw is not None and str(pss_raw).strip() != "":
+        try:
+            pss_f = float(pss_raw)
+            if pss_f < 0 or pss_f > 40:
+                invalid_issues.append(f"Invalid PSS-10 score ({pss_f}): outside bounds [0-40]")
+        except (ValueError, TypeError):
+            invalid_issues.append(f"Invalid non-numeric PSS score: {pss_raw}")
+
+    # Check stale sensor data
+    is_stale = bool(checkin_data.get("wearable_stale") or checkin_data.get("sensor_stale") or checkin_data.get("stale"))
+
+    # Check incomplete wearable data
+    is_claimed_wearable = bool(checkin_data.get("wearable_synced") or checkin_data.get("hasWearable"))
+    has_any_bio = (
         checkin_data.get("resting_heart_rate") is not None or
         checkin_data.get("hrv_ms") is not None or
         checkin_data.get("respiration_rate") is not None or
         checkin_data.get("skin_temperature_c") is not None or
         checkin_data.get("fatigue_physical_strain") is not None
     )
+    if is_claimed_wearable and not has_any_bio:
+        invalid_issues.append("Incomplete wearable telemetry: sync asserted but biometric sensor telemetry fields are absent")
 
-    pss_val = checkin_data.get("pss_score")
-    has_pss = pss_val is not None and not (isinstance(pss_val, str) and pss_val.strip() == "")
+    if invalid_issues:
+        return WelfareAIDecisionLayer.evaluate_undetermined(
+            checkin_data,
+            reason=f"Data Quality Gate validation failed: {'; '.join(invalid_issues)}",
+            missing_evidence=invalid_issues
+        )
+
+    has_wearable = bool(
+        (checkin_data.get("wearable_synced") or
+        checkin_data.get("resting_heart_rate") is not None or
+        checkin_data.get("hrv_ms") is not None or
+        checkin_data.get("respiration_rate") is not None or
+        checkin_data.get("skin_temperature_c") is not None or
+        checkin_data.get("fatigue_physical_strain") is not None)
+        and not is_stale
+    )
+
+    has_pss = pss_raw is not None and not (isinstance(pss_raw, str) and pss_raw.strip() == "")
 
     # Check operational data presence (workload, duty, rest)
     has_workload = checkin_data.get("workload_hours") is not None or checkin_data.get("work_pressure_rating") is not None

@@ -331,15 +331,21 @@
             document.getElementById('main-risk-circle').className = 'risk-circle UNDETERMINED';
             document.getElementById('main-risk-score').textContent = 'N/A';
             document.getElementById('concern-heading').textContent = 'WELFARE CONCERN — UNDETERMINED';
+            const dq = p.dataQuality || 'INSUFFICIENT';
+            const bs = p.baselineStatus || 'NOT_ESTABLISHED';
+            const ps = 'INSUFFICIENT EVIDENCE';
             document.getElementById('concern-badge-top').innerHTML = `
-              <div class="d-flex gap-1 flex-wrap">
-                <span class="badge badge-neutral" style="font-weight:700;">WELFARE CONCERN — UNDETERMINED</span>
-                <span class="badge" style="font-weight:700; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">INSUFFICIENT EVIDENCE</span>
-                ${Utils.getPersonalBaselineDisplay(p.personalBaseline)}
+              <div class="d-flex gap-1 flex-wrap align-center">
+                ${Utils.getWelfareConcernDisplay('UNDETERMINED')}
+                ${Utils.getEvidenceStrengthDisplay('INSUFFICIENT')}
+                ${Utils.getDataAvailableDisplay(p.dataAvailableCount != null ? p.dataAvailableCount : 0, 5)}
+                ${Utils.getDataQualityDisplay(dq)}
+                ${Utils.getBaselineStatusDisplay(bs)}
+                ${Utils.getPredictionStatusDisplay(ps)}
               </div>
             `;
             document.getElementById('concern-desc').innerHTML = `
-              <strong style="color:var(--text-secondary);">Additional authorized data or a welfare check-in is required.</strong>
+              <strong style="color:var(--text-secondary);">INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.</strong>
             `;
             document.getElementById('analysis-timestamp').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
 
@@ -354,7 +360,7 @@
                     There is not enough authorized information to calculate model probabilities or evaluate risk contributors.
                   </p>
                   <div class="alert alert-neutral" style="font-size:0.85rem; font-weight:600; color:var(--text-secondary);">
-                    “Additional authorized data or a welfare check-in is required.”
+                    “INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.”
                   </div>
                   <div class="mt-2 text-muted" style="font-size:0.75rem;">
                     🛡️ <em>Never a medical diagnosis or disciplinary decision.</em>
@@ -371,7 +377,9 @@
           const evidenceBadgeHtml = Utils.getEvidenceStrengthDisplay(evLevel);
           const avCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || (p.evidenceSources ? p.evidenceSources.length : 4));
           const dataAvailHtml = Utils.getDataAvailableDisplay(avCount, 5);
-          const baselineHtml = Utils.getPersonalBaselineDisplay(p.personalBaseline);
+          const dq = p.dataQuality || 'VERIFIED';
+          const bs = p.baselineStatus || (p.personalBaseline && p.personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED');
+          const ps = p.predictionStatus || 'ACTIVE';
 
           document.getElementById('main-risk-circle').className = `risk-circle ${p.concernLevel}`;
           document.getElementById('main-risk-score').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
@@ -381,7 +389,9 @@
               ${concernBadgeHtml}
               ${evidenceBadgeHtml}
               ${dataAvailHtml}
-              ${baselineHtml}
+              ${Utils.getDataQualityDisplay(dq)}
+              ${Utils.getBaselineStatusDisplay(bs)}
+              ${Utils.getPredictionStatusDisplay(ps)}
             </div>
           `;
           document.getElementById('analysis-timestamp').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;

@@ -146,86 +146,101 @@ class MLClientService {
     });
   }
 
-  async predictWelfareRisk(features) {
-    const hasWearable = Boolean(
-      features.wearable_synced ||
-      features.resting_heart_rate != null ||
-      features.hrv_ms != null ||
-      features.respiration_rate != null ||
-      features.skin_temperature_c != null ||
-      features.fatigue_physical_strain != null
-    );
+  async predictWelfareRisk(features, options = {}) {
+    const qualityGate = this.validateDataQuality(features, options);
+
+    // If data quality gate flags evidence as insufficient or invalid, strictly suppress guessing
+    if (qualityGate.isEvidenceInsufficient) {
+      let reason = 'Evidence sufficiency criteria not met.';
+      if (qualityGate.issues.length > 0) {
+        reason = qualityGate.issues[0];
+      }
+      return this.synthesizeUndetermined(features, reason, qualityGate);
+    }
+
+    const isWearableUsable = qualityGate.checks.incompleteWearableData.passed &&
+                             qualityGate.checks.staleSensorData.passed &&
+                             Boolean(
+                               features.wearable_synced ||
+                               features.resting_heart_rate != null ||
+                               features.hrv_ms != null ||
+                               features.respiration_rate != null ||
+                               features.skin_temperature_c != null ||
+                               features.fatigue_physical_strain != null
+                             );
 
     const hasPSS = features.pss_score !== undefined && features.pss_score !== null && !isNaN(Number(features.pss_score));
 
-    const hasWorkload = features.workload_hours != null || features.work_pressure_rating != null;
-    const hasDuty = features.prolonged_duty_hours != null || features.duty_duration_hours != null || features.night_duty_hours != null || features.shift_continuity_days != null || features.consecutive_duty_days != null || Boolean(features.duty_type);
-    const hasRest = features.recovery_sleep_hours != null || features.rest_interval_hours != null || Boolean(features.recovery_pattern);
-    const hasOperational = hasWorkload || hasDuty || hasRest;
-
-    // Pathway 4: Insufficient evidence -> UNDETERMINED
-    // "Never guess a welfare concern when evidence is insufficient."
-    if ((!hasWearable && !hasPSS) || !hasOperational) {
-      return this.synthesizeUndetermined(
-        features,
-        (!hasWearable && !hasPSS)
-          ? 'Neither wearable biometric telemetry nor PSS-10 self-check is available. Never guessing welfare concern when evidence is insufficient.'
-          : 'Operational duty and workload logs are absent. Welfare analysis requires operational context.'
-      );
-    }
-
     // Pathway 3: Both wearable and PSS available -> Dual-Model consensus through Decision Layer
-    if (hasWearable && hasPSS) {
+    if (isWearableUsable && hasPSS) {
       try {
         const response = await this.client.post('/predict', features);
         if (response.data && response.data.success) {
           const resData = response.data.data;
-          if (!resData.decisionLayer) {
-            resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
-          }
+          resData.decisionLayer = this.synthesizeDecisionLayer(features, resData, qualityGate);
+          this.attachQualityGateToPrediction(resData, qualityGate);
           return resData;
         }
       } catch (err) {
         console.warn('[ML Client] Remote Dual-Model /predict call failed. Using Embedded Dual-Model Consensus. Error:', err.message);
       }
-      return this.calculateEmbeddedDualModelPrediction(features);
+      const resData = this.calculateEmbeddedDualModelPrediction(features);
+      this.attachQualityGateToPrediction(resData, qualityGate);
+      return resData;
     }
 
     // Pathway 1: Wearable + operational data available (no PSS) -> Model 1
-    if (hasWearable && !hasPSS) {
+    if (isWearableUsable && !hasPSS) {
       try {
         const response = await this.client.post('/predict/model1', features);
         if (response.data && response.data.success) {
           const resData = response.data.data;
-          if (!resData.decisionLayer) {
-            resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
-          }
+          resData.decisionLayer = this.synthesizeDecisionLayer(features, resData, qualityGate);
+          this.attachQualityGateToPrediction(resData, qualityGate);
           return resData;
         }
       } catch (err) {
         console.warn('[ML Client] Remote Model 1 call failed for sensor checkin. Using Embedded Model 1 Engine. Error:', err.message);
       }
-      return this.calculateEmbeddedPrediction(features);
+      const resData = this.calculateEmbeddedPrediction(features);
+      this.attachQualityGateToPrediction(resData, qualityGate);
+      return resData;
     }
 
     // Pathway 2: No wearable, but PSS-10 + operational data available -> Model 2
-    if (!hasWearable && hasPSS) {
+    if (hasPSS) {
       try {
         const response = await this.client.post('/predict/model2', features);
         if (response.data && response.data.success) {
           const resData = response.data.data;
-          if (!resData.decisionLayer) {
-            resData.decisionLayer = this.synthesizeDecisionLayer(features, resData);
-          }
+          resData.decisionLayer = this.synthesizeDecisionLayer(features, resData, qualityGate);
+          this.attachQualityGateToPrediction(resData, qualityGate);
           return resData;
         }
       } catch (err) {
         console.warn('[ML Client] Remote Model 2 call failed. Using Embedded Model 2 Engine. Error:', err.message);
       }
-      return this.calculateEmbeddedPrediction(features);
+      const resData = this.calculateEmbeddedPrediction(features);
+      this.attachQualityGateToPrediction(resData, qualityGate);
+      return resData;
     }
 
-    return this.synthesizeUndetermined(features, 'Evidence sufficiency criteria not met.');
+    return this.synthesizeUndetermined(features, 'Evidence sufficiency criteria not met.', qualityGate);
+  }
+
+  attachQualityGateToPrediction(resData, qualityGate) {
+    if (!resData || !qualityGate) return;
+    resData.dataQuality = qualityGate.dataQuality;
+    resData.dataQualityDisplay = qualityGate.dataQualityDisplay;
+    resData.baselineStatus = qualityGate.baselineStatus;
+    resData.baselineStatusDisplay = qualityGate.baselineStatusDisplay;
+    resData.predictionStatus = qualityGate.predictionStatus;
+    resData.predictionStatusDisplay = qualityGate.predictionStatusDisplay;
+    resData.dataAvailableCount = qualityGate.dataAvailableCount;
+    resData.dataAvailableTotal = qualityGate.dataAvailableTotal;
+    resData.dataAvailableDisplay = qualityGate.dataAvailableDisplay;
+    resData.insufficientEvidenceNotice = qualityGate.insufficientEvidenceNotice;
+    resData.dataQualityGate = qualityGate;
   }
 
   calculateEmbeddedPrediction(checkinData) {
@@ -471,7 +486,203 @@ class MLClientService {
       topDrivers: decisionLayer.mainContributors.filter(m => m.isRiskDriver).map(m => m.directionalTitle).slice(0, 4),
       requiresHumanReview: decisionLayer.humanWelfareReview.requiresHumanReview,
       humanReviewPriority: decisionLayer.humanWelfareReview.priority,
+      dataQuality: decisionLayer.dataQuality ? decisionLayer.dataQuality.status : 'VERIFIED',
+      dataQualityDisplay: decisionLayer.dataQuality ? decisionLayer.dataQuality.display : 'DATA QUALITY — VERIFIED',
+      baselineStatus: decisionLayer.dataQuality ? decisionLayer.dataQuality.baselineStatus : 'NOT_ESTABLISHED',
+      baselineStatusDisplay: decisionLayer.dataQuality ? decisionLayer.dataQuality.baselineStatusDisplay : 'BASELINE STATUS — NOT ESTABLISHED',
+      predictionStatus: 'ACTIVE',
+      predictionStatusDisplay: 'PREDICTION STATUS — ACTIVE',
+      dataQualityGate: decisionLayer.dataQualityGate || null,
       decisionLayer
+    };
+  }
+
+  validateDataQuality(features = {}, options = {}) {
+    const issues = [];
+    const checks = {
+      missingInputs: { passed: true, issues: [] },
+      invalidValues: { passed: true, issues: [] },
+      staleSensorData: { passed: true, isStale: false, ageHours: null, issues: [] },
+      incompleteWearableData: { passed: true, isIncomplete: false, issues: [] },
+      insufficientHistoricalData: { passed: true, baselineEstablished: false, historyCount: 0, issues: [] }
+    };
+
+    if (!features || typeof features !== 'object' || Object.keys(features).length === 0) {
+      checks.missingInputs.passed = false;
+      checks.missingInputs.issues.push('Check-in payload is empty');
+      issues.push('Missing inputs: check-in payload is completely empty');
+    }
+
+    // 1. Missing Inputs Check
+    const hasWorkload = (features.workload_hours != null && !isNaN(Number(features.workload_hours))) || 
+                        (features.work_pressure_rating != null && !isNaN(Number(features.work_pressure_rating)));
+    const hasDuty = (features.prolonged_duty_hours != null && !isNaN(Number(features.prolonged_duty_hours))) ||
+                    (features.duty_duration_hours != null && !isNaN(Number(features.duty_duration_hours))) ||
+                    (features.night_duty_hours != null && !isNaN(Number(features.night_duty_hours))) ||
+                    (features.shift_continuity_days != null && !isNaN(Number(features.shift_continuity_days))) ||
+                    (features.consecutive_duty_days != null && !isNaN(Number(features.consecutive_duty_days))) ||
+                    (features.duty_type && String(features.duty_type).trim().toLowerCase() !== 'none' && String(features.duty_type).trim().toLowerCase() !== 'null');
+    const hasRest = (features.recovery_sleep_hours != null && !isNaN(Number(features.recovery_sleep_hours))) ||
+                    (features.rest_interval_hours != null && !isNaN(Number(features.rest_interval_hours))) ||
+                    (features.recovery_pattern && String(features.recovery_pattern).trim().toLowerCase() !== 'none' && String(features.recovery_pattern).trim().toLowerCase() !== 'null');
+    const hasOperational = hasWorkload || hasDuty || hasRest;
+
+    const hasPSS = features.pss_score !== undefined && features.pss_score !== null && !isNaN(Number(features.pss_score));
+    const hasWearableRaw = Boolean(
+      features.wearable_synced ||
+      features.resting_heart_rate != null ||
+      features.hrv_ms != null ||
+      features.respiration_rate != null ||
+      features.skin_temperature_c != null ||
+      features.fatigue_physical_strain != null
+    );
+
+    if (!hasOperational) {
+      checks.missingInputs.passed = false;
+      const msg = 'Missing operational inputs (workload, duty exposure, or rest/recovery parameters absent)';
+      checks.missingInputs.issues.push(msg);
+      issues.push(msg);
+    }
+    if (!hasPSS && !hasWearableRaw) {
+      checks.missingInputs.passed = false;
+      const msg = 'Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided';
+      checks.missingInputs.issues.push(msg);
+      issues.push(msg);
+    }
+
+    // 2. Invalid Values Check
+    const validateRange = (key, val, min, max, label, unit = '') => {
+      if (val !== undefined && val !== null && val !== '') {
+        const num = Number(val);
+        if (isNaN(num) || num < min || num > max) {
+          const msg = `Invalid ${label} value (${val}${unit ? ' ' + unit : ''}): outside authorized bounds [${min}-${max}${unit ? ' ' + unit : ''}]`;
+          checks.invalidValues.passed = false;
+          checks.invalidValues.issues.push(msg);
+          issues.push(msg);
+          return false;
+        }
+      }
+      return true;
+    };
+
+    validateRange('resting_heart_rate', features.resting_heart_rate, 35, 240, 'resting heart rate', 'bpm');
+    validateRange('hrv_ms', features.hrv_ms, 5, 350, 'heart rate variability', 'ms');
+    validateRange('respiration_rate', features.respiration_rate, 4, 60, 'respiration rate', 'bpm');
+    validateRange('skin_temperature_c', features.skin_temperature_c, 25, 45, 'skin temperature', '°C');
+    validateRange('fatigue_physical_strain', features.fatigue_physical_strain, 0, 100, 'physical strain index');
+    validateRange('recovery_sleep_hours', features.recovery_sleep_hours, 0, 24, 'recovery sleep hours', 'hrs');
+    validateRange('workload_hours', features.workload_hours, 0, 168, 'workload hours', 'hrs/week');
+    validateRange('work_pressure_rating', features.work_pressure_rating, 0, 10, 'work pressure rating');
+    validateRange('prolonged_duty_hours', features.prolonged_duty_hours, 0, 168, 'prolonged duty duration', 'hrs');
+    validateRange('night_duty_hours', features.night_duty_hours, 0, 168, 'night duty duration', 'hrs');
+    validateRange('shift_continuity_days', features.shift_continuity_days, 0, 365, 'shift continuity', 'days');
+    validateRange('pss_score', features.pss_score, 0, 40, 'PSS-10 score');
+
+    // 3. Stale Sensor Data Check
+    let isSensorStale = false;
+    if (features.wearable_stale === true || features.sensor_stale === true || features.stale === true) {
+      isSensorStale = true;
+    }
+    const sensorTs = features.sensor_timestamp || features.wearable_last_synced || features.wearable_synced_at || features.wearableTimestamp;
+    if (sensorTs) {
+      const parsedTs = new Date(sensorTs).getTime();
+      if (!isNaN(parsedTs)) {
+        const ageHours = (Date.now() - parsedTs) / (1000 * 60 * 60);
+        checks.staleSensorData.ageHours = Number(ageHours.toFixed(1));
+        if (ageHours > 48 || ageHours < -24) {
+          isSensorStale = true;
+        }
+      }
+    }
+    if (isSensorStale && hasWearableRaw) {
+      checks.staleSensorData.passed = false;
+      checks.staleSensorData.isStale = true;
+      const msg = `Stale sensor data detected: wearable telemetry timestamp is older than 48 hours (${checks.staleSensorData.ageHours != null ? checks.staleSensorData.ageHours + 'h' : 'expired'})`;
+      checks.staleSensorData.issues.push(msg);
+      issues.push(msg);
+    }
+
+    // 4. Incomplete Wearable Data Check
+    let isIncompleteWearable = false;
+    const hasAnyBio = (features.resting_heart_rate != null && !isNaN(Number(features.resting_heart_rate))) ||
+                      (features.hrv_ms != null && !isNaN(Number(features.hrv_ms))) ||
+                      (features.respiration_rate != null && !isNaN(Number(features.respiration_rate))) ||
+                      (features.skin_temperature_c != null && !isNaN(Number(features.skin_temperature_c))) ||
+                      (features.fatigue_physical_strain != null && !isNaN(Number(features.fatigue_physical_strain)));
+
+    const isClaimedWearable = Boolean(features.wearable_synced || features.hasWearable || features.wearable_mode);
+    if (isClaimedWearable && !hasAnyBio) {
+      isIncompleteWearable = true;
+      const msg = 'Incomplete wearable telemetry: sync asserted but physiological sensor readings are absent';
+      checks.incompleteWearableData.passed = false;
+      checks.incompleteWearableData.isIncomplete = true;
+      checks.incompleteWearableData.issues.push(msg);
+      issues.push(msg);
+    }
+
+    // 5. Insufficient Historical Data Check
+    const historyCount = options.checkInHistoryCount != null 
+      ? Number(options.checkInHistoryCount)
+      : (features.checkInHistoryCount != null ? Number(features.checkInHistoryCount) : (options.personalBaseline?.baselineEstablished ? 2 : (features.priorCheckInsCount != null ? Number(features.priorCheckInsCount) : 0)));
+    const baselineEstablished = Boolean(options.personalBaseline?.baselineEstablished || historyCount >= 2);
+    checks.insufficientHistoricalData.baselineEstablished = baselineEstablished;
+    checks.insufficientHistoricalData.historyCount = historyCount;
+    if (!baselineEstablished) {
+      checks.insufficientHistoricalData.passed = false;
+      const msg = `Insufficient historical data: personal baseline requires at least 2 check-ins (currently ${historyCount})`;
+      checks.insufficientHistoricalData.issues.push(msg);
+    }
+
+    // Evaluate Data Availability
+    const dataAvail = this.evaluateDataAvailability(features);
+    const dataAvailableCount = dataAvail.count;
+    const dataAvailableTotal = 5;
+    const dataAvailableDisplay = `DATA AVAILABLE — ${dataAvailableCount} / ${dataAvailableTotal}`;
+
+    const baselineStatus = baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED';
+    const baselineStatusDisplay = `BASELINE STATUS — ${baselineStatus === 'ESTABLISHED' ? 'ESTABLISHED' : 'NOT ESTABLISHED'}`;
+
+    // Evaluate Data Quality
+    let dataQuality = 'VERIFIED';
+    if (!checks.missingInputs.passed || !checks.invalidValues.passed) {
+      dataQuality = 'INSUFFICIENT';
+    } else if (!checks.staleSensorData.passed || !checks.incompleteWearableData.passed) {
+      dataQuality = 'DEGRADED';
+    } else if (dataAvailableCount < 2) {
+      dataQuality = 'INSUFFICIENT';
+    }
+
+    const dataQualityDisplay = `DATA QUALITY — ${dataQuality}`;
+
+    // Zero-guessing evaluation:
+    // When evidence is insufficient, never guess a welfare concern.
+    const isWearableUsable = hasWearableRaw && !isSensorStale && !isIncompleteWearable;
+    const isEvidenceInsufficient = (
+      !hasOperational ||
+      (!hasPSS && !isWearableUsable) ||
+      !checks.invalidValues.passed ||
+      dataQuality === 'INSUFFICIENT'
+    );
+
+    const predictionStatus = isEvidenceInsufficient ? 'INSUFFICIENT EVIDENCE' : 'ACTIVE';
+    const predictionStatusDisplay = `PREDICTION STATUS — ${predictionStatus}`;
+    const insufficientNotice = 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.';
+
+    return {
+      passed: !isEvidenceInsufficient,
+      isEvidenceInsufficient,
+      dataQuality,
+      dataQualityDisplay,
+      dataAvailableCount,
+      dataAvailableTotal,
+      dataAvailableDisplay,
+      baselineStatus,
+      baselineStatusDisplay,
+      predictionStatus,
+      predictionStatusDisplay,
+      insufficientEvidenceNotice: insufficientNotice,
+      issues,
+      checks
     };
   }
 
@@ -583,7 +794,8 @@ class MLClientService {
     };
   }
 
-  synthesizeDecisionLayer(checkinData, mlResult) {
+  synthesizeDecisionLayer(checkinData, mlResult, qualityGate = null) {
+    const qGate = qualityGate || this.validateDataQuality(checkinData || {});
     const dataAvail = this.evaluateDataAvailability(checkinData);
     const evidenceSources = dataAvail.availableSources;
     const hasWearable = evidenceSources.includes('WEARABLE');
@@ -768,16 +980,29 @@ class MLClientService {
       evidenceStrength,
       mainContributors,
       humanWelfareReview,
+      dataQualityGate: qGate,
+      dataQuality: {
+        status: qGate.dataQuality,
+        display: qGate.dataQualityDisplay,
+        baselineStatus: qGate.baselineStatus,
+        baselineStatusDisplay: qGate.baselineStatusDisplay,
+        predictionStatus: qGate.predictionStatus,
+        predictionStatusDisplay: qGate.predictionStatusDisplay,
+        dataAvailableDisplay: qGate.dataAvailableDisplay,
+        issues: qGate.issues,
+        checks: qGate.checks
+      },
       evaluatedAt: new Date().toISOString(),
       decisionEngineVersion: 'v2.2.0-decision-layer'
     };
   }
 
-  synthesizeUndetermined(features, reason) {
-    const defaultReason = reason || 'Insufficient authorized evidence to determine welfare concern reliably.';
+  synthesizeUndetermined(features, reason, qualityGate = null) {
+    const qGate = qualityGate || this.validateDataQuality(features || {});
+    const defaultReason = reason || (qGate.issues.length > 0 ? qGate.issues[0] : 'Insufficient authorized evidence to determine welfare concern reliably.');
     const dataAvail = this.evaluateDataAvailability(features || {});
-    const count = dataAvail.count;
-    const availDisplay = dataAvail.display;
+    const count = qGate.dataAvailableCount != null ? qGate.dataAvailableCount : dataAvail.count;
+    const availDisplay = qGate.dataAvailableDisplay || dataAvail.display;
     const availSources = dataAvail.availableSources;
 
     const availabilityScore = Number((count / 5.0).toFixed(2));
@@ -816,6 +1041,18 @@ class MLClientService {
         missingEvidence: ['Operational duty context or authorized biometrics / self-check']
       },
       mainContributors: [],
+      dataQualityGate: qGate,
+      dataQuality: {
+        status: qGate.dataQuality,
+        display: qGate.dataQualityDisplay,
+        baselineStatus: qGate.baselineStatus,
+        baselineStatusDisplay: qGate.baselineStatusDisplay,
+        predictionStatus: 'INSUFFICIENT EVIDENCE',
+        predictionStatusDisplay: 'PREDICTION STATUS — INSUFFICIENT EVIDENCE',
+        dataAvailableDisplay: availDisplay,
+        issues: qGate.issues,
+        checks: qGate.checks
+      },
       humanWelfareReview: {
         requiresHumanReview: false,
         priority: 'NONE',
@@ -840,6 +1077,14 @@ class MLClientService {
       dataAvailableCount: count,
       dataAvailableTotal: 5,
       dataAvailableDisplay: availDisplay,
+      dataQuality: qGate.dataQuality,
+      dataQualityDisplay: qGate.dataQualityDisplay,
+      baselineStatus: qGate.baselineStatus,
+      baselineStatusDisplay: qGate.baselineStatusDisplay,
+      predictionStatus: 'INSUFFICIENT EVIDENCE',
+      predictionStatusDisplay: 'PREDICTION STATUS — INSUFFICIENT EVIDENCE',
+      insufficientEvidenceNotice: 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.',
+      guidanceText: 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.',
       evidenceSources: availSources,
       evidenceCount: availSources.length,
       topDrivers: [],
@@ -848,6 +1093,7 @@ class MLClientService {
       requiresHumanReview: false,
       humanReviewPriority: 'NONE',
       decisionLayer,
+      dataQualityGate: qGate,
       analyzedAt: new Date().toISOString(),
       disclaimer: 'EVIDENCE INSUFFICIENT: Never guess a welfare concern when evidence is insufficient. Check-in must include authorized operational data alongside either wearable sensor telemetry or self-check input.'
     };

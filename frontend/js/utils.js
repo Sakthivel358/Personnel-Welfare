@@ -121,15 +121,42 @@ const Utils = {
     return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.12); color:var(--text-secondary); border:1px solid var(--border-color);">DATA AVAILABLE — ${c} / ${t}</span>`;
   },
 
+  getDataQualityDisplay(quality) {
+    const q = (quality || 'VERIFIED').toUpperCase();
+    if (q === 'VERIFIED') {
+      return `<span class="badge badge-low" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">DATA QUALITY — VERIFIED</span>`;
+    } else if (q === 'DEGRADED') {
+      return `<span class="badge badge-moderate" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">DATA QUALITY — DEGRADED</span>`;
+    }
+    return `<span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">DATA QUALITY — INSUFFICIENT</span>`;
+  },
+
+  getBaselineStatusDisplay(status) {
+    const s = (status || 'NOT_ESTABLISHED').toUpperCase();
+    if (s === 'ESTABLISHED') {
+      return `<span class="badge badge-low" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">BASELINE STATUS — ESTABLISHED</span>`;
+    }
+    return `<span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">BASELINE STATUS — NOT ESTABLISHED</span>`;
+  },
+
+  getPredictionStatusDisplay(status) {
+    const s = (status || 'ACTIVE').toUpperCase();
+    if (s === 'ACTIVE') {
+      return `<span class="badge badge-low" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">PREDICTION STATUS — ACTIVE</span>`;
+    }
+    return `<span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">PREDICTION STATUS — INSUFFICIENT EVIDENCE</span>`;
+  },
+
   getInsufficientEvidenceNoticeHtml() {
     return `
       <div class="alert alert-neutral text-center p-3 w-100" style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:8px;">
         <div class="d-flex justify-center gap-1 flex-wrap mb-2">
           <span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — UNDETERMINED</span>
           <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">INSUFFICIENT EVIDENCE</span>
+          <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">DATA QUALITY — INSUFFICIENT</span>
         </div>
         <p class="mb-0" style="font-weight:600; font-size:0.92rem; color:var(--text-primary);">
-          Additional authorized data or a welfare check-in is required.
+          INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.
         </p>
       </div>
     `;

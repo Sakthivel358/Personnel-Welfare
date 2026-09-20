@@ -200,12 +200,17 @@
             const evidenceBadge = Utils.getEvidenceStrengthDisplay(res.data.evidenceStrength);
             const avCount = res.data.dataAvailableCount != null ? res.data.dataAvailableCount : (res.data.evidenceCount || 0);
             const dataAvailBadge = Utils.getDataAvailableDisplay(avCount, 5);
+            const dq = res.data.dataQuality || res.dataQuality || (isUndet ? 'INSUFFICIENT' : 'VERIFIED');
+            const bs = res.data.baselineStatus || res.baselineStatus || (res.data.personalBaseline && res.data.personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED');
+            const ps = res.data.predictionStatus || res.predictionStatus || (isUndet ? 'INSUFFICIENT EVIDENCE' : 'ACTIVE');
 
             dualBadges.innerHTML = `
               ${concernBadge}
               ${evidenceBadge}
               ${dataAvailBadge}
-              ${Utils.getPersonalBaselineDisplay(res.data.personalBaseline)}
+              ${Utils.getDataQualityDisplay(dq)}
+              ${Utils.getBaselineStatusDisplay(bs)}
+              ${Utils.getPredictionStatusDisplay(ps)}
             `;
           }
           
@@ -226,9 +231,9 @@
             document.getElementById('factors-detailed-list').innerHTML = `
               <div class="card text-center py-4" style="background:var(--bg-card-subtle); border-radius:8px;">
                 <div style="font-size:1.5rem; margin-bottom:0.4rem;">⚖️</div>
-                <div style="font-weight:700; color:var(--text-primary); margin-bottom:0.25rem;">Insufficient Evidence</div>
+                <div style="font-weight:700; color:var(--text-primary); margin-bottom:0.25rem;">INSUFFICIENT EVIDENCE</div>
                 <div class="text-muted" style="font-size:0.85rem; max-width:420px; margin:0 auto 1rem;">
-                  Additional authorized data or a welfare check-in is required to calculate statistical factor attribution.
+                  INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.
                 </div>
                 <div>
                   <a href="/stress-checkin.html" class="btn btn-sm btn-primary">Submit Check-in</a>
@@ -236,7 +241,7 @@
               </div>
             `;
             const tb = document.getElementById('factors-table-body');
-            if (tb) tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Evidence insufficient. Additional authorized data or a welfare check-in is required.</td></tr>`;
+            if (tb) tb.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.</td></tr>`;
             return;
           }
 
@@ -253,6 +258,9 @@
               ${Utils.getWelfareConcernDisplay('UNDETERMINED')}
               ${Utils.getEvidenceStrengthDisplay('INSUFFICIENT')}
               ${Utils.getDataAvailableDisplay(0, 5)}
+              ${Utils.getDataQualityDisplay('INSUFFICIENT')}
+              ${Utils.getBaselineStatusDisplay('NOT_ESTABLISHED')}
+              ${Utils.getPredictionStatusDisplay('INSUFFICIENT EVIDENCE')}
             `;
           }
 

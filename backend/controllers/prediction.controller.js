@@ -44,6 +44,16 @@ const getLatestPrediction = async (req, res, next) => {
         dataAvailableTotal: 5,
         dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
         dataAvailableText: 'Data Available: 0/5',
+        dataQuality: 'INSUFFICIENT',
+        dataQualityDisplay: 'DATA QUALITY — INSUFFICIENT',
+        dataQualityText: 'Data Quality: INSUFFICIENT',
+        baselineStatus: personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED',
+        baselineStatusDisplay: `BASELINE STATUS — ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT ESTABLISHED'}`,
+        baselineStatusText: `Baseline Status: ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED'}`,
+        predictionStatus: 'INSUFFICIENT EVIDENCE',
+        predictionStatusDisplay: 'PREDICTION STATUS — INSUFFICIENT EVIDENCE',
+        predictionStatusText: 'Prediction Status: INSUFFICIENT EVIDENCE',
+        insufficientEvidenceNotice: 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.',
         mainContributors: [],
         contributorsSummary: 'INSUFFICIENT EVIDENCE',
         contributorsText: 'Contributors: INSUFFICIENT EVIDENCE',
@@ -74,6 +84,16 @@ const getLatestPrediction = async (req, res, next) => {
           dataAvailableTotal: 5,
           dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
           dataAvailableText: 'Data Available: 0/5',
+          dataQuality: 'INSUFFICIENT',
+          dataQualityDisplay: 'DATA QUALITY — INSUFFICIENT',
+          dataQualityText: 'Data Quality: INSUFFICIENT',
+          baselineStatus: personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED',
+          baselineStatusDisplay: `BASELINE STATUS — ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT ESTABLISHED'}`,
+          baselineStatusText: `Baseline Status: ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED'}`,
+          predictionStatus: 'INSUFFICIENT EVIDENCE',
+          predictionStatusDisplay: 'PREDICTION STATUS — INSUFFICIENT EVIDENCE',
+          predictionStatusText: 'Prediction Status: INSUFFICIENT EVIDENCE',
+          insufficientEvidenceNotice: 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.',
           mainContributors: [],
           contributorsSummary: 'INSUFFICIENT EVIDENCE',
           contributorsText: 'Contributors: INSUFFICIENT EVIDENCE',
@@ -100,6 +120,16 @@ const getLatestPrediction = async (req, res, next) => {
             dataAvailableTotal: 5,
             dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
             dataAvailableText: 'Data Available: 0/5',
+            dataQuality: 'INSUFFICIENT',
+            dataQualityDisplay: 'DATA QUALITY — INSUFFICIENT',
+            dataQualityText: 'Data Quality: INSUFFICIENT',
+            baselineStatus: personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED',
+            baselineStatusDisplay: `BASELINE STATUS — ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT ESTABLISHED'}`,
+            baselineStatusText: `Baseline Status: ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED'}`,
+            predictionStatus: 'INSUFFICIENT EVIDENCE',
+            predictionStatusDisplay: 'PREDICTION STATUS — INSUFFICIENT EVIDENCE',
+            predictionStatusText: 'Prediction Status: INSUFFICIENT EVIDENCE',
+            insufficientEvidenceNotice: 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.',
             mainContributors: [],
             contributorsSummary: 'INSUFFICIENT EVIDENCE',
             contributorsText: 'Contributors: INSUFFICIENT EVIDENCE',
@@ -160,6 +190,16 @@ const getLatestPrediction = async (req, res, next) => {
       nextAction = 'Observe active fatigue signs, maintain balanced sleep intervals, and schedule brief recovery period.';
     }
 
+    const dataQuality = latest.dataQuality || (isUndet ? 'INSUFFICIENT' : 'VERIFIED');
+    const dataQualityDisplay = latest.dataQualityDisplay || `DATA QUALITY — ${dataQuality}`;
+    const dataQualityText = `Data Quality: ${dataQuality}`;
+    const baselineStatusDisplay = `BASELINE STATUS — ${personalBaselineStatus === 'ESTABLISHED' ? 'ESTABLISHED' : 'NOT ESTABLISHED'}`;
+    const baselineStatusText = `Baseline Status: ${personalBaselineStatus}`;
+    const predictionStatus = isUndet ? 'INSUFFICIENT EVIDENCE' : (latest.predictionStatus || 'ACTIVE');
+    const predictionStatusDisplay = latest.predictionStatusDisplay || `PREDICTION STATUS — ${predictionStatus}`;
+    const predictionStatusText = `Prediction Status: ${predictionStatus}`;
+    const insufficientEvidenceNotice = 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.';
+
     return res.status(200).json({
       success: true,
       hasPrediction: true,
@@ -175,6 +215,16 @@ const getLatestPrediction = async (req, res, next) => {
       dataAvailableCount: count,
       dataAvailableTotal: 5,
       dataAvailableText,
+      dataQuality,
+      dataQualityDisplay,
+      dataQualityText,
+      baselineStatus: personalBaselineStatus,
+      baselineStatusDisplay,
+      baselineStatusText,
+      predictionStatus,
+      predictionStatusDisplay,
+      predictionStatusText,
+      insufficientEvidenceNotice,
       mainContributors: rawContribs,
       contributorsSummary: contribsSummary,
       contributorsText,
@@ -210,6 +260,16 @@ const getLatestPrediction = async (req, res, next) => {
         dataAvailableTotal: 5,
         dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
         dataAvailableText,
+        dataQuality,
+        dataQualityDisplay,
+        dataQualityText,
+        baselineStatus: personalBaselineStatus,
+        baselineStatusDisplay,
+        baselineStatusText,
+        predictionStatus,
+        predictionStatusDisplay,
+        predictionStatusText,
+        insufficientEvidenceNotice,
         mainContributors: rawContribs,
         contributorsSummary: contribsSummary,
         contributorsText,
@@ -243,6 +303,16 @@ const getLatestPrediction = async (req, res, next) => {
           dataAvailableTotal: 5,
           dataAvailableDisplay: latest.dataAvailableDisplay || `DATA AVAILABLE — ${count} / 5`,
           dataAvailableText,
+          dataQuality,
+          dataQualityDisplay,
+          dataQualityText,
+          baselineStatus: personalBaselineStatus,
+          baselineStatusDisplay,
+          baselineStatusText,
+          predictionStatus,
+          predictionStatusDisplay,
+          predictionStatusText,
+          insufficientEvidenceNotice,
           mainContributors: rawContribs,
           contributorsSummary: contribsSummary,
           contributorsText,
@@ -365,12 +435,25 @@ const getExplainability = async (req, res, next) => {
         data: null,
         welfareConcern: 'UNDETERMINED',
         welfareConcernText: 'Welfare Concern: UNDETERMINED',
+        welfareConcernDisplay: 'WELFARE CONCERN — UNDETERMINED',
         evidenceStrength: 'INSUFFICIENT',
         evidenceNotice: 'INSUFFICIENT EVIDENCE',
         evidenceText: 'Evidence: INSUFFICIENT EVIDENCE',
+        evidenceDisplay: 'EVIDENCE — INSUFFICIENT',
         dataAvailableCount: 0,
         dataAvailableTotal: 5,
         dataAvailableText: 'Data Available: 0/5',
+        dataAvailableDisplay: 'DATA AVAILABLE — 0 / 5',
+        dataQuality: 'INSUFFICIENT',
+        dataQualityDisplay: 'DATA QUALITY — INSUFFICIENT',
+        dataQualityText: 'Data Quality: INSUFFICIENT',
+        baselineStatus: personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED',
+        baselineStatusDisplay: `BASELINE STATUS — ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT ESTABLISHED'}`,
+        baselineStatusText: `Baseline Status: ${personalBaseline.baselineEstablished ? 'ESTABLISHED' : 'NOT_ESTABLISHED'}`,
+        predictionStatus: 'INSUFFICIENT EVIDENCE',
+        predictionStatusDisplay: 'PREDICTION STATUS — INSUFFICIENT EVIDENCE',
+        predictionStatusText: 'Prediction Status: INSUFFICIENT EVIDENCE',
+        insufficientEvidenceNotice: 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.',
         contributorsSummary: 'INSUFFICIENT EVIDENCE',
         contributorsText: 'Contributors: INSUFFICIENT EVIDENCE',
         personalBaseline,
@@ -398,8 +481,32 @@ const getExplainability = async (req, res, next) => {
       ? `Personal Baseline: Established (${personalBaseline.totalCheckInCount} check-ins)` 
       : 'Personal Baseline: Baseline not established yet (requires ≥2 check-ins)';
 
+    const dataQuality = latest.dataQuality || (isUndet ? 'INSUFFICIENT' : 'VERIFIED');
+    const dataQualityDisplay = latest.dataQualityDisplay || `DATA QUALITY — ${dataQuality}`;
+    const dataQualityText = `Data Quality: ${dataQuality}`;
+    const baselineStatusDisplay = `BASELINE STATUS — ${personalBaselineStatus === 'ESTABLISHED' ? 'ESTABLISHED' : 'NOT ESTABLISHED'}`;
+    const baselineStatusText = `Baseline Status: ${personalBaselineStatus}`;
+    const predictionStatus = isUndet ? 'INSUFFICIENT EVIDENCE' : (latest.predictionStatus || 'ACTIVE');
+    const predictionStatusDisplay = latest.predictionStatusDisplay || `PREDICTION STATUS — ${predictionStatus}`;
+    const predictionStatusText = `Prediction Status: ${predictionStatus}`;
+    const insufficientEvidenceNotice = 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.';
+
     return res.status(200).json({
       success: true,
+      dataQuality,
+      dataQualityDisplay,
+      dataQualityText,
+      baselineStatus: personalBaselineStatus,
+      baselineStatusDisplay,
+      baselineStatusText,
+      predictionStatus,
+      predictionStatusDisplay,
+      predictionStatusText,
+      insufficientEvidenceNotice,
+      dataAvailableCount: count,
+      dataAvailableTotal: 5,
+      dataAvailableDisplay: latest.dataAvailableDisplay || (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.dataAvailableDisplay : `DATA AVAILABLE — ${count} / 5`),
+      dataAvailableText,
       data: {
         predictionId: latest._id,
         concernLevel,
@@ -418,6 +525,16 @@ const getExplainability = async (req, res, next) => {
         dataAvailableTotal: 5,
         dataAvailableText,
         dataAvailableDisplay: latest.dataAvailableDisplay || (latest.decisionLayer && latest.decisionLayer.evidenceStrength ? latest.decisionLayer.evidenceStrength.dataAvailableDisplay : `DATA AVAILABLE — ${count} / 5`),
+        dataQuality,
+        dataQualityDisplay,
+        dataQualityText,
+        baselineStatus: personalBaselineStatus,
+        baselineStatusDisplay,
+        baselineStatusText,
+        predictionStatus,
+        predictionStatusDisplay,
+        predictionStatusText,
+        insufficientEvidenceNotice,
         decisionLayer: latest.decisionLayer || null,
         mainContributors: rawContribs,
         contributingIndicators: rawContribs,

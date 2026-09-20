@@ -221,8 +221,15 @@ const submitCheckIn = async (req, res, next) => {
       evidence_sources: evidenceSources
     };
 
-    // 1. Call real Random Forest via FastAPI ML Service
-    const mlPrediction = await mlClient.predictWelfareRisk(checkInPayload);
+    // 1. Call real Random Forest via FastAPI ML Service with Data Quality Gate validation
+    const mlPrediction = await mlClient.predictWelfareRisk(checkInPayload, {
+      checkInHistoryCount: priorCheckIns.length,
+      priorCheckInsCount: priorCheckIns.length,
+      personalBaseline: {
+        baselineEstablished: priorCheckIns.length >= 2,
+        baselineCheckInCount: priorCheckIns.length
+      }
+    });
 
     // 2. Persist CheckIn Record in MongoDB / Datastore
     const newCheckIn = await db.CheckIns.create({
@@ -349,6 +356,14 @@ const submitCheckIn = async (req, res, next) => {
       dataAvailableCount: mlPrediction.dataAvailableCount != null ? mlPrediction.dataAvailableCount : (decisionLayer && decisionLayer.evidenceStrength ? decisionLayer.evidenceStrength.dataAvailableCount : (mlPrediction.evidenceSources || evidenceSources).length),
       dataAvailableTotal: 5,
       dataAvailableDisplay: mlPrediction.dataAvailableDisplay || (decisionLayer && decisionLayer.evidenceStrength ? decisionLayer.evidenceStrength.dataAvailableDisplay : `DATA AVAILABLE — ${(mlPrediction.evidenceSources || evidenceSources).length} / 5`),
+      dataQuality: mlPrediction.dataQuality || (isUndetermined ? 'INSUFFICIENT' : 'VERIFIED'),
+      dataQualityDisplay: mlPrediction.dataQualityDisplay || (isUndetermined ? 'DATA QUALITY — INSUFFICIENT' : 'DATA QUALITY — VERIFIED'),
+      baselineStatus: mlPrediction.baselineStatus || (priorCheckIns.length >= 2 ? 'ESTABLISHED' : 'NOT_ESTABLISHED'),
+      baselineStatusDisplay: mlPrediction.baselineStatusDisplay || (priorCheckIns.length >= 2 ? 'BASELINE STATUS — ESTABLISHED' : 'BASELINE STATUS — NOT ESTABLISHED'),
+      predictionStatus: mlPrediction.predictionStatus || (isUndetermined ? 'INSUFFICIENT EVIDENCE' : 'ACTIVE'),
+      predictionStatusDisplay: mlPrediction.predictionStatusDisplay || (isUndetermined ? 'PREDICTION STATUS — INSUFFICIENT EVIDENCE' : 'PREDICTION STATUS — ACTIVE'),
+      insufficientEvidenceNotice: 'INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.',
+      dataQualityGate: mlPrediction.dataQualityGate || null,
       decisionLayer: decisionLayer,
       topDrivers: mlPrediction.topDrivers || [],
       contributingFactors: mlPrediction.contributingFactors || [],
