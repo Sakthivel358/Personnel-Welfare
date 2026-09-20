@@ -28,5 +28,50 @@
     "lastConsentUpdatedAt": "2026-09-20T03:02:56.230Z",
     "createdAt": "2026-09-20T03:02:56.231Z",
     "updatedAt": "2026-09-20T03:02:56.231Z"
+  },
+  {
+    "_id": "ca41edf8eb7db00a051656f7",
+    "userId": "2e832c04ac87c250deaf7327",
+    "personnelId": "PER286408",
+    "allowSelfCheckSubjective": true,
+    "allowWearableBiometrics": true,
+    "allowLongitudinalTrends": true,
+    "contributeAnonymizedResearch": true,
+    "telemetryGranularity": "FULL",
+    "pseudonymizeIdentity": true,
+    "consentVersion": "v1.0-2026",
+    "lastConsentUpdatedAt": "2026-09-20T03:18:07.285Z",
+    "createdAt": "2026-09-20T03:18:07.285Z",
+    "updatedAt": "2026-09-20T03:18:07.285Z"
+  },
+  {
+    "_id": "67af3e3e435c1921b6876ac1",
+    "userId": "d100bef62b2e0adea40408aa",
+    "personnelId": "PER314077",
+    "allowSelfCheckSubjective": true,
+    "allowWearableBiometrics": true,
+    "allowLongitudinalTrends": true,
+    "contributeAnonymizedResearch": true,
+    "telemetryGranularity": "FULL",
+    "pseudonymizeIdentity": true,
+    "consentVersion": "v1.0-2026",
+    "lastConsentUpdatedAt": "2026-09-20T03:18:36.007Z",
+    "createdAt": "2026-09-20T03:18:36.007Z",
+    "updatedAt": "2026-09-20T03:18:36.007Z"
+  },
+  {
+    "_id": "adfc6d2728336a6eb392ad4e",
+    "userId": "8d77ed1a58fdc0e5546a44c7",
+    "personnelId": "TEST-P-0523",
+    "allowSelfCheckSubjective": true,
+    "allowWearableBiometrics": false,
+    "allowLongitudinalTrends": true,
+    "contributeAnonymizedResearch": true,
+    "telemetryGranularity": "COARSE",
+    "pseudonymizeIdentity": true,
+    "consentVersion": "v1.0-2026",
+    "lastConsentUpdatedAt": "2026-09-20T03:19:01.494Z",
+    "createdAt": "2026-09-20T03:19:01.495Z",
+    "updatedAt": "2026-09-20T03:19:01.495Z"
   }
 ]

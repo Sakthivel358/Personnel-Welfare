@@ -4,6 +4,7 @@
  */
 const privacyService = require('../services/privacy.service');
 const auditService = require('../services/audit.service');
+const securityMonitoring = require('../services/securityMonitoring.service');
 
 /**
  * GET /api/v1/privacy/sandbox/sample
@@ -250,14 +251,15 @@ const updatePersonnelConsent = async (req, res, next) => {
     } = req.body;
 
     const requestedGranularity = telemetryGranularity || dataMinimizationLevel;
-    const validGranularities = ['FULL', 'COARSE', 'MINIMAL'];
+    const validGranularities = ['FULL', 'COARSE', 'MINIMAL', 'FULL_TELEMETRY', 'COARSE_AGGREGATE', 'MINIMAL_ANONYMIZED'];
     if (requestedGranularity && !validGranularities.includes(requestedGranularity)) {
       return res.status(400).json({
         success: false,
         message: 'Invalid data minimization level. Allowed values: FULL, COARSE, MINIMAL.'
       });
     }
-    const chosenGranularity = requestedGranularity || 'FULL';
+    const normalizedGranularity = requestedGranularity && requestedGranularity.startsWith('FULL') ? 'FULL' : (requestedGranularity && requestedGranularity.startsWith('COARSE') ? 'COARSE' : (requestedGranularity && requestedGranularity.startsWith('MINIMAL') ? 'MINIMAL' : (requestedGranularity || 'FULL')));
+    const chosenGranularity = normalizedGranularity;
 
     const selfCheckVal = allowSelfCheckSubjective !== undefined ? allowSelfCheckSubjective : (allowSelfCheckData !== undefined ? allowSelfCheckData : true);
     const wearableVal = allowWearableBiometrics !== undefined ? allowWearableBiometrics : (allowWearableData !== undefined ? allowWearableData : true);
@@ -306,6 +308,15 @@ const updatePersonnelConsent = async (req, res, next) => {
         }
       });
     }
+
+    await securityMonitoring.recordSecurityConfigChange({
+      ip: req.ip,
+      userId: req.user._id,
+      userRole: req.user.role,
+      action: 'CONSENT_SETTINGS_UPDATED',
+      targetResource: 'Consent',
+      details: { telemetryGranularity: chosenGranularity }
+    });
 
     await auditService.log({
       action: 'CONSENT_SETTINGS_UPDATED',

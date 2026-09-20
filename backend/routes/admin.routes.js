@@ -15,5 +15,7 @@ router.patch('/users/:id/role', adminController.updateUserRole);
 router.put('/users/:id/role', adminController.updateUserRole);
 router.get('/resources', adminController.getWelfareResources);
 router.post('/resources', adminController.createWelfareResource);
+router.get('/security/alerts', adminController.getSecurityAlerts);
+router.get('/security/metrics', adminController.getSecurityMetrics);
 
 module.exports = router;

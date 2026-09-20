@@ -1,0 +1,937 @@
+[
+  {
+    "_id": "d7afede0a131007e671733cd",
+    "alertId": "SEC-1789874086475-16AC52",
+    "type": "REPEATED_FAILED_LOGINS",
+    "severity": "HIGH",
+    "description": "Multiple failed authentication attempts (3) detected from IP ::1.",
+    "ipAddress": "::1",
+    "targetResource": "Authentication",
+    "metadata": {
+      "attemptCount": 3,
+      "identifierMasked": "WRONG_USER***",
+      "reason": "User not found"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:46.475Z",
+    "createdAt": "2026-09-20T03:14:46.475Z",
+    "updatedAt": "2026-09-20T03:14:46.475Z"
+  },
+  {
+    "_id": "4a60a915befe933b325a9203",
+    "alertId": "SEC-1789874086634-935C54",
+    "type": "UNAUTHORIZED_API_ACCESS",
+    "severity": "MEDIUM",
+    "description": "Repeated unauthorized requests (3) to protected API endpoint /api/v1/hrms/my-record without valid credentials.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {
+      "path": "/api/v1/hrms/my-record",
+      "method": "GET",
+      "count": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:46.634Z",
+    "createdAt": "2026-09-20T03:14:46.634Z",
+    "updatedAt": "2026-09-20T03:14:46.634Z"
+  },
+  {
+    "_id": "28d6bf178040a6b82ccd9db9",
+    "alertId": "SEC-1789874086968-3CB1C5",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (2) attempting to access restricted resource /api/v1/admin/metrics.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/metrics",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/metrics",
+      "method": "GET",
+      "failureCount": 2
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:46.968Z",
+    "createdAt": "2026-09-20T03:14:46.969Z",
+    "updatedAt": "2026-09-20T03:14:46.969Z"
+  },
+  {
+    "_id": "24f1c27a9d2fd5760576dfe5",
+    "alertId": "SEC-1789874087190-29185B",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:OTHER_UNAUTHORIZED_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "OTHER_UN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:47.190Z",
+    "createdAt": "2026-09-20T03:14:47.191Z",
+    "updatedAt": "2026-09-20T03:14:47.191Z"
+  },
+  {
+    "_id": "c2683b83f5d0046883a6fb44",
+    "alertId": "SEC-1789874088470-6CB5EA",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (3) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:48.470Z",
+    "createdAt": "2026-09-20T03:14:48.471Z",
+    "updatedAt": "2026-09-20T03:14:48.471Z"
+  },
+  {
+    "_id": "68465826b73e51dca27e8e35",
+    "alertId": "SEC-1789874088617-817D70",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:DIFFERENT_PERSONNEL_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "DIFFEREN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:48.617Z",
+    "createdAt": "2026-09-20T03:14:48.617Z",
+    "updatedAt": "2026-09-20T03:14:48.617Z"
+  },
+  {
+    "_id": "e3f0f4c5c1ecebc887d1fc34",
+    "alertId": "SEC-1789874088817-E4CD0D",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'WELFARE_OFFICER' triggered repeated authorization failures (4) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "WELFARE_OFFICER",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 4
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:48.817Z",
+    "createdAt": "2026-09-20T03:14:48.817Z",
+    "updatedAt": "2026-09-20T03:14:48.817Z"
+  },
+  {
+    "_id": "ef3e01dd4fe57d20d218c1a0",
+    "alertId": "SEC-1789874089002-D68AC4",
+    "type": "SUSPICIOUS_AUTH_ACTIVITY",
+    "severity": "HIGH",
+    "description": "Suspicious authentication activity detected: Revoked session token presented after logout",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {},
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:14:49.002Z",
+    "createdAt": "2026-09-20T03:14:49.002Z",
+    "updatedAt": "2026-09-20T03:14:49.002Z"
+  },
+  {
+    "_id": "d648ae38ea45f1d27dadb142",
+    "alertId": "SEC-1789874242488-5CB7F9",
+    "type": "REPEATED_FAILED_LOGINS",
+    "severity": "HIGH",
+    "description": "Multiple failed authentication attempts (3) detected from IP ::1.",
+    "ipAddress": "::1",
+    "targetResource": "Authentication",
+    "metadata": {
+      "attemptCount": 3,
+      "identifierMasked": "WRONG_USER***",
+      "reason": "User not found"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:22.488Z",
+    "createdAt": "2026-09-20T03:17:22.488Z",
+    "updatedAt": "2026-09-20T03:17:22.488Z"
+  },
+  {
+    "_id": "8055120d9d87d50035921dd5",
+    "alertId": "SEC-1789874242582-7F3BA9",
+    "type": "UNAUTHORIZED_API_ACCESS",
+    "severity": "MEDIUM",
+    "description": "Repeated unauthorized requests (3) to protected API endpoint /api/v1/hrms/my-record without valid credentials.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {
+      "path": "/api/v1/hrms/my-record",
+      "method": "GET",
+      "count": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:22.582Z",
+    "createdAt": "2026-09-20T03:17:22.582Z",
+    "updatedAt": "2026-09-20T03:17:22.582Z"
+  },
+  {
+    "_id": "952480918f857c79cb14bbec",
+    "alertId": "SEC-1789874242739-4D2ADC",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (2) attempting to access restricted resource /api/v1/admin/metrics.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/metrics",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/metrics",
+      "method": "GET",
+      "failureCount": 2
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:22.739Z",
+    "createdAt": "2026-09-20T03:17:22.739Z",
+    "updatedAt": "2026-09-20T03:17:22.739Z"
+  },
+  {
+    "_id": "2e598aeab6fd55d6fd42b87c",
+    "alertId": "SEC-1789874242840-9B7B55",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:OTHER_UNAUTHORIZED_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "OTHER_UN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:22.840Z",
+    "createdAt": "2026-09-20T03:17:22.841Z",
+    "updatedAt": "2026-09-20T03:17:22.841Z"
+  },
+  {
+    "_id": "683b6f883fbac43f513cf6e8",
+    "alertId": "SEC-1789874243502-A68AB0",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (3) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:23.502Z",
+    "createdAt": "2026-09-20T03:17:23.502Z",
+    "updatedAt": "2026-09-20T03:17:23.502Z"
+  },
+  {
+    "_id": "361960c5f6ebab21a7e272ca",
+    "alertId": "SEC-1789874243621-853C50",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:DIFFERENT_PERSONNEL_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "DIFFEREN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:23.621Z",
+    "createdAt": "2026-09-20T03:17:23.622Z",
+    "updatedAt": "2026-09-20T03:17:23.622Z"
+  },
+  {
+    "_id": "2007f235f2bd4080a1bc46f6",
+    "alertId": "SEC-1789874243783-7B81DF",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'WELFARE_OFFICER' triggered repeated authorization failures (4) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "WELFARE_OFFICER",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 4
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:23.783Z",
+    "createdAt": "2026-09-20T03:17:23.784Z",
+    "updatedAt": "2026-09-20T03:17:23.784Z"
+  },
+  {
+    "_id": "c08fc8f92439e456b5e39834",
+    "alertId": "SEC-1789874243939-D7D5CA",
+    "type": "SUSPICIOUS_AUTH_ACTIVITY",
+    "severity": "HIGH",
+    "description": "Suspicious authentication activity detected: Revoked session token presented after logout",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {},
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:17:23.939Z",
+    "createdAt": "2026-09-20T03:17:23.939Z",
+    "updatedAt": "2026-09-20T03:17:23.939Z"
+  },
+  {
+    "_id": "7104688cb20a18ec3905b193",
+    "alertId": "SEC-1789874286641-D7B313",
+    "type": "REPEATED_FAILED_LOGINS",
+    "severity": "HIGH",
+    "description": "Multiple failed authentication attempts (3) detected from IP ::1.",
+    "ipAddress": "::1",
+    "targetResource": "Authentication",
+    "metadata": {
+      "attemptCount": 3,
+      "identifierMasked": "WRONG_USER***",
+      "reason": "User not found"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:06.641Z",
+    "createdAt": "2026-09-20T03:18:06.642Z",
+    "updatedAt": "2026-09-20T03:18:06.642Z"
+  },
+  {
+    "_id": "afe384e9a1aa591180539d82",
+    "alertId": "SEC-1789874286783-4377F4",
+    "type": "UNAUTHORIZED_API_ACCESS",
+    "severity": "MEDIUM",
+    "description": "Repeated unauthorized requests (3) to protected API endpoint /api/v1/hrms/my-record without valid credentials.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {
+      "path": "/api/v1/hrms/my-record",
+      "method": "GET",
+      "count": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:06.782Z",
+    "createdAt": "2026-09-20T03:18:06.783Z",
+    "updatedAt": "2026-09-20T03:18:06.783Z"
+  },
+  {
+    "_id": "9abbcce70eca2fa934ad51ae",
+    "alertId": "SEC-1789874287011-1C3A9F",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (2) attempting to access restricted resource /api/v1/admin/metrics.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/metrics",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/metrics",
+      "method": "GET",
+      "failureCount": 2
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:07.011Z",
+    "createdAt": "2026-09-20T03:18:07.011Z",
+    "updatedAt": "2026-09-20T03:18:07.011Z"
+  },
+  {
+    "_id": "4fe6173f16d5abbc42232ba6",
+    "alertId": "SEC-1789874287146-A0F41F",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:OTHER_UNAUTHORIZED_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "OTHER_UN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:07.146Z",
+    "createdAt": "2026-09-20T03:18:07.146Z",
+    "updatedAt": "2026-09-20T03:18:07.146Z"
+  },
+  {
+    "_id": "c5613dd45fcd02b450a71732",
+    "alertId": "SEC-1789874287288-13F484",
+    "type": "SECURITY_CONFIG_CHANGES",
+    "severity": "HIGH",
+    "description": "Security configuration modification detected: CONSENT_SETTINGS_UPDATED on Consent.",
+    "ipAddress": "::1",
+    "targetResource": "Consent",
+    "metadata": {
+      "action": "CONSENT_SETTINGS_UPDATED",
+      "modifiedByRole": "PERSONNEL",
+      "telemetryGranularity": "FULL"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:07.288Z",
+    "createdAt": "2026-09-20T03:18:07.288Z",
+    "updatedAt": "2026-09-20T03:18:07.288Z"
+  },
+  {
+    "_id": "71a2cbd6701ffdcf53911f54",
+    "alertId": "SEC-1789874288022-6EEF8E",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (3) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:08.022Z",
+    "createdAt": "2026-09-20T03:18:08.023Z",
+    "updatedAt": "2026-09-20T03:18:08.023Z"
+  },
+  {
+    "_id": "45f5f275143c983ac40aebba",
+    "alertId": "SEC-1789874288170-0F6014",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:DIFFERENT_PERSONNEL_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "DIFFEREN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:08.170Z",
+    "createdAt": "2026-09-20T03:18:08.170Z",
+    "updatedAt": "2026-09-20T03:18:08.170Z"
+  },
+  {
+    "_id": "4c842b707a076f979138aa6b",
+    "alertId": "SEC-1789874288355-A4AEF1",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'WELFARE_OFFICER' triggered repeated authorization failures (4) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "WELFARE_OFFICER",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 4
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:08.355Z",
+    "createdAt": "2026-09-20T03:18:08.355Z",
+    "updatedAt": "2026-09-20T03:18:08.355Z"
+  },
+  {
+    "_id": "2d1582217165f08e9c198537",
+    "alertId": "SEC-1789874288512-7FC869",
+    "type": "SUSPICIOUS_AUTH_ACTIVITY",
+    "severity": "HIGH",
+    "description": "Suspicious authentication activity detected: Revoked session token presented after logout",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {},
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:08.512Z",
+    "createdAt": "2026-09-20T03:18:08.512Z",
+    "updatedAt": "2026-09-20T03:18:08.512Z"
+  },
+  {
+    "_id": "c028b6f2dbfb5472cd057346",
+    "alertId": "SEC-1789874314237-FA356C",
+    "type": "REPEATED_FAILED_LOGINS",
+    "severity": "HIGH",
+    "description": "Multiple failed authentication attempts (4) detected from IP ::1.",
+    "ipAddress": "::1",
+    "targetResource": "Authentication",
+    "metadata": {
+      "attemptCount": 4,
+      "identifierMasked": "WRONG_USER***",
+      "reason": "User not found"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:34.237Z",
+    "createdAt": "2026-09-20T03:18:34.237Z",
+    "updatedAt": "2026-09-20T03:18:34.237Z"
+  },
+  {
+    "_id": "7b4d62a7033bd1b6a7d60ef3",
+    "alertId": "SEC-1789874314407-828A20",
+    "type": "REPEATED_FAILED_LOGINS",
+    "severity": "CRITICAL",
+    "description": "Multiple failed authentication attempts (5) detected from IP ::1.",
+    "ipAddress": "::1",
+    "targetResource": "Authentication",
+    "metadata": {
+      "attemptCount": 5,
+      "identifierMasked": "WRONG_USER***",
+      "reason": "User not found"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:34.407Z",
+    "createdAt": "2026-09-20T03:18:34.407Z",
+    "updatedAt": "2026-09-20T03:18:34.407Z"
+  },
+  {
+    "_id": "92c1b3bb44bd1792818daf56",
+    "alertId": "SEC-1789874314591-C0CA01",
+    "type": "REPEATED_FAILED_LOGINS",
+    "severity": "CRITICAL",
+    "description": "Multiple failed authentication attempts (6) detected from IP ::1.",
+    "ipAddress": "::1",
+    "targetResource": "Authentication",
+    "metadata": {
+      "attemptCount": 6,
+      "identifierMasked": "WRONG_USER***",
+      "reason": "User not found"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:34.591Z",
+    "createdAt": "2026-09-20T03:18:34.592Z",
+    "updatedAt": "2026-09-20T03:18:34.592Z"
+  },
+  {
+    "_id": "21505687796211219814000a",
+    "alertId": "SEC-1789874314771-D7C4A9",
+    "type": "UNAUTHORIZED_API_ACCESS",
+    "severity": "MEDIUM",
+    "description": "Repeated unauthorized requests (4) to protected API endpoint /api/v1/hrms/my-record without valid credentials.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {
+      "path": "/api/v1/hrms/my-record",
+      "method": "GET",
+      "count": 4
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:34.771Z",
+    "createdAt": "2026-09-20T03:18:34.771Z",
+    "updatedAt": "2026-09-20T03:18:34.771Z"
+  },
+  {
+    "_id": "b3dd56c69780e3d260e2ac1f",
+    "alertId": "SEC-1789874314950-AAF45C",
+    "type": "UNAUTHORIZED_API_ACCESS",
+    "severity": "MEDIUM",
+    "description": "Repeated unauthorized requests (5) to protected API endpoint /api/v1/hrms/my-record without valid credentials.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {
+      "path": "/api/v1/hrms/my-record",
+      "method": "GET",
+      "count": 5
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:34.950Z",
+    "createdAt": "2026-09-20T03:18:34.950Z",
+    "updatedAt": "2026-09-20T03:18:34.950Z"
+  },
+  {
+    "_id": "9c9a2705f47b52407fedb6f8",
+    "alertId": "SEC-1789874315161-23263A",
+    "type": "UNAUTHORIZED_API_ACCESS",
+    "severity": "MEDIUM",
+    "description": "Repeated unauthorized requests (6) to protected API endpoint /api/v1/hrms/my-record without valid credentials.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {
+      "path": "/api/v1/hrms/my-record",
+      "method": "GET",
+      "count": 6
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:35.161Z",
+    "createdAt": "2026-09-20T03:18:35.161Z",
+    "updatedAt": "2026-09-20T03:18:35.161Z"
+  },
+  {
+    "_id": "7fa8bfe66b277de2f5f759a4",
+    "alertId": "SEC-1789874315447-102DFC",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (5) attempting to access restricted resource /api/v1/admin/metrics.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/metrics",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/metrics",
+      "method": "GET",
+      "failureCount": 5
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:35.447Z",
+    "createdAt": "2026-09-20T03:18:35.447Z",
+    "updatedAt": "2026-09-20T03:18:35.447Z"
+  },
+  {
+    "_id": "ec58a17c3d9f8d372fe3eaf1",
+    "alertId": "SEC-1789874315637-50BE1C",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (6) attempting to access restricted resource /api/v1/admin/metrics.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/metrics",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/metrics",
+      "method": "GET",
+      "failureCount": 6
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:35.637Z",
+    "createdAt": "2026-09-20T03:18:35.637Z",
+    "updatedAt": "2026-09-20T03:18:35.637Z"
+  },
+  {
+    "_id": "f8c184649bb05df75a5743de",
+    "alertId": "SEC-1789874315821-0A119E",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:OTHER_UNAUTHORIZED_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "OTHER_UN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:35.821Z",
+    "createdAt": "2026-09-20T03:18:35.821Z",
+    "updatedAt": "2026-09-20T03:18:35.821Z"
+  },
+  {
+    "_id": "7e917f48f65a96e39526375a",
+    "alertId": "SEC-1789874316011-17C860",
+    "type": "SECURITY_CONFIG_CHANGES",
+    "severity": "HIGH",
+    "description": "Security configuration modification detected: CONSENT_SETTINGS_UPDATED on Consent.",
+    "ipAddress": "::1",
+    "targetResource": "Consent",
+    "metadata": {
+      "action": "CONSENT_SETTINGS_UPDATED",
+      "modifiedByRole": "PERSONNEL",
+      "telemetryGranularity": "FULL"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:36.011Z",
+    "createdAt": "2026-09-20T03:18:36.011Z",
+    "updatedAt": "2026-09-20T03:18:36.011Z"
+  },
+  {
+    "_id": "a61dda95581d7fb5a0602245",
+    "alertId": "SEC-1789874316802-B5AF72",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (7) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 7
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:36.802Z",
+    "createdAt": "2026-09-20T03:18:36.802Z",
+    "updatedAt": "2026-09-20T03:18:36.802Z"
+  },
+  {
+    "_id": "d83b241f5481d989a0c5cf87",
+    "alertId": "SEC-1789874316987-27E618",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:DIFFERENT_PERSONNEL_ID.",
+    "ipAddress": "::1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "DIFFEREN***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:36.987Z",
+    "createdAt": "2026-09-20T03:18:36.987Z",
+    "updatedAt": "2026-09-20T03:18:36.987Z"
+  },
+  {
+    "_id": "5805cd63c886147b953fbc2b",
+    "alertId": "SEC-1789874317194-43AFB6",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'WELFARE_OFFICER' triggered repeated authorization failures (8) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "WELFARE_OFFICER",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 8
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:37.194Z",
+    "createdAt": "2026-09-20T03:18:37.194Z",
+    "updatedAt": "2026-09-20T03:18:37.194Z"
+  },
+  {
+    "_id": "10a1244813d59f7fa473944f",
+    "alertId": "SEC-1789874317389-673200",
+    "type": "SUSPICIOUS_AUTH_ACTIVITY",
+    "severity": "HIGH",
+    "description": "Suspicious authentication activity detected: Revoked session token presented after logout",
+    "ipAddress": "::1",
+    "targetResource": "/api/v1/hrms/my-record",
+    "metadata": {},
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:18:37.389Z",
+    "createdAt": "2026-09-20T03:18:37.389Z",
+    "updatedAt": "2026-09-20T03:18:37.389Z"
+  },
+  {
+    "_id": "41eb6c4153e3f543722f3d82",
+    "alertId": "SEC-1789874340840-6BA4A8",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:CRPF-9042.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "CRPF-904***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:00.840Z",
+    "createdAt": "2026-09-20T03:19:00.840Z",
+    "updatedAt": "2026-09-20T03:19:00.840Z"
+  },
+  {
+    "_id": "2afba562a0b2dd9cb47acd63",
+    "alertId": "SEC-1789874341035-976B87",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (2) attempting to access restricted resource /api/v1/officer/alerts.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/officer/alerts",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "WELFARE_OFFICER, ADMIN",
+      "path": "/api/v1/officer/alerts",
+      "method": "GET",
+      "failureCount": 2
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:01.035Z",
+    "createdAt": "2026-09-20T03:19:01.035Z",
+    "updatedAt": "2026-09-20T03:19:01.035Z"
+  },
+  {
+    "_id": "a9ab2517349bb7611e420534",
+    "alertId": "SEC-1789874341266-BF84DA",
+    "type": "SECURITY_CONFIG_CHANGES",
+    "severity": "HIGH",
+    "description": "Security configuration modification detected: ROLE_PERMISSION_CHANGE on User:7b73ffd7398b4948b28265a4.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "User:7b73ffd7398b4948b28265a4",
+    "metadata": {
+      "action": "ROLE_PERMISSION_CHANGE",
+      "modifiedByRole": "ADMIN",
+      "previousRole": "PERSONNEL",
+      "newRole": "WELFARE_OFFICER"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:01.266Z",
+    "createdAt": "2026-09-20T03:19:01.266Z",
+    "updatedAt": "2026-09-20T03:19:01.266Z"
+  },
+  {
+    "_id": "40cf26b1fd104dda066a753d",
+    "alertId": "SEC-1789874341498-0C33EF",
+    "type": "SECURITY_CONFIG_CHANGES",
+    "severity": "HIGH",
+    "description": "Security configuration modification detected: CONSENT_SETTINGS_UPDATED on Consent.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "Consent",
+    "metadata": {
+      "action": "CONSENT_SETTINGS_UPDATED",
+      "modifiedByRole": "PERSONNEL",
+      "telemetryGranularity": "COARSE"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:01.498Z",
+    "createdAt": "2026-09-20T03:19:01.498Z",
+    "updatedAt": "2026-09-20T03:19:01.498Z"
+  },
+  {
+    "_id": "6d3d869cd55036491363bb5f",
+    "alertId": "SEC-1789874347280-E11D87",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:USER2-6864.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "USER2-68***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:07.280Z",
+    "createdAt": "2026-09-20T03:19:07.280Z",
+    "updatedAt": "2026-09-20T03:19:07.280Z"
+  },
+  {
+    "_id": "0cc92d91dc0bbfa670cf3c4d",
+    "alertId": "SEC-1789874347507-03F7EB",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (3) attempting to access restricted resource /api/v1/officer/alerts.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/officer/alerts",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "WELFARE_OFFICER, ADMIN",
+      "path": "/api/v1/officer/alerts",
+      "method": "GET",
+      "failureCount": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:07.507Z",
+    "createdAt": "2026-09-20T03:19:07.507Z",
+    "updatedAt": "2026-09-20T03:19:07.507Z"
+  },
+  {
+    "_id": "97e779e8c5a3d6856cfd0178",
+    "alertId": "SEC-1789874347720-1532E4",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (4) attempting to access restricted resource /api/v1/officer/dashboard.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/officer/dashboard",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "WELFARE_OFFICER, ADMIN",
+      "path": "/api/v1/officer/dashboard",
+      "method": "GET",
+      "failureCount": 4
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:07.720Z",
+    "createdAt": "2026-09-20T03:19:07.720Z",
+    "updatedAt": "2026-09-20T03:19:07.720Z"
+  },
+  {
+    "_id": "754b752e8e0ae2dead62a1d2",
+    "alertId": "SEC-1789874347951-49867C",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (5) attempting to access restricted resource /api/v1/admin/metrics.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/admin/metrics",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/metrics",
+      "method": "GET",
+      "failureCount": 5
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:07.951Z",
+    "createdAt": "2026-09-20T03:19:07.952Z",
+    "updatedAt": "2026-09-20T03:19:07.952Z"
+  },
+  {
+    "_id": "1297a70fa4a75180f8665bc1",
+    "alertId": "SEC-1789874348202-17154E",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (6) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 6
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:08.202Z",
+    "createdAt": "2026-09-20T03:19:08.202Z",
+    "updatedAt": "2026-09-20T03:19:08.202Z"
+  },
+  {
+    "_id": "d94b13362bf33ed056304091",
+    "alertId": "SEC-1789874348483-E3BFD9",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'WELFARE_OFFICER' triggered repeated authorization failures (7) attempting to access restricted resource /api/v1/admin/metrics.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/admin/metrics",
+    "metadata": {
+      "userRole": "WELFARE_OFFICER",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/metrics",
+      "method": "GET",
+      "failureCount": 7
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:08.483Z",
+    "createdAt": "2026-09-20T03:19:08.483Z",
+    "updatedAt": "2026-09-20T03:19:08.483Z"
+  },
+  {
+    "_id": "d4fc299dfa03e7bc73a4477d",
+    "alertId": "SEC-1789874348751-50B62F",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'WELFARE_OFFICER' triggered repeated authorization failures (8) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "WELFARE_OFFICER",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 8
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-20T03:19:08.751Z",
+    "createdAt": "2026-09-20T03:19:08.751Z",
+    "updatedAt": "2026-09-20T03:19:08.751Z"
+  }
+]

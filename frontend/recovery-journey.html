@@ -73,13 +73,13 @@
         <div class="card mb-3" style="background-color: #0f172a; border: 1px solid #1e293b; color: #fff;">
           <div class="d-flex justify-between align-center flex-wrap gap-1">
             <div>
-              <h2>End-to-End Welfare Support & Recovery Lifecycle</h2>
+              <h2>Closed-Loop Welfare Support & Recovery Lifecycle</h2>
               <p style="color: #cbd5e1; font-size: 0.95rem; margin-top: 0.25rem;">
-                Tracks your complete journey from early stress identification through supportive guidance, human officer consultation, and subsequent check-in trajectory updates.
+                Unbroken closed-loop welfare workflow: Check-in / Wearables &rarr; Data Quality Check &rarr; AI Welfare Analysis &rarr; Risk + Evidence + Contributors &rarr; Officer Review &rarr; Support / Follow-up &rarr; Outcome &rarr; Future Re-Analysis &rarr; Updated Guidance.
               </p>
               <div class="d-flex gap-1 align-center mt-2">
-                <span class="badge badge-low" id="journey-progress-badge">Stage -- of 6 Completed</span>
-                <span class="text-muted" style="font-size:0.8rem; color:#94a3b8;">Strictly non-punitive welfare tracking</span>
+                <span class="badge badge-low" id="journey-progress-badge">Stage -- of 9 Completed</span>
+                <span class="text-muted" style="font-size:0.8rem; color:#94a3b8;">Strictly non-punitive decision support</span>
               </div>
             </div>
             <div class="d-flex gap-1 flex-wrap">
@@ -90,14 +90,14 @@
           </div>
         </div>
 
-        <!-- Explanatory Callout: Understanding the 6-Stage Welfare Lifecycle -->
+        <!-- Explanatory Callout: Understanding the Closed-Loop Welfare Lifecycle -->
         <div class="card mb-3" style="border-left: 4px solid var(--accent); background: var(--bg-card-subtle);">
           <div class="d-flex justify-between align-center mb-1">
-            <h4 style="font-size: 0.95rem;">ℹ️ Understanding the 6-Stage Welfare Lifecycle</h4>
+            <h4 style="font-size: 0.95rem;">ℹ️ Closed-Loop Decision-Support Workflow</h4>
             <span class="badge badge-neutral">Operational Protocol</span>
           </div>
           <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0;">
-            In operational armed forces deployment, when a stress signal is flagged (Stages 1 & 2), the <strong>Human-in-the-Loop Officer Review</strong> (Stage 4) requires the Unit Welfare Officer to confidentially acknowledge the report before assigning a follow-up consultation (Stage 5). This prevents automated disciplinary conclusions.
+            WelfareAI operates as an <strong>integrated closed loop</strong>: initial check-in or wearable telemetry is first validated through the Data Quality Gate. If evidence is sufficient, multi-tier AI models synthesize risk, evidence strength, and main contributors. The Unit Welfare Officer reviews the signal under a strictly non-punitive mandate, coordinating follow-up consultations and support interventions. When an outcome is achieved, subsequent check-ins compare against personal baseline to update trajectory and refresh dynamic welfare guidance.
           </p>
         </div>
 
@@ -133,8 +133,9 @@
       try {
         const res = await api.request('/followups/journey', { method: 'GET' });
         if (res && res.success && res.data) {
-          const { stages, currentStageIndex } = res.data;
-          document.getElementById('journey-progress-badge').textContent = `Stage ${currentStageIndex} of 6 Completed`;
+          const { stages, currentStageIndex, totalStages } = res.data;
+          const totalCount = totalStages || (stages ? stages.length : 9);
+          document.getElementById('journey-progress-badge').textContent = `Stage ${currentStageIndex} of ${totalCount} Completed`;
 
           const container = document.getElementById('journey-stages-container');
           container.innerHTML = stages.map(s => {

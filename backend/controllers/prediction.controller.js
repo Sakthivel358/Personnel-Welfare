@@ -1135,11 +1135,41 @@ const getPersonalBaseline = async (req, res, next) => {
   }
 };
 
+const getRecommendations = async (req, res, next) => {
+  try {
+    const predictions = await db.Predictions.find({ userId: req.user._id });
+    if (predictions.length === 0) {
+      return res.status(200).json({ success: true, data: [] });
+    }
+    const latest = predictions[predictions.length - 1];
+    let rec = await db.Recommendations.findOne({ predictionId: latest._id });
+    if (!rec) {
+      rec = {
+        primaryAction: latest.recommendedAction || 'Maintain regular rest intervals and pacing.',
+        concernLevel: latest.concernLevel,
+        actionItems: [
+          { category: 'Rest & Recovery', title: 'Schedule Rest Interval', description: latest.recommendedAction || 'Maintain duty balance.', priority: latest.concernLevel === 'HIGH' ? 'HIGH' : 'MEDIUM' },
+          { category: 'Duty Pacing', title: 'Hydration & Shift Moderation', description: 'Ensure adequate operational pacing between continuous watch hours.', priority: 'MEDIUM' }
+        ]
+      };
+    }
+    const items = rec.actionItems || [rec];
+    return res.status(200).json({
+      success: true,
+      data: items,
+      recommendation: rec
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getLatestPrediction,
   getPredictionHistory,
   getExplainability,
   getWhatChanged,
   getPersonalBaseline,
-  computePersonalBaseline
+  computePersonalBaseline,
+  getRecommendations
 };

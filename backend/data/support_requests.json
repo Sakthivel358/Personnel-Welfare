@@ -990,5 +990,26 @@
     ],
     "createdAt": "2026-09-20T03:02:21.716Z",
     "updatedAt": "2026-09-20T03:02:21.716Z"
+  },
+  {
+    "_id": "5a5ef96a4cc5a49d7eacf22c",
+    "referenceId": "SPT-7173",
+    "userId": "2807c1f64bebed9c4edd13e8",
+    "personnelId": "PERSONNEL",
+    "requestType": "REST_ROTATION",
+    "urgency": "PRIORITY",
+    "notes": "Welfare Officer review: Support Provided. Authorized 48h restorative rotation to restore sleep deficit.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "a4dd530526bec0706d38eb96",
+    "resolutionNotes": "Authorized 48h restorative rotation to restore sleep deficit.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-20T03:18:17.479Z",
+        "note": "Human Review completed: Support Provided"
+      }
+    ],
+    "createdAt": "2026-09-20T03:18:17.526Z",
+    "updatedAt": "2026-09-20T03:18:17.526Z"
   }
 ]

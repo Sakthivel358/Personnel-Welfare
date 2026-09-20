@@ -332,6 +332,18 @@ class APIClient {
     return this.request('/admin/audit-logs', { method: 'GET' });
   }
 
+  async verifyAuditChain() {
+    return this.request('/admin/audit-logs/verify', { method: 'GET' });
+  }
+
+  async getSecurityAlerts() {
+    return this.request('/admin/security/alerts', { method: 'GET' });
+  }
+
+  async getSecurityMetrics() {
+    return this.request('/admin/security/metrics', { method: 'GET' });
+  }
+
   async getWelfareResources() {
     return this.request('/admin/resources', { method: 'GET' });
   }

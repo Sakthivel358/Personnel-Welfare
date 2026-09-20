@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const db = require('../models/dbAdapter');
 const { JWT_SECRET } = require('../middleware/auth.middleware');
 const auditService = require('../services/audit.service');
+const securityMonitoring = require('../services/securityMonitoring.service');
 
 const generateToken = (user, rememberMe = false) => {
   return jwt.sign(
@@ -207,6 +208,7 @@ const login = async (req, res, next) => {
         ipAddress: req.ip,
         details: { reason: 'User not found' }
       });
+      securityMonitoring.recordFailedLogin({ ip: req.ip, identifier: cleanIdentifier, reason: 'User not found' });
       return res.status(401).json({
         success: false,
         message: 'Invalid Personnel ID / Email or password.'
@@ -223,6 +225,8 @@ const login = async (req, res, next) => {
         ipAddress: req.ip,
         details: { reason: 'Account deactivated' }
       });
+      securityMonitoring.recordSuspiciousAuth({ ip: req.ip, reason: 'Deactivated account login attempt', metadata: { targetResource: 'Auth' } });
+      securityMonitoring.recordFailedLogin({ ip: req.ip, identifier: cleanIdentifier, reason: 'Account deactivated' });
       return res.status(403).json({
         success: false,
         message: 'Your account has been deactivated. Please contact the welfare administrator.'
@@ -241,6 +245,7 @@ const login = async (req, res, next) => {
         ipAddress: req.ip,
         details: { reason: 'Incorrect password' }
       });
+      securityMonitoring.recordFailedLogin({ ip: req.ip, identifier: cleanIdentifier, reason: 'Incorrect password' });
       return res.status(401).json({
         success: false,
         message: 'Invalid Personnel ID / Email or password.'

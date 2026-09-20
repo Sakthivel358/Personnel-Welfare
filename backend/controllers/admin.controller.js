@@ -2,6 +2,7 @@ const db = require('../models/dbAdapter');
 const { getDBStatus } = require('../config/db');
 const mlClient = require('../services/mlClient.service');
 const auditService = require('../services/audit.service');
+const securityMonitoring = require('../services/securityMonitoring.service');
 
 const getSystemMetrics = async (req, res, next) => {
   try {
@@ -113,6 +114,15 @@ const updateUserRole = async (req, res, next) => {
     const previousRole = user.role;
     const updatedUser = await db.Users.findByIdAndUpdate(id, { role });
 
+    securityMonitoring.recordSecurityConfigChange({
+      ip: req.ip,
+      userId: req.user._id,
+      userRole: req.user.role,
+      action: 'ROLE_PERMISSION_CHANGE',
+      targetResource: `User:${id}`,
+      details: { previousRole, newRole: role }
+    });
+
     await auditService.log({
       action: 'ROLE_PERMISSION_CHANGE',
       userId: req.user._id,
@@ -183,6 +193,17 @@ const createWelfareResource = async (req, res, next) => {
 const verifyAuditChain = async (req, res, next) => {
   try {
     const result = await auditService.verifyChain();
+    if (!result.verified) {
+      await securityMonitoring.createSecurityAlert({
+        type: 'SECURITY_CONFIG_CHANGES',
+        severity: 'CRITICAL',
+        description: `Cryptographic audit-trail tampering detected! Chain verification status: ${result.status}`,
+        ipAddress: req.ip,
+        targetResource: 'AuditLogs',
+        metadata: { reason: result.reason || 'Hash mismatch' }
+      });
+    }
+
     await auditService.log({
       action: 'SECURITY_AUDIT_CHAIN_VERIFIED',
       userId: req.user._id,
@@ -198,6 +219,25 @@ const verifyAuditChain = async (req, res, next) => {
   }
 };
 
+const getSecurityAlerts = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit, 10) || 100;
+    const alerts = await securityMonitoring.getSecurityAlerts(limit);
+    return res.status(200).json({ success: true, data: alerts });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getSecurityMetrics = async (req, res, next) => {
+  try {
+    const metrics = await securityMonitoring.getSecurityMetrics();
+    return res.status(200).json({ success: true, data: metrics });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getSystemMetrics,
   getAuditLogs,
@@ -205,6 +245,8 @@ module.exports = {
   updateUserRole,
   getWelfareResources,
   createWelfareResource,
-  verifyAuditChain
+  verifyAuditChain,
+  getSecurityAlerts,
+  getSecurityMetrics
 };
 

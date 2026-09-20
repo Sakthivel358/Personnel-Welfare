@@ -15029,5 +15029,661 @@
     },
     "createdAt": "2026-09-20T03:03:16.597Z",
     "updatedAt": "2026-09-20T03:03:16.597Z"
+  },
+  {
+    "_id": "6b7a014546bcd993ede43a6f",
+    "userId": "03b1c3d18933291572925d96",
+    "personnelId": "ADMIN_085864",
+    "fullName": "System Security Admin",
+    "rank": "Colonel",
+    "unit": "Army Cyber Group",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:14:46.389Z",
+    "updatedAt": "2026-09-20T03:14:46.389Z"
+  },
+  {
+    "_id": "5c1f10d951ed8afe53b91dfb",
+    "userId": "64a3724a95cf9c50b8cb36ce",
+    "personnelId": "PER085864",
+    "fullName": "Sepoy Target",
+    "rank": "Sepoy",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:14:46.933Z",
+    "updatedAt": "2026-09-20T03:14:46.933Z"
+  },
+  {
+    "_id": "a2117b184fcc8ba4d37c6715",
+    "userId": "9a3616eccb829090a885ed4d",
+    "personnelId": "WO_085864",
+    "fullName": "Major Closed Loop Officer",
+    "rank": "Major",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:14:48.067Z",
+    "updatedAt": "2026-09-20T03:14:48.067Z"
+  },
+  {
+    "_id": "17f2454a7e606e4c14bfdcd7",
+    "userId": "240ae648fa4ecd0dc5c7b8db",
+    "personnelId": "ADMIN_242267",
+    "fullName": "System Security Admin",
+    "rank": "Colonel",
+    "unit": "Army Cyber Group",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:17:22.450Z",
+    "updatedAt": "2026-09-20T03:17:22.450Z"
+  },
+  {
+    "_id": "9e8319d0700ffdc4fb266eac",
+    "userId": "c39b67621f4a52d75941ff29",
+    "personnelId": "PER242267",
+    "fullName": "Sepoy Target",
+    "rank": "Sepoy",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:17:22.720Z",
+    "updatedAt": "2026-09-20T03:17:22.720Z"
+  },
+  {
+    "_id": "be41dd7ec503aa6b25f400b8",
+    "userId": "5b4d03225ff72d67f32de14c",
+    "personnelId": "WO_242267",
+    "fullName": "Major Closed Loop Officer",
+    "rank": "Major",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:17:23.281Z",
+    "updatedAt": "2026-09-20T03:17:23.281Z"
+  },
+  {
+    "_id": "89724307c4d23223d6bba0d0",
+    "userId": "33c2e3352fda4ce641c74e26",
+    "personnelId": "ADMIN_286408",
+    "fullName": "System Security Admin",
+    "rank": "Colonel",
+    "unit": "Army Cyber Group",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:06.593Z",
+    "updatedAt": "2026-09-20T03:18:06.593Z"
+  },
+  {
+    "_id": "64490fa8a4447ad18ca2608c",
+    "userId": "2e832c04ac87c250deaf7327",
+    "personnelId": "PER286408",
+    "fullName": "Sepoy Target",
+    "rank": "Sepoy",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "pseudonymizeTelemetry": true,
+      "dataSharingLevel": "FULL",
+      "researchConsent": true
+    },
+    "createdAt": "2026-09-20T03:18:06.988Z",
+    "updatedAt": "2026-09-20T03:18:07.286Z"
+  },
+  {
+    "_id": "ad4cd8739564acdb4dea018b",
+    "userId": "2536e6599c0090a6ec7fd1e8",
+    "personnelId": "WO_286408",
+    "fullName": "Major Closed Loop Officer",
+    "rank": "Major",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:07.794Z",
+    "updatedAt": "2026-09-20T03:18:07.794Z"
+  },
+  {
+    "_id": "6a09d0a21f0731c902d676c1",
+    "userId": "2807c1f64bebed9c4edd13e8",
+    "personnelId": "PB296539",
+    "fullName": "Naik Personal Baseline Test",
+    "rank": "Naik",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:16.645Z",
+    "updatedAt": "2026-09-20T03:18:16.645Z"
+  },
+  {
+    "_id": "aec2dda8b7d950f382a20a35",
+    "userId": "9c31b47a656c4b604d901617",
+    "personnelId": "ISO296539",
+    "fullName": "Sepoy Isolated Member",
+    "rank": "Sepoy",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:17.240Z",
+    "updatedAt": "2026-09-20T03:18:17.240Z"
+  },
+  {
+    "_id": "61a367439a1ca2e23c1e05a3",
+    "userId": "a4dd530526bec0706d38eb96",
+    "personnelId": "WO_296539",
+    "fullName": "Major Welfare Officer",
+    "rank": "Major",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:17.338Z",
+    "updatedAt": "2026-09-20T03:18:17.338Z"
+  },
+  {
+    "_id": "961baa162aeed2cbaf2cd20f",
+    "userId": "9eb100a2dbbf7634768bc391",
+    "personnelId": "ADMIN_314077",
+    "fullName": "System Security Admin",
+    "rank": "Colonel",
+    "unit": "Army Cyber Group",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:34.216Z",
+    "updatedAt": "2026-09-20T03:18:34.216Z"
+  },
+  {
+    "_id": "35c7d8d7cd2bef677e1a8365",
+    "userId": "d100bef62b2e0adea40408aa",
+    "personnelId": "PER314077",
+    "fullName": "Sepoy Target",
+    "rank": "Sepoy",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "pseudonymizeTelemetry": true,
+      "dataSharingLevel": "FULL",
+      "researchConsent": true
+    },
+    "createdAt": "2026-09-20T03:18:35.427Z",
+    "updatedAt": "2026-09-20T03:18:36.008Z"
+  },
+  {
+    "_id": "de0edd635e53f744489d3295",
+    "userId": "ccc3a929ff9ef8e4f1d6966e",
+    "personnelId": "WO_314077",
+    "fullName": "Major Closed Loop Officer",
+    "rank": "Major",
+    "unit": "11 Gurkha Rifles",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:36.612Z",
+    "updatedAt": "2026-09-20T03:18:36.612Z"
+  },
+  {
+    "_id": "77f7f7e09c449f44e99ceae6",
+    "userId": "38143f2627fbc09a448101ba",
+    "personnelId": "QGATE325151",
+    "fullName": "Naik Quality Gate Test",
+    "rank": "Naik",
+    "unit": "12 Mechanised Infantry",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:45.269Z",
+    "updatedAt": "2026-09-20T03:18:45.269Z"
+  },
+  {
+    "_id": "c09e3a84d66187aab49bacbf",
+    "userId": "1af7af230adde08f1cb737b6",
+    "personnelId": "ZERO334026",
+    "fullName": "Havildar Zero Checkins",
+    "rank": "Havildar",
+    "unit": "10 Para SF",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:54.158Z",
+    "updatedAt": "2026-09-20T03:18:54.158Z"
+  },
+  {
+    "_id": "cb5014b9e01302c058c0a87e",
+    "userId": "82b01b9d65a1560f4eb52ee3",
+    "personnelId": "INSUF334026",
+    "fullName": "Subedar Insufficient Tester",
+    "rank": "Subedar",
+    "unit": "15 Kumaon",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:18:54.892Z",
+    "updatedAt": "2026-09-20T03:18:54.892Z"
+  },
+  {
+    "_id": "414051d28d9fc2048e743c39",
+    "userId": "8d77ed1a58fdc0e5546a44c7",
+    "personnelId": "TEST-P-0523",
+    "fullName": "Personnel Test Auditor",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "pseudonymizeTelemetry": true,
+      "dataSharingLevel": "COARSE",
+      "researchConsent": true
+    },
+    "createdAt": "2026-09-20T03:19:00.610Z",
+    "updatedAt": "2026-09-20T03:19:01.496Z"
+  },
+  {
+    "_id": "c9f82a26b9c73098079e4123",
+    "userId": "0431a830f2f734a95c966ef7",
+    "personnelId": "USER1-6864",
+    "fullName": "Personnel User One",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:19:06.958Z",
+    "updatedAt": "2026-09-20T03:19:09.069Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Field Patrol / Active Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display",
+    "leavePattern": {
+      "daysEarned": 60,
+      "daysAvailed": 15,
+      "daysRemaining": 45,
+      "lastLeaveDate": "2026-03-10",
+      "leaveDeficitWarning": false,
+      "annualEntitlement": 60
+    },
+    "deploymentHistory": [
+      {
+        "mission": "Op Rakshak - Sector North",
+        "zone": "Northern Sector (High Altitude)",
+        "durationMonths": 14,
+        "terrainType": "Glacial Mountain / High Altitude",
+        "completedAt": "2025-11-20"
+      }
+    ],
+    "dutySchedule": {
+      "shiftType": "Rotational 3-Watch",
+      "rotationCycle": "8h Watch / 16h Rest",
+      "weeklyHoursNominal": 48,
+      "nightShiftRatio": 0.25,
+      "timing": "06:00 - 14:00 / 14:00 - 22:00 / 22:00 - 06:00"
+    },
+    "transferFrequency": {
+      "transfersCount": 3,
+      "averageTenureMonths": 22,
+      "lastTransferDate": "2025-06-15",
+      "highMobilityFlag": false
+    },
+    "trainingCommitments": [
+      {
+        "program": "High Altitude Tactical Conditioning & Cold Survival",
+        "status": "Completed",
+        "mandatoryHours": 40,
+        "completedHours": 40
+      }
+    ],
+    "workloadTrends": {
+      "averageWeeklyHours": 52,
+      "peakWeeklyHours": 68,
+      "surgeWeeksCount": 3,
+      "trajectory": "Increasing"
+    }
+  },
+  {
+    "_id": "1d4c77bbb5d4d7eddb535d02",
+    "userId": "e26b6b6fba67ed8037cbd723",
+    "personnelId": "USER2-6864",
+    "fullName": "Personnel User Two",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:19:07.067Z",
+    "updatedAt": "2026-09-20T03:19:07.067Z"
+  },
+  {
+    "_id": "baa96d14e2d3c9b5191a1097",
+    "userId": "8105d9d045bee7a60842b567",
+    "personnelId": "SPARSE-4097",
+    "fullName": "Sparse Telemetry Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:19:14.183Z",
+    "updatedAt": "2026-09-20T03:19:14.184Z"
+  },
+  {
+    "_id": "486df7bf3e79d4fde2b3b36b",
+    "userId": "f794bfd5456472f15a974a6d",
+    "personnelId": "ASSESSED-4227",
+    "fullName": "Active Operational Personnel",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T03:19:14.309Z",
+    "updatedAt": "2026-09-20T03:19:14.309Z"
   }
 ]

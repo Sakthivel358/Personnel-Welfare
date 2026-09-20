@@ -265,7 +265,8 @@ const db = {
   AuditLogs: new Collection('audit_logs'),
   RevokedTokens: new Collection('revoked_tokens'),
   WearableData: new Collection('wearable_data'),
-  Consent: new Collection('consent')
+  Consent: new Collection('consent'),
+  SecurityAlerts: new Collection('security_alerts')
 };
 
 

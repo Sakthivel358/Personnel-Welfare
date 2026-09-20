@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const db = require('../models/dbAdapter');
 const auditService = require('../services/audit.service');
+const securityMonitoring = require('../services/securityMonitoring.service');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'sih26186_personnel_welfare_secure_jwt_secret_2026';
 
@@ -23,6 +24,7 @@ const authenticate = async (req, res, next) => {
     }
 
     if (!token) {
+      securityMonitoring.recordUnauthorizedAccess({ ip: req.ip, path: req.originalUrl, method: req.method });
       return res.status(401).json({
         success: false,
         message: 'Authentication required. Please sign in to continue.',
@@ -35,6 +37,7 @@ const authenticate = async (req, res, next) => {
     try {
       decoded = jwt.verify(token, JWT_SECRET);
     } catch (jwtErr) {
+      securityMonitoring.recordUnauthorizedAccess({ ip: req.ip, path: req.originalUrl, method: req.method });
       if (jwtErr.name === 'TokenExpiredError') {
         return res.status(401).json({
           success: false,
@@ -52,6 +55,7 @@ const authenticate = async (req, res, next) => {
     // Lookup user in database
     const user = await db.Users.findById(decoded.id || decoded._id);
     if (!user) {
+      securityMonitoring.recordSuspiciousAuth({ ip: req.ip, reason: 'Token with non-existent user presented', targetResource: req.originalUrl });
       return res.status(401).json({
         success: false,
         message: 'Authenticated account no longer exists. Please register or sign in again.',
@@ -62,6 +66,7 @@ const authenticate = async (req, res, next) => {
     // Check if token was invalidated by an explicit logout
     const isRevoked = await db.RevokedTokens.findOne({ token });
     if (isRevoked) {
+      securityMonitoring.recordSuspiciousAuth({ ip: req.ip, reason: 'Revoked session token presented after logout', targetResource: req.originalUrl });
       auditService.log({
         action: 'UNAUTHORIZED_ACCESS_ATTEMPT',
         userId: user ? user._id : null,
@@ -80,6 +85,7 @@ const authenticate = async (req, res, next) => {
     }
 
     if (user.isActive === false) {
+      securityMonitoring.recordSuspiciousAuth({ ip: req.ip, reason: 'Deactivated account access attempt', targetResource: req.originalUrl });
       auditService.log({
         action: 'UNAUTHORIZED_ACCESS_ATTEMPT',
         userId: user._id,

@@ -6,6 +6,7 @@
 
 const hrmsService = require('../services/hrms.service');
 const auditService = require('../services/audit.service');
+const securityMonitoring = require('../services/securityMonitoring.service');
 
 const getStatus = async (req, res, next) => {
   try {
@@ -58,6 +59,15 @@ const getPersonnelRecord = async (req, res, next) => {
 
     // RBAC: PERSONNEL role can only view their own HRMS record
     if (req.user.role === 'PERSONNEL' && req.user.personnelId !== targetId) {
+      securityMonitoring.recordSuspiciousDataAccess({
+        ip: req.ip,
+        userId: req.user._id,
+        userRole: req.user.role,
+        targetResource: 'HRMS_RECORD',
+        attemptedId: targetId,
+        reason: 'IDOR unauthorized personnel record attempt'
+      });
+
       await auditService.log({
         action: 'UNAUTHORIZED_ACCESS_ATTEMPT',
         userId: req.user._id,

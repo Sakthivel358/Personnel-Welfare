@@ -1,5 +1,6 @@
 const { getDBStatus } = require('../config/db');
 const mlClient = require('../services/mlClient.service');
+const db = require('../models/dbAdapter');
 
 const getSystemHealth = async (req, res, next) => {
   try {
@@ -29,13 +30,14 @@ const getSystemHealth = async (req, res, next) => {
 
 const getModelTransparency = async (req, res, next) => {
   try {
-    const [modelInfo, evaluation, model1Info, model1Eval, model2Info, model2Eval] = await Promise.all([
+    const [modelInfo, evaluation, model1Info, model1Eval, model2Info, model2Eval, predictionsCount] = await Promise.all([
       mlClient.getModelInfo(),
       mlClient.getModelEvaluation(),
       mlClient.getModel1Info(),
       mlClient.getModel1Evaluation(),
       mlClient.getModel2Info(),
-      mlClient.getModel2Evaluation()
+      mlClient.getModel2Evaluation(),
+      db.Predictions.countDocuments().catch(() => 0)
     ]);
 
     return res.status(200).json({
@@ -62,6 +64,9 @@ const getModelTransparency = async (req, res, next) => {
             datasetName: 'synthetic_prototype_sensor_operational_dataset.csv',
             isSyntheticPrototype: true,
             realWorldValidated: false,
+            validationDate: model1Eval?.metrics?.trained_at || model1Eval?.trained_at || model1Info?.trained_at || '2026-09-19T08:08:02.271046',
+            missingDataRate: '0.0%',
+            predictionCount: predictionsCount || 0,
             dataQualityStatus: 'Verified (0% missingness on holdout test set; holdout split: 20%)',
             featureAvailability: {
               count: model1Info?.features_count || 20,
@@ -97,6 +102,9 @@ const getModelTransparency = async (req, res, next) => {
             datasetName: 'synthetic_prototype_model2_pss_operational_dataset.csv',
             isSyntheticPrototype: true,
             realWorldValidated: false,
+            validationDate: model2Eval?.metrics?.trained_at || model2Eval?.trained_at || model2Info?.trained_at || '2026-09-19T08:17:41.625416',
+            missingDataRate: '0.0%',
+            predictionCount: predictionsCount || 0,
             dataQualityStatus: 'Verified (0% missingness on holdout test set; holdout split: 20%)',
             featureAvailability: {
               count: model2Info?.features_count || 13,

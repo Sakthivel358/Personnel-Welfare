@@ -132,6 +132,7 @@ app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/system', systemRoutes);
 app.use('/api/v1/privacy', privacyRoutes);
 app.use('/api/v1/hrms', hrmsRoutes);
+app.use('/api/v1/recommendations', predictionRoutes);
 
 
 // Health check alias
