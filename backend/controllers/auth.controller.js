@@ -180,7 +180,7 @@ const login = async (req, res, next) => {
     const rawIdentifier = req.body.identifier || req.body.personnelId || req.body.email;
     const { password, rememberMe } = req.body;
 
-    if (!rawIdentifier || !password) {
+    if (!rawIdentifier || !password || typeof password !== 'string' || typeof rawIdentifier !== 'string') {
       return res.status(400).json({
         success: false,
         message: 'Please provide both your Personnel ID/Email and Password.'

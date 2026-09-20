@@ -90,6 +90,29 @@ app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 app.use(cookieParser());
 app.use(morgan('dev'));
 
+// Input Sanitization Middleware against NoSQL operator injection and prototype pollution
+app.use((req, res, next) => {
+  const sanitize = (obj) => {
+    if (!obj || typeof obj !== 'object') return obj;
+    for (const key of Object.keys(obj)) {
+      if (key.startsWith('$') || key === '__proto__' || key === 'constructor') {
+        delete obj[key];
+      } else if (typeof obj[key] === 'object') {
+        sanitize(obj[key]);
+      }
+    }
+    return obj;
+  };
+
+  if (req.body && typeof req.body === 'object') {
+    sanitize(req.body);
+  }
+  if (req.query && typeof req.query === 'object') {
+    sanitize(req.query);
+  }
+  next();
+});
+
 // Static Frontend Serving
 const frontendDir = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendDir));
