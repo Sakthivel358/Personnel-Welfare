@@ -86,7 +86,9 @@ const getSupportOptions = async (req, res, next) => {
 
 const createSupportRequest = async (req, res, next) => {
   try {
-    const { requestType, urgency, preferredContactMethod, preferredTime, notes, description } = req.body;
+    const rawType = req.body.requestType || req.body.category || req.body.type || req.body.serviceType;
+    const { urgency, preferredContactMethod, preferredTime, notes, description } = req.body;
+    const requestType = rawType;
 
     if (!requestType) {
       return res.status(400).json({ success: false, message: 'Support request type is required.' });

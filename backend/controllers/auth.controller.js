@@ -380,7 +380,7 @@ const getMe = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'User record not found.' });
     }
     const { password, ...safeUser } = user;
-    return res.status(200).json({ success: true, user: safeUser });
+    return res.status(200).json({ success: true, user: safeUser, data: safeUser });
   } catch (err) {
     next(err);
   }

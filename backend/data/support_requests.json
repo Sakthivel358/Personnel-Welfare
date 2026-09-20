@@ -1011,5 +1011,50 @@
     ],
     "createdAt": "2026-09-20T03:18:17.526Z",
     "updatedAt": "2026-09-20T03:18:17.526Z"
+  },
+  {
+    "_id": "d6e98517f15880971856002a",
+    "referenceId": "REQ-8194",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "Confidential Tele-Counseling",
+    "urgency": "Medium",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "preferredTime": "ANYTIME",
+    "notes": "Requesting confidential counselor call",
+    "status": "SUBMITTED",
+    "personnelConcernLevel": "UNDETERMINED",
+    "isSelfRequested": true,
+    "accessibleRegardlessOfConcern": true,
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-20T03:24:44.767Z",
+        "note": "Request received and logged confidentially. Unit Welfare Officer notified."
+      }
+    ],
+    "createdAt": "2026-09-20T03:24:44.767Z",
+    "updatedAt": "2026-09-20T03:24:44.767Z"
+  },
+  {
+    "_id": "a5b18a8b1ba58e57294b05e0",
+    "referenceId": "SPT-8131",
+    "userId": "24d766f6ad3357fa69a24606",
+    "personnelId": "PERSONNEL",
+    "requestType": "REST_ROTATION",
+    "urgency": "PRIORITY",
+    "notes": "Welfare Officer review: Support Provided. Authorized 48h restorative rotation to restore sleep deficit.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "177dccbda3bc5a97b894b722",
+    "resolutionNotes": "Authorized 48h restorative rotation to restore sleep deficit.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-20T03:31:13.102Z",
+        "note": "Human Review completed: Support Provided"
+      }
+    ],
+    "createdAt": "2026-09-20T03:31:13.151Z",
+    "updatedAt": "2026-09-20T03:31:13.151Z"
   }
 ]

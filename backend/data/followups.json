@@ -672,5 +672,41 @@
     "updatedAt": "2026-09-20T03:18:36.696Z",
     "outcome": "CONSULTATION_RESOLVED",
     "outcomeDate": "2026-09-20T03:18:36.696Z"
+  },
+  {
+    "_id": "5d62c3ed4f9c511c233e0204",
+    "predictionId": "60e8f45fa5eff31216df1205",
+    "alertId": "32ef5f15e7be0f6c113328cf",
+    "userId": "800180a504719d8d5c2f028b",
+    "personnelId": "PERSONNEL",
+    "assignedOfficerId": "e83f1743fe2d05357f8bf18c",
+    "status": "COMPLETED",
+    "scheduledDate": "2026-09-25T03:30:36.371Z",
+    "initialRiskScore": 87.6,
+    "reAnalyzedRiskScore": null,
+    "welfareDelta": "IMPROVED",
+    "officerNotes": "Member reported rest restoration after 48h shift adjustment. Vitals normalized.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-20T03:30:36.371Z",
+    "updatedAt": "2026-09-20T03:30:36.381Z",
+    "outcome": "CONSULTATION_RESOLVED",
+    "outcomeDate": "2026-09-20T03:30:36.381Z"
+  },
+  {
+    "_id": "c816a710370505284c1e96ff",
+    "predictionId": "949ef51cfe13c1133f038593",
+    "alertId": "296c488e31b079664eabdfda",
+    "userId": "24d766f6ad3357fa69a24606",
+    "personnelId": "PERSONNEL",
+    "assignedOfficerId": "177dccbda3bc5a97b894b722",
+    "status": "SCHEDULED",
+    "scheduledDate": "2026-09-25T03:31:13.084Z",
+    "initialRiskScore": 85.6,
+    "reAnalyzedRiskScore": null,
+    "welfareDelta": "PENDING_DATA",
+    "officerNotes": "Elevated duty workload. Scheduled check-in session for next Tuesday.",
+    "isNonPunitive": true,
+    "createdAt": "2026-09-20T03:31:13.084Z",
+    "updatedAt": "2026-09-20T03:31:13.084Z"
   }
 ]

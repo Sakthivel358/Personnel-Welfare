@@ -73,5 +73,20 @@
     "lastConsentUpdatedAt": "2026-09-20T03:19:01.494Z",
     "createdAt": "2026-09-20T03:19:01.495Z",
     "updatedAt": "2026-09-20T03:19:01.495Z"
+  },
+  {
+    "_id": "7c86773e0164aa58af1d0661",
+    "userId": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "allowSelfCheckSubjective": true,
+    "allowWearableBiometrics": true,
+    "allowLongitudinalTrends": true,
+    "contributeAnonymizedResearch": true,
+    "telemetryGranularity": "FULL",
+    "pseudonymizeIdentity": true,
+    "consentVersion": "v1.0-2026",
+    "lastConsentUpdatedAt": "2026-09-20T03:30:34.817Z",
+    "createdAt": "2026-09-20T03:30:34.817Z",
+    "updatedAt": "2026-09-20T03:30:34.817Z"
   }
 ]

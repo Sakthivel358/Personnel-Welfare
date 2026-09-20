@@ -19095,5 +19095,1295 @@
     "hash": "d0c8a2311a4742ffee321fa80c168c9a72bfd63a5e4f6a2709da625e65458ff4",
     "createdAt": "2026-09-20T03:19:14.534Z",
     "updatedAt": "2026-09-20T03:19:14.534Z"
+  },
+  {
+    "_id": "46884bda8b2ff0f469869598",
+    "action": "USER_LOGIN",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "Auth",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-20T03:21:54.348Z",
+    "previousHash": "d0c8a2311a4742ffee321fa80c168c9a72bfd63a5e4f6a2709da625e65458ff4",
+    "hash": "44351683224c930613d38ee20f69773e71d31eba378711ddfa5677b7e6c1bbaa",
+    "createdAt": "2026-09-20T03:21:54.348Z",
+    "updatedAt": "2026-09-20T03:21:54.348Z"
+  },
+  {
+    "_id": "b97d9b92753e809445150fbc",
+    "action": "USER_LOGIN",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Auth",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "WELFARE_OFFICER",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-20T03:21:54.458Z",
+    "previousHash": "44351683224c930613d38ee20f69773e71d31eba378711ddfa5677b7e6c1bbaa",
+    "hash": "eeb68f5d84c1006080cb06cfa00a13ea896b5543ea8eb69d79f252954e5d8135",
+    "createdAt": "2026-09-20T03:21:54.458Z",
+    "updatedAt": "2026-09-20T03:21:54.458Z"
+  },
+  {
+    "_id": "70c273a6e56a50a1e4cbd6f7",
+    "action": "USER_LOGIN",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Auth",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "ADMIN",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-20T03:21:54.584Z",
+    "previousHash": "eeb68f5d84c1006080cb06cfa00a13ea896b5543ea8eb69d79f252954e5d8135",
+    "hash": "583291e21b5c3fada9fd185dbbfb353eefc8c7f119f3756ff996b669616d4cc8",
+    "createdAt": "2026-09-20T03:21:54.584Z",
+    "updatedAt": "2026-09-20T03:21:54.584Z"
+  },
+  {
+    "_id": "1c1a78b3b9b1702186863d2e",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "HRMS_MY_RECORD",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "HRMS_SERVICE_DOSSIER"
+    },
+    "timestamp": "2026-09-20T03:21:54.600Z",
+    "previousHash": "583291e21b5c3fada9fd185dbbfb353eefc8c7f119f3756ff996b669616d4cc8",
+    "hash": "33856f135a858c784282aa37daf4aa00152cdfb7eb02caea557f494be8ac3fd6",
+    "createdAt": "2026-09-20T03:21:54.600Z",
+    "updatedAt": "2026-09-20T03:21:54.600Z"
+  },
+  {
+    "_id": "6dd5fe6599c04ecc7216940d",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "UNDETERMINED",
+      "compositeRiskScore": null
+    },
+    "timestamp": "2026-09-20T03:21:54.711Z",
+    "previousHash": "33856f135a858c784282aa37daf4aa00152cdfb7eb02caea557f494be8ac3fd6",
+    "hash": "7e59391cfaae7f10d8b92a21e8d284628e6277aaab35f73fa7c7553bcbf811f9",
+    "createdAt": "2026-09-20T03:21:54.712Z",
+    "updatedAt": "2026-09-20T03:21:54.712Z"
+  },
+  {
+    "_id": "9976349e82442de9028c786a",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "UNDETERMINED",
+      "compositeRiskScore": null
+    },
+    "timestamp": "2026-09-20T03:21:54.846Z",
+    "previousHash": "7e59391cfaae7f10d8b92a21e8d284628e6277aaab35f73fa7c7553bcbf811f9",
+    "hash": "b1fe140e2c999caf2a6b3db6a83806e009a2b511eb4ce01a56fbde5611bad152",
+    "createdAt": "2026-09-20T03:21:54.846Z",
+    "updatedAt": "2026-09-20T03:21:54.846Z"
+  },
+  {
+    "_id": "06d6df7a7b37e9d1134043aa",
+    "action": "OFFICER_PERSONNEL_SEARCH",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Personnel",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "query": "Vijay",
+      "matchCount": 1
+    },
+    "timestamp": "2026-09-20T03:21:54.961Z",
+    "previousHash": "b1fe140e2c999caf2a6b3db6a83806e009a2b511eb4ce01a56fbde5611bad152",
+    "hash": "41dfe28e72e818ca46806a3f1f1e3da67f886bdf2936c6a8444e013b4c5e866d",
+    "createdAt": "2026-09-20T03:21:54.962Z",
+    "updatedAt": "2026-09-20T03:21:54.962Z"
+  },
+  {
+    "_id": "70d7cd4c3c7eecaaa46b5293",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-9042",
+    "targetResource": "HRMS_RECORD:CRPF-9042",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "HRMS_PERSONNEL_DOSSIER",
+      "viewedByRole": "WELFARE_OFFICER"
+    },
+    "timestamp": "2026-09-20T03:21:54.972Z",
+    "previousHash": "41dfe28e72e818ca46806a3f1f1e3da67f886bdf2936c6a8444e013b4c5e866d",
+    "hash": "f9c310d00e66ca803905e07de6b6ae613b0134cdc24c6f8e4fb58e160cd9c607",
+    "createdAt": "2026-09-20T03:21:54.973Z",
+    "updatedAt": "2026-09-20T03:21:54.973Z"
+  },
+  {
+    "_id": "024285a85797d957871ca653",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "USER_DIRECTORY",
+      "totalUsers": 221
+    },
+    "timestamp": "2026-09-20T03:21:54.999Z",
+    "previousHash": "f9c310d00e66ca803905e07de6b6ae613b0134cdc24c6f8e4fb58e160cd9c607",
+    "hash": "6d25c407b58740c76ead4c701644d067bf157dbc7c0b7b8cc5e9c531c144b6fa",
+    "createdAt": "2026-09-20T03:21:55.000Z",
+    "updatedAt": "2026-09-20T03:21:55.000Z"
+  },
+  {
+    "_id": "c66e518a876a967f9b43871a",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "AuditLogs",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "SYSTEM_AUDIT_TRAIL",
+      "returnedCount": 100
+    },
+    "timestamp": "2026-09-20T03:21:55.015Z",
+    "previousHash": "6d25c407b58740c76ead4c701644d067bf157dbc7c0b7b8cc5e9c531c144b6fa",
+    "hash": "a749f7cf9a2928f66bd5b2eac7fed83b3385ffe2107fb6d8c926dacec8552651",
+    "createdAt": "2026-09-20T03:21:55.015Z",
+    "updatedAt": "2026-09-20T03:21:55.015Z"
+  },
+  {
+    "_id": "23e31aace1cf8954df2b5547",
+    "action": "SECURITY_AUDIT_CHAIN_VERIFIED",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "AuditLogs",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "verified": true,
+      "totalRecords": 1225,
+      "status": "TAMPER_FREE_VERIFIED"
+    },
+    "timestamp": "2026-09-20T03:21:55.034Z",
+    "previousHash": "a749f7cf9a2928f66bd5b2eac7fed83b3385ffe2107fb6d8c926dacec8552651",
+    "hash": "11a17b1266e3b436749b2cb9d35542d60fb1a640a7777d0ddd48c397402e4971",
+    "createdAt": "2026-09-20T03:21:55.034Z",
+    "updatedAt": "2026-09-20T03:21:55.034Z"
+  },
+  {
+    "_id": "47b8c14b471bb590f4ba00ca",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "attemptedRole": "PERSONNEL",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/audit-logs"
+    },
+    "timestamp": "2026-09-20T03:21:55.099Z",
+    "previousHash": "11a17b1266e3b436749b2cb9d35542d60fb1a640a7777d0ddd48c397402e4971",
+    "hash": "4c233be70a5cc0ff53544a3dab6fb8d393d198d3300aeec526f7cf769972d546",
+    "createdAt": "2026-09-20T03:21:55.099Z",
+    "updatedAt": "2026-09-20T03:21:55.099Z"
+  },
+  {
+    "_id": "b397b3700f939dd40da7f3d7",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "attemptedRole": "WELFARE_OFFICER",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/audit-logs"
+    },
+    "timestamp": "2026-09-20T03:21:55.445Z",
+    "previousHash": "4c233be70a5cc0ff53544a3dab6fb8d393d198d3300aeec526f7cf769972d546",
+    "hash": "7abd6486f778c73845c907929203ed245a859226a4305414344aa89f968c6bb1",
+    "createdAt": "2026-09-20T03:21:55.445Z",
+    "updatedAt": "2026-09-20T03:21:55.445Z"
+  },
+  {
+    "_id": "5dca6c3cc07ba2753784f93e",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "/api/v1/officer/alerts",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "attemptedRole": "PERSONNEL",
+      "requiredRoles": [
+        "WELFARE_OFFICER",
+        "ADMIN"
+      ],
+      "path": "/api/v1/officer/alerts"
+    },
+    "timestamp": "2026-09-20T03:21:55.879Z",
+    "previousHash": "7abd6486f778c73845c907929203ed245a859226a4305414344aa89f968c6bb1",
+    "hash": "b5713189c36739c9cfe376b8bf8ce7d92dcadff6f37e02dfe5c0dc6c3fddd3d3",
+    "createdAt": "2026-09-20T03:21:55.880Z",
+    "updatedAt": "2026-09-20T03:21:55.880Z"
+  },
+  {
+    "_id": "7a4d2cf2bce9a1b9f1942602",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "HRMS_RECORD:CRPF-OTHER-USER",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "reason": "IDOR unauthorized personnel record attempt",
+      "targetId": "CRPF-OTHER-USER"
+    },
+    "timestamp": "2026-09-20T03:21:56.449Z",
+    "previousHash": "b5713189c36739c9cfe376b8bf8ce7d92dcadff6f37e02dfe5c0dc6c3fddd3d3",
+    "hash": "1875a29224502238b15670c50b3272053b0d335c8afb7ba80b7662cb9f7cb7ac",
+    "createdAt": "2026-09-20T03:21:56.449Z",
+    "updatedAt": "2026-09-20T03:21:56.449Z"
+  },
+  {
+    "_id": "6a7668e015b3160180a641d5",
+    "action": "USER_LOGIN",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "Auth",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-20T03:24:43.829Z",
+    "previousHash": "1875a29224502238b15670c50b3272053b0d335c8afb7ba80b7662cb9f7cb7ac",
+    "hash": "0509f08cb2cfda4fd974f9ae27cd4d9e06c5cb36fe1af614b852b5ad3210400d",
+    "createdAt": "2026-09-20T03:24:43.833Z",
+    "updatedAt": "2026-09-20T03:24:43.833Z"
+  },
+  {
+    "_id": "b29e6f156d9dd76fa4c8a179",
+    "action": "USER_LOGIN",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Auth",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "WELFARE_OFFICER",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-20T03:24:44.046Z",
+    "previousHash": "0509f08cb2cfda4fd974f9ae27cd4d9e06c5cb36fe1af614b852b5ad3210400d",
+    "hash": "e201d59e77e8c8cc0bfb10fce35d6ad3aeae2a028d0955a4348e94538f82819b",
+    "createdAt": "2026-09-20T03:24:44.046Z",
+    "updatedAt": "2026-09-20T03:24:44.046Z"
+  },
+  {
+    "_id": "36bbe352c95851b24f08d519",
+    "action": "USER_LOGIN",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Auth",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "ADMIN",
+      "rememberMe": false
+    },
+    "timestamp": "2026-09-20T03:24:44.199Z",
+    "previousHash": "e201d59e77e8c8cc0bfb10fce35d6ad3aeae2a028d0955a4348e94538f82819b",
+    "hash": "54571f9e87e5f69e856f217a57c4b7e5821bb0a0effe96992f2d22d06d6bd33b",
+    "createdAt": "2026-09-20T03:24:44.199Z",
+    "updatedAt": "2026-09-20T03:24:44.199Z"
+  },
+  {
+    "_id": "65253a7217eef2006cfe875f",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "HRMS_MY_RECORD",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "HRMS_SERVICE_DOSSIER"
+    },
+    "timestamp": "2026-09-20T03:24:44.290Z",
+    "previousHash": "54571f9e87e5f69e856f217a57c4b7e5821bb0a0effe96992f2d22d06d6bd33b",
+    "hash": "4a087de60f8a4d6befab4bdc02e3d0dd6ef76cc8cedfa84d7f03431460fe9b8c",
+    "createdAt": "2026-09-20T03:24:44.292Z",
+    "updatedAt": "2026-09-20T03:24:44.292Z"
+  },
+  {
+    "_id": "843ca443e61ea0b7a2220639",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "UNDETERMINED",
+      "compositeRiskScore": null
+    },
+    "timestamp": "2026-09-20T03:24:44.556Z",
+    "previousHash": "4a087de60f8a4d6befab4bdc02e3d0dd6ef76cc8cedfa84d7f03431460fe9b8c",
+    "hash": "561abe95dca226c5e6fa8f6680d6c12f1d4d1957eb0590ba5f0c747fc1278577",
+    "createdAt": "2026-09-20T03:24:44.557Z",
+    "updatedAt": "2026-09-20T03:24:44.557Z"
+  },
+  {
+    "_id": "689a179f6b9bd295c5dfe477",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "UNDETERMINED",
+      "compositeRiskScore": null
+    },
+    "timestamp": "2026-09-20T03:24:44.680Z",
+    "previousHash": "561abe95dca226c5e6fa8f6680d6c12f1d4d1957eb0590ba5f0c747fc1278577",
+    "hash": "7ba36fbddd901239a0aabba4ba1b622fdd666319ef9ca665d339259fa98954e0",
+    "createdAt": "2026-09-20T03:24:44.680Z",
+    "updatedAt": "2026-09-20T03:24:44.680Z"
+  },
+  {
+    "_id": "b4111398639d36cd865096a4",
+    "action": "SUPPORT_REQUEST_CREATED",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "SupportRequests",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "referenceId": "REQ-8194",
+      "requestType": "Confidential Tele-Counseling",
+      "urgency": "Medium",
+      "personnelConcernLevel": "UNDETERMINED"
+    },
+    "timestamp": "2026-09-20T03:24:44.790Z",
+    "previousHash": "7ba36fbddd901239a0aabba4ba1b622fdd666319ef9ca665d339259fa98954e0",
+    "hash": "01eea3cb4b0a77a7711d9ce4d2136d3c39709ba4c00c6392ee53ce54018beb20",
+    "createdAt": "2026-09-20T03:24:44.790Z",
+    "updatedAt": "2026-09-20T03:24:44.790Z"
+  },
+  {
+    "_id": "af9d852a6122f5da9f6bf6d3",
+    "action": "OFFICER_PERSONNEL_SEARCH",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "Personnel",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "query": "Vijay",
+      "matchCount": 1
+    },
+    "timestamp": "2026-09-20T03:24:44.870Z",
+    "previousHash": "01eea3cb4b0a77a7711d9ce4d2136d3c39709ba4c00c6392ee53ce54018beb20",
+    "hash": "b5b4a55e844ea9b741f268b192701e24cda5d331c92731e6a44b75a073c07632",
+    "createdAt": "2026-09-20T03:24:44.870Z",
+    "updatedAt": "2026-09-20T03:24:44.870Z"
+  },
+  {
+    "_id": "b557199a50f12b0b59f0cedb",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-9042",
+    "targetResource": "HRMS_RECORD:CRPF-9042",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "HRMS_PERSONNEL_DOSSIER",
+      "viewedByRole": "WELFARE_OFFICER"
+    },
+    "timestamp": "2026-09-20T03:24:44.885Z",
+    "previousHash": "b5b4a55e844ea9b741f268b192701e24cda5d331c92731e6a44b75a073c07632",
+    "hash": "28184f8156f423f574d37382d519c5201607ce70109bdf219aed276dad7e371a",
+    "createdAt": "2026-09-20T03:24:44.885Z",
+    "updatedAt": "2026-09-20T03:24:44.885Z"
+  },
+  {
+    "_id": "235dd8384bb494ea14d45abd",
+    "action": "AI_RESULT_HUMAN_REVIEW",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "CRPF-9042",
+    "targetResource": "WelfarePrediction",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "predictionId": "83cf63b9b1581e1c2d8669e1",
+      "concernLevel": "UNDETERMINED",
+      "reviewStatus": "REVIEWED",
+      "reviewStatusDisplay": "Reviewed",
+      "decisionSupportOnly": true,
+      "isDisciplinaryOrMedicalAction": false,
+      "nonDisciplinaryStatement": "An ML prediction must never automatically become a disciplinary action."
+    },
+    "timestamp": "2026-09-20T03:24:45.090Z",
+    "previousHash": "28184f8156f423f574d37382d519c5201607ce70109bdf219aed276dad7e371a",
+    "hash": "1f30d52be97f5abacae1d9215fd841ee2e50ff3e72f789901b7d95fa6bb339cb",
+    "createdAt": "2026-09-20T03:24:45.091Z",
+    "updatedAt": "2026-09-20T03:24:45.091Z"
+  },
+  {
+    "_id": "5837f9064d2131633922ba78",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "USER_DIRECTORY",
+      "totalUsers": 221
+    },
+    "timestamp": "2026-09-20T03:24:45.184Z",
+    "previousHash": "1f30d52be97f5abacae1d9215fd841ee2e50ff3e72f789901b7d95fa6bb339cb",
+    "hash": "1bd8ee1b6c455f4fccc7abf2f54d88e1d7b9bfe81a352e67cb62ffec0b12664b",
+    "createdAt": "2026-09-20T03:24:45.185Z",
+    "updatedAt": "2026-09-20T03:24:45.185Z"
+  },
+  {
+    "_id": "d72e80f85a0d354bb259a001",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "AuditLogs",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "recordType": "SYSTEM_AUDIT_TRAIL",
+      "returnedCount": 100
+    },
+    "timestamp": "2026-09-20T03:24:45.211Z",
+    "previousHash": "1bd8ee1b6c455f4fccc7abf2f54d88e1d7b9bfe81a352e67cb62ffec0b12664b",
+    "hash": "1bb0a421c23c554495b019cb5ed5a3b9ed1d52e40cc3a18a4fb0f372935d7ee0",
+    "createdAt": "2026-09-20T03:24:45.212Z",
+    "updatedAt": "2026-09-20T03:24:45.212Z"
+  },
+  {
+    "_id": "16320942c3d056f41bad374f",
+    "action": "SECURITY_AUDIT_CHAIN_VERIFIED",
+    "performedBy": "a77c9f11dccf4198b3ee2a96",
+    "personnelId": "ADM-001",
+    "targetResource": "AuditLogs",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "verified": true,
+      "totalRecords": 1242,
+      "status": "TAMPER_FREE_VERIFIED"
+    },
+    "timestamp": "2026-09-20T03:24:45.237Z",
+    "previousHash": "1bb0a421c23c554495b019cb5ed5a3b9ed1d52e40cc3a18a4fb0f372935d7ee0",
+    "hash": "b3e7a6a0c7733cddf5756eda625e0c7ae4abaffd57b3036d01a372ecc9e8ad90",
+    "createdAt": "2026-09-20T03:24:45.237Z",
+    "updatedAt": "2026-09-20T03:24:45.237Z"
+  },
+  {
+    "_id": "7fe2d8a4f14f107ee1d666ed",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "attemptedRole": "PERSONNEL",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/audit-logs"
+    },
+    "timestamp": "2026-09-20T03:24:45.367Z",
+    "previousHash": "b3e7a6a0c7733cddf5756eda625e0c7ae4abaffd57b3036d01a372ecc9e8ad90",
+    "hash": "ab73f9db63199d25116d0e60ddbcb17f8e7e539905fcc960e02bff636abb9c72",
+    "createdAt": "2026-09-20T03:24:45.367Z",
+    "updatedAt": "2026-09-20T03:24:45.367Z"
+  },
+  {
+    "_id": "9f1f7e9f00b0f1985f73973d",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "26445b0244cb7d59a6d1eefc",
+    "personnelId": "WO-101",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "attemptedRole": "WELFARE_OFFICER",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/audit-logs"
+    },
+    "timestamp": "2026-09-20T03:24:45.397Z",
+    "previousHash": "ab73f9db63199d25116d0e60ddbcb17f8e7e539905fcc960e02bff636abb9c72",
+    "hash": "07084285df6fcc3ed3f16d68e7567d0da3c581436080db11195d3d11be8265cd",
+    "createdAt": "2026-09-20T03:24:45.397Z",
+    "updatedAt": "2026-09-20T03:24:45.397Z"
+  },
+  {
+    "_id": "4768f6cd07b6c3509cec057a",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "/api/v1/officer/alerts",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "attemptedRole": "PERSONNEL",
+      "requiredRoles": [
+        "WELFARE_OFFICER",
+        "ADMIN"
+      ],
+      "path": "/api/v1/officer/alerts"
+    },
+    "timestamp": "2026-09-20T03:24:45.858Z",
+    "previousHash": "07084285df6fcc3ed3f16d68e7567d0da3c581436080db11195d3d11be8265cd",
+    "hash": "315b42f5f37d19abb46d80237a5de290a7d513800eb0b8a83894aa31e72a9f49",
+    "createdAt": "2026-09-20T03:24:45.858Z",
+    "updatedAt": "2026-09-20T03:24:45.858Z"
+  },
+  {
+    "_id": "86ae8488948985c24068986c",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "targetResource": "HRMS_RECORD:CRPF-OTHER-USER",
+    "outcome": "DENIED",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "reason": "IDOR unauthorized personnel record attempt",
+      "targetId": "CRPF-OTHER-USER"
+    },
+    "timestamp": "2026-09-20T03:24:46.482Z",
+    "previousHash": "315b42f5f37d19abb46d80237a5de290a7d513800eb0b8a83894aa31e72a9f49",
+    "hash": "7dee3ffb2e1c01dfc945ee2ab91c4763239cee9f1019b3eac889f25619c24a60",
+    "createdAt": "2026-09-20T03:24:46.482Z",
+    "updatedAt": "2026-09-20T03:24:46.482Z"
+  },
+  {
+    "_id": "3e9b7bcaa1fdd99fbe7540e7",
+    "action": "USER_REGISTER",
+    "performedBy": "eba872e411d01715d114bd47",
+    "personnelId": "ADMIN_032523",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "role": "ADMIN",
+      "email": "admin_sec_1789875032523@defence.gov.in"
+    },
+    "timestamp": "2026-09-20T03:30:32.721Z",
+    "previousHash": "7dee3ffb2e1c01dfc945ee2ab91c4763239cee9f1019b3eac889f25619c24a60",
+    "hash": "fff0d10e6df859f264bd8ced854e0611637b3c7a7c22a3c5e47a608c3acafc5a",
+    "createdAt": "2026-09-20T03:30:32.721Z",
+    "updatedAt": "2026-09-20T03:30:32.721Z"
+  },
+  {
+    "_id": "c078cf8151d9a5102081a825",
+    "action": "LOGIN_FAILURE",
+    "performedBy": null,
+    "personnelId": "WRONG_USER_1789875032523",
+    "targetResource": "Auth",
+    "outcome": "FAILED",
+    "ipAddress": "::1",
+    "details": {
+      "reason": "User not found"
+    },
+    "timestamp": "2026-09-20T03:30:32.730Z",
+    "previousHash": "fff0d10e6df859f264bd8ced854e0611637b3c7a7c22a3c5e47a608c3acafc5a",
+    "hash": "d5905d85a755ffc4da877df9fa0febb3d1a547a05bcde316cc695b668bc755e6",
+    "createdAt": "2026-09-20T03:30:32.730Z",
+    "updatedAt": "2026-09-20T03:30:32.730Z"
+  },
+  {
+    "_id": "6b0f246834b7cca897ce57d8",
+    "action": "LOGIN_FAILURE",
+    "performedBy": null,
+    "personnelId": "WRONG_USER_1789875032523",
+    "targetResource": "Auth",
+    "outcome": "FAILED",
+    "ipAddress": "::1",
+    "details": {
+      "reason": "User not found"
+    },
+    "timestamp": "2026-09-20T03:30:32.736Z",
+    "previousHash": "d5905d85a755ffc4da877df9fa0febb3d1a547a05bcde316cc695b668bc755e6",
+    "hash": "e2aa7501842810eeb7dfafcc29925373fde3f4355e0d0aae0d907a62a65bb663",
+    "createdAt": "2026-09-20T03:30:32.736Z",
+    "updatedAt": "2026-09-20T03:30:32.736Z"
+  },
+  {
+    "_id": "266b50e137c170e19133be3c",
+    "action": "LOGIN_FAILURE",
+    "performedBy": null,
+    "personnelId": "WRONG_USER_1789875032523",
+    "targetResource": "Auth",
+    "outcome": "FAILED",
+    "ipAddress": "::1",
+    "details": {
+      "reason": "User not found"
+    },
+    "timestamp": "2026-09-20T03:30:32.746Z",
+    "previousHash": "e2aa7501842810eeb7dfafcc29925373fde3f4355e0d0aae0d907a62a65bb663",
+    "hash": "728a5b7c4c8eee53ea8ba3e8d43404f9d51ae34db81c170885b09a0ec80eab55",
+    "createdAt": "2026-09-20T03:30:32.746Z",
+    "updatedAt": "2026-09-20T03:30:32.747Z"
+  },
+  {
+    "_id": "3801cfbb097067bc869740db",
+    "action": "USER_REGISTER",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "pers_sec_1789875032523@defence.gov.in"
+    },
+    "timestamp": "2026-09-20T03:30:33.859Z",
+    "previousHash": "728a5b7c4c8eee53ea8ba3e8d43404f9d51ae34db81c170885b09a0ec80eab55",
+    "hash": "01f49877401fc49cc8c2a7100a2693d83a51beadbc414baa0a17910c515ebb78",
+    "createdAt": "2026-09-20T03:30:33.859Z",
+    "updatedAt": "2026-09-20T03:30:33.859Z"
+  },
+  {
+    "_id": "b59d56c6dcf42b39783fcc6e",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "/api/v1/admin/metrics",
+    "outcome": "DENIED",
+    "ipAddress": "::1",
+    "details": {
+      "attemptedRole": "PERSONNEL",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/metrics"
+    },
+    "timestamp": "2026-09-20T03:30:33.881Z",
+    "previousHash": "01f49877401fc49cc8c2a7100a2693d83a51beadbc414baa0a17910c515ebb78",
+    "hash": "4cd99280a767b18349dfbd0672bd89c70f071a3b858ece37ec282803daf35e33",
+    "createdAt": "2026-09-20T03:30:33.882Z",
+    "updatedAt": "2026-09-20T03:30:33.882Z"
+  },
+  {
+    "_id": "253f8f435a2ae5fc42b7401a",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "/api/v1/admin/metrics",
+    "outcome": "DENIED",
+    "ipAddress": "::1",
+    "details": {
+      "attemptedRole": "PERSONNEL",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/metrics"
+    },
+    "timestamp": "2026-09-20T03:30:33.903Z",
+    "previousHash": "4cd99280a767b18349dfbd0672bd89c70f071a3b858ece37ec282803daf35e33",
+    "hash": "951b90a80be106ee292687c11db4ed419a11b3e6f66ecd420decfd8e6e399ab9",
+    "createdAt": "2026-09-20T03:30:33.903Z",
+    "updatedAt": "2026-09-20T03:30:33.903Z"
+  },
+  {
+    "_id": "184609b4d13a91638eea0a92",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "HRMS_RECORD:OTHER_UNAUTHORIZED_ID",
+    "outcome": "DENIED",
+    "ipAddress": "::1",
+    "details": {
+      "reason": "IDOR unauthorized personnel record attempt",
+      "targetId": "OTHER_UNAUTHORIZED_ID"
+    },
+    "timestamp": "2026-09-20T03:30:34.210Z",
+    "previousHash": "951b90a80be106ee292687c11db4ed419a11b3e6f66ecd420decfd8e6e399ab9",
+    "hash": "54ecd5ff93ae6e46fabbda96377951300ff0d9a242c5a1bd16c64510590741c9",
+    "createdAt": "2026-09-20T03:30:34.210Z",
+    "updatedAt": "2026-09-20T03:30:34.210Z"
+  },
+  {
+    "_id": "349495584d4150e0bc74273f",
+    "action": "CONSENT_SETTINGS_UPDATED",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "Consent",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "telemetryGranularity": "FULL",
+      "allowWearableBiometrics": true,
+      "allowSelfCheckSubjective": true,
+      "pseudonymizeIdentity": true
+    },
+    "timestamp": "2026-09-20T03:30:35.259Z",
+    "previousHash": "54ecd5ff93ae6e46fabbda96377951300ff0d9a242c5a1bd16c64510590741c9",
+    "hash": "cf00a8c1035b4d3185af4cc4c1230dd32df612df16dfc11ad693922f2d8c5ba0",
+    "createdAt": "2026-09-20T03:30:35.259Z",
+    "updatedAt": "2026-09-20T03:30:35.259Z"
+  },
+  {
+    "_id": "034ca21794666d08e2c618ce",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "HIGH",
+      "compositeRiskScore": 87.6,
+      "modelVersion": "v2.0.0-model1-prototype"
+    },
+    "timestamp": "2026-09-20T03:30:36.102Z",
+    "previousHash": "cf00a8c1035b4d3185af4cc4c1230dd32df612df16dfc11ad693922f2d8c5ba0",
+    "hash": "562650f8420998b89112aeb3afaab5180151b90f120a0d05abe25bb0351064d1",
+    "createdAt": "2026-09-20T03:30:36.103Z",
+    "updatedAt": "2026-09-20T03:30:36.103Z"
+  },
+  {
+    "_id": "f4261cfd0360c27ef080690c",
+    "action": "USER_REGISTER",
+    "performedBy": "e83f1743fe2d05357f8bf18c",
+    "personnelId": "WO_032523",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "role": "WELFARE_OFFICER",
+      "email": "wo_cl_1789875032523@defence.gov.in"
+    },
+    "timestamp": "2026-09-20T03:30:36.276Z",
+    "previousHash": "562650f8420998b89112aeb3afaab5180151b90f120a0d05abe25bb0351064d1",
+    "hash": "16d0bf20f74f78d1b90026f4dd82128dbf48fa22b14d60734bd0481f003c3615",
+    "createdAt": "2026-09-20T03:30:36.276Z",
+    "updatedAt": "2026-09-20T03:30:36.276Z"
+  },
+  {
+    "_id": "33d865a9ae7ec7b34ef26500",
+    "action": "AI_RESULT_HUMAN_REVIEW",
+    "performedBy": "e83f1743fe2d05357f8bf18c",
+    "personnelId": "PERSONNEL",
+    "targetResource": "WelfarePrediction",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "predictionId": "60e8f45fa5eff31216df1205",
+      "concernLevel": "HIGH",
+      "reviewStatus": "NEEDS_FOLLOW_UP",
+      "reviewStatusDisplay": "Needs Follow-up",
+      "decisionSupportOnly": true,
+      "isDisciplinaryOrMedicalAction": false,
+      "nonDisciplinaryStatement": "An ML prediction must never automatically become a disciplinary action."
+    },
+    "timestamp": "2026-09-20T03:30:36.372Z",
+    "previousHash": "16d0bf20f74f78d1b90026f4dd82128dbf48fa22b14d60734bd0481f003c3615",
+    "hash": "f95fe4a57d13c7bda54e3b5e11732471aba38ddd2a58f5a7f97f22826e3fa556",
+    "createdAt": "2026-09-20T03:30:36.372Z",
+    "updatedAt": "2026-09-20T03:30:36.372Z"
+  },
+  {
+    "_id": "491270cccaebc9bd520493aa",
+    "action": "FOLLOWUP_OUTCOME_RECORDED",
+    "performedBy": "e83f1743fe2d05357f8bf18c",
+    "personnelId": "PERSONNEL",
+    "targetResource": "FollowUps",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "status": "COMPLETED",
+      "outcome": "CONSULTATION_RESOLVED"
+    },
+    "timestamp": "2026-09-20T03:30:36.382Z",
+    "previousHash": "f95fe4a57d13c7bda54e3b5e11732471aba38ddd2a58f5a7f97f22826e3fa556",
+    "hash": "7b725e35088ed14d7cdb0dca6ab36966cca8d695062976415b556529e48a86fe",
+    "createdAt": "2026-09-20T03:30:36.382Z",
+    "updatedAt": "2026-09-20T03:30:36.382Z"
+  },
+  {
+    "_id": "721ce7e0483b2252f22004ec",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 8.1,
+      "modelVersion": "v2.0.0-model1-prototype"
+    },
+    "timestamp": "2026-09-20T03:30:36.554Z",
+    "previousHash": "7b725e35088ed14d7cdb0dca6ab36966cca8d695062976415b556529e48a86fe",
+    "hash": "84dfdbe318c1b33766eb27108bbf00e39fba8a31099058b893b532181783150f",
+    "createdAt": "2026-09-20T03:30:36.555Z",
+    "updatedAt": "2026-09-20T03:30:36.555Z"
+  },
+  {
+    "_id": "76587d9dd5fd495d81ef8262",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "outcome": "DENIED",
+    "ipAddress": "::1",
+    "details": {
+      "attemptedRole": "PERSONNEL",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/audit-logs"
+    },
+    "timestamp": "2026-09-20T03:30:36.576Z",
+    "previousHash": "84dfdbe318c1b33766eb27108bbf00e39fba8a31099058b893b532181783150f",
+    "hash": "cc5a3bb81160001b14c8c25e34da00bc0d3f589f9a75b2bfb4e86123159ffce5",
+    "createdAt": "2026-09-20T03:30:36.576Z",
+    "updatedAt": "2026-09-20T03:30:36.576Z"
+  },
+  {
+    "_id": "50fa08ef2a8468a7cbf80835",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "HRMS_RECORD:DIFFERENT_PERSONNEL_ID",
+    "outcome": "DENIED",
+    "ipAddress": "::1",
+    "details": {
+      "reason": "IDOR unauthorized personnel record attempt",
+      "targetId": "DIFFERENT_PERSONNEL_ID"
+    },
+    "timestamp": "2026-09-20T03:30:36.954Z",
+    "previousHash": "cc5a3bb81160001b14c8c25e34da00bc0d3f589f9a75b2bfb4e86123159ffce5",
+    "hash": "50ee481b7db5c3181a93f52693db07bd5b65ca8c9edbdab8c923f0de0aa59565",
+    "createdAt": "2026-09-20T03:30:36.954Z",
+    "updatedAt": "2026-09-20T03:30:36.954Z"
+  },
+  {
+    "_id": "fd6270bdc7090bef6547ebc7",
+    "action": "SENSITIVE_RECORD_ACCESS",
+    "performedBy": "eba872e411d01715d114bd47",
+    "personnelId": "ADMIN_032523",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "recordType": "USER_DIRECTORY",
+      "totalUsers": 224
+    },
+    "timestamp": "2026-09-20T03:30:37.358Z",
+    "previousHash": "50ee481b7db5c3181a93f52693db07bd5b65ca8c9edbdab8c923f0de0aa59565",
+    "hash": "be1e118af33efdda3b42ef074bdf97d44b012cf45f5e34bb9df7da6cbba0d0f8",
+    "createdAt": "2026-09-20T03:30:37.359Z",
+    "updatedAt": "2026-09-20T03:30:37.359Z"
+  },
+  {
+    "_id": "ed2446d62c4623fe0dfb395a",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "e83f1743fe2d05357f8bf18c",
+    "personnelId": "WO_032523",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "outcome": "DENIED",
+    "ipAddress": "::1",
+    "details": {
+      "attemptedRole": "WELFARE_OFFICER",
+      "requiredRoles": [
+        "ADMIN"
+      ],
+      "path": "/api/v1/admin/audit-logs"
+    },
+    "timestamp": "2026-09-20T03:30:37.382Z",
+    "previousHash": "be1e118af33efdda3b42ef074bdf97d44b012cf45f5e34bb9df7da6cbba0d0f8",
+    "hash": "172d93d26e50ffbce1d8dcbe4c49ba23348d20a37a8c3c7cf04f56acd8ce7b2e",
+    "createdAt": "2026-09-20T03:30:37.382Z",
+    "updatedAt": "2026-09-20T03:30:37.382Z"
+  },
+  {
+    "_id": "f263284d2e87dcfa07afcdb5",
+    "action": "USER_LOGOUT",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "Auth",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {},
+    "timestamp": "2026-09-20T03:30:37.894Z",
+    "previousHash": "172d93d26e50ffbce1d8dcbe4c49ba23348d20a37a8c3c7cf04f56acd8ce7b2e",
+    "hash": "5c3b34161bbcb3a51e19c56f7f28191fdfb8f1fa1c8e51881f7fd9824f26c5b3",
+    "createdAt": "2026-09-20T03:30:37.894Z",
+    "updatedAt": "2026-09-20T03:30:37.894Z"
+  },
+  {
+    "_id": "c0a2168fc9d2abf7cedcdb9d",
+    "action": "UNAUTHORIZED_ACCESS_ATTEMPT",
+    "performedBy": "800180a504719d8d5c2f028b",
+    "personnelId": "PER032523",
+    "targetResource": "/api/v1/hrms/my-record",
+    "outcome": "DENIED",
+    "ipAddress": "::1",
+    "details": {
+      "reason": "Revoked session token presented"
+    },
+    "timestamp": "2026-09-20T03:30:37.925Z",
+    "previousHash": "5c3b34161bbcb3a51e19c56f7f28191fdfb8f1fa1c8e51881f7fd9824f26c5b3",
+    "hash": "2fe7db6f804bd611e720287bebc98696b7d30c3ce800f7d21d7569e1a51aa186",
+    "createdAt": "2026-09-20T03:30:37.925Z",
+    "updatedAt": "2026-09-20T03:30:37.925Z"
+  },
+  {
+    "_id": "1a6d0d27a5fb7c277a669e9c",
+    "action": "USER_REGISTER",
+    "performedBy": "24d766f6ad3357fa69a24606",
+    "personnelId": "PB072312",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "pb_officer_1789875072312@defence.gov.in"
+    },
+    "timestamp": "2026-09-20T03:31:12.399Z",
+    "previousHash": "2fe7db6f804bd611e720287bebc98696b7d30c3ce800f7d21d7569e1a51aa186",
+    "hash": "40b25c002723f64a266ebfe85d9070602581d0358eecfae60d472fca7242a617",
+    "createdAt": "2026-09-20T03:31:12.399Z",
+    "updatedAt": "2026-09-20T03:31:12.399Z"
+  },
+  {
+    "_id": "a30a2926526a01e99a2460cb",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "24d766f6ad3357fa69a24606",
+    "personnelId": "PB072312",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 3.1,
+      "modelVersion": "v2.0.0-model1-prototype"
+    },
+    "timestamp": "2026-09-20T03:31:12.484Z",
+    "previousHash": "40b25c002723f64a266ebfe85d9070602581d0358eecfae60d472fca7242a617",
+    "hash": "9ace2bdcfa6dd22268f34ffc03578aed7dbb8b5e25920400fe81c946a84101bb",
+    "createdAt": "2026-09-20T03:31:12.484Z",
+    "updatedAt": "2026-09-20T03:31:12.484Z"
+  },
+  {
+    "_id": "b3a95fb60543868a8c247c94",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "24d766f6ad3357fa69a24606",
+    "personnelId": "PB072312",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 8.8,
+      "modelVersion": "v2.0.0-model1-prototype"
+    },
+    "timestamp": "2026-09-20T03:31:12.557Z",
+    "previousHash": "9ace2bdcfa6dd22268f34ffc03578aed7dbb8b5e25920400fe81c946a84101bb",
+    "hash": "f53a26f2980e6e31af7141c3800759d01b7c7d1a73088664bdc437d061a59ff6",
+    "createdAt": "2026-09-20T03:31:12.558Z",
+    "updatedAt": "2026-09-20T03:31:12.558Z"
+  },
+  {
+    "_id": "f29f759401311b8b57d1cc14",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "24d766f6ad3357fa69a24606",
+    "personnelId": "PB072312",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "HIGH",
+      "compositeRiskScore": 85.6,
+      "modelVersion": "v2.0.0-model1-prototype"
+    },
+    "timestamp": "2026-09-20T03:31:12.827Z",
+    "previousHash": "f53a26f2980e6e31af7141c3800759d01b7c7d1a73088664bdc437d061a59ff6",
+    "hash": "5719cd199c1dee61789886577a3186e3a4bb061c027231ba9c5e652919ee3323",
+    "createdAt": "2026-09-20T03:31:12.828Z",
+    "updatedAt": "2026-09-20T03:31:12.828Z"
+  },
+  {
+    "_id": "646a3c44276a6d37bb286aa2",
+    "action": "USER_REGISTER",
+    "performedBy": "1cdba3881d44529a7f156136",
+    "personnelId": "ISO072312",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "pb_isolated_1789875072312@defence.gov.in"
+    },
+    "timestamp": "2026-09-20T03:31:12.902Z",
+    "previousHash": "5719cd199c1dee61789886577a3186e3a4bb061c027231ba9c5e652919ee3323",
+    "hash": "6bc696a9e2d36e3f12b38283e05da918c242a59403f6bc881a93e0ee8e26b10f",
+    "createdAt": "2026-09-20T03:31:12.902Z",
+    "updatedAt": "2026-09-20T03:31:12.902Z"
+  },
+  {
+    "_id": "c41fd49bd3e1b07194ff049e",
+    "action": "USER_REGISTER",
+    "performedBy": "177dccbda3bc5a97b894b722",
+    "personnelId": "WO_072312",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "role": "WELFARE_OFFICER",
+      "email": "officer_welfare_1789875072312@defence.gov.in"
+    },
+    "timestamp": "2026-09-20T03:31:12.974Z",
+    "previousHash": "6bc696a9e2d36e3f12b38283e05da918c242a59403f6bc881a93e0ee8e26b10f",
+    "hash": "6dbb37fe106f420eae2f8c106915263f85f6aa9fe470a0da6150d80e45d450a8",
+    "createdAt": "2026-09-20T03:31:12.975Z",
+    "updatedAt": "2026-09-20T03:31:12.975Z"
+  },
+  {
+    "_id": "761383d885912a11de2589a1",
+    "action": "AI_RESULT_HUMAN_REVIEW",
+    "performedBy": "177dccbda3bc5a97b894b722",
+    "personnelId": "PERSONNEL",
+    "targetResource": "WelfarePrediction",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "predictionId": "949ef51cfe13c1133f038593",
+      "concernLevel": "HIGH",
+      "reviewStatus": "REVIEWED",
+      "reviewStatusDisplay": "Reviewed",
+      "decisionSupportOnly": true,
+      "isDisciplinaryOrMedicalAction": false,
+      "nonDisciplinaryStatement": "An ML prediction must never automatically become a disciplinary action."
+    },
+    "timestamp": "2026-09-20T03:31:13.037Z",
+    "previousHash": "6dbb37fe106f420eae2f8c106915263f85f6aa9fe470a0da6150d80e45d450a8",
+    "hash": "64ef1dbb03973f6f52c15ea921c6c0aba2714ed7f8669bc6c5d149743b93fe15",
+    "createdAt": "2026-09-20T03:31:13.037Z",
+    "updatedAt": "2026-09-20T03:31:13.037Z"
+  },
+  {
+    "_id": "a1b4a6ab4d3d1e91ee55790f",
+    "action": "AI_RESULT_HUMAN_REVIEW",
+    "performedBy": "177dccbda3bc5a97b894b722",
+    "personnelId": "PERSONNEL",
+    "targetResource": "WelfarePrediction",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "predictionId": "949ef51cfe13c1133f038593",
+      "concernLevel": "HIGH",
+      "reviewStatus": "NEEDS_FOLLOW_UP",
+      "reviewStatusDisplay": "Needs Follow-up",
+      "decisionSupportOnly": true,
+      "isDisciplinaryOrMedicalAction": false,
+      "nonDisciplinaryStatement": "An ML prediction must never automatically become a disciplinary action."
+    },
+    "timestamp": "2026-09-20T03:31:13.085Z",
+    "previousHash": "64ef1dbb03973f6f52c15ea921c6c0aba2714ed7f8669bc6c5d149743b93fe15",
+    "hash": "b2650c0893ff5c72377421333e6cfc0a8bbd31306469a1daf7cf5674ca19003d",
+    "createdAt": "2026-09-20T03:31:13.085Z",
+    "updatedAt": "2026-09-20T03:31:13.085Z"
+  },
+  {
+    "_id": "8f8bb9653f09d0a2949a5773",
+    "action": "AI_RESULT_HUMAN_REVIEW",
+    "performedBy": "177dccbda3bc5a97b894b722",
+    "personnelId": "PERSONNEL",
+    "targetResource": "WelfarePrediction",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "predictionId": "949ef51cfe13c1133f038593",
+      "concernLevel": "HIGH",
+      "reviewStatus": "SUPPORT_PROVIDED",
+      "reviewStatusDisplay": "Support Provided",
+      "decisionSupportOnly": true,
+      "isDisciplinaryOrMedicalAction": false,
+      "nonDisciplinaryStatement": "An ML prediction must never automatically become a disciplinary action."
+    },
+    "timestamp": "2026-09-20T03:31:13.151Z",
+    "previousHash": "b2650c0893ff5c72377421333e6cfc0a8bbd31306469a1daf7cf5674ca19003d",
+    "hash": "855a84bd3a44b7389c06ac9aa362819f3c646198839a02f7f5157af8cbd63c12",
+    "createdAt": "2026-09-20T03:31:13.151Z",
+    "updatedAt": "2026-09-20T03:31:13.151Z"
+  },
+  {
+    "_id": "89bd110ad80508f8ebd37b3f",
+    "action": "AI_RESULT_HUMAN_REVIEW",
+    "performedBy": "177dccbda3bc5a97b894b722",
+    "personnelId": "PERSONNEL",
+    "targetResource": "WelfarePrediction",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "predictionId": "949ef51cfe13c1133f038593",
+      "concernLevel": "HIGH",
+      "reviewStatus": "NOT_APPLICABLE",
+      "reviewStatusDisplay": "AI Result Not Applicable",
+      "decisionSupportOnly": true,
+      "isDisciplinaryOrMedicalAction": false,
+      "nonDisciplinaryStatement": "An ML prediction must never automatically become a disciplinary action."
+    },
+    "timestamp": "2026-09-20T03:31:13.208Z",
+    "previousHash": "855a84bd3a44b7389c06ac9aa362819f3c646198839a02f7f5157af8cbd63c12",
+    "hash": "31741e0f80d7c231344c5e34c929c272b4db720873113a879c869e9381b82d3e",
+    "createdAt": "2026-09-20T03:31:13.208Z",
+    "updatedAt": "2026-09-20T03:31:13.208Z"
+  },
+  {
+    "_id": "7b1209ae4f5b6a6ba2fa8090",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "24d766f6ad3357fa69a24606",
+    "personnelId": "PB072312",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "UNDETERMINED",
+      "compositeRiskScore": null
+    },
+    "timestamp": "2026-09-20T03:31:13.274Z",
+    "previousHash": "31741e0f80d7c231344c5e34c929c272b4db720873113a879c869e9381b82d3e",
+    "hash": "bcd16a05179b086b70168a4040b6ade1df2092fa72ae47d4ae98a49302ddbba9",
+    "createdAt": "2026-09-20T03:31:13.274Z",
+    "updatedAt": "2026-09-20T03:31:13.274Z"
+  },
+  {
+    "_id": "eb5b1a57c96c1b85a44c90d8",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "24d766f6ad3357fa69a24606",
+    "personnelId": "PB072312",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::1",
+    "details": {
+      "concernLevel": "UNDETERMINED",
+      "compositeRiskScore": null
+    },
+    "timestamp": "2026-09-20T03:31:13.323Z",
+    "previousHash": "bcd16a05179b086b70168a4040b6ade1df2092fa72ae47d4ae98a49302ddbba9",
+    "hash": "e1bbc58a13a644e29283b0a3be260570832b1f7e873917d453845c143f5fc9f5",
+    "createdAt": "2026-09-20T03:31:13.323Z",
+    "updatedAt": "2026-09-20T03:31:13.323Z"
+  },
+  {
+    "_id": "5e37c2c1674a0923cf38ddd7",
+    "action": "USER_REGISTER",
+    "performedBy": "a3593e10bf0661c94bf411a9",
+    "personnelId": "SPARSE-2925",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "sparse.1789875082925@crpf.gov.in"
+    },
+    "timestamp": "2026-09-20T03:31:23.007Z",
+    "previousHash": "e1bbc58a13a644e29283b0a3be260570832b1f7e873917d453845c143f5fc9f5",
+    "hash": "d821be28aeeca60ba6dc5a6d2bb0a85ce022ecf19d3622288791059964032b58",
+    "createdAt": "2026-09-20T03:31:23.007Z",
+    "updatedAt": "2026-09-20T03:31:23.007Z"
+  },
+  {
+    "_id": "3914091b829c1fa9ba346174",
+    "action": "USER_REGISTER",
+    "performedBy": "3c17f71ede10c9c06bc7f5a7",
+    "personnelId": "ASSESSED-3024",
+    "targetResource": "Users",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "role": "PERSONNEL",
+      "email": "assessed.1789875083024@crpf.gov.in"
+    },
+    "timestamp": "2026-09-20T03:31:23.110Z",
+    "previousHash": "d821be28aeeca60ba6dc5a6d2bb0a85ce022ecf19d3622288791059964032b58",
+    "hash": "0551cdd75206640b621a35f11e80f1219f2c910a5eaa174861fe5e4974ba1671",
+    "createdAt": "2026-09-20T03:31:23.110Z",
+    "updatedAt": "2026-09-20T03:31:23.110Z"
+  },
+  {
+    "_id": "f3e7a05a20e476d7765f157e",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "3c17f71ede10c9c06bc7f5a7",
+    "personnelId": "ASSESSED-3024",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "LOW",
+      "compositeRiskScore": 12.8,
+      "modelVersion": "v2.0.0-model1-prototype"
+    },
+    "timestamp": "2026-09-20T03:31:23.257Z",
+    "previousHash": "0551cdd75206640b621a35f11e80f1219f2c910a5eaa174861fe5e4974ba1671",
+    "hash": "247fd51fa0470d5b2d2658a9b151e0d4f8de5fff22df6c30d5ac2bdeefe6f0b1",
+    "createdAt": "2026-09-20T03:31:23.257Z",
+    "updatedAt": "2026-09-20T03:31:23.257Z"
+  },
+  {
+    "_id": "85123a8c18ebab21d20f62d4",
+    "action": "CHECKIN_SUBMITTED",
+    "performedBy": "3c17f71ede10c9c06bc7f5a7",
+    "personnelId": "ASSESSED-3024",
+    "targetResource": "CheckIns",
+    "outcome": "SUCCESS",
+    "ipAddress": "::ffff:127.0.0.1",
+    "details": {
+      "concernLevel": "MODERATE",
+      "compositeRiskScore": 54.3,
+      "modelVersion": "v2.0.0-model1-prototype"
+    },
+    "timestamp": "2026-09-20T03:31:23.339Z",
+    "previousHash": "247fd51fa0470d5b2d2658a9b151e0d4f8de5fff22df6c30d5ac2bdeefe6f0b1",
+    "hash": "6f35e9ba3c07d541f0d581b05daab438b10aa19302fa7d9be8fd4a2660bb2e81",
+    "createdAt": "2026-09-20T03:31:23.339Z",
+    "updatedAt": "2026-09-20T03:31:23.339Z"
   }
 ]

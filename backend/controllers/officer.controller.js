@@ -1352,18 +1352,26 @@ const reviewPredictionResult = async (req, res, next) => {
       personnelId: providedPersonnelId
     } = req.body;
 
-    if (!predictionId) {
-      return res.status(400).json({
-        success: false,
-        message: 'Prediction ID is required for human welfare review.'
+    let prediction = null;
+    if (predictionId) {
+      prediction = await db.Predictions.findById(predictionId);
+    } else if (providedPersonnelId) {
+      const user = await db.Users.findOne({ personnelId: providedPersonnelId });
+      const preds = await db.Predictions.find({
+        $or: [
+          { personnelId: providedPersonnelId },
+          ...(user ? [{ userId: user._id }] : [])
+        ]
       });
+      if (preds && preds.length > 0) {
+        prediction = preds[preds.length - 1];
+      }
     }
 
-    const prediction = await db.Predictions.findById(predictionId);
     if (!prediction) {
-      return res.status(404).json({
+      return res.status(400).json({
         success: false,
-        message: 'Prediction record not found.'
+        message: 'Valid Prediction ID or Personnel ID is required for human welfare review.'
       });
     }
 
