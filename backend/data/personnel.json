@@ -13,7 +13,7 @@
     "isEnrolledInWelfare": true,
     "emergencyContact": {},
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T19:11:47.518Z",
+    "updatedAt": "2026-09-20T01:32:46.878Z",
     "workSchedule": "Standard Rotation",
     "recoveryTargetHours": 7,
     "careerGoals": "Specialized Technical & Operations Training",
@@ -14393,5 +14393,193 @@
     },
     "createdAt": "2026-09-19T19:11:56.282Z",
     "updatedAt": "2026-09-19T19:11:56.282Z"
+  },
+  {
+    "_id": "8b8622851c03c75769b33e10",
+    "userId": "4af46d8fb9bf95504dc6ba62",
+    "personnelId": "AUDIT-ESC-1789867873959",
+    "fullName": "Escalation Test User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T01:31:14.097Z",
+    "updatedAt": "2026-09-20T01:31:14.097Z"
+  },
+  {
+    "_id": "e9c37084e3a54b0478aae6d3",
+    "userId": "a234629e27426a06f8a9c3bc",
+    "personnelId": "PERS_FIN_210389",
+    "fullName": "Subedar Major Vikram Singh",
+    "rank": "Subedar Major",
+    "unit": "12th Assam Rifles",
+    "deploymentZone": "High Altitude Eastern Sector",
+    "yearsOfService": 16,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {},
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T01:32:57.352Z",
+    "updatedAt": "2026-09-20T01:32:58.101Z",
+    "phone": "",
+    "dob": "",
+    "gender": "Not Specified",
+    "force": "CRPF",
+    "joiningDate": "",
+    "serviceCategory": "Combatant",
+    "postingType": "Field Operations",
+    "currentLocation": "Battalion HQ",
+    "primaryDuty": "Forward Perimeter Security",
+    "secondaryDuty": "Logistics & Communication",
+    "qualification": "Graduate / Diploma",
+    "trainingCompleted": "Basic Operational & Counter-Insurgency Training",
+    "certifications": "High-Altitude Survival, First Aid",
+    "experienceYears": 5,
+    "preferredSupportChannel": "In-App Notification",
+    "preferredContactTime": "Evening (Post-Duty)",
+    "welfareContactPreference": "Welfare Officer In-Person",
+    "accessibilityPreference": "Standard Display",
+    "leavePattern": {
+      "daysEarned": 60,
+      "daysAvailed": 15,
+      "daysRemaining": 45,
+      "lastLeaveDate": "2026-03-10",
+      "leaveDeficitWarning": false,
+      "annualEntitlement": 60
+    },
+    "deploymentHistory": [
+      {
+        "mission": "Op Rakshak - Sector North",
+        "zone": "High Altitude Eastern Sector",
+        "durationMonths": 14,
+        "terrainType": "Glacial Mountain / High Altitude",
+        "completedAt": "2025-11-20"
+      }
+    ],
+    "dutySchedule": {
+      "shiftType": "Rotational 3-Watch",
+      "rotationCycle": "8h Watch / 16h Rest",
+      "weeklyHoursNominal": 48,
+      "nightShiftRatio": 0.25,
+      "timing": "06:00 - 14:00 / 14:00 - 22:00 / 22:00 - 06:00"
+    },
+    "transferFrequency": {
+      "transfersCount": 3,
+      "averageTenureMonths": 22,
+      "lastTransferDate": "2025-06-15",
+      "highMobilityFlag": false
+    },
+    "trainingCommitments": [
+      {
+        "program": "High Altitude Tactical Conditioning & Cold Survival",
+        "status": "Completed",
+        "mandatoryHours": 40,
+        "completedHours": 40
+      }
+    ],
+    "workloadTrends": {
+      "averageWeeklyHours": 52,
+      "peakWeeklyHours": 68,
+      "surgeWeeksCount": 3,
+      "trajectory": "Increasing"
+    }
+  },
+  {
+    "_id": "4399776d969544b89aa60166",
+    "userId": "3b95c08ad8ae8a7f9fcd8d4f",
+    "personnelId": "TEST_WO_210389",
+    "fullName": "Capt. Ananya Sen",
+    "rank": "Welfare Officer",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T01:32:57.498Z",
+    "updatedAt": "2026-09-20T01:32:57.498Z"
+  },
+  {
+    "_id": "835f6911823b938bf319d1be",
+    "userId": "0740686c9b9e55be684e4723",
+    "personnelId": "ADM_FIN_210389",
+    "fullName": "Col. R. K. Nair",
+    "rank": "System Administrator",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T01:32:57.679Z",
+    "updatedAt": "2026-09-20T01:32:57.679Z"
+  },
+  {
+    "_id": "e62d5ef9861e0564a407156e",
+    "userId": "19f222f7884c54306438e30c",
+    "personnelId": "TEMP_LO_210389",
+    "fullName": "Temp Logout User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-20T01:32:58.025Z",
+    "updatedAt": "2026-09-20T01:32:58.025Z"
   }
 ]

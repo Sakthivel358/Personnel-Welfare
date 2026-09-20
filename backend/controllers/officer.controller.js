@@ -635,6 +635,116 @@ const reviewAlert = async (req, res, next) => {
   }
 };
 
+const acknowledgeAlert = async (req, res, next) => {
+  try {
+    const { alertId } = req.params;
+    const { officerNotes } = req.body || {};
+
+    const alert = await db.Alerts.findById(alertId);
+    if (!alert) {
+      return res.status(404).json({ success: false, message: 'Welfare alert record not found.' });
+    }
+
+    const officerId = req.user.personnelId || req.user.identifier || req.user._id;
+    const nowIso = new Date().toISOString();
+
+    const updatedAlert = await db.Alerts.findByIdAndUpdate(alertId, {
+      status: 'ACKNOWLEDGED',
+      acknowledgedAt: nowIso,
+      acknowledgedBy: officerId,
+      officerNotes: officerNotes ? `${alert.officerNotes ? alert.officerNotes + ' | ' : ''}${officerNotes}` : (alert.officerNotes || 'Alert acknowledged by Unit Welfare Officer. Placed under active supportive monitoring.')
+    });
+
+    await auditService.log({
+      action: 'ALERT_ACKNOWLEDGED',
+      userId: req.user._id,
+      personnelId: alert.personnelId,
+      targetResource: 'Alerts',
+      ipAddress: req.ip,
+      details: { alertId, userToken: alert.userToken, concernLevel: alert.concernLevel, status: 'ACKNOWLEDGED', isNonPunitive: true, acknowledgedBy: officerId, acknowledgedAt: nowIso }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Welfare alert acknowledged successfully.',
+      data: {
+        ...(updatedAlert || {}),
+        _id: alertId,
+        status: 'ACKNOWLEDGED',
+        acknowledgedAt: nowIso,
+        acknowledgedBy: officerId
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const closeAlert = async (req, res, next) => {
+  try {
+    const { alertId } = req.params;
+    const { officerNotes, resolutionReason } = req.body || {};
+
+    const alert = await db.Alerts.findById(alertId);
+    if (!alert) {
+      return res.status(404).json({ success: false, message: 'Welfare alert record not found.' });
+    }
+
+    // Prohibit disciplinary action
+    const checkText = `${officerNotes || ''} ${resolutionReason || ''}`.toLowerCase();
+    const prohibitedDisciplinaryKeywords = [
+      'disciplinary', 'court-martial', 'court martial', 'punitive', 'penalty', 'demote', 'demotion',
+      'charge sheet', 'charge-sheet', 'chargesheet', 'punish', 'punishment', 'sanction', 'misconduct', 'inquiry', 'charge'
+    ];
+    for (const kw of prohibitedDisciplinaryKeywords) {
+      if (checkText.includes(kw)) {
+        return res.status(400).json({
+          success: false,
+          error: 'NON_DISCIPLINARY_VIOLATION',
+          message: 'Prohibited Action: An ML prediction must never automatically become a disciplinary action. Welfare alerts are strictly non-punitive.',
+          nonDisciplinaryStatement: 'An ML prediction must never automatically become a disciplinary action.'
+        });
+      }
+    }
+
+    const officerId = req.user.personnelId || req.user.identifier || req.user._id;
+    const nowIso = new Date().toISOString();
+
+    const updatedAlert = await db.Alerts.findByIdAndUpdate(alertId, {
+      status: 'CLOSED',
+      closedAt: nowIso,
+      closedBy: officerId,
+      resolutionReason: resolutionReason || 'RESOLVED',
+      resolutionNotes: officerNotes || '',
+      officerNotes: officerNotes ? `${alert.officerNotes ? alert.officerNotes + ' | ' : ''}Closed: ${officerNotes}` : (alert.officerNotes || 'Alert closed: Welfare conditions verified stabilized by Unit Welfare Officer.')
+    });
+
+    await auditService.log({
+      action: 'ALERT_CLOSED',
+      userId: req.user._id,
+      personnelId: alert.personnelId,
+      targetResource: 'Alerts',
+      ipAddress: req.ip,
+      details: { alertId, userToken: alert.userToken, status: 'CLOSED', resolutionReason: resolutionReason || 'RESOLVED', isNonPunitive: true, closedBy: officerId, closedAt: nowIso }
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Welfare alert closed and archived successfully (Non-Punitive).',
+      data: {
+        ...(updatedAlert || {}),
+        _id: alertId,
+        status: 'CLOSED',
+        closedAt: nowIso,
+        closedBy: officerId,
+        resolutionReason: resolutionReason || 'RESOLVED'
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const getPersonnelList = async (req, res, next) => {
   try {
     const personnel = await db.Personnel.find();
@@ -1203,6 +1313,8 @@ module.exports = {
   getAlerts,
   getAlertWorkflow,
   reviewAlert,
+  acknowledgeAlert,
+  closeAlert,
   getPersonnelList,
   searchPersonnel,
   getPersonnelById,

@@ -41,47 +41,125 @@ function updateOfficerStats(data) {
   if (followupsEl) followupsEl.textContent = data.followUpsCount?.active || 0;
 }
 
+function getAlertStatusBadge(status) {
+  const s = (status || 'PENDING_REVIEW').toUpperCase();
+  if (s === 'PENDING_REVIEW' || s === 'OPEN') {
+    return `<span class="badge badge-moderate" style="font-size:0.75rem;">Pending Review</span>`;
+  }
+  if (s === 'ACKNOWLEDGED') {
+    return `<span class="badge" style="background:rgba(59,130,246,0.15); color:#2563eb; border:1px solid rgba(59,130,246,0.3); font-size:0.75rem;">Acknowledged</span>`;
+  }
+  if (s === 'FOLLOW_UP_ASSIGNED' || s === 'FOLLOW_UP_SCHEDULED') {
+    return `<span class="badge badge-high" style="font-size:0.75rem;">Follow-up Assigned</span>`;
+  }
+  if (s === 'CLOSED') {
+    return `<span class="badge badge-neutral" style="font-size:0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.3);">Closed</span>`;
+  }
+  if (s === 'RESOLVED') {
+    return `<span class="badge badge-low" style="font-size:0.75rem;">Resolved</span>`;
+  }
+  return Utils.getStatusBadge(s);
+}
+
 function renderAlertsTable(alerts) {
+  activeAlerts = alerts || [];
+  window.activeAlerts = activeAlerts;
+
+  const countBadge = document.getElementById('live-alert-counter-badge');
+  if (countBadge) {
+    const activeCount = activeAlerts.filter(a => a.status !== 'CLOSED' && a.status !== 'RESOLVED').length;
+    countBadge.textContent = `${activeCount} Active / ${activeAlerts.length} Total`;
+    countBadge.className = activeCount > 0 ? 'badge badge-moderate' : 'badge badge-neutral';
+  }
+
   const tbody = document.getElementById('alerts-table-body');
   if (!tbody) return;
 
-  if (alerts.length === 0) {
+  if (activeAlerts.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" class="text-center text-muted" style="padding: 2rem;">
-          No welfare alerts currently requiring review.
+        <td colspan="7" class="text-center text-muted" style="padding: 2.5rem 1rem;">
+          <div style="font-size:1.6rem; margin-bottom:0.4rem;">🛡️</div>
+          <strong>No welfare alerts currently requiring review.</strong>
+          <div style="font-size:0.8rem; margin-top:0.25rem;">Alerts generate strictly when authorized data and configured evidence thresholds indicate a welfare concern.</div>
         </td>
       </tr>
     `;
     return;
   }
 
-  tbody.innerHTML = alerts.map(a => {
+  tbody.innerHTML = activeAlerts.map(a => {
+    const token = a.userToken || ('USR_' + (a.personnelId ? String(a.personnelId).replace(/[^A-Za-z0-9]/g, '').slice(-5) : 'ANON'));
     const concernHtml = Utils.getWelfareConcernDisplay(a.concernLevel);
-    const evidenceHtml = Utils.getEvidenceStrengthDisplay(a.evidenceStrength);
-    const dataAvailHtml = Utils.getDataAvailableDisplay(a.dataAvailableCount != null ? a.dataAvailableCount : 4, 5);
-    const driversList = (a.topDrivers || []).slice(0, 3).join(', ');
+    const evidenceHtml = Utils.getEvidenceStrengthDisplay(a.evidenceStrength || 'SUFFICIENT');
+
+    // Main contributors formatting
+    const rawContributors = (a.mainContributors && a.mainContributors.length > 0) ? a.mainContributors : (a.topDrivers || []);
+    const contributorsHtml = rawContributors.length > 0
+      ? rawContributors.slice(0, 3).map(c => {
+          const label = typeof c === 'string' ? c : (c.directionalTitle || c.title || c.factor || 'Operational Strain');
+          return `<span class="badge" style="background:var(--bg-card-subtle); color:var(--text-primary); border:1px solid var(--border-color); font-size:0.72rem; padding:2px 6px; white-space:nowrap; margin:1px 0; display:inline-block;">${Utils.sanitize(label)}</span>`;
+        }).join(' ')
+      : '<span class="text-muted" style="font-size:0.75rem;">Multi-source indicators</span>';
+
+    const timestampDate = a.timestamp || a.createdAt;
+    const formattedDate = timestampDate ? Utils.formatDate(timestampDate) : '--';
+    const formattedTime = timestampDate ? new Date(timestampDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
+    const isPending = a.status === 'PENDING_REVIEW' || !a.status;
+    const isClosed = a.status === 'CLOSED' || a.status === 'RESOLVED';
 
     return `
     <tr>
-      <td><strong>${a.personnelId}</strong></td>
-      <td>${a.personnelName} <div class="text-muted" style="font-size:0.75rem;">${a.rank} • ${a.unit}</div></td>
-      <td>${Utils.getPriorityBadge(a.priority)}</td>
       <td>
         <div class="d-flex flex-column gap-1">
-          <div>${concernHtml}</div>
-          <div class="d-flex gap-1 flex-wrap mt-1">
-            ${evidenceHtml}
-            ${dataAvailHtml}
-          </div>
-          ${driversList ? `<div class="text-muted" style="font-size:0.75rem; margin-top:0.25rem;"><strong>Drivers:</strong> ${driversList}</div>` : ''}
+          <span class="badge" style="background:rgba(99,102,241,0.1); color:#4f46e5; border:1px solid rgba(99,102,241,0.25); font-family:monospace; font-size:0.74rem; width:fit-content; padding:2px 6px;">
+            🔒 ${Utils.sanitize(token)}
+          </span>
+          <strong style="font-size:0.88rem;">${Utils.sanitize(a.personnelId || '--')}</strong>
+          <div class="text-muted" style="font-size:0.74rem;">${Utils.sanitize(a.personnelName || 'Member')} • ${Utils.sanitize(a.rank || 'Personnel')}</div>
         </div>
       </td>
-      <td>${Utils.getStatusBadge(a.status)}</td>
       <td>
-        <button class="btn btn-sm btn-primary" onclick="openReviewModal('${a._id}')">
-          Review Signal
-        </button>
+        <div class="d-flex flex-column gap-1">
+          ${concernHtml}
+          ${a.compositeRiskScore != null ? `<span class="text-muted" style="font-size:0.74rem;">Risk: <strong>${Math.round(a.compositeRiskScore)}%</strong></span>` : ''}
+        </div>
+      </td>
+      <td>
+        <div class="d-flex flex-column gap-1">
+          ${evidenceHtml}
+          ${a.dataAvailableCount != null ? Utils.getDataAvailableDisplay(a.dataAvailableCount, 5) : ''}
+        </div>
+      </td>
+      <td>
+        <div class="d-flex flex-wrap gap-1" style="max-width:240px;">
+          ${contributorsHtml}
+        </div>
+      </td>
+      <td>
+        <div style="font-size:0.8rem; font-weight:600;">${formattedDate}</div>
+        <div class="text-muted" style="font-size:0.72rem;">${formattedTime}</div>
+      </td>
+      <td>${getAlertStatusBadge(a.status)}</td>
+      <td>
+        <div class="d-flex gap-1 flex-wrap align-center">
+          ${isPending ? `
+            <button class="btn btn-sm btn-outline-info" onclick="acknowledgeAlertHandler('${a._id}')" title="Acknowledge alert receipt" style="padding:0.25rem 0.5rem; font-size:0.75rem;">
+              ✓ Ack
+            </button>
+          ` : ''}
+          <button class="btn btn-sm btn-primary" onclick="openReviewModal('${a._id}')" title="7-Stage Welfare Review Workflow" style="padding:0.25rem 0.5rem; font-size:0.75rem;">
+            🔍 Review
+          </button>
+          ${!isClosed ? `
+            <button class="btn btn-sm btn-secondary" onclick="openCloseAlertModal('${a._id}')" title="Close alert with supportive rationale" style="padding:0.25rem 0.5rem; font-size:0.75rem;">
+              ✕ Close
+            </button>
+          ` : `
+            <span class="badge badge-neutral" style="font-size:0.72rem;">Closed</span>
+          `}
+        </div>
       </td>
     </tr>
   `;
@@ -718,3 +796,139 @@ window.handlePersonnelSearch = handlePersonnelSearch;
 window.resetPersonnelSearch = resetPersonnelSearch;
 window.filterAlertsByPersonnel = filterAlertsByPersonnel;
 window.filterRosterTable = filterRosterTable;
+
+/**
+ * Real-time Alert & Notification Center Actions
+ */
+async function acknowledgeAlertHandler(alertId) {
+  try {
+    const res = await api.acknowledgeAlert(alertId, {
+      officerNotes: 'Welfare Officer acknowledged real-time signal via Alert Center.'
+    });
+    if (res && res.success) {
+      Utils.showToast('Welfare alert acknowledged successfully.', 'success');
+      // Refresh current alerts
+      const status = document.getElementById('filter-alert-status')?.value || '';
+      const freshRes = await api.getOfficerAlerts(status ? { status } : {});
+      if (freshRes && freshRes.success) {
+        renderAlertsTable(freshRes.data);
+      }
+    } else {
+      throw new Error(res?.message || 'Failed to acknowledge alert');
+    }
+  } catch (err) {
+    console.error('Error acknowledging alert:', err);
+    Utils.showToast('Error acknowledging alert: ' + err.message, 'danger');
+  }
+}
+
+function openCloseAlertModal(alertId) {
+  const alert = activeAlerts.find(a => String(a._id) === String(alertId));
+  if (!alert) {
+    Utils.showToast('Alert details not found.', 'warning');
+    return;
+  }
+  const modal = document.getElementById('close-alert-modal');
+  const idInput = document.getElementById('close_alert_id');
+  const detailsBox = document.getElementById('close-alert-details-box');
+  if (!modal) return;
+
+  if (idInput) idInput.value = alert._id;
+  if (detailsBox) {
+    const token = alert.userToken || ('USR_' + (alert.personnelId ? String(alert.personnelId).replace(/[^A-Za-z0-9]/g, '').slice(-5) : 'ANON'));
+    detailsBox.innerHTML = `
+      <div class="d-flex justify-between align-center mb-1">
+        <div>
+          <strong>${Utils.sanitize(alert.personnelName || 'Personnel Member')}</strong>
+          <span class="text-muted">(${Utils.sanitize(alert.personnelId)})</span>
+        </div>
+        <span class="badge" style="background:rgba(99,102,241,0.1); color:#4f46e5; border:1px solid rgba(99,102,241,0.25); font-family:monospace; font-size:0.72rem;">
+          🔒 ${Utils.sanitize(token)}
+        </span>
+      </div>
+      <div class="d-flex gap-2 align-center mt-1 flex-wrap" style="font-size:0.78rem;">
+        <div>Concern: ${Utils.getWelfareConcernDisplay(alert.concernLevel)}</div>
+        <div>Evidence: ${Utils.getEvidenceStrengthDisplay(alert.evidenceStrength || 'SUFFICIENT')}</div>
+        <div class="text-muted">Logged: ${Utils.formatDate(alert.timestamp || alert.createdAt)}</div>
+      </div>
+    `;
+  }
+  const notesInput = document.getElementById('close_alert_notes');
+  if (notesInput) notesInput.value = '';
+
+  modal.style.display = 'flex';
+}
+
+function closeCloseAlertModal() {
+  const modal = document.getElementById('close-alert-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+async function submitCloseAlert() {
+  const alertId = document.getElementById('close_alert_id')?.value;
+  if (!alertId) return;
+
+  const resolutionReason = document.getElementById('close_alert_reason')?.value;
+  const officerNotes = document.getElementById('close_alert_notes')?.value;
+
+  const submitBtn = document.getElementById('btn-submit-close-alert');
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await api.closeAlert(alertId, {
+      resolutionReason,
+      officerNotes
+    });
+
+    if (res && res.success) {
+      Utils.showToast('Welfare alert successfully closed with supportive rationale.', 'success');
+      closeCloseAlertModal();
+      const status = document.getElementById('filter-alert-status')?.value || '';
+      const freshRes = await api.getOfficerAlerts(status ? { status } : {});
+      if (freshRes && freshRes.success) {
+        renderAlertsTable(freshRes.data);
+      }
+    } else {
+      throw new Error(res?.message || 'Failed to close alert');
+    }
+  } catch (err) {
+    console.error('Error closing alert:', err);
+    Utils.showToast('Error closing alert: ' + err.message, 'danger');
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+// Real-time Background Polling for Alert Center
+let alertCenterPollingInterval = null;
+function initAlertCenterPolling() {
+  if (alertCenterPollingInterval) clearInterval(alertCenterPollingInterval);
+  alertCenterPollingInterval = setInterval(async () => {
+    const dashTab = document.getElementById('tab-dashboard');
+    if (dashTab && dashTab.style.display !== 'none' && !document.hidden) {
+      try {
+        const filterSelect = document.getElementById('filter-alert-status');
+        const status = filterSelect ? filterSelect.value : '';
+        const res = await api.getOfficerAlerts(status ? { status } : {});
+        if (res && res.success && Array.isArray(res.data)) {
+          renderAlertsTable(res.data);
+        }
+      } catch (e) {
+        // silent catch on background poll
+      }
+    }
+  }, 15000);
+}
+
+// Auto-start polling when page loads
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAlertCenterPolling);
+} else {
+  initAlertCenterPolling();
+}
+
+window.acknowledgeAlertHandler = acknowledgeAlertHandler;
+window.openCloseAlertModal = openCloseAlertModal;
+window.closeCloseAlertModal = closeCloseAlertModal;
+window.submitCloseAlert = submitCloseAlert;
+

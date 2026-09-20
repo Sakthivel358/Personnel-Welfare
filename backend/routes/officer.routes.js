@@ -15,6 +15,8 @@ router.get('/alerts', officerController.getAlerts);
 router.get('/alerts/:alertId/workflow', officerController.getAlertWorkflow);
 router.put('/alerts/:alertId/review', officerController.reviewAlert);
 router.post('/alerts/:alertId/review', officerController.reviewAlert);
+router.post('/alerts/:alertId/acknowledge', officerController.acknowledgeAlert);
+router.post('/alerts/:alertId/close', officerController.closeAlert);
 router.get('/personnel', officerController.getPersonnelList);
 router.get('/personnel/search', officerController.searchPersonnel);
 router.get('/personnel/:id', officerController.getPersonnelById);

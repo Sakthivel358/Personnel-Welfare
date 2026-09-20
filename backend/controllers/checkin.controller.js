@@ -313,7 +313,25 @@ const submitCheckIn = async (req, res, next) => {
     const decisionLayer = mlPrediction.decisionLayer || null;
     const humanReview = decisionLayer ? decisionLayer.humanWelfareReview : null;
     const isUndetermined = mlPrediction.concernLevel === 'UNDETERMINED' || mlPrediction.isUndetermined;
-    const isAlertGenerated = !isUndetermined && (humanReview ? humanReview.requiresHumanReview : (mlPrediction.concernLevel === 'HIGH' || (mlPrediction.compositeRiskScore != null && mlPrediction.compositeRiskScore >= 65)));
+    const evidenceLevel = decisionLayer ? decisionLayer.evidenceStrength.level : (mlPrediction.evidenceStrength || (isUndetermined ? 'INSUFFICIENT' : 'MODERATE'));
+    const isEvidenceSufficient = !isUndetermined && evidenceLevel !== 'INSUFFICIENT';
+
+    // Configured evidence threshold breach evaluation
+    const thresholdBreachesList = [
+      checkInPayload.workload_hours >= 60 ? `Weekly workload reached ${checkInPayload.workload_hours}h (threshold: 60h)` : null,
+      checkInPayload.recovery_sleep_hours <= 5 ? `Daily restorative sleep reduced to ${checkInPayload.recovery_sleep_hours}h (minimum: 6h)` : null,
+      checkInPayload.night_duty_hours >= 12 ? `Night duty hours elevated to ${checkInPayload.night_duty_hours}h` : null,
+      checkInPayload.pss_score >= 26 ? `Perceived stress index elevated to ${checkInPayload.pss_score}/40` : null,
+      checkInPayload.fatigue_physical_strain >= 60 ? `Physical fatigue strain marker escalated to ${checkInPayload.fatigue_physical_strain}/100` : null
+    ].filter(Boolean);
+
+    // Rule: Generate alerts ONLY when authorized data and configured evidence thresholds indicate a welfare concern.
+    // Never generate alerts from insufficient evidence.
+    const isAlertGenerated = isEvidenceSufficient && (
+      mlPrediction.concernLevel === 'HIGH' ||
+      (mlPrediction.concernLevel === 'MODERATE' && mlPrediction.compositeRiskScore != null && mlPrediction.compositeRiskScore >= 65 && thresholdBreachesList.length > 0) ||
+      (humanReview && humanReview.requiresHumanReview && mlPrediction.concernLevel !== 'LOW')
+    );
 
     const newPrediction = await db.Predictions.create({
       userId: req.user._id,
@@ -324,10 +342,10 @@ const submitCheckIn = async (req, res, next) => {
       isUndetermined: Boolean(isUndetermined),
       probabilities: mlPrediction.probabilities || {},
       evidenceSources: mlPrediction.evidenceSources || evidenceSources,
-      evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : (mlPrediction.evidenceStrength || (isUndetermined ? 'INSUFFICIENT' : 'MODERATE')),
+      evidenceStrength: evidenceLevel,
       evidenceStrengthScore: decisionLayer ? decisionLayer.evidenceStrength.score : (mlPrediction.evidenceStrengthScore || 0.0),
       welfareConcernDisplay: mlPrediction.welfareConcernDisplay || (isUndetermined ? 'WELFARE CONCERN — UNDETERMINED' : `WELFARE CONCERN — ${mlPrediction.concernLevel}`),
-      evidenceDisplay: mlPrediction.evidenceDisplay || (decisionLayer && decisionLayer.evidenceStrength ? decisionLayer.evidenceStrength.displayLabel : `EVIDENCE — ${mlPrediction.evidenceStrength || 'MODERATE'}`),
+      evidenceDisplay: mlPrediction.evidenceDisplay || (decisionLayer && decisionLayer.evidenceStrength ? decisionLayer.evidenceStrength.displayLabel : `EVIDENCE — ${evidenceLevel}`),
       dataAvailableCount: mlPrediction.dataAvailableCount != null ? mlPrediction.dataAvailableCount : (decisionLayer && decisionLayer.evidenceStrength ? decisionLayer.evidenceStrength.dataAvailableCount : (mlPrediction.evidenceSources || evidenceSources).length),
       dataAvailableTotal: 5,
       dataAvailableDisplay: mlPrediction.dataAvailableDisplay || (decisionLayer && decisionLayer.evidenceStrength ? decisionLayer.evidenceStrength.dataAvailableDisplay : `DATA AVAILABLE — ${(mlPrediction.evidenceSources || evidenceSources).length} / 5`),
@@ -374,6 +392,7 @@ const submitCheckIn = async (req, res, next) => {
 
     // 5. Generate Welfare Alert if signal is elevated or Human Review required
     let alertCreated = false;
+    let newAlert = null;
     if (newPrediction.isAlertGenerated) {
       alertCreated = true;
       const alertPriority = humanReview ? humanReview.priority : (mlPrediction.compositeRiskScore >= 80 ? 'CRITICAL' : 'HIGH');
@@ -382,26 +401,21 @@ const submitCheckIn = async (req, res, next) => {
         ? alertContributors.map(c => `${c.arrow || '↑'} ${c.title || c.factor} (${c.impactLevel || 'ELEVATED'} Impact)`)
         : (mlPrediction.topDrivers || ['Operational duty strain']);
 
+      const nowIso = new Date().toISOString();
       const whyAlertGenerated = {
         summary: `Alert generated because ${mlPrediction.concernLevel} welfare strain was detected backed by ${newPrediction.dataAvailableCount || 4} authorized evidence sources (${evidenceSources.join(', ')}).`,
         primaryFactors: contributorBullets,
         evidenceSources: evidenceSources,
-        evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : 'MODERATE',
+        evidenceStrength: evidenceLevel,
         dataAvailableDisplay: newPrediction.dataAvailableDisplay,
-        thresholdBreaches: [
-          checkInPayload.workload_hours >= 60 ? `Weekly workload reached ${checkInPayload.workload_hours}h (threshold: 60h)` : null,
-          checkInPayload.recovery_sleep_hours <= 5 ? `Daily restorative sleep reduced to ${checkInPayload.recovery_sleep_hours}h (minimum: 6h)` : null,
-          checkInPayload.night_duty_hours >= 12 ? `Night duty hours elevated to ${checkInPayload.night_duty_hours}h` : null,
-          checkInPayload.pss_score >= 26 ? `Perceived stress index elevated to ${checkInPayload.pss_score}/40` : null,
-          checkInPayload.fatigue_physical_strain >= 60 ? `Physical fatigue strain marker escalated to ${checkInPayload.fatigue_physical_strain}/100` : null
-        ].filter(Boolean),
+        thresholdBreaches: thresholdBreachesList,
         isEvidenceBased: true
       };
 
       const userToken = privacyService.generateUserToken(req.user._id);
       const ageGroup = privacyService.toAgeGroup(req.user.age || 28);
 
-      const newAlert = await db.Alerts.create({
+      newAlert = await db.Alerts.create({
         personnelId: req.user.personnelId,
         userId: req.user._id,
         userToken: userToken,
@@ -413,13 +427,14 @@ const submitCheckIn = async (req, res, next) => {
         compositeRiskScore: mlPrediction.compositeRiskScore,
         topDrivers: mlPrediction.topDrivers,
         evidenceSources: evidenceSources,
-        evidenceStrength: decisionLayer ? decisionLayer.evidenceStrength.level : 'MODERATE',
+        evidenceStrength: evidenceLevel,
         evidenceDisplay: newPrediction.evidenceDisplay,
         evidenceStrengthScore: decisionLayer ? decisionLayer.evidenceStrength.score : 0.6,
         dataAvailableCount: newPrediction.dataAvailableCount,
         dataAvailableTotal: 5,
         dataAvailableDisplay: newPrediction.dataAvailableDisplay,
-        mainContributors: alertContributors,
+        mainContributors: contributorBullets,
+        contributorsDetails: alertContributors,
         reviewTriggers: humanReview ? humanReview.reviewTriggers : (mlPrediction.topDrivers || []),
         recommendedOfficerAction: humanReview ? humanReview.recommendedOfficerAction : 'Conduct supportive welfare review and verify restorative downtime.',
         whyAlertGenerated: whyAlertGenerated,
@@ -429,18 +444,37 @@ const submitCheckIn = async (req, res, next) => {
         disciplinaryProhibitionNotice: 'Under Force Welfare Governance Directive, an ML prediction must never automatically become a disciplinary action. Welfare alerts are strictly non-punitive decision support tools for supportive care, fatigue management, and restorative health intervention.',
         status: 'PENDING_REVIEW',
         officerNotes: '',
-        createdAt: new Date().toISOString()
+        createdAt: nowIso,
+        timestamp: nowIso
       });
 
       // Notification for personnel
       await db.Notifications.create({
         userId: req.user._id,
         title: 'Welfare Decision-Support Notice',
-        message: `Your check-in indicated elevated welfare strain (${mlPrediction.topDrivers.join(', ')}). Support resources are available in the Welfare tab.`,
+        message: `Your check-in indicated elevated welfare strain (${(mlPrediction.topDrivers || []).join(', ')}). Support resources are available in the Welfare tab.`,
         type: 'ALERT',
         link: '/why-risk-high.html',
         isRead: false
       });
+
+      // Dispatch Real-time Notification to Welfare Officers
+      const officers = await db.Users.find({ role: 'WELFARE_OFFICER' });
+      for (const off of officers) {
+        await db.Notifications.create({
+          userId: off._id,
+          title: `🚨 Welfare Alert: ${userToken} (${req.user.personnelId})`,
+          message: `${mlPrediction.concernLevel} welfare concern detected for ${req.user.rank || 'Member'} ${req.user.fullName} (${userToken}). Evidence: ${evidenceLevel}. Contributors: ${contributorBullets.slice(0, 2).join('; ')}.`,
+          type: 'WELFARE_ALERT',
+          link: '/welfare-officer.html',
+          alertId: newAlert._id,
+          personnelId: req.user.personnelId,
+          userToken: userToken,
+          concernLevel: mlPrediction.concernLevel,
+          priority: alertPriority,
+          isRead: false
+        });
+      }
     } else {
       // Regular confirmation notification
       await db.Notifications.create({
@@ -507,6 +541,7 @@ const submitCheckIn = async (req, res, next) => {
         dataAvailableDisplay: newPrediction.dataAvailableDisplay,
         recommendations: newRecommendation,
         alertGenerated: alertCreated,
+        alert: alertCreated ? newAlert : null,
         wellnessInfo: newCheckIn.wellnessInfo || wellnessInfo || null,
         linkedSupportRequest: linkedSupportRequest || null,
         linkedSupportRequestId: linkedSupportRequest ? linkedSupportRequest._id : null

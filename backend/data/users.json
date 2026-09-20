@@ -9,9 +9,9 @@
     "unit": "CRPF Battalion 104",
     "rank": "Havildar (GD)",
     "isActive": true,
-    "lastLogin": "2026-09-19T19:11:47.496Z",
+    "lastLogin": "2026-09-20T01:32:46.826Z",
     "createdAt": "2026-09-06T04:04:46.072Z",
-    "updatedAt": "2026-09-19T19:11:47.517Z"
+    "updatedAt": "2026-09-20T01:32:46.876Z"
   },
   {
     "_id": "26445b0244cb7d59a6d1eefc",
@@ -23,9 +23,9 @@
     "unit": "CRPF Sector HQ Welfare Wing",
     "rank": "Assistant Commandant",
     "isActive": true,
-    "lastLogin": "2026-09-19T19:11:47.419Z",
+    "lastLogin": "2026-09-20T01:32:46.650Z",
     "createdAt": "2026-09-06T04:04:46.073Z",
-    "updatedAt": "2026-09-19T19:11:47.420Z"
+    "updatedAt": "2026-09-20T01:32:46.651Z"
   },
   {
     "_id": "a77c9f11dccf4198b3ee2a96",
@@ -37,9 +37,9 @@
     "unit": "MHA Police II Division Directorate",
     "rank": "Director Welfare",
     "isActive": true,
-    "lastLogin": "2026-09-19T19:11:32.702Z",
+    "lastLogin": "2026-09-20T01:31:13.782Z",
     "createdAt": "2026-09-06T04:04:46.074Z",
-    "updatedAt": "2026-09-19T19:11:32.702Z"
+    "updatedAt": "2026-09-20T01:31:13.782Z"
   },
   {
     "_id": "351cc70fa4ab2222abc5f216",
@@ -2517,5 +2517,76 @@
     "createdAt": "2026-09-19T19:11:56.281Z",
     "updatedAt": "2026-09-19T19:11:56.293Z",
     "lastLogout": "2026-09-19T19:11:56.293Z"
+  },
+  {
+    "_id": "4af46d8fb9bf95504dc6ba62",
+    "personnelId": "AUDIT-ESC-1789867873959",
+    "email": "audit-esc-1789867873959@test.forces.gov.in",
+    "password": "$2a$10$TU6X9bwGUIKHCkD7v3z.2u316qgFk9sdmsmn3.4EaILiEo9BEkd3m",
+    "fullName": "Escalation Test User",
+    "unit": "Operational Unit",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-20T01:31:14.095Z",
+    "createdAt": "2026-09-20T01:31:14.095Z",
+    "updatedAt": "2026-09-20T01:31:14.095Z"
+  },
+  {
+    "_id": "a234629e27426a06f8a9c3bc",
+    "personnelId": "PERS_FIN_210389",
+    "email": "pers_fin_210389@welfare.mil.in",
+    "password": "$2a$10$gw0O.Rwbx4x.ixJrM1Ytruwyo9ir4pQ/mKGWthPrMtIe1bupVo1Ge",
+    "fullName": "Subedar Major Vikram Singh",
+    "unit": "12th Assam Rifles",
+    "rank": "Subedar Major",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-20T01:32:59.333Z",
+    "createdAt": "2026-09-20T01:32:57.350Z",
+    "updatedAt": "2026-09-20T01:32:59.333Z"
+  },
+  {
+    "_id": "3b95c08ad8ae8a7f9fcd8d4f",
+    "personnelId": "TEST_WO_210389",
+    "email": "wo_fin_210389@welfare.mil.in",
+    "password": "$2a$10$i/twOtbSdMPK8cwIpbVqp.eEQ2afKX6lytE.dmXQaxyQ0n7D5GVXm",
+    "fullName": "Capt. Ananya Sen",
+    "unit": "Operational Unit",
+    "rank": "Welfare Officer",
+    "role": "WELFARE_OFFICER",
+    "isActive": true,
+    "lastLogin": "2026-09-20T01:32:57.496Z",
+    "createdAt": "2026-09-20T01:32:57.496Z",
+    "updatedAt": "2026-09-20T01:32:57.496Z"
+  },
+  {
+    "_id": "0740686c9b9e55be684e4723",
+    "personnelId": "ADM_FIN_210389",
+    "email": "adm_fin_210389@welfare.mil.in",
+    "password": "$2a$10$NwmFVpn5dMOO8rtWJn93wuzUfB6F.9YXjZkLu0XZKxREMYflf/SSK",
+    "fullName": "Col. R. K. Nair",
+    "unit": "Operational Unit",
+    "rank": "System Administrator",
+    "role": "ADMIN",
+    "isActive": true,
+    "lastLogin": "2026-09-20T01:32:57.677Z",
+    "createdAt": "2026-09-20T01:32:57.678Z",
+    "updatedAt": "2026-09-20T01:32:57.678Z"
+  },
+  {
+    "_id": "19f222f7884c54306438e30c",
+    "personnelId": "TEMP_LO_210389",
+    "email": "temp_lo_210389@welfare.mil.in",
+    "password": "$2a$10$Ok4jLxaxznWqKPaobbJbmuqt.kNneVVD5Q7ZlScYaS2W/bAF4GZkK",
+    "fullName": "Temp Logout User",
+    "unit": "Operational Unit",
+    "rank": "Personnel Member",
+    "role": "PERSONNEL",
+    "isActive": true,
+    "lastLogin": "2026-09-20T01:32:58.023Z",
+    "createdAt": "2026-09-20T01:32:58.023Z",
+    "updatedAt": "2026-09-20T01:32:58.057Z",
+    "lastLogout": "2026-09-20T01:32:58.057Z"
   }
 ]

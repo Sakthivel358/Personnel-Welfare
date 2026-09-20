@@ -196,18 +196,36 @@
           <div class="grid-3 mb-3">
             <!-- Left 2 cols: Alerts Table -->
             <div class="card" style="grid-column: span 2;">
-              <div class="card-header">
+              <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
                 <div>
-                  <h3>Real-time AI Welfare Alerts</h3>
-                  <p class="text-muted" style="font-size:0.85rem;">Signals requiring human-in-the-loop review</p>
+                  <div class="d-flex align-center gap-2 flex-wrap">
+                    <h3 style="margin-bottom: 0;">Real-time Welfare Alert & Notification Center</h3>
+                    <span class="badge badge-primary" style="display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; padding: 3px 8px;">
+                      <span style="width:7px; height:7px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 6px #10b981;"></span>
+                      Live Stream
+                    </span>
+                    <span id="live-alert-counter-badge" class="badge badge-neutral" style="font-size:0.75rem;">0 Alerts</span>
+                  </div>
+                  <p class="text-muted mb-0 mt-1" style="font-size:0.82rem;">Authorized decision-support signals requiring human-in-the-loop review</p>
                 </div>
-                <div class="d-flex gap-1">
+                <div class="d-flex gap-1 align-center">
                   <select id="filter-alert-status" class="form-select" style="padding:0.35rem 0.6rem; font-size:0.8rem;" onchange="applyAlertFilter()">
                     <option value="">All Statuses</option>
                     <option value="PENDING_REVIEW" selected>Pending Review</option>
                     <option value="ACKNOWLEDGED">Acknowledged</option>
+                    <option value="CLOSED">Closed / Resolved</option>
                     <option value="FOLLOW_UP_ASSIGNED">Follow-up Assigned</option>
                   </select>
+                </div>
+              </div>
+
+              <!-- Non-Punitive & Evidence Threshold Policy Banner -->
+              <div class="px-3 pt-2">
+                <div class="alert alert-info py-2 px-3 mb-2" style="font-size:0.78rem; background:rgba(59,130,246,0.06); border-left:3px solid var(--accent); display:flex; align-items:center; gap:0.5rem; line-height:1.4;">
+                  <span style="font-size:1.1rem;">🛡️</span>
+                  <div>
+                    <strong>Force Welfare Directives:</strong> Alerts generated only when authorized multi-source data and configured evidence thresholds indicate a welfare concern. Strictly non-punitive decision support &mdash; alerts never trigger disciplinary action.
+                  </div>
                 </div>
               </div>
 
@@ -215,16 +233,17 @@
                 <table class="data-table">
                   <thead>
                     <tr>
-                      <th>Personnel ID</th>
-                      <th>Name & Unit</th>
-                      <th>Priority</th>
-                      <th>Welfare Signal</th>
-                      <th>Review Status</th>
-                      <th>Action</th>
+                      <th style="min-width: 140px;">Personnel Token / ID</th>
+                      <th style="min-width: 110px;">Concern Level</th>
+                      <th style="min-width: 120px;">Evidence Strength</th>
+                      <th style="min-width: 180px;">Main Contributors</th>
+                      <th style="min-width: 120px;">Timestamp</th>
+                      <th style="min-width: 100px;">Review Status</th>
+                      <th style="min-width: 180px;">Actions</th>
                     </tr>
                   </thead>
                   <tbody id="alerts-table-body">
-                    <tr><td colspan="6" class="text-center text-muted" style="padding: 2rem;">Loading triage queue...</td></tr>
+                    <tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">Loading triage queue...</td></tr>
                   </tbody>
                 </table>
               </div>
@@ -747,6 +766,57 @@
         <div class="d-flex justify-between align-center">
           <button type="button" class="btn btn-secondary" onclick="closeReviewModal()">Cancel</button>
           <button type="submit" id="modal-submit-review-btn" class="btn btn-primary">Complete Officer Review & Dispatch Support</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Close Welfare Alert Modal -->
+  <div id="close-alert-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:1rem;">
+    <div class="card" style="max-width: 560px; width:100%; box-shadow:var(--shadow-xl); border:1px solid var(--border-color);">
+      <div class="d-flex justify-between align-center mb-2 pb-2" style="border-bottom:1px solid var(--border-color);">
+        <div class="d-flex align-center gap-1">
+          <span style="font-size:1.4rem;">📁</span>
+          <div>
+            <h3 style="margin:0; font-size:1.15rem;">Close Welfare Alert</h3>
+            <span class="text-muted" style="font-size:0.75rem;">Supportive Closure & Welfare Resolution</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeCloseAlertModal()" style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--text-muted);">✕</button>
+      </div>
+
+      <div class="alert alert-info mb-3 d-flex align-center gap-1" style="background:rgba(59,130,246,0.08); border-left:4px solid #3b82f6; padding:0.6rem 0.85rem; border-radius:6px; font-size:0.8rem;">
+        <span style="font-size:1.1rem;">🛡️</span>
+        <div>
+          <strong>Non-Disciplinary Directive:</strong> Alert closure records must be strictly supportive. Disciplinary terminology is prohibited by Force Welfare Directives.
+        </div>
+      </div>
+
+      <form id="close-alert-form" onsubmit="event.preventDefault(); submitCloseAlert();">
+        <input type="hidden" id="close_alert_id">
+        <div id="close-alert-details-box" class="card mb-3 p-2" style="background:var(--bg-card-subtle); font-size:0.84rem;">
+          <!-- Hydrated dynamically -->
+        </div>
+
+        <div class="form-group mb-2">
+          <label class="form-label" for="close_alert_reason" style="font-size:0.82rem; font-weight:700;">Closure Rationale *</label>
+          <select id="close_alert_reason" class="form-select" required>
+            <option value="SUPPORT_DELIVERED">Welfare Support Delivered & Conditions Stabilized</option>
+            <option value="REST_ROTATION_COMPLETED">Restorative Downtime / Shift Rotation Completed</option>
+            <option value="FOLLOW_UP_CONCLUDED">Follow-up Assessment Concluded - Normal Baseline Restored</option>
+            <option value="COUNSELING_ENGAGED">Confidential Counseling / Medical Support Engaged</option>
+            <option value="RESOLVED">Resolved - Baseline Parameters Stabilized</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-3">
+          <label class="form-label" for="close_alert_notes" style="font-size:0.82rem; font-weight:700;">Supportive Resolution Notes</label>
+          <textarea id="close_alert_notes" class="form-control" rows="3" placeholder="Enter supportive summary of restorative actions provided (e.g. Personnel completed 48h rest rotation, reports restorative sleep)..."></textarea>
+        </div>
+
+        <div class="d-flex justify-between align-center">
+          <button type="button" class="btn btn-secondary" onclick="closeCloseAlertModal()">Cancel</button>
+          <button type="submit" id="btn-submit-close-alert" class="btn btn-primary">Confirm Alert Closure</button>
         </div>
       </form>
     </div>

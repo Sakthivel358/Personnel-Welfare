@@ -885,5 +885,89 @@
     ],
     "createdAt": "2026-09-19T19:11:56.688Z",
     "updatedAt": "2026-09-19T19:11:56.688Z"
+  },
+  {
+    "_id": "d4d543b074dce141c9bea9e3",
+    "referenceId": "REQ-2632",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "GENERAL_INQUIRY",
+    "urgency": "ROUTINE",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "notes": "Welfare support check-in requested during self-check.",
+    "status": "SUBMITTED",
+    "personnelConcernLevel": "UNDETERMINED",
+    "isSelfRequested": true,
+    "accessibleRegardlessOfConcern": true,
+    "isCheckinLinked": true,
+    "linkedCheckInId": "f81b38814d82eecf0fd2a577",
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-20T01:32:31.078Z",
+        "note": "Request submitted via Personnel Self-Check-in portal."
+      }
+    ],
+    "createdAt": "2026-09-20T01:32:31.079Z",
+    "updatedAt": "2026-09-20T01:32:31.079Z"
+  },
+  {
+    "_id": "a8331922727198c678fced7a",
+    "referenceId": "REQ-6611",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "HUMAN_WELFARE_REVIEW",
+    "urgency": "HIGH",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "preferredTime": "ANYTIME",
+    "notes": "Requesting confidential human officer dialogue regarding deployment stress.",
+    "status": "FOLLOW_UP_SCHEDULED",
+    "personnelConcernLevel": "UNDETERMINED",
+    "isSelfRequested": true,
+    "accessibleRegardlessOfConcern": true,
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-20T01:32:31.198Z",
+        "note": "Request received and logged confidentially. Unit Welfare Officer notified."
+      },
+      {
+        "status": "FOLLOW_UP_SCHEDULED",
+        "timestamp": "2026-09-20T01:32:31.218Z",
+        "note": "Conducted confidential 1-on-1 welfare dialogue. Authorized 48-hour restorative downtime and assigned peer mentor support.",
+        "supportActionTaken": "REST_ROTATION",
+        "officerId": "26445b0244cb7d59a6d1eefc",
+        "officerName": "Assistant Commandant Priya Sharma"
+      }
+    ],
+    "createdAt": "2026-09-20T01:32:31.198Z",
+    "updatedAt": "2026-09-20T01:32:31.218Z",
+    "supportActionTaken": "REST_ROTATION",
+    "officerNotes": "Conducted confidential 1-on-1 welfare dialogue. Authorized 48-hour restorative downtime and assigned peer mentor support.",
+    "resolutionNotes": "Conducted confidential 1-on-1 welfare dialogue. Authorized 48-hour restorative downtime and assigned peer mentor support.",
+    "assignedOfficer": "26445b0244cb7d59a6d1eefc",
+    "reviewedBy": "26445b0244cb7d59a6d1eefc",
+    "reviewedAt": "2026-09-20T01:32:31.218Z"
+  },
+  {
+    "_id": "c62c0b72cc1f9dec76e89d67",
+    "referenceId": "ACT-4012",
+    "userId": "a234629e27426a06f8a9c3bc",
+    "personnelId": "PERS_FIN_210389",
+    "requestType": "SUPPORT_SESSION",
+    "urgency": "URGENT",
+    "notes": "Officer assigned support action: SUPPORT_SESSION. Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "status": "SUPPORT_ACTION_TAKEN",
+    "assignedOfficer": "3b95c08ad8ae8a7f9fcd8d4f",
+    "resolutionNotes": "Proactive supportive discussion scheduled. All metrics non-punitive.",
+    "statusHistory": [
+      {
+        "status": "SUPPORT_ACTION_TAKEN",
+        "timestamp": "2026-09-20T01:32:58.774Z",
+        "note": "Unit Welfare Officer initiated support action: SUPPORT_SESSION"
+      }
+    ],
+    "createdAt": "2026-09-20T01:32:58.774Z",
+    "updatedAt": "2026-09-20T01:32:58.774Z"
   }
 ]

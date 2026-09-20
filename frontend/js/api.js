@@ -194,6 +194,14 @@ class APIClient {
     return this.request(`/officer/alerts/${alertId}/review`, { method: 'PUT', body: JSON.stringify(reviewData) });
   }
 
+  async acknowledgeAlert(alertId, data = {}) {
+    return this.request(`/officer/alerts/${alertId}/acknowledge`, { method: 'POST', body: JSON.stringify(data) });
+  }
+
+  async closeAlert(alertId, data = {}) {
+    return this.request(`/officer/alerts/${alertId}/close`, { method: 'POST', body: JSON.stringify(data) });
+  }
+
   async getPersonnelRoster() {
     return this.request('/officer/personnel', { method: 'GET' });
   }
