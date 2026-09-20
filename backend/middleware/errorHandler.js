@@ -17,6 +17,11 @@ const errorHandler = (err, req, res, next) => {
     userMessage = 'A record with the specified unique identifier already exists.';
   }
 
+  // Prevent internal file paths, stack traces, or DB exceptions from leaking to client
+  if (statusCode >= 500 && (process.env.NODE_ENV === 'production' || /([A-Z]:\\|\/var\/|\/home\/|node_modules|at\s|TypeError:|SyntaxError:)/i.test(userMessage))) {
+    userMessage = 'An internal system error occurred. Diagnostic details have been logged securely on the server.';
+  }
+
   res.status(statusCode).json({
     success: false,
     message: userMessage,

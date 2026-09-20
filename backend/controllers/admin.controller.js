@@ -1,6 +1,7 @@
 const db = require('../models/dbAdapter');
 const { getDBStatus } = require('../config/db');
 const mlClient = require('../services/mlClient.service');
+const auditService = require('../services/audit.service');
 
 const getSystemMetrics = async (req, res, next) => {
   try {
@@ -93,10 +94,30 @@ const createWelfareResource = async (req, res, next) => {
   }
 };
 
+const verifyAuditChain = async (req, res, next) => {
+  try {
+    const result = await auditService.verifyChain();
+    await auditService.log({
+      action: 'SECURITY_AUDIT_CHAIN_VERIFIED',
+      userId: req.user._id,
+      personnelId: req.user.personnelId,
+      targetResource: 'AuditLogs',
+      outcome: result.verified ? 'SUCCESS' : 'TAMPER_DETECTED',
+      ipAddress: req.ip,
+      details: { verified: result.verified, totalRecords: result.totalRecords, status: result.status }
+    });
+    return res.status(200).json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getSystemMetrics,
   getAuditLogs,
   getAllUsers,
   getWelfareResources,
-  createWelfareResource
+  createWelfareResource,
+  verifyAuditChain
 };
+

@@ -1,7 +1,5 @@
-/**
- * Role-Based Access Control (RBAC) Middleware
- * Enforces access restriction based on user roles (PERSONNEL, WELFARE_OFFICER, ADMIN)
- */
+const auditService = require('../services/audit.service');
+
 const authorizeRoles = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -13,6 +11,16 @@ const authorizeRoles = (...allowedRoles) => {
     }
 
     if (!allowedRoles.includes(req.user.role)) {
+      auditService.log({
+        action: 'UNAUTHORIZED_ACCESS_ATTEMPT',
+        userId: req.user._id,
+        personnelId: req.user.personnelId,
+        targetResource: req.originalUrl || req.baseUrl,
+        outcome: 'DENIED',
+        ipAddress: req.ip,
+        details: { attemptedRole: req.user.role, requiredRoles: allowedRoles, path: req.originalUrl }
+      }).catch(() => {});
+
       return res.status(403).json({
         success: false,
         message: `Access denied. Authorized roles: ${allowedRoles.join(', ')}. Your role: ${req.user.role}`,

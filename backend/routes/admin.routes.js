@@ -9,6 +9,7 @@ router.use(authorizeRoles('ADMIN'));
 
 router.get('/metrics', adminController.getSystemMetrics);
 router.get('/audit-logs', adminController.getAuditLogs);
+router.get('/audit-logs/verify', adminController.verifyAuditChain);
 router.get('/users', adminController.getAllUsers);
 router.get('/resources', adminController.getWelfareResources);
 router.post('/resources', adminController.createWelfareResource);
