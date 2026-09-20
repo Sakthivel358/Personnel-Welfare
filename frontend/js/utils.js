@@ -86,7 +86,33 @@ const Utils = {
     } else if (lvl === 'EMERGING') {
       return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(234,179,8,0.15); color:#ca8a04; border:1px solid rgba(234,179,8,0.35);">EVIDENCE — EMERGING</span>`;
     }
-    return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>`;
+    return `<span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">INSUFFICIENT EVIDENCE</span>`;
+  },
+
+  formatContributors(contributors, isUndetermined, evidenceStrength) {
+    if (isUndetermined || evidenceStrength === 'INSUFFICIENT' || evidenceStrength === 'INSUFFICIENT EVIDENCE') {
+      return 'INSUFFICIENT EVIDENCE';
+    }
+    if (!contributors || !Array.isArray(contributors) || contributors.length === 0) {
+      return 'Within standard baseline thresholds';
+    }
+    const riskDrivers = contributors.filter(c => c.isRiskDriver || c.impactLevel === 'HIGH' || c.impactLevel === 'MODERATE');
+    const chosen = (riskDrivers.length > 0 ? riskDrivers : contributors).slice(0, 4);
+    const items = chosen.map(c => {
+      if (typeof c === 'string') return c;
+      if (c.directionalTitle) return c.directionalTitle;
+      const arrow = c.direction === 'DOWN' ? '↓' : '↑';
+      return `${arrow} ${(c.title || c.featureKey || 'operational load')}`;
+    });
+    return items.length > 0 ? items.join(', ') : 'Within standard baseline thresholds';
+  },
+
+  getPersonalBaselineDisplay(baseline) {
+    if (!baseline || !baseline.baselineEstablished) {
+      return `<span class="badge" style="background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.3); font-size:0.75rem; font-weight:600;">Baseline not established yet</span>`;
+    }
+    const count = baseline.totalCheckInCount || baseline.baselineCheckInCount || 2;
+    return `<span class="badge badge-low" style="font-size:0.75rem; font-weight:600;">Established (${count} check-ins)</span>`;
   },
 
   getDataAvailableDisplay(count, total) {
@@ -100,7 +126,7 @@ const Utils = {
       <div class="alert alert-neutral text-center p-3 w-100" style="background:var(--bg-card-subtle); border:1px solid var(--border-color); border-radius:8px;">
         <div class="d-flex justify-center gap-1 flex-wrap mb-2">
           <span class="badge badge-neutral" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem;">WELFARE CONCERN — UNDETERMINED</span>
-          <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
+          <span class="badge" style="font-weight:700; font-size:0.8rem; letter-spacing:0.5px; padding:0.4rem 0.75rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">INSUFFICIENT EVIDENCE</span>
         </div>
         <p class="mb-0" style="font-weight:600; font-size:0.92rem; color:var(--text-primary);">
           Additional authorized data or a welfare check-in is required.

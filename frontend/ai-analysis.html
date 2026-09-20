@@ -334,7 +334,8 @@
             document.getElementById('concern-badge-top').innerHTML = `
               <div class="d-flex gap-1 flex-wrap">
                 <span class="badge badge-neutral" style="font-weight:700;">WELFARE CONCERN — UNDETERMINED</span>
-                <span class="badge" style="font-weight:700; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
+                <span class="badge" style="font-weight:700; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">INSUFFICIENT EVIDENCE</span>
+                ${Utils.getPersonalBaselineDisplay(p.personalBaseline)}
               </div>
             `;
             document.getElementById('concern-desc').innerHTML = `
@@ -348,12 +349,15 @@
               probContainer.innerHTML = `
                 <div class="card" style="background:var(--bg-card-subtle); padding:1.5rem; text-align:center;">
                   <div style="font-size:1.5rem; margin-bottom:0.5rem;">⚖️</div>
-                  <h4 style="margin-bottom:0.5rem;">Evidence Insufficient</h4>
+                  <h4 style="margin-bottom:0.5rem;">INSUFFICIENT EVIDENCE</h4>
                   <p class="text-muted" style="font-size:0.88rem; margin-bottom:1rem;">
                     There is not enough authorized information to calculate model probabilities or evaluate risk contributors.
                   </p>
                   <div class="alert alert-neutral" style="font-size:0.85rem; font-weight:600; color:var(--text-secondary);">
                     “Additional authorized data or a welfare check-in is required.”
+                  </div>
+                  <div class="mt-2 text-muted" style="font-size:0.75rem;">
+                    🛡️ <em>Never a medical diagnosis or disciplinary decision.</em>
                   </div>
                   <a href="/stress-checkin.html" class="btn btn-sm btn-primary mt-2">Submit Check-in</a>
                 </div>
@@ -367,6 +371,7 @@
           const evidenceBadgeHtml = Utils.getEvidenceStrengthDisplay(evLevel);
           const avCount = p.dataAvailableCount != null ? p.dataAvailableCount : (p.evidenceCount || (p.evidenceSources ? p.evidenceSources.length : 4));
           const dataAvailHtml = Utils.getDataAvailableDisplay(avCount, 5);
+          const baselineHtml = Utils.getPersonalBaselineDisplay(p.personalBaseline);
 
           document.getElementById('main-risk-circle').className = `risk-circle ${p.concernLevel}`;
           document.getElementById('main-risk-score').textContent = `${Math.round(p.compositeRiskScore || 0)}%`;
@@ -376,6 +381,7 @@
               ${concernBadgeHtml}
               ${evidenceBadgeHtml}
               ${dataAvailHtml}
+              ${baselineHtml}
             </div>
           `;
           document.getElementById('analysis-timestamp').textContent = `Analyzed: ${Utils.formatDate(p.analyzedAt || p.createdAt)}`;
@@ -400,16 +406,20 @@
           }
 
           const rawContribs = p.mainContributors || (p.decisionLayer && p.decisionLayer.mainContributors) || p.topDrivers || [];
+          const summaryStr = p.contributorsText || ('Contributors: ' + Utils.formatContributors(rawContribs, isUndet, evLevel));
           if (rawContribs && rawContribs.length > 0) {
-            document.getElementById('top-drivers-list').innerHTML = rawContribs.map(c => {
-              const label = typeof c === 'string' ? c : (c.directionalTitle || c.title || c.factor || 'Operational Strain');
-              return `• <strong>${label}</strong>`;
-            }).join('<br>');
+            document.getElementById('top-drivers-list').innerHTML = `
+              <div class="mb-2" style="font-weight:700; font-size:0.88rem; color:var(--text-primary);">${summaryStr}</div>
+              ${rawContribs.map(c => {
+                const label = typeof c === 'string' ? c : (c.directionalTitle || c.title || c.factor || 'Operational Strain');
+                return `• <strong>${label}</strong>`;
+              }).join('<br>')}
+            `;
           } else {
             document.getElementById('top-drivers-list').textContent = 'All operational variables are within standard healthy thresholds.';
           }
 
-          // Render Recommended Next Action
+          // Render Recommended Next Action & Ethical Guardrail
           const nextAction = p.recommendedNextAction || p.recommendedAction || 'Continue standard restorative routines and submit daily check-in.';
           const driversCard = document.getElementById('top-drivers-list').parentElement;
           if (driversCard && !document.getElementById('ai-rec-action-box')) {
@@ -420,6 +430,9 @@
             actBox.innerHTML = `
               <div style="font-size:0.75rem; font-weight:700; color:#3b82f6; text-transform:uppercase; letter-spacing:0.5px;">Recommended Next Action:</div>
               <div style="font-size:0.85rem; font-weight:600; color:var(--text-primary); margin-top:0.25rem;">${nextAction}</div>
+              <div class="mt-2 text-muted" style="font-size:0.75rem;">
+                🛡️ <strong>Ethical Standard:</strong> Never a medical diagnosis or disciplinary decision. The model identifies operational welfare patterns only.
+              </div>
             `;
             driversCard.appendChild(actBox);
           }
@@ -431,12 +444,15 @@
                 <div style="font-size:2.5rem; margin-bottom:1rem;">⚖️</div>
                 <div class="d-flex justify-center gap-1 flex-wrap mb-3">
                   <span class="badge badge-neutral" style="font-weight:700; font-size:0.85rem; padding:0.4rem 0.8rem;">WELFARE CONCERN — UNDETERMINED</span>
-                  <span class="badge" style="font-weight:700; font-size:0.85rem; padding:0.4rem 0.8rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">EVIDENCE — INSUFFICIENT</span>
+                  <span class="badge" style="font-weight:700; font-size:0.85rem; padding:0.4rem 0.8rem; background:rgba(100,116,139,0.15); color:#64748b; border:1px solid rgba(100,116,139,0.35);">INSUFFICIENT EVIDENCE</span>
                 </div>
                 <h3 style="margin-bottom:0.5rem;">Baseline Not Established</h3>
                 <p class="text-muted" style="max-width:480px; margin:0.5rem auto 1.5rem; font-weight:600;">
                   Additional authorized data or a welfare check-in is required.
                 </p>
+                <div class="mb-3 text-muted" style="font-size:0.8rem;">
+                  🛡️ <em>Never a medical diagnosis or disciplinary decision.</em>
+                </div>
                 <div>
                   <a href="/stress-checkin.html" class="btn btn-primary">Start Initial Check-in &rarr;</a>
                 </div>
