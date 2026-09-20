@@ -229,7 +229,7 @@ async function runTests() {
   assert(noPssData.evidenceSources.includes('WORKLOAD'), 'evidenceSources includes WORKLOAD');
   assert(noPssData.evidenceSources.includes('REST_RECOVERY'), 'evidenceSources includes REST_RECOVERY');
   assert(noPssData.evidenceCount === 3, `evidenceCount is exactly 3 (got ${noPssData.evidenceCount})`);
-  assert(noPssData.prediction.compositeRiskScore > 0, `Risk score generated without PSS (Score: ${noPssData.prediction.compositeRiskScore})`);
+  assert(noPssData.prediction.concernLevel === 'UNDETERMINED' && noPssData.prediction.compositeRiskScore === null, `Zero-Guessing Enforced: Insufficient evidence produces UNDETERMINED without guessing score (Score: ${noPssData.prediction.compositeRiskScore})`);
   assert(noPssData.recommendations && noPssData.recommendations.actionItems.length > 0, 'Personalized recommendations generated without PSS');
 
   // Step 6: Test Optional PSS-10 with Wearable Smart Jacket (4 Evidence Sources, No PSS)

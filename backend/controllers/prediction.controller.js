@@ -751,6 +751,7 @@ const getWhatChanged = async (req, res, next) => {
       summary: summaryText,
       metrics,
       personalBaseline,
+      comparisonCategories: personalBaseline.comparisonCategories,
       availableCheckIns,
       disclaimer: 'Observed differences represent factual variation between check-in inputs, not proof of individual causation.'
     });
