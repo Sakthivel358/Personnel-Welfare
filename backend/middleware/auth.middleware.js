@@ -53,7 +53,46 @@ const authenticate = async (req, res, next) => {
     }
 
     // Lookup user in database
-    const user = await db.Users.findById(decoded.id || decoded._id);
+    let user = await db.Users.findById(decoded.id || decoded._id);
+    if (!user && decoded.personnelId) {
+      user = await db.Users.findOne({ personnelId: decoded.personnelId });
+    }
+
+    // In serverless multi-instance environments (e.g. Vercel), if the token was
+    // cryptographically verified by our server JWT_SECRET, re-hydrate the user
+    // into the local datastore so subsequent operations succeed seamlessly.
+    if (!user && decoded && (decoded.id || decoded._id || decoded.personnelId)) {
+      try {
+        const userId = decoded.id || decoded._id || ('user_' + (decoded.personnelId || Date.now()));
+        user = await db.Users.create({
+          _id: userId,
+          personnelId: decoded.personnelId || `PERS-${Date.now()}`,
+          email: decoded.email || `${(decoded.personnelId || 'user').toLowerCase()}@forces.gov.in`,
+          fullName: decoded.fullName || decoded.personnelId || 'Personnel Member',
+          role: decoded.role || 'PERSONNEL',
+          unit: decoded.unit || 'Operational Unit',
+          rank: decoded.rank || 'Personnel Member',
+          isActive: true,
+          lastLogin: new Date().toISOString()
+        });
+
+        const existingP = await db.Personnel.findOne({ $or: [{ userId }, { personnelId: decoded.personnelId }] });
+        if (!existingP) {
+          await db.Personnel.create({
+            userId,
+            personnelId: user.personnelId,
+            fullName: user.fullName,
+            rank: user.rank,
+            unit: user.unit,
+            deploymentZone: 'Standard Field Deployment',
+            isEnrolledInWelfare: true
+          });
+        }
+      } catch (hydrateErr) {
+        console.warn('[Auth Middleware] Ephemeral instance session hydration notice:', hydrateErr.message);
+      }
+    }
+
     if (!user) {
       securityMonitoring.recordSuspiciousAuth({ ip: req.ip, reason: 'Token with non-existent user presented', targetResource: req.originalUrl });
       return res.status(401).json({

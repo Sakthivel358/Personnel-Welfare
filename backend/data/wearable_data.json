@@ -306,5 +306,27 @@
     },
     "createdAt": "2026-09-20T03:24:44.568Z",
     "updatedAt": "2026-09-20T03:24:44.568Z"
+  },
+  {
+    "_id": "f0ad5c3a993cf1cb0194b73e",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "deviceId": "GARMIN-TACTIX-01",
+    "deviceType": "TACTICAL_SMART_JACKET",
+    "idempotencyKey": "wb-1790096630096-uj7k5o",
+    "timestamp": "2026-09-22T17:03:50.096Z",
+    "batteryLevel": null,
+    "signalQuality": null,
+    "telemetry": {
+      "resting_heart_rate": null,
+      "hrv_ms": null,
+      "respiration_rate": null,
+      "skin_temperature_c": null,
+      "fatigue_physical_strain": null,
+      "activity_movement": "MODERATE_PATROL",
+      "posture_inactivity": "NORMAL_MOBILITY"
+    },
+    "createdAt": "2026-09-22T17:03:50.096Z",
+    "updatedAt": "2026-09-22T17:03:50.097Z"
   }
 ]

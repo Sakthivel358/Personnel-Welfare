@@ -1237,5 +1237,64 @@
     "timestamp": "2026-09-20T03:30:37.918Z",
     "createdAt": "2026-09-20T03:30:37.918Z",
     "updatedAt": "2026-09-20T03:30:37.918Z"
+  },
+  {
+    "_id": "66148340c148b71490805776",
+    "alertId": "SEC-1790096630740-E2FCB9",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'WELFARE_OFFICER' triggered repeated authorization failures (2) attempting to access restricted resource /api/v1/admin/audit-logs.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/admin/audit-logs",
+    "metadata": {
+      "userRole": "WELFARE_OFFICER",
+      "requiredRole": "ADMIN",
+      "path": "/api/v1/admin/audit-logs",
+      "method": "GET",
+      "failureCount": 2
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-22T17:03:50.740Z",
+    "createdAt": "2026-09-22T17:03:50.740Z",
+    "updatedAt": "2026-09-22T17:03:50.740Z"
+  },
+  {
+    "_id": "2f3a3507b341e0bfadac986f",
+    "alertId": "SEC-1790096631212-84B37D",
+    "type": "REPEATED_AUTHORIZATION_FAILURES",
+    "severity": "HIGH",
+    "description": "User role 'PERSONNEL' triggered repeated authorization failures (3) attempting to access restricted resource /api/v1/officer/alerts.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "/api/v1/officer/alerts",
+    "metadata": {
+      "userRole": "PERSONNEL",
+      "requiredRole": "WELFARE_OFFICER, ADMIN",
+      "path": "/api/v1/officer/alerts",
+      "method": "GET",
+      "failureCount": 3
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-22T17:03:51.212Z",
+    "createdAt": "2026-09-22T17:03:51.212Z",
+    "updatedAt": "2026-09-22T17:03:51.212Z"
+  },
+  {
+    "_id": "aea019fb3c24e6f304dcc3ab",
+    "alertId": "SEC-1790096631784-0089A9",
+    "type": "SUSPICIOUS_DATA_ACCESS",
+    "severity": "CRITICAL",
+    "description": "Potential unauthorized object reference (IDOR) attempt blocked. User attempted to access unauthorized record HRMS_RECORD:CRPF-OTHER-USER.",
+    "ipAddress": "::ffff:127.0.0.1",
+    "targetResource": "HRMS_RECORD",
+    "metadata": {
+      "attemptedResource": "HRMS_RECORD",
+      "attemptedId": "CRPF-OTH***",
+      "userRole": "PERSONNEL",
+      "reason": "IDOR unauthorized personnel record attempt"
+    },
+    "status": "ACTIVE",
+    "timestamp": "2026-09-22T17:03:51.784Z",
+    "createdAt": "2026-09-22T17:03:51.785Z",
+    "updatedAt": "2026-09-22T17:03:51.785Z"
   }
 ]

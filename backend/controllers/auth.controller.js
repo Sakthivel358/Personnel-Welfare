@@ -10,8 +10,12 @@ const generateToken = (user, rememberMe = false) => {
   return jwt.sign(
     {
       id: user._id,
+      _id: user._id,
       personnelId: user.personnelId,
       email: user.email,
+      fullName: user.fullName,
+      unit: user.unit,
+      rank: user.rank,
       role: user.role,
       jti: crypto.randomBytes(16).toString('hex') // RFC 7519 unique JWT identifier
     },
@@ -375,7 +379,10 @@ const logout = async (req, res, next) => {
 
 const getMe = async (req, res, next) => {
   try {
-    const user = await db.Users.findById(req.user._id);
+    let user = req.user ? await db.Users.findById(req.user._id || req.user.id) : null;
+    if (!user && req.user) {
+      user = req.user;
+    }
     if (!user) {
       return res.status(404).json({ success: false, message: 'User record not found.' });
     }

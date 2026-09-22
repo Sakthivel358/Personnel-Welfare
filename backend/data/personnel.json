@@ -15893,5 +15893,57 @@
     },
     "createdAt": "2026-09-20T03:31:23.097Z",
     "updatedAt": "2026-09-20T03:31:23.097Z"
+  },
+  {
+    "_id": "00a08b596cdbb3c67c840db9",
+    "userId": "3051c4549bf8a102deddbe4d",
+    "personnelId": "NEWUSER_1790096426278",
+    "fullName": "Brand New User",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-22T17:00:26.710Z",
+    "updatedAt": "2026-09-22T17:00:26.710Z"
+  },
+  {
+    "_id": "fe6f78a4512799f04a998478",
+    "userId": "bed8047132b98edd5596a257",
+    "personnelId": "SIM_1790096658963",
+    "fullName": "Sepoy Sim Test",
+    "rank": "Personnel Member",
+    "unit": "Operational Unit",
+    "deploymentZone": "Standard Field Deployment",
+    "yearsOfService": 5,
+    "dutyType": "Field Operations",
+    "workSchedule": "Standard Rotation",
+    "preferredSupportLanguage": "English / Hindi",
+    "isEnrolledInWelfare": true,
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "privacyPreferences": {
+      "shareWithWelfareOfficer": true,
+      "anonymousAggregatedStats": true,
+      "notificationChannel": "IN_APP"
+    },
+    "createdAt": "2026-09-22T17:04:19.111Z",
+    "updatedAt": "2026-09-22T17:04:19.111Z"
   }
 ]

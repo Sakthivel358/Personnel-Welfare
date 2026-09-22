@@ -134,7 +134,7 @@
     "analyzedAt": "2026-09-06T09:35:24.047097",
     "isAlertGenerated": true,
     "createdAt": "2026-09-06T04:05:24.053Z",
-    "updatedAt": "2026-09-20T03:24:44.909Z",
+    "updatedAt": "2026-09-22T17:03:50.476Z",
     "humanReview": {
       "reviewStatus": "REVIEWED",
       "reviewStatusDisplay": "Reviewed",
@@ -142,7 +142,7 @@
       "reviewedBy": "26445b0244cb7d59a6d1eefc",
       "officerRank": "Assistant Commandant",
       "officerName": "Assistant Commandant Priya Sharma",
-      "reviewedAt": "2026-09-20T03:24:44.908Z",
+      "reviewedAt": "2026-09-22T17:03:50.476Z",
       "decisionSupportOnly": true,
       "isDisciplinaryOrMedicalAction": false,
       "nonDisciplinaryStatement": "An ML prediction must never automatically become a disciplinary action."
@@ -155802,5 +155802,752 @@
     "humanReviewPriority": "NONE",
     "createdAt": "2026-09-20T03:31:23.288Z",
     "updatedAt": "2026-09-20T03:31:23.288Z"
+  },
+  {
+    "_id": "e1faa765080ee685f290eb67",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "checkInId": "1db1b2fb8943601295490824",
+    "concernLevel": "UNDETERMINED",
+    "confidence": 0,
+    "compositeRiskScore": null,
+    "isUndetermined": true,
+    "probabilities": {},
+    "evidenceSources": [
+      "DUTY",
+      "WORKLOAD",
+      "REST_RECOVERY"
+    ],
+    "evidenceStrength": "INSUFFICIENT",
+    "evidenceStrengthScore": 0.77,
+    "welfareConcernDisplay": "WELFARE CONCERN — UNDETERMINED",
+    "evidenceDisplay": "EVIDENCE — INSUFFICIENT",
+    "dataAvailableCount": 3,
+    "dataAvailableTotal": 5,
+    "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+    "dataQuality": "INSUFFICIENT",
+    "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+    "baselineStatus": "ESTABLISHED",
+    "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+    "predictionStatus": "INSUFFICIENT EVIDENCE",
+    "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+    "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+    "dataQualityGate": {
+      "passed": false,
+      "isEvidenceInsufficient": true,
+      "dataQuality": "INSUFFICIENT",
+      "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+      "dataAvailableCount": 3,
+      "dataAvailableTotal": 5,
+      "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+      "baselineStatus": "ESTABLISHED",
+      "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+      "predictionStatus": "INSUFFICIENT EVIDENCE",
+      "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+      "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+      "issues": [
+        "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+      ],
+      "checks": {
+        "missingInputs": {
+          "passed": false,
+          "issues": [
+            "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+          ]
+        },
+        "invalidValues": {
+          "passed": true,
+          "issues": []
+        },
+        "staleSensorData": {
+          "passed": true,
+          "isStale": false,
+          "ageHours": null,
+          "issues": []
+        },
+        "incompleteWearableData": {
+          "passed": true,
+          "isIncomplete": false,
+          "issues": []
+        },
+        "insufficientHistoricalData": {
+          "passed": true,
+          "baselineEstablished": true,
+          "historyCount": 89,
+          "issues": []
+        }
+      }
+    },
+    "decisionLayer": {
+      "welfareConcern": {
+        "concernLevel": "UNDETERMINED",
+        "displayLabel": "WELFARE CONCERN — UNDETERMINED",
+        "compositeRiskScore": null,
+        "confidence": 0,
+        "status": "INSUFFICIENT_EVIDENCE",
+        "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+        "reason": "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided",
+        "compoundStrainDetected": false
+      },
+      "evidenceStrength": {
+        "level": "INSUFFICIENT",
+        "displayLabel": "EVIDENCE — INSUFFICIENT",
+        "score": 0.77,
+        "dataAvailableCount": 3,
+        "dataAvailableTotal": 5,
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "sourcesCount": 3,
+        "sources": [
+          "DUTY",
+          "WORKLOAD",
+          "REST_RECOVERY"
+        ],
+        "hasWearableTelemetry": false,
+        "hasOperationalDuty": true,
+        "hasRestRecovery": true,
+        "hasSelfCheck": false,
+        "quality": {
+          "score": 0.75,
+          "percentage": 75,
+          "rating": "INSUFFICIENT"
+        },
+        "completeness": {
+          "score": 1,
+          "percentage": 100
+        },
+        "availability": {
+          "score": 0.6,
+          "percentage": 60,
+          "availableSources": [
+            "DUTY",
+            "WORKLOAD",
+            "REST_RECOVERY"
+          ],
+          "unavailableSources": [
+            "SELF_CHECK",
+            "WEARABLE"
+          ]
+        },
+        "summary": "Evidence is insufficient to establish an authorized assessment. Assessment omitted to avoid arbitrary guessing.",
+        "missingEvidence": [
+          "Operational duty context or authorized biometrics / self-check"
+        ]
+      },
+      "mainContributors": [],
+      "dataQualityGate": {
+        "passed": false,
+        "isEvidenceInsufficient": true,
+        "dataQuality": "INSUFFICIENT",
+        "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+        "dataAvailableCount": 3,
+        "dataAvailableTotal": 5,
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "baselineStatus": "ESTABLISHED",
+        "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+        "predictionStatus": "INSUFFICIENT EVIDENCE",
+        "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+        "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+        "issues": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "checks": {
+          "missingInputs": {
+            "passed": false,
+            "issues": [
+              "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+            ]
+          },
+          "invalidValues": {
+            "passed": true,
+            "issues": []
+          },
+          "staleSensorData": {
+            "passed": true,
+            "isStale": false,
+            "ageHours": null,
+            "issues": []
+          },
+          "incompleteWearableData": {
+            "passed": true,
+            "isIncomplete": false,
+            "issues": []
+          },
+          "insufficientHistoricalData": {
+            "passed": true,
+            "baselineEstablished": true,
+            "historyCount": 89,
+            "issues": []
+          }
+        }
+      },
+      "dataQuality": {
+        "status": "INSUFFICIENT",
+        "display": "DATA QUALITY — INSUFFICIENT",
+        "baselineStatus": "ESTABLISHED",
+        "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+        "predictionStatus": "INSUFFICIENT EVIDENCE",
+        "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "issues": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "checks": {
+          "missingInputs": {
+            "passed": false,
+            "issues": [
+              "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+            ]
+          },
+          "invalidValues": {
+            "passed": true,
+            "issues": []
+          },
+          "staleSensorData": {
+            "passed": true,
+            "isStale": false,
+            "ageHours": null,
+            "issues": []
+          },
+          "incompleteWearableData": {
+            "passed": true,
+            "isIncomplete": false,
+            "issues": []
+          },
+          "insufficientHistoricalData": {
+            "passed": true,
+            "baselineEstablished": true,
+            "historyCount": 89,
+            "issues": []
+          }
+        }
+      },
+      "humanWelfareReview": {
+        "requiresHumanReview": false,
+        "priority": "NONE",
+        "status": "MONITORING_ONLY",
+        "reviewTriggers": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "recommendedOfficerAction": "Encourage personnel to synchronize wearable Smart Jacket sensor or complete self-check questionnaire to provide sufficient authorized evidence.",
+        "assignedRole": "Unit Welfare Officer"
+      },
+      "evaluatedAt": "2026-09-22T17:03:49.869Z",
+      "decisionEngineVersion": "v2.2.0-decision-layer"
+    },
+    "topDrivers": [],
+    "contributingFactors": [],
+    "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+    "analyzedAt": "2026-09-22T17:03:49.869Z",
+    "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+    "medicalDisclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+    "notMedicalDiagnosis": true,
+    "datasetLabel": "Synthetic Prototype Training Data",
+    "datasetType": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+    "realWorldValidatedAccuracy": false,
+    "prototypeAccuracyNotice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+    "isAlertGenerated": false,
+    "requiresHumanReview": false,
+    "humanReviewPriority": "NONE",
+    "createdAt": "2026-09-22T17:03:49.946Z",
+    "updatedAt": "2026-09-22T17:03:49.946Z"
+  },
+  {
+    "_id": "f69a0d38af7ad37321fea80c",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "checkInId": "0f83e12315d7d84dde6aefa9",
+    "concernLevel": "UNDETERMINED",
+    "confidence": 0,
+    "compositeRiskScore": null,
+    "isUndetermined": true,
+    "probabilities": {},
+    "evidenceSources": [
+      "DUTY",
+      "WORKLOAD",
+      "REST_RECOVERY"
+    ],
+    "evidenceStrength": "INSUFFICIENT",
+    "evidenceStrengthScore": 0.77,
+    "welfareConcernDisplay": "WELFARE CONCERN — UNDETERMINED",
+    "evidenceDisplay": "EVIDENCE — INSUFFICIENT",
+    "dataAvailableCount": 3,
+    "dataAvailableTotal": 5,
+    "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+    "dataQuality": "INSUFFICIENT",
+    "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+    "baselineStatus": "ESTABLISHED",
+    "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+    "predictionStatus": "INSUFFICIENT EVIDENCE",
+    "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+    "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+    "dataQualityGate": {
+      "passed": false,
+      "isEvidenceInsufficient": true,
+      "dataQuality": "INSUFFICIENT",
+      "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+      "dataAvailableCount": 3,
+      "dataAvailableTotal": 5,
+      "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+      "baselineStatus": "ESTABLISHED",
+      "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+      "predictionStatus": "INSUFFICIENT EVIDENCE",
+      "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+      "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+      "issues": [
+        "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+      ],
+      "checks": {
+        "missingInputs": {
+          "passed": false,
+          "issues": [
+            "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+          ]
+        },
+        "invalidValues": {
+          "passed": true,
+          "issues": []
+        },
+        "staleSensorData": {
+          "passed": true,
+          "isStale": false,
+          "ageHours": null,
+          "issues": []
+        },
+        "incompleteWearableData": {
+          "passed": true,
+          "isIncomplete": false,
+          "issues": []
+        },
+        "insufficientHistoricalData": {
+          "passed": true,
+          "baselineEstablished": true,
+          "historyCount": 90,
+          "issues": []
+        }
+      }
+    },
+    "decisionLayer": {
+      "welfareConcern": {
+        "concernLevel": "UNDETERMINED",
+        "displayLabel": "WELFARE CONCERN — UNDETERMINED",
+        "compositeRiskScore": null,
+        "confidence": 0,
+        "status": "INSUFFICIENT_EVIDENCE",
+        "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+        "reason": "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided",
+        "compoundStrainDetected": false
+      },
+      "evidenceStrength": {
+        "level": "INSUFFICIENT",
+        "displayLabel": "EVIDENCE — INSUFFICIENT",
+        "score": 0.77,
+        "dataAvailableCount": 3,
+        "dataAvailableTotal": 5,
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "sourcesCount": 3,
+        "sources": [
+          "DUTY",
+          "WORKLOAD",
+          "REST_RECOVERY"
+        ],
+        "hasWearableTelemetry": false,
+        "hasOperationalDuty": true,
+        "hasRestRecovery": true,
+        "hasSelfCheck": false,
+        "quality": {
+          "score": 0.75,
+          "percentage": 75,
+          "rating": "INSUFFICIENT"
+        },
+        "completeness": {
+          "score": 1,
+          "percentage": 100
+        },
+        "availability": {
+          "score": 0.6,
+          "percentage": 60,
+          "availableSources": [
+            "DUTY",
+            "WORKLOAD",
+            "REST_RECOVERY"
+          ],
+          "unavailableSources": [
+            "SELF_CHECK",
+            "WEARABLE"
+          ]
+        },
+        "summary": "Evidence is insufficient to establish an authorized assessment. Assessment omitted to avoid arbitrary guessing.",
+        "missingEvidence": [
+          "Operational duty context or authorized biometrics / self-check"
+        ]
+      },
+      "mainContributors": [],
+      "dataQualityGate": {
+        "passed": false,
+        "isEvidenceInsufficient": true,
+        "dataQuality": "INSUFFICIENT",
+        "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+        "dataAvailableCount": 3,
+        "dataAvailableTotal": 5,
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "baselineStatus": "ESTABLISHED",
+        "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+        "predictionStatus": "INSUFFICIENT EVIDENCE",
+        "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+        "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+        "issues": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "checks": {
+          "missingInputs": {
+            "passed": false,
+            "issues": [
+              "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+            ]
+          },
+          "invalidValues": {
+            "passed": true,
+            "issues": []
+          },
+          "staleSensorData": {
+            "passed": true,
+            "isStale": false,
+            "ageHours": null,
+            "issues": []
+          },
+          "incompleteWearableData": {
+            "passed": true,
+            "isIncomplete": false,
+            "issues": []
+          },
+          "insufficientHistoricalData": {
+            "passed": true,
+            "baselineEstablished": true,
+            "historyCount": 90,
+            "issues": []
+          }
+        }
+      },
+      "dataQuality": {
+        "status": "INSUFFICIENT",
+        "display": "DATA QUALITY — INSUFFICIENT",
+        "baselineStatus": "ESTABLISHED",
+        "baselineStatusDisplay": "BASELINE STATUS — ESTABLISHED",
+        "predictionStatus": "INSUFFICIENT EVIDENCE",
+        "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "issues": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "checks": {
+          "missingInputs": {
+            "passed": false,
+            "issues": [
+              "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+            ]
+          },
+          "invalidValues": {
+            "passed": true,
+            "issues": []
+          },
+          "staleSensorData": {
+            "passed": true,
+            "isStale": false,
+            "ageHours": null,
+            "issues": []
+          },
+          "incompleteWearableData": {
+            "passed": true,
+            "isIncomplete": false,
+            "issues": []
+          },
+          "insufficientHistoricalData": {
+            "passed": true,
+            "baselineEstablished": true,
+            "historyCount": 90,
+            "issues": []
+          }
+        }
+      },
+      "humanWelfareReview": {
+        "requiresHumanReview": false,
+        "priority": "NONE",
+        "status": "MONITORING_ONLY",
+        "reviewTriggers": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "recommendedOfficerAction": "Encourage personnel to synchronize wearable Smart Jacket sensor or complete self-check questionnaire to provide sufficient authorized evidence.",
+        "assignedRole": "Unit Welfare Officer"
+      },
+      "evaluatedAt": "2026-09-22T17:03:50.109Z",
+      "decisionEngineVersion": "v2.2.0-decision-layer"
+    },
+    "topDrivers": [],
+    "contributingFactors": [],
+    "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+    "analyzedAt": "2026-09-22T17:03:50.109Z",
+    "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+    "medicalDisclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+    "notMedicalDiagnosis": true,
+    "datasetLabel": "Synthetic Prototype Training Data",
+    "datasetType": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+    "realWorldValidatedAccuracy": false,
+    "prototypeAccuracyNotice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+    "isAlertGenerated": false,
+    "requiresHumanReview": false,
+    "humanReviewPriority": "NONE",
+    "createdAt": "2026-09-22T17:03:50.113Z",
+    "updatedAt": "2026-09-22T17:03:50.113Z"
+  },
+  {
+    "_id": "c26e56e3de6e8bba686f5ffc",
+    "userId": "bed8047132b98edd5596a257",
+    "checkInId": "c7b5d15454ac926ecac8b0a9",
+    "concernLevel": "UNDETERMINED",
+    "confidence": 0,
+    "compositeRiskScore": null,
+    "isUndetermined": true,
+    "probabilities": {},
+    "evidenceSources": [
+      "DUTY",
+      "WORKLOAD",
+      "REST_RECOVERY"
+    ],
+    "evidenceStrength": "INSUFFICIENT",
+    "evidenceStrengthScore": 0.77,
+    "welfareConcernDisplay": "WELFARE CONCERN — UNDETERMINED",
+    "evidenceDisplay": "EVIDENCE — INSUFFICIENT",
+    "dataAvailableCount": 3,
+    "dataAvailableTotal": 5,
+    "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+    "dataQuality": "INSUFFICIENT",
+    "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+    "baselineStatus": "NOT_ESTABLISHED",
+    "baselineStatusDisplay": "BASELINE STATUS — NOT ESTABLISHED",
+    "predictionStatus": "INSUFFICIENT EVIDENCE",
+    "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+    "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+    "dataQualityGate": {
+      "passed": false,
+      "isEvidenceInsufficient": true,
+      "dataQuality": "INSUFFICIENT",
+      "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+      "dataAvailableCount": 3,
+      "dataAvailableTotal": 5,
+      "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+      "baselineStatus": "NOT_ESTABLISHED",
+      "baselineStatusDisplay": "BASELINE STATUS — NOT ESTABLISHED",
+      "predictionStatus": "INSUFFICIENT EVIDENCE",
+      "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+      "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+      "issues": [
+        "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+      ],
+      "checks": {
+        "missingInputs": {
+          "passed": false,
+          "issues": [
+            "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+          ]
+        },
+        "invalidValues": {
+          "passed": true,
+          "issues": []
+        },
+        "staleSensorData": {
+          "passed": true,
+          "isStale": false,
+          "ageHours": null,
+          "issues": []
+        },
+        "incompleteWearableData": {
+          "passed": true,
+          "isIncomplete": false,
+          "issues": []
+        },
+        "insufficientHistoricalData": {
+          "passed": false,
+          "baselineEstablished": false,
+          "historyCount": 0,
+          "issues": [
+            "Insufficient historical data: personal baseline requires at least 2 check-ins (currently 0)"
+          ]
+        }
+      }
+    },
+    "decisionLayer": {
+      "welfareConcern": {
+        "concernLevel": "UNDETERMINED",
+        "displayLabel": "WELFARE CONCERN — UNDETERMINED",
+        "compositeRiskScore": null,
+        "confidence": 0,
+        "status": "INSUFFICIENT_EVIDENCE",
+        "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+        "reason": "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided",
+        "compoundStrainDetected": false
+      },
+      "evidenceStrength": {
+        "level": "INSUFFICIENT",
+        "displayLabel": "EVIDENCE — INSUFFICIENT",
+        "score": 0.77,
+        "dataAvailableCount": 3,
+        "dataAvailableTotal": 5,
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "sourcesCount": 3,
+        "sources": [
+          "DUTY",
+          "WORKLOAD",
+          "REST_RECOVERY"
+        ],
+        "hasWearableTelemetry": false,
+        "hasOperationalDuty": true,
+        "hasRestRecovery": true,
+        "hasSelfCheck": false,
+        "quality": {
+          "score": 0.75,
+          "percentage": 75,
+          "rating": "INSUFFICIENT"
+        },
+        "completeness": {
+          "score": 1,
+          "percentage": 100
+        },
+        "availability": {
+          "score": 0.6,
+          "percentage": 60,
+          "availableSources": [
+            "DUTY",
+            "WORKLOAD",
+            "REST_RECOVERY"
+          ],
+          "unavailableSources": [
+            "SELF_CHECK",
+            "WEARABLE"
+          ]
+        },
+        "summary": "Evidence is insufficient to establish an authorized assessment. Assessment omitted to avoid arbitrary guessing.",
+        "missingEvidence": [
+          "Operational duty context or authorized biometrics / self-check"
+        ]
+      },
+      "mainContributors": [],
+      "dataQualityGate": {
+        "passed": false,
+        "isEvidenceInsufficient": true,
+        "dataQuality": "INSUFFICIENT",
+        "dataQualityDisplay": "DATA QUALITY — INSUFFICIENT",
+        "dataAvailableCount": 3,
+        "dataAvailableTotal": 5,
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "baselineStatus": "NOT_ESTABLISHED",
+        "baselineStatusDisplay": "BASELINE STATUS — NOT ESTABLISHED",
+        "predictionStatus": "INSUFFICIENT EVIDENCE",
+        "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+        "insufficientEvidenceNotice": "INSUFFICIENT EVIDENCE — Additional authorized data or welfare check-in required.",
+        "issues": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "checks": {
+          "missingInputs": {
+            "passed": false,
+            "issues": [
+              "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+            ]
+          },
+          "invalidValues": {
+            "passed": true,
+            "issues": []
+          },
+          "staleSensorData": {
+            "passed": true,
+            "isStale": false,
+            "ageHours": null,
+            "issues": []
+          },
+          "incompleteWearableData": {
+            "passed": true,
+            "isIncomplete": false,
+            "issues": []
+          },
+          "insufficientHistoricalData": {
+            "passed": false,
+            "baselineEstablished": false,
+            "historyCount": 0,
+            "issues": [
+              "Insufficient historical data: personal baseline requires at least 2 check-ins (currently 0)"
+            ]
+          }
+        }
+      },
+      "dataQuality": {
+        "status": "INSUFFICIENT",
+        "display": "DATA QUALITY — INSUFFICIENT",
+        "baselineStatus": "NOT_ESTABLISHED",
+        "baselineStatusDisplay": "BASELINE STATUS — NOT ESTABLISHED",
+        "predictionStatus": "INSUFFICIENT EVIDENCE",
+        "predictionStatusDisplay": "PREDICTION STATUS — INSUFFICIENT EVIDENCE",
+        "dataAvailableDisplay": "DATA AVAILABLE — 3 / 5",
+        "issues": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "checks": {
+          "missingInputs": {
+            "passed": false,
+            "issues": [
+              "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+            ]
+          },
+          "invalidValues": {
+            "passed": true,
+            "issues": []
+          },
+          "staleSensorData": {
+            "passed": true,
+            "isStale": false,
+            "ageHours": null,
+            "issues": []
+          },
+          "incompleteWearableData": {
+            "passed": true,
+            "isIncomplete": false,
+            "issues": []
+          },
+          "insufficientHistoricalData": {
+            "passed": false,
+            "baselineEstablished": false,
+            "historyCount": 0,
+            "issues": [
+              "Insufficient historical data: personal baseline requires at least 2 check-ins (currently 0)"
+            ]
+          }
+        }
+      },
+      "humanWelfareReview": {
+        "requiresHumanReview": false,
+        "priority": "NONE",
+        "status": "MONITORING_ONLY",
+        "reviewTriggers": [
+          "Missing subjective and objective evidence: neither self-check (PSS-10) nor wearable telemetry provided"
+        ],
+        "recommendedOfficerAction": "Encourage personnel to synchronize wearable Smart Jacket sensor or complete self-check questionnaire to provide sufficient authorized evidence.",
+        "assignedRole": "Unit Welfare Officer"
+      },
+      "evaluatedAt": "2026-09-22T17:04:19.171Z",
+      "decisionEngineVersion": "v2.2.0-decision-layer"
+    },
+    "topDrivers": [],
+    "contributingFactors": [],
+    "modelUsed": "NONE_INSUFFICIENT_EVIDENCE",
+    "analyzedAt": "2026-09-22T17:04:19.171Z",
+    "statement": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+    "medicalDisclaimer": "The model identifies welfare-risk patterns/concerns, not a medical diagnosis.",
+    "notMedicalDiagnosis": true,
+    "datasetLabel": "Synthetic Prototype Training Data",
+    "datasetType": "SYNTHETIC_PROTOTYPE_TRAINING_DATA",
+    "realWorldValidatedAccuracy": false,
+    "prototypeAccuracyNotice": "Prototype evaluation accuracy is derived from synthetic prototype training data for system architecture and pipeline verification. Prototype accuracy must not be presented or interpreted as real-world clinically or operationally validated accuracy.",
+    "isAlertGenerated": false,
+    "requiresHumanReview": false,
+    "humanReviewPriority": "NONE",
+    "createdAt": "2026-09-22T17:04:19.176Z",
+    "updatedAt": "2026-09-22T17:04:19.176Z"
   }
 ]

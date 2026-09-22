@@ -20,14 +20,36 @@ const auth = {
 };
 
 async function checkAuth(allowedRoles = null) {
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sih_token') : null;
+  const isPublic = window.location.pathname.endsWith('index.html') || 
+                   window.location.pathname.endsWith('landing.html') || 
+                   window.location.pathname.endsWith('login.html') || 
+                   window.location.pathname.endsWith('signup.html') || 
+                   window.location.pathname.endsWith('register.html') ||
+                   window.location.pathname === '/';
+
+  if (!token && !isPublic) {
+    window.location.href = '/login.html';
+    return null;
+  }
+
+  // Pre-populate UI immediately from cached local session to prevent UI flicker
+  try {
+    const cachedUser = JSON.parse(localStorage.getItem('sih_user') || localStorage.getItem('sih_registered_user') || 'null');
+    if (cachedUser) {
+      currentUser = cachedUser;
+      updateUserUI(currentUser);
+    }
+  } catch (e) {}
+
   try {
     const res = await api.getMe();
-    if (res && res.success && res.user) {
-      currentUser = res.user;
+    if (res && res.success && (res.user || res.data)) {
+      currentUser = res.user || res.data;
       try {
         if (typeof localStorage !== 'undefined') {
-          localStorage.setItem('sih_user', JSON.stringify(res.user));
-          localStorage.setItem('sih_registered_user', JSON.stringify(res.user));
+          localStorage.setItem('sih_user', JSON.stringify(currentUser));
+          localStorage.setItem('sih_registered_user', JSON.stringify(currentUser));
         }
       } catch(e) {}
       updateUserUI(currentUser);
@@ -66,17 +88,20 @@ async function checkAuth(allowedRoles = null) {
     }
   } catch (err) {
     console.warn('[Auth Check] Not authenticated:', err.message);
-    const isPublic = window.location.pathname.endsWith('index.html') || 
-                     window.location.pathname.endsWith('landing.html') || 
-                     window.location.pathname.endsWith('login.html') || 
-                     window.location.pathname.endsWith('signup.html') ||
-                     window.location.pathname.endsWith('register.html') ||
-                     window.location.pathname === '/';
+    if (err.message && (err.message.includes('401') || err.message.includes('expired') || err.message.includes('AUTH_REQUIRED') || err.message.includes('SESSION_EXPIRED') || err.message.includes('SESSION_REVOKED'))) {
+      if (!isPublic) {
+        window.location.href = '/login.html?expired=1';
+      }
+      return null;
+    }
+    if (currentUser) {
+      return currentUser;
+    }
     if (!isPublic) {
       window.location.href = '/login.html';
     }
   }
-  return null;
+  return currentUser;
 }
 
 function updateUserUI(user) {

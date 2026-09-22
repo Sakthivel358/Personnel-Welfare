@@ -1056,5 +1056,29 @@
     ],
     "createdAt": "2026-09-20T03:31:13.151Z",
     "updatedAt": "2026-09-20T03:31:13.151Z"
+  },
+  {
+    "_id": "96029d9d2b6a00f4a00f3967",
+    "referenceId": "REQ-8626",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "personnelId": "CRPF-9042",
+    "requestType": "Confidential Tele-Counseling",
+    "urgency": "Medium",
+    "preferredContactMethod": "CONFIDENTIAL_IN_PERSON",
+    "preferredTime": "ANYTIME",
+    "notes": "Requesting confidential counselor call",
+    "status": "SUBMITTED",
+    "personnelConcernLevel": "UNDETERMINED",
+    "isSelfRequested": true,
+    "accessibleRegardlessOfConcern": true,
+    "statusHistory": [
+      {
+        "status": "SUBMITTED",
+        "timestamp": "2026-09-22T17:03:50.363Z",
+        "note": "Request received and logged confidentially. Unit Welfare Officer notified."
+      }
+    ],
+    "createdAt": "2026-09-22T17:03:50.363Z",
+    "updatedAt": "2026-09-22T17:03:50.363Z"
   }
 ]

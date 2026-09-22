@@ -23563,5 +23563,296 @@
     ],
     "createdAt": "2026-09-20T03:31:23.328Z",
     "updatedAt": "2026-09-20T03:31:23.328Z"
+  },
+  {
+    "_id": "b21c62a2a8b68c4caa2e94aa",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "e1faa765080ee685f290eb67",
+    "concernLevel": "UNDETERMINED",
+    "primaryAction": "Authorized evidence is currently insufficient to determine welfare concern reliably. Please sync your Smart Jacket sensor or complete the optional self-check.",
+    "compositeRiskScore": null,
+    "actionItems": [
+      {
+        "category": "Evidence Provision",
+        "title": "Synchronize Telemetry or Complete Self-Check",
+        "description": "To prevent inaccurate guessing, WelfareAI requires either authorized Smart Jacket sensor telemetry or a self-check questionnaire alongside operational duty context.",
+        "priority": "MEDIUM"
+      }
+    ],
+    "welfareInterventions": [
+      {
+        "id": "INT-CHK-CRPF-9042",
+        "category": "welfare_checkin",
+        "categoryLabel": "Welfare Check-in Cadence",
+        "title": "Proactive Welfare Check-in Scheduling",
+        "suggestedAction": "Prompt personnel for an operational self-check or Smart Jacket sensor sync to establish evidence.",
+        "evidenceBasis": "Current data is insufficient to compute an accurate risk index without guessing.",
+        "reviewTimeframe": "Next 7 Days",
+        "priority": "MEDIUM",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-OFF-CRPF-9042",
+        "category": "officer_followup",
+        "categoryLabel": "Officer Supportive Follow-Up",
+        "title": "Supportive 1-on-1 Welfare Dialogue",
+        "suggestedAction": "Schedule brief informal 1-on-1 check-in with Welfare Officer or Unit Peer Mentor to discuss adaptation.",
+        "evidenceBasis": "Moderate strain index or recent posting transfer (4 transfers on record).",
+        "reviewTimeframe": "Within 1 Week",
+        "priority": "MEDIUM",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-RST-CRPF-9042",
+        "category": "rest_recovery_review",
+        "categoryLabel": "Rest / Recovery Review",
+        "title": "Restorative Sleep & Leave Recuperation Review",
+        "suggestedAction": "Maintain unbroken 7-8 hours sleep hygiene and continue established recovery pacing.",
+        "evidenceBasis": "Sleep duration averaging 7.0 hrs/night with standard rotation.",
+        "reviewTimeframe": "Next Weekly Roster",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-WRK-CRPF-9042",
+        "category": "workload_review",
+        "categoryLabel": "Workload Review",
+        "title": "Operational Shift Duration & Duty Pacing Review",
+        "suggestedAction": "Current operational workload profile is balanced within nominal thresholds.",
+        "evidenceBasis": "Weekly duty logged at 48 hrs/wk (Nominal benchmark: 48 hrs/wk).",
+        "reviewTimeframe": "Routine Roster Review",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-REF-CRPF-9042",
+        "category": "support_referral",
+        "categoryLabel": "Support Referral",
+        "title": "Voluntary Welfare Support & Healthcare Liaison",
+        "suggestedAction": "Provide standard informational awareness on confidential 24/7 tele-counseling and unit support resources.",
+        "evidenceBasis": "Routine welfare readiness profile; optional resources accessible on demand.",
+        "reviewTimeframe": "Voluntary Access",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-22T17:03:50.042Z",
+    "updatedAt": "2026-09-22T17:03:50.042Z"
+  },
+  {
+    "_id": "47140dcb9713873a5502aa20",
+    "userId": "b89451b0525f73ec0e2338ef",
+    "predictionId": "f69a0d38af7ad37321fea80c",
+    "concernLevel": "UNDETERMINED",
+    "primaryAction": "Authorized evidence is currently insufficient to determine welfare concern reliably. Please sync your Smart Jacket sensor or complete the optional self-check.",
+    "compositeRiskScore": null,
+    "actionItems": [
+      {
+        "category": "Evidence Provision",
+        "title": "Synchronize Telemetry or Complete Self-Check",
+        "description": "To prevent inaccurate guessing, WelfareAI requires either authorized Smart Jacket sensor telemetry or a self-check questionnaire alongside operational duty context.",
+        "priority": "MEDIUM"
+      }
+    ],
+    "welfareInterventions": [
+      {
+        "id": "INT-CHK-CRPF-9042",
+        "category": "welfare_checkin",
+        "categoryLabel": "Welfare Check-in Cadence",
+        "title": "Proactive Welfare Check-in Scheduling",
+        "suggestedAction": "Prompt personnel for an operational self-check or Smart Jacket sensor sync to establish evidence.",
+        "evidenceBasis": "Current data is insufficient to compute an accurate risk index without guessing.",
+        "reviewTimeframe": "Next 7 Days",
+        "priority": "MEDIUM",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-OFF-CRPF-9042",
+        "category": "officer_followup",
+        "categoryLabel": "Officer Supportive Follow-Up",
+        "title": "Supportive 1-on-1 Welfare Dialogue",
+        "suggestedAction": "Schedule brief informal 1-on-1 check-in with Welfare Officer or Unit Peer Mentor to discuss adaptation.",
+        "evidenceBasis": "Moderate strain index or recent posting transfer (4 transfers on record).",
+        "reviewTimeframe": "Within 1 Week",
+        "priority": "MEDIUM",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-RST-CRPF-9042",
+        "category": "rest_recovery_review",
+        "categoryLabel": "Rest / Recovery Review",
+        "title": "Restorative Sleep & Leave Recuperation Review",
+        "suggestedAction": "Maintain unbroken 7-8 hours sleep hygiene and continue established recovery pacing.",
+        "evidenceBasis": "Sleep duration averaging 7.0 hrs/night with standard rotation.",
+        "reviewTimeframe": "Next Weekly Roster",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-WRK-CRPF-9042",
+        "category": "workload_review",
+        "categoryLabel": "Workload Review",
+        "title": "Operational Shift Duration & Duty Pacing Review",
+        "suggestedAction": "Current operational workload profile is balanced within nominal thresholds.",
+        "evidenceBasis": "Weekly duty logged at 48 hrs/wk (Nominal benchmark: 48 hrs/wk).",
+        "reviewTimeframe": "Routine Roster Review",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-REF-CRPF-9042",
+        "category": "support_referral",
+        "categoryLabel": "Support Referral",
+        "title": "Voluntary Welfare Support & Healthcare Liaison",
+        "suggestedAction": "Provide standard informational awareness on confidential 24/7 tele-counseling and unit support resources.",
+        "evidenceBasis": "Routine welfare readiness profile; optional resources accessible on demand.",
+        "reviewTimeframe": "Voluntary Access",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-22T17:03:50.210Z",
+    "updatedAt": "2026-09-22T17:03:50.210Z"
+  },
+  {
+    "_id": "846be47eea54222fe356bf7b",
+    "userId": "bed8047132b98edd5596a257",
+    "predictionId": "c26e56e3de6e8bba686f5ffc",
+    "concernLevel": "UNDETERMINED",
+    "primaryAction": "Authorized evidence is currently insufficient to determine welfare concern reliably. Please sync your Smart Jacket sensor or complete the optional self-check.",
+    "compositeRiskScore": null,
+    "actionItems": [
+      {
+        "category": "Evidence Provision",
+        "title": "Synchronize Telemetry or Complete Self-Check",
+        "description": "To prevent inaccurate guessing, WelfareAI requires either authorized Smart Jacket sensor telemetry or a self-check questionnaire alongside operational duty context.",
+        "priority": "MEDIUM"
+      }
+    ],
+    "welfareInterventions": [
+      {
+        "id": "INT-CHK-SIM_1790096658963",
+        "category": "welfare_checkin",
+        "categoryLabel": "Welfare Check-in Cadence",
+        "title": "Proactive Welfare Check-in Scheduling",
+        "suggestedAction": "Prompt personnel for an operational self-check or Smart Jacket sensor sync to establish evidence.",
+        "evidenceBasis": "Current data is insufficient to compute an accurate risk index without guessing.",
+        "reviewTimeframe": "Next 7 Days",
+        "priority": "MEDIUM",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-OFF-SIM_1790096658963",
+        "category": "officer_followup",
+        "categoryLabel": "Officer Supportive Follow-Up",
+        "title": "Supportive 1-on-1 Welfare Dialogue",
+        "suggestedAction": "Conduct routine informal welfare check during normal unit rounds; reinforce open-door welfare access.",
+        "evidenceBasis": "Baseline monitoring shows positive coping and adequate unit connectedness.",
+        "reviewTimeframe": "Within 1 Week",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-RST-SIM_1790096658963",
+        "category": "rest_recovery_review",
+        "categoryLabel": "Rest / Recovery Review",
+        "title": "Restorative Sleep & Leave Recuperation Review",
+        "suggestedAction": "Maintain unbroken 7-8 hours sleep hygiene and continue established recovery pacing.",
+        "evidenceBasis": "Sleep duration averaging 7.0 hrs/night with standard rotation.",
+        "reviewTimeframe": "Next Weekly Roster",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-WRK-SIM_1790096658963",
+        "category": "workload_review",
+        "categoryLabel": "Workload Review",
+        "title": "Operational Shift Duration & Duty Pacing Review",
+        "suggestedAction": "Current operational workload profile is balanced within nominal thresholds.",
+        "evidenceBasis": "Weekly duty logged at 48 hrs/wk (Nominal benchmark: 48 hrs/wk).",
+        "reviewTimeframe": "Routine Roster Review",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      },
+      {
+        "id": "INT-REF-SIM_1790096658963",
+        "category": "support_referral",
+        "categoryLabel": "Support Referral",
+        "title": "Voluntary Welfare Support & Healthcare Liaison",
+        "suggestedAction": "Provide standard informational awareness on confidential 24/7 tele-counseling and unit support resources.",
+        "evidenceBasis": "Routine welfare readiness profile; optional resources accessible on demand.",
+        "reviewTimeframe": "Voluntary Access",
+        "priority": "LOW",
+        "isDisciplinary": false,
+        "autoActionTaken": false,
+        "requiresOfficerConfirmation": true
+      }
+    ],
+    "welfareResourceSuggestions": [
+      {
+        "title": "CRPF 24/7 Welfare Tele-Counseling Support",
+        "contact": "Toll-Free 1800-180-4024",
+        "type": "Confidential Support Helpline"
+      },
+      {
+        "title": "Unit Peer Support Liaison Officer",
+        "contact": "Battalion Welfare Office - Extension #304",
+        "type": "Direct On-Base Support"
+      }
+    ],
+    "createdAt": "2026-09-22T17:04:19.261Z",
+    "updatedAt": "2026-09-22T17:04:19.261Z"
   }
 ]
